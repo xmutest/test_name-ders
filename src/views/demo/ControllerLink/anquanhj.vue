@@ -2,6 +2,7 @@
 <template>
     <d2-container>
     <template slot="header">安全环境</template>
+    测试
   </d2-container>
 </template>
 
