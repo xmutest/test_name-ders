@@ -68,7 +68,10 @@
                   <tr>
                     <td colspan="2">123</td>
                     <td>
-                      <el-input placeholder="请输入内容" v-model="input" clearable></el-input>
+                      <el-input
+                        v-model="input_number"
+                       type="number"
+                      />
                     </td>
                     <td>12xsxxxxxxxxxxxxxxxxxxxxxxxxxxxxx3</td>
                   </tr>
@@ -103,6 +106,7 @@ export default {
       qidohuiyi: "",
       weicitime: "",
       isqdtime: "",
+      input_number: "",
     };
   },
   created() {

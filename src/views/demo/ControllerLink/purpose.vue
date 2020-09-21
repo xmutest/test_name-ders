@@ -16,9 +16,6 @@
             />
           </div>
         </el-card>
-        <div class="baocun">
-          <el-button type="primary">提交保存</el-button>
-        </div>
       </div>
       <div class="mude_is_right">
         <div class="_is_right_yi">
@@ -56,6 +53,9 @@
         </div>
       </div>
     </div>
+    <div class="baocun">
+      <el-button type="primary">提交保存</el-button>
+    </div>
   </d2-container>
 </template>
 
@@ -89,38 +89,15 @@ export default {
 
 <style lang="scss" scoped>
 .mude_is {
-  display: flex;
+  margin: 20px 0;
   .mude_is_left {
-    min-width: 600px;
-    width: 800px;
-    .baocun{
-      margin-top: 20px;
-    }
+    margin: 20px 0;
   }
-  .mude_is_right {
-    margin-left: 20px;
-    width: 400px;
-    ._is_right_yi {
-      .yi_text_item {
-        overflow: auto;
-        .el-checkbox {
-          display: block;
-          margin: 5px 0;
-        }
-      }
-    }
-    ._is_right_qita {
-      margin-top: 20px;
-      .qt_text_item {
-        .to_tim {
-          margin-top: 10px;
-          font-size: 12px;
-          span {
-            margin-left: 5px;
-          }
-        }
-      }
-    }
+  .mude_is_right > div {
+    margin: 20px 0;
+  }
+  .to_tim{
+    margin-top: 5px;
   }
 }
 </style>
