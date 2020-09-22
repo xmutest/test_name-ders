@@ -7,6 +7,7 @@ import SystemComposition from './modules/SystemComposition/SystemComposition';
 import siteVerification from './modules/on-siteVerification/siteVerification';
 import GlobalAssessment from './modules/GlobalAssessment/GlobalAssessment';
 import AssessmentAnd from './modules/AssessmentAnd/AssessmentAnd';
+import caculateReport from './modules/caculateReport/caculateReport'
 import OverallEvaluation from './modules/OverallEvaluation/OverallEvaluation';
 /**
  * @description 给菜单数据补充上 path 字段
@@ -29,7 +30,8 @@ export const menuAside = supplementPath([
   siteVerification,
   GlobalAssessment,
   AssessmentAnd,
-  OverallEvaluation
+  OverallEvaluation,
+  caculateReport
 ])
 
 
@@ -44,6 +46,7 @@ export const menuHeader = supplementPath([
   siteVerification,
   GlobalAssessment,
   AssessmentAnd,
-  OverallEvaluation
+  OverallEvaluation,
+  caculateReport
 ])
 
