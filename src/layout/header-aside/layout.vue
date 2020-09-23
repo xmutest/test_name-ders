@@ -195,4 +195,7 @@ export default {
 <style lang="scss">
 // 注册主题
 @import "~@/assets/style/theme/register.scss";
+.d2-layout-header-aside-group .d2-layout-header-aside-content .d2-theme-header .el-menu .el-submenu .el-submenu__title{
+  padding: 0 10px;
+}
 </style>
