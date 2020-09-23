@@ -55,40 +55,12 @@
               </el-row>
             </div>
             <div class="detailed_text_item">
-              <table id="tab02" cellspacing="0" cellpadding="0">
-                <thead>
-                  <tr>
-                    <th>实施项目</th>
-                    <th>实施细目</th>
-                    <th>评测周期(天)</th>
-                    <th>备注</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td colspan="2">123</td>
-                    <td>
-                      <el-input
-                        v-model="input_number"
-                       type="number"
-                      />
-                    </td>
-                    <td>12xsxxxxxxxxxxxxxxxxxxxxxxxxxxxxx3</td>
-                  </tr>
-                  <tr>
-                    <td>abc</td>
-                    <td>abc</td>
-                    <td>abc</td>
-                    <td>123</td>
-                  </tr>
-                  <tr>
-                    <td>一二三</td>
-                    <td>一二三</td>
-                    <td>一二三</td>
-                    <td>123</td>
-                  </tr>
-                </tbody>
-              </table>
+              <el-table :data="tableData" :span-method="arraySpanMethod" border style="width: 100%">
+                <el-table-column prop="name" label="实施项目"></el-table-column>
+                <el-table-column prop="amount1" sortable label="实施细目"></el-table-column>
+                <el-table-column prop="amount2" sortable label="测评周期(天)"></el-table-column>
+                <el-table-column prop="amount3" sortable label="备注"></el-table-column>
+              </el-table>
             </div>
           </el-card>
         </div>
@@ -107,7 +79,144 @@ export default {
       weicitime: "",
       isqdtime: "",
       input_number: "",
+      tableData: [
+        {
+          name: "一、测评准备过程",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 2,
+          ist: 1,
+          isfor: true,
+        },
+        {
+          name: "现场调查",
+          amount1: "",
+          amount2: 0,
+          amount3: "需要系统管理员配合访谈",
+          len: 2,
+          ist: 1,
+          isfor: true,
+        },
+        {
+          name: "工具和文档准备",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 2,
+          ist: 1,
+          isfor: true,
+        },
+
+        {
+          name: "第一阶段输出结果：《测评系统基本情况调查报告》",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 4,
+          ist: 1,
+          isfor: true,
+        },
+        {
+          name: "二、方案编制过程",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 2,
+          ist: 1,
+          isfor: true,
+        },
+        {
+          name: "方案及计划制定审核",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 2,
+          ist: 1,
+          isfor: true,
+        },
+        {
+          name:
+            "第二阶段输出结果：《系统安全测评方案》、《系统安全测评现场实施计划》",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 4,
+          ist: 1,
+          isfor: true,
+        },
+        {
+          name: "三、现场实施过程",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 2,
+          ist: 1,
+          isfor: true,
+        },
+        {
+          name: "首次会议",
+          amount1: "确认方案和计划，协调测评资源",
+          amount2: 0,
+          amount3: "需要系统方运行相关人员参与",
+          len: 1,
+          ist: 1,
+          isfor: false,
+        },
+        {
+          name: "安全物理环境",
+          amount1: "机房环境",
+          amount2: 0,
+          amount3: "需要机房管理员配合",
+          len: 1,
+          ist: 1,
+          isfor: false,
+        },
+        {
+          name: "安全通信网络",
+          amount1: "网络结构分析",
+          amount2: 0,
+          amount3: "以核查配置文件为主，需要网络管理员配合",
+          len: 1,
+          ist: 1,
+          isfor: false,
+        },
+        {
+          name: "安全区域边界",
+          amount1: "区域边界",
+          amount2: 0,
+          amount3: "",
+          len: 1,
+          ist: 1,
+          isfor: false,
+        },
+
+        {
+          name: "工具和文档准备",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 2,
+          ist: 1,
+          isfor: true,
+        },
+      ],
     };
+  },
+  methods: {
+    arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+      console.log(row, column, rowIndex, columnIndex);
+
+      if (columnIndex === 0) {
+        if (row.isfor == true) {
+          return [row.ist, row.len];
+        }
+      } else if (columnIndex === 1) {
+        if (row.name == "现场调查") {
+          return [0, 0];
+        }
+      }
+    },
   },
   created() {
     this.rev_jianjie_text =

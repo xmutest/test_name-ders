@@ -1,15 +1,21 @@
 <!--安全设备-->
 <template>
   <d2-container>
-    <template slot="header">安全设备</template>
+ 
     <div>
       <div class="add_buoot">
         <el-button type="primary" @click="dialogFormVisible = true">新增</el-button>
       </div>
       <el-table :data="tabledatas" border>
-        <el-table-column label="设备名称" width="150">
+        <el-table-column label="设备名称" width="100">
           <template slot-scope="scope">
-            <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.devicename"></el-input>
+            <div @click="is_compile(scope.row,scope.$index,'devicename')" class="itsz"></div>
+            <el-input
+              :ref='"devicename"+scope.$index'
+              @blur="schujiaodian(scope.row)"
+              v-show="scope.row.show"
+              v-model="scope.row.devicename"
+            ></el-input>
             <span v-show="!scope.row.show">{{scope.row.devicename}}</span>
           </template>
         </el-table-column>
@@ -18,33 +24,38 @@
             <el-checkbox v-model="scope.row.virtual"></el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column label="系统及版本" width="150">
+        <el-table-column label="系统及版本" width="100">
           <template slot-scope="scope">
-            <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.andVersion"></el-input>
+            <div @click="is_compile(scope.row,scope.$index,'andVersion')" class="itsz"></div>
+            <el-input :ref='"andVersion"+scope.$index' @blur="schujiaodian(scope.row)" placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.andVersion"></el-input>
             <span v-show="!scope.row.show">{{scope.row.andVersion}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="品牌及型号" width="150">
+        <el-table-column label="品牌及型号" width="120">
           <template slot-scope="scope">
-            <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.BrandAndModel"></el-input>
+            <div @click="is_compile(scope.row,scope.$index,'BrandAndModel')" class="itsz"></div>
+            <el-input placeholder="请输入内容" :ref='"BrandAndModel"+scope.$index' @blur="schujiaodian(scope.row)" v-show="scope.row.show" v-model="scope.row.BrandAndModel"></el-input>
             <span v-show="!scope.row.show">{{scope.row.BrandAndModel}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="用途" width="150">
+        <el-table-column label="用途" width="120">
           <template slot-scope="scope">
-            <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.use"></el-input>
+            <div @click="is_compile(scope.row,scope.$index,'use')" class="itsz"></div>
+            <el-input placeholder="请输入内容" :ref='"use"+scope.$index' @blur="schujiaodian(scope.row)" v-show="scope.row.show" v-model="scope.row.use"></el-input>
             <span v-show="!scope.row.show">{{scope.row.use}}</span>
           </template>
         </el-table-column>
         <el-table-column label="备注" width="150">
           <template slot-scope="scope">
-            <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.remark"></el-input>
+            <div @click="is_compile(scope.row,scope.$index,'remark')" class="itsz"></div>
+            <el-input placeholder="请输入内容" :ref='"remark"+scope.$index' @blur="schujiaodian(scope.row)" v-show="scope.row.show" v-model="scope.row.remark"></el-input>
             <span v-show="!scope.row.show">{{scope.row.remark}}</span>
           </template>
         </el-table-column>
         <el-table-column label="数量" width="80">
           <template slot-scope="scope">
-            <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.quantity"></el-input>
+            <div @click="is_compile(scope.row,scope.$index,'quantity')" class="itsz"></div>
+            <el-input placeholder="请输入内容" :ref='"quantity"+scope.$index' @blur="schujiaodian(scope.row)" v-show="scope.row.show" v-model="scope.row.quantity"></el-input>
             <span v-show="!scope.row.show">{{scope.row.quantity}}</span>
           </template>
         </el-table-column>
@@ -60,21 +71,15 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="测评指导书" width="150">
-          <template slot-scope="scope">
-            <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.engineer"></el-input>
-            <span v-show="!scope.row.show">{{scope.row.engineer}}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="测评对象" width="80">
           <template slot-scope="scope">
             <el-checkbox v-model="scope.row.testee"></el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column fixed label="操作" width="220">
+        <el-table-column fixed label="操作" width="150">
           <template slot-scope="scope">
-            <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button>
-            <el-button size="mini" @click="is_preserve(scope.row)">保存</el-button>
+            <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
+            <el-button size="mini" @click="is_preserve(scope.$index)">新增</el-button>
             <el-button size="mini" type="danger" @click="deleteRow(scope.$index, tabledatas)">删除</el-button>
           </template>
         </el-table-column>
@@ -119,10 +124,6 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="测评指导书" :label-width="formLabelWidth" prop="engineer">
-            <el-input v-model="xmform.engineer" clearable autocomplete="off"></el-input>
-          </el-form-item>
-
           <el-form-item label="测评对象" :label-width="formLabelWidth" prop="testee">
             <el-checkbox v-model="xmform.testee"></el-checkbox>
           </el-form-item>
@@ -163,7 +164,6 @@ export default {
         remark: "",
         quantity: 5,
         importance: 5,
-        engineer: "",
         testee: true,
       },
       formLabelWidth: "120px",
@@ -182,7 +182,6 @@ export default {
         remark: "123",
         quantity: 5,
         importance: 5,
-        engineer: "默认安全设备",
         testee: true,
       },
       {
@@ -194,7 +193,6 @@ export default {
         remark: "",
         quantity: 5,
         importance: 5,
-        engineer: "默认安全设备",
         testee: true,
       },
     ];
@@ -205,6 +203,10 @@ export default {
     // })
   },
   methods: {
+    schujiaodian(item) {
+      item.show = false;
+      console.log(item);
+    },
     // 提交
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -219,13 +221,31 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    is_compile(item) {
+    is_compile(item,index,itname) {
       item.show = true;
+      console.log(itname);
+      setTimeout(() => {
+        this.$refs[itname + index].focus();
+      }, 1);
       console.log(item);
     },
     is_preserve(item) {
-      item.show = false;
-      console.log(this.tabledatas);
+      var itss=this.tabledatas;
+      var list =  {
+        devicename: "",
+        virtual: false,
+        andVersion: "",
+        BrandAndModel: "",
+        use: "",
+        remark: "",
+        quantity: 5,
+        importance: 5,
+        testee: true,
+        show:false
+      };
+      itss.splice(item+1, 0, list);
+     this.tabledatas = itss;
+      // console.log();
     },
     deleteRow(index, rows) {
       console.log(index, rows);
@@ -255,5 +275,18 @@ export default {
   .dia-footer {
     text-align: right;
   }
+}
+.el-table {
+  font-size: 12px;
+}
+.el-input {
+  font-size: 12px;
+}
+.itsz {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
 }
 </style>
