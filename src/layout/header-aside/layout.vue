@@ -40,6 +40,7 @@
         </div>
       </div>
       <!-- 下面 主体 -->
+      
       <div class="d2-theme-container" flex-box="1" flex>
         <!-- 主体 侧边栏 -->
         <div
@@ -53,6 +54,7 @@
         >
           <d2-menu-side />
         </div>
+        
         <!-- 主体 -->
         <div class="d2-theme-container-main" flex-box="1" flex>
           <!-- 搜索 -->
@@ -62,13 +64,16 @@
             </div>
           </transition>
           <!-- 内容 -->
+          
           <transition name="fade-scale">
+            
             <div v-if="!searchActive" class="d2-theme-container-main-layer" flex="dir:top">
               <!-- tab -->
+              <div style="margin: 10px 5px;">当前评测项目：xxxxxx----xxxxx-xxxx</div>
               <div class="d2-theme-container-main-header" flex-box="0">
                 <d2-tabs />
               </div>
-              <div style="margin: 10px 0;">当前评测项目：xxxxxx----xxxxx-xxxx</div>
+              
               <!-- 页面 -->
               <div class="d2-theme-container-main-body" flex-box="1">
                 <transition :name="transitionActive ? 'fade-transverse' : ''">
@@ -195,7 +200,13 @@ export default {
 <style lang="scss">
 // 注册主题
 @import "~@/assets/style/theme/register.scss";
-.d2-layout-header-aside-group .d2-layout-header-aside-content .d2-theme-header .el-menu .el-submenu .el-submenu__title{
+.d2-layout-header-aside-group
+  .d2-layout-header-aside-content
+  .d2-theme-header
+  .el-menu
+  .el-submenu
+  .el-submenu__title {
   padding: 0 10px;
 }
+
 </style>

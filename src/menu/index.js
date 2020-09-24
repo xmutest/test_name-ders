@@ -25,21 +25,27 @@ function supplementPath(menu) {
 }
 
 export const menuAside = supplementPath([
-  ControllerLink,
-  SystemComposition,
-  siteVerification,
-  GlobalAssessment,
-  AssessmentAnd,
-  OverallEvaluation,
-  caculateReport
-])
-
-
-export const menuHeader = supplementPath([
   {
     path: '/index',
     title: '首页',
-    icon: 'home'
+    icon: 'home',
+    children: (pre => [{
+        path: `${pre}fxfx`,
+        title: '风险分析和评价'
+      },
+      {
+        path: `${pre}fxxz`,
+        title: '风险值修正'
+      },
+      {
+        path: `${pre}wthz`,
+        title: '安全问题汇总'
+      },
+      {
+        path: `${pre}zgzt`,
+        title: '整改状态调整'
+      },
+    ])('/demo/AssessmentAnd/')
   },
   ControllerLink,
   SystemComposition,
@@ -50,3 +56,34 @@ export const menuHeader = supplementPath([
   caculateReport
 ])
 
+
+export const menuHeader = supplementPath([{
+    path: '/index',
+    title: '首页',
+    icon: 'home',
+    children: (pre => [{
+        path: `${pre}fxfx`,
+        title: '风险分析和评价'
+      },
+      {
+        path: `${pre}fxxz`,
+        title: '风险值修正'
+      },
+      {
+        path: `${pre}wthz`,
+        title: '安全问题汇总'
+      },
+      {
+        path: `${pre}zgzt`,
+        title: '整改状态调整'
+      },
+    ])('/demo/AssessmentAnd/')
+  },
+  ControllerLink,
+  SystemComposition,
+  siteVerification,
+  GlobalAssessment,
+  AssessmentAnd,
+  OverallEvaluation,
+  caculateReport
+])

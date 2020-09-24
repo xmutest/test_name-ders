@@ -1,59 +1,31 @@
 <!--评测目的-->
 <template>
   <d2-container>
-    <template slot="header">评测目的和依据</template>
     <div class="mude_is">
+      <!-- 富文本输入框 -->
       <div class="mude_is_left">
         <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span>评测目的</span>
-          </div>
           <div class="mude_text_item">
+            <div class="descTItle">评测目的</div>
             <d2-quill
               style="min-height: 200px; margin-bottom: 20px;"
               v-model="goal_value"
               @text-change="textChangeHandler"
             />
           </div>
-        </el-card>
-      </div>
-      <div class="mude_is_right">
-        <div class="_is_right_yi">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>评测依据选项</span>
-            </div>
-            <div class="yi_text_item">
+
+          <div class="mude_text_item">
+            <div class="descTItle">评测依据选项</div>
+            <div class="to_tim">
               <el-checkbox-group v-model="yijv_checkList">
                 <el-checkbox label="复选框 Axsxxsxs xcxxxxxxxxxxxxxxxxxxxxx1"></el-checkbox>
                 <el-checkbox label="复">复选框 B</el-checkbox>
                 <el-checkbox label="复选框 C"></el-checkbox>
               </el-checkbox-group>
             </div>
-          </el-card>
-        </div>
-        <div class="_is_right_qita">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>其他评测依据</span>
-            </div>
-            <div class="qt_text_item">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 4, maxRows: 8}"
-                placeholder="请输入内容"
-                v-model="qita_text"
-              ></el-input>
-              <div class="to_tim">
-                <el-tag>提示</el-tag>
-                <span>若输入多个其他评测依据请以逗号隔开为单项结束</span>
-              </div>
-            </div>
-          </el-card>
-        </div>
+          </div>
+        </el-card>
       </div>
-    </div>
-    <div class="baocun">
       <el-button type="primary">提交保存</el-button>
     </div>
   </d2-container>
@@ -96,9 +68,22 @@ export default {
   .mude_is_right > div {
     margin: 20px 0;
   }
-  .to_tim{
+  .to_tim {
     margin-top: 5px;
+    .el-tag {
+      margin-right: 5px;
+    }
   }
+  .descTItle {
+   @extend %unable-border-left;
+  }
+  .mude_text_item {
+    border-bottom: 1px solid #ebeef5;
+    padding: 20px 0;
+  }
+}
+.el-card__header {
+  border-bottom: 0px solid #ebeef5;
 }
 </style>
 

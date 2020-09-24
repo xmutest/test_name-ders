@@ -9,6 +9,14 @@ $prefix: d2;
   cursor: pointer;
 }
 
+%unable-border-left {
+  border-left: 4px solid #007AF9;
+  padding: 8px 0px 8px 10px;
+  margin-bottom: 20px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 // 填满父元素
 // 组要父元素 position: relative | absolute;
 %full {
@@ -26,6 +34,7 @@ $prefix: d2;
   align-items: center;
   flex-direction: row;
 }
+
 %flex-center-col {
   display: flex;
   justify-content: center;

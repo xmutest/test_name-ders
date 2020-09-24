@@ -1,7 +1,7 @@
 <template>
   <d2-container class="page">
-    <div class="page_name">
-      <span>网络安全等级保护评测工具</span>
+    <div class="page_name" style="padding: 0 20px 20px 20px;">
+      <span>所有项目</span>
       <span>{{getTimeDate}}</span>
     </div>
     <div class="page_ts">
@@ -9,14 +9,6 @@
         <el-main style="padding: 0 20px 20px 20px;">
           <el-col class="box-card">
             <el-card shadow="hover">
-              <div slot="header" class="clearfix">
-                <div>
-                  <span class="header_ggao">项目管理</span>
-                </div>
-                <div>
-                  <el-button type="primary" @click="dialogFormVisible = true">新增</el-button>
-                </div>
-              </div>
               <div>
                 <el-table :data="tableData" style="width: 100%">
                   <el-table-column label="项目名称">
@@ -25,7 +17,39 @@
                         <span
                           class="optionTo_name"
                           @click="optionTo(scope.$index, scope.row)"
-                        >{{ scope.row.name }}</span>
+                        >{{ scope.row.project_name }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="系统名称">
+                    <template slot-scope="scope">
+                      <p>
+                        <span
+                        >{{ scope.row.system_name }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="等保等级">
+                    <template slot-scope="scope">
+                      <p>
+                        <span
+                        >{{ scope.row.lever }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="创建人">
+                    <template slot-scope="scope">
+                      <p>
+                        <span
+                        >{{ scope.row.creater }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="创建时间">
+                    <template slot-scope="scope">
+                      <p>
+                        <span
+                        >{{ scope.row.createrTime }}</span>
                       </p>
                     </template>
                   </el-table-column>
@@ -140,12 +164,13 @@ export default {
   data() {
     return {
       getTimeDate: "",
-      tableData: [
+      tableData: [              
         {
-          name: "xxx项目",
-        },
-        {
-          name: "xxx项目2",
+          project_name: "项目名称",
+          system_name:'系统名称',
+          lever:'等保等级',
+          creater:'创建人',
+          createrTime:'创建时间'
         },
       ],
       // 标准体系列表
@@ -214,7 +239,7 @@ export default {
   methods: {
     // 选择项目跳转
     optionTo(index, row) {
-      alert(`进入${row.name}`);
+      alert(`进入${row.project_name}`);
     },
     // 删除项目
     xmuDelete(index, row) {

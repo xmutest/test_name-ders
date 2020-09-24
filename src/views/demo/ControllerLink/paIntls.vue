@@ -1,53 +1,46 @@
 <!-- 测评工具及接入点说明 -->
 <template>
-    <d2-container>
-      
-      <div class="mude_is">
-        <!-- 富文本输入框 -->
-        <div class="mude_is_left">
-          <el-card class="box-card">
-            <div class="mude_text_item">
-              <div class="descTItle">接入点描述</div>
-              <d2-quill
-                style="min-height: 200px; margin-bottom: 20px;"
-                v-model="jrdPoint"
-                @text-change="textChangeHandler"
-              />
+  <d2-container>
+    <div class="mude_is">
+      <!-- 富文本输入框 -->
+      <div class="mude_is_left">
+        <el-card class="box-card">
+          <div class="mude_text_item">
+            <div class="descTItle">接入点描述</div>
+            <d2-quill
+              style="min-height: 200px; margin-bottom: 20px;"
+              v-model="jrdPoint"
+              @text-change="textChangeHandler"
+            />
+          </div>
+
+          <div class="mude_text_item">
+            <div class="descTItle">接入点图片</div>
+            <div class="to_tim">
+              <el-tag>操作提示</el-tag>
+              <span>点击图片后可打开标记JA,JB等标记的页面</span>
             </div>
-
-            <div class="mude_text_item">
-              <div class="descTItle">接入点图片</div>
-              <div class="to_tim">
-                <el-tag>操作提示</el-tag>
-                <span>点击图片后可打开标记JA,JB等标记的页面</span>
-              </div>
-            </div>
-
-          </el-card>
-
-          
-        </div>
-        <!-- 图片 -->
-
+          </div>
+        </el-card>
       </div>
-    </d2-container>
+      <!-- 图片 -->
+    </div>
+  </d2-container>
 </template>
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      jrdPoint:'',
-
-    }
+      jrdPoint: "",
+    };
   },
   methods: {
-    textChangeHandler(delta, oldDelta, source){
+    textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
     },
-
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -56,28 +49,21 @@ export default {
   .mude_is_left {
     margin: 20px 0;
   }
-  .mude_is_right > div {
-    margin: 20px 0;
-  }
-  .to_tim{
+  .to_tim {
     margin-top: 5px;
-    .el-tag{
-      margin-right:5px;
+    .el-tag {
+      margin-right: 5px;
     }
   }
-  .descTItle{
-    padding: 8px 0px 8px 10px;
-    margin-bottom: 20px;
-    border-left: 4px solid #007AF9;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+  .descTItle {
+    @extend %unable-border-left;
   }
-  .mude_text_item{
-    border-bottom: 1px solid #EBEEF5;
-    padding:20px 0;
+  .mude_text_item {
+    border-bottom: 1px solid #ebeef5;
+    padding: 20px 0;
   }
 }
-.el-card__header{
-    border-bottom: 0px solid #EBEEF5;
+.el-card__header {
+  border-bottom: 0px solid #ebeef5;
 }
 </style>

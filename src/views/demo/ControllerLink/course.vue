@@ -1,11 +1,10 @@
 <!--评测过程-->
 <template>
   <d2-container>
-    <template slot="header">评测过程</template>
     <div class="reviewProcess">
       <div class="rev_jianjie">
         <el-card class="box-card">
-          <div slot="header" class="clearfix">
+          <div slot="header" class="clearfix descTItle">
             <span>简介</span>
             <el-button style="float: right; padding: 3px 0" type="text">保存</el-button>
           </div>
@@ -17,53 +16,79 @@
               v-model="rev_jianjie_text"
             ></el-input>
           </div>
+          <div class="detailedPro">
+            <div class="detailedtablo">
+              <div class="clearfix descTItle">
+                <span>详细过程</span>
+                <el-button style="float: right; padding: 3px 0" type="text">提交保存</el-button>
+              </div>
+              <div class="detailedTime">
+                <el-row :gutter="20">
+                  <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                      <span>项目启动</span>
+                      <el-date-picker v-model="xmutime" type="date" placeholder="选择日期"></el-date-picker>
+                    </div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                      <span>启动会议</span>
+                      <el-date-picker v-model="qidohuiyi" type="date" placeholder="选择日期"></el-date-picker>
+                    </div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                      <span>未次会议</span>
+                      <el-date-picker v-model="weicitime" type="date" placeholder="选择日期"></el-date-picker>
+                    </div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="grid-content bg-purple">
+                      <span>复核确认</span>
+                      <el-date-picker v-model="isqdtime" type="date" placeholder="选择日期"></el-date-picker>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="detailed_text_item">
+                <el-table
+                  :data="tableData"
+                  :span-method="arraySpanMethod"
+                  border
+                  show-summary
+                  sum-text="总计"
+                  style="width: 100%"
+                >
+                  <el-table-column label="实施项目" prop="name" width="180">
+                    <template slot-scope="scope">
+                      <span
+                        style="margin-left: 10px;font-weight: bold;"
+                        v-if="scope.row.highlight"
+                      >{{ scope.row.name }}</span>
+                      <span style="margin-left: 10px" v-else>{{ scope.row.name }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="amount1" label="实施细目">
+                    <template slot-scope="scope">
+                      <span style="margin-left: 10px">{{ scope.row.amount1 }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="amount2" label="测评周期(天)">
+                    <template slot-scope="scope">
+                      <el-input-number v-model="scope.row.amount2" controls-position="right"  :min="0" ></el-input-number>
+                      <!-- <span style="margin-left: 10px">{{  }}</span> -->
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="amount3" label="备注">
+                    <template slot-scope="scope">
+                      <span style="margin-left: 10px">{{ scope.row.amount3 }}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
+          </div>
         </el-card>
-      </div>
-      <div class="detailedPro">
-        <div class="detailedtablo">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>详细过程</span>
-              <el-button style="float: right; padding: 3px 0" type="text">提交保存</el-button>
-            </div>
-            <div class="detailedTime">
-              <el-row :gutter="20">
-                <el-col :span="6">
-                  <div class="grid-content bg-purple">
-                    <span>项目启动</span>
-                    <el-date-picker v-model="xmutime" type="date" placeholder="选择日期"></el-date-picker>
-                  </div>
-                </el-col>
-                <el-col :span="6">
-                  <div class="grid-content bg-purple">
-                    <span>启动会议</span>
-                    <el-date-picker v-model="qidohuiyi" type="date" placeholder="选择日期"></el-date-picker>
-                  </div>
-                </el-col>
-                <el-col :span="6">
-                  <div class="grid-content bg-purple">
-                    <span>未次会议</span>
-                    <el-date-picker v-model="weicitime" type="date" placeholder="选择日期"></el-date-picker>
-                  </div>
-                </el-col>
-                <el-col :span="6">
-                  <div class="grid-content bg-purple">
-                    <span>复核确认</span>
-                    <el-date-picker v-model="isqdtime" type="date" placeholder="选择日期"></el-date-picker>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="detailed_text_item">
-              <el-table :data="tableData" :span-method="arraySpanMethod" border style="width: 100%">
-                <el-table-column prop="name" label="实施项目"></el-table-column>
-                <el-table-column prop="amount1" sortable label="实施细目"></el-table-column>
-                <el-table-column prop="amount2" sortable label="测评周期(天)"></el-table-column>
-                <el-table-column prop="amount3" sortable label="备注"></el-table-column>
-              </el-table>
-            </div>
-          </el-card>
-        </div>
       </div>
     </div>
   </d2-container>
@@ -88,6 +113,7 @@ export default {
           len: 2,
           ist: 1,
           isfor: true,
+          highlight: true,
         },
         {
           name: "现场调查",
@@ -116,6 +142,7 @@ export default {
           len: 4,
           ist: 1,
           isfor: true,
+          highlight: true,
         },
         {
           name: "二、方案编制过程",
@@ -125,6 +152,7 @@ export default {
           len: 2,
           ist: 1,
           isfor: true,
+          highlight: true,
         },
         {
           name: "方案及计划制定审核",
@@ -144,6 +172,7 @@ export default {
           len: 4,
           ist: 1,
           isfor: true,
+          highlight: true,
         },
         {
           name: "三、现场实施过程",
@@ -153,6 +182,7 @@ export default {
           len: 2,
           ist: 1,
           isfor: true,
+          highlight: true,
         },
         {
           name: "首次会议",
@@ -190,9 +220,210 @@ export default {
           ist: 1,
           isfor: false,
         },
+        {
+          name: "安全计算环境",
+          amount1: "操作系统核查",
+          amount2: 0,
+          amount3:
+            "以核查配置文件为主，需要系统管理员配合；核查并验证安全功能的实现，需要应用系统管理员配合；访谈需要应用系统管理员或开发人员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全计算环境",
+          amount1: "数据库核查",
+          amount2: 0,
+          amount3:
+            "以核查配置文件为主，需要系统管理员配合；核查并验证安全功能的实现，需要应用系统管理员配合；访谈需要应用系统管理员或开发人员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全计算环境",
+          amount1: "终端设备核查",
+          amount2: 0,
+          amount3:
+            "以核查配置文件为主，需要系统管理员配合；核查并验证安全功能的实现，需要应用系统管理员配合；访谈需要应用系统管理员或开发人员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全计算环境",
+          amount1: "安全设备核查",
+          amount2: 0,
+          amount3:
+            "以核查配置文件为主，需要系统管理员配合；核查并验证安全功能的实现，需要应用系统管理员配合；访谈需要应用系统管理员或开发人员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全计算环境",
+          amount1: "应用安全核查",
+          amount2: 0,
+          amount3:
+            "以核查配置文件为主，需要系统管理员配合；核查并验证安全功能的实现，需要应用系统管理员配合；访谈需要应用系统管理员或开发人员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全计算环境",
+          amount1: "数据安全核查分析",
+          amount2: 0,
+          amount3:
+            "以核查配置文件为主，需要系统管理员配合；核查并验证安全功能的实现，需要应用系统管理员配合；访谈需要应用系统管理员或开发人员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全计算环境",
+          amount1: "数据安全验证测试",
+          amount2: 0,
+          amount3:
+            "以核查配置文件为主，需要系统管理员配合；核查并验证安全功能的实现，需要应用系统管理员配合；访谈需要应用系统管理员或开发人员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全计算环境",
+          amount1: "验证测试",
+          amount2: 0,
+          amount3:
+            "以核查配置文件为主，需要系统管理员配合；核查并验证安全功能的实现，需要应用系统管理员配合；访谈需要应用系统管理员或开发人员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全管理中心",
+          amount1: "安全管理中心",
+          amount2: 0,
+          amount3: "以核查配置文件为主，需要系统管理员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
 
         {
-          name: "工具和文档准备",
+          name: "安全管理",
+          amount1: "安全管理制度",
+          amount2: 0,
+          amount3: "以核查配置文件为主，需要系统管理员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全管理",
+          amount1: "安全管理机构",
+          amount2: 0,
+          amount3: "以核查配置文件为主，需要系统管理员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全管理",
+          amount1: "安全管理人员",
+          amount2: 0,
+          amount3: "以核查配置文件为主，需要系统管理员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全管理",
+          amount1: "安全建设管理",
+          amount2: 0,
+          amount3: "以核查配置文件为主，需要系统管理员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "安全管理",
+          amount1: "安全运维管理",
+          amount2: 0,
+          amount3: "以核查配置文件为主，需要系统管理员配合",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+
+        {
+          name: "漏洞扫描",
+          amount1: "操作系统",
+          amount2: 0,
+          amount3: "需要系统管理员配合测试",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "漏洞扫描",
+          amount1: "数据库",
+          amount2: 0,
+          amount3: "需要系统管理员配合测试",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "渗透性测试",
+          amount1: "模拟从Ineternet非授权访问系统",
+          amount2: 0,
+          amount3: "需要网络管理员、系统管理员配合测试",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "测试结果初步分析",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+        {
+          name: "末次会议",
+          amount1: "测评结果交流确认、结果审核",
+          amount2: 0,
+          amount3: "需要系统方运行相关人员参与并确认测评结果",
+          len: 1,
+          ist: 2,
+          isfor: false,
+        },
+
+        {
+          name: "第三阶段输出结果：《系统安全测评记录表》",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 4,
+          ist: 1,
+          isfor: true,
+          highlight: true,
+        },
+        {
+          name: "四、分析与报告编制过程",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 2,
+          ist: 1,
+          isfor: true,
+          highlight: true,
+        },
+        {
+          name: "测评报告书写",
           amount1: "",
           amount2: 0,
           amount3: "",
@@ -200,20 +431,82 @@ export default {
           ist: 1,
           isfor: true,
         },
+        {
+          name: "测评报告审核及签发",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 2,
+          ist: 1,
+          isfor: true,
+        },
+        {
+          name: "第四阶段输出结果：《系统安全测评报告》",
+          amount1: "",
+          amount2: 0,
+          amount3: "",
+          len: 4,
+          ist: 1,
+          isfor: true,
+          highlight: true,
+        },
       ],
     };
   },
   methods: {
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      console.log(row, column, rowIndex, columnIndex);
-
-      if (columnIndex === 0) {
-        if (row.isfor == true) {
-          return [row.ist, row.len];
-        }
-      } else if (columnIndex === 1) {
-        if (row.name == "现场调查") {
+      if (row.isfor == true) {
+        if (columnIndex === 0) {
+          return {
+            rowspan: row.ist,
+            colspan: row.len,
+          };
+        } else if (columnIndex === 1) {
           return [0, 0];
+        }
+      } else {
+        if (row.name === "安全计算环境") {
+          if (columnIndex != 1) {
+            if (rowIndex % 8 === 4) {
+              return {
+                rowspan: 8,
+                colspan: 1,
+              };
+            } else {
+              return {
+                rowspan: 0,
+                colspan: 0,
+              };
+            }
+          }
+        } else if (row.name === "安全管理") {
+          if (columnIndex != 1) {
+            if (rowIndex % 5 === 1) {
+              return {
+                rowspan: 5,
+                colspan: 1,
+              };
+            } else {
+              return {
+                rowspan: 0,
+                colspan: 0,
+              };
+            }
+          }
+        } else if (row.name === "漏洞扫描") {
+          if (columnIndex != 1) {
+            if (rowIndex % 2 === 0) {
+              return {
+                rowspan: 2,
+                colspan: 1,
+              };
+            } else {
+              return {
+                rowspan: 0,
+                colspan: 0,
+              };
+            }
+          }
         }
       }
     },
@@ -259,6 +552,9 @@ export default {
   #tab02 {
     border-collapse: collapse;
   }
+}
+.descTItle {
+  @extend %unable-border-left;
 }
 </style>
 

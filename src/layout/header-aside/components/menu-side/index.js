@@ -21,9 +21,22 @@ export default {
       </el-menu>
       {
         this.aside.length === 0 && !this.asideCollapse
-          ? <div class="d2-layout-header-aside-menu-empty" flex="dir:top main:center cross:center">
-            <d2-icon name="inbox"></d2-icon>
-            <span>欢迎使用评测助手</span>
+          ? <div class="d2-layout-header-aside-menu">
+             <ul>
+               <li>
+                华南信息评测中心
+               </li>
+               <li>
+               <d2-icon name="calendar-times-o items"/>
+               <router-link to="">进行中的项目</router-link>
+               </li>
+               <li>
+               <d2-icon name="hourglass-o items1"/>
+                 <router-link to="">我创建的项目</router-link></li>
+               <li>
+               <d2-icon name="power-off items2"/>
+                 <router-link to="">已完成的项目</router-link></li>
+             </ul>
           </div>
           : null
       }
@@ -32,7 +45,8 @@ export default {
   data () {
     return {
       asideHeight: 300,
-      BS: null
+      BS: null,
+      getTimeDate:''
     }
   },
   computed: {
