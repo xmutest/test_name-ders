@@ -4,9 +4,9 @@
     <div class="reviewProcess">
       <div class="rev_jianjie">
         <el-card class="box-card">
-          <div slot="header" class="clearfix descTItle">
+          <div  class="clearfix descTItle">
             <span>简介</span>
-            <el-button style="float: right; padding: 3px 0" type="text">保存</el-button>
+            
           </div>
           <div>
             <el-input
@@ -20,7 +20,7 @@
             <div class="detailedtablo">
               <div class="clearfix descTItle">
                 <span>详细过程</span>
-                <el-button style="float: right; padding: 3px 0" type="text">提交保存</el-button>
+                
               </div>
               <div class="detailedTime">
                 <el-row :gutter="20">
@@ -88,6 +88,7 @@
               </div>
             </div>
           </div>
+          <div><el-button style="float: right; padding: 3px 0" type="text">保存</el-button></div>
         </el-card>
       </div>
     </div>

@@ -6,7 +6,7 @@
       <div class="add_buoot">
         <el-button type="primary" @click="dialogFormVisible = true">新增</el-button>
       </div>
-      <el-table :data="tabledatas" border>
+      <el-table :data="tabledatas" border :header-cell-style="{'background-color': 'rgba(238, 238, 238,1.0)'}">
         <el-table-column label="设备名称" width="100">
           <template slot-scope="scope">
             <div @click="is_compile(scope.row,scope.$index,'devicename')" class="itsz"></div>

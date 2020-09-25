@@ -9,11 +9,11 @@
     <div class="page-login--layer">
       <div class="page-login--content" flex="dir:top main:justify cross:stretch box:justify">
         <div class="page-login--content-header">
-          <p class="page-login--content-header-motto">时间是一切财富中最宝贵的财富</p>
+          <!-- <p class="page-login--content-header-motto">时间是一切财富中最宝贵的财富</p> -->
         </div>
         <div class="page-login--content-main" flex="dir:top main:center cross:center">
           <!-- logo -->
-          <!-- <div style="font-size:1.58em;" class="page-login--logo">安全评测中心</div> -->
+          <div style="font-size:1.3em;" class="page-login-logo_item">华南评测报告管理系统</div>
           <img class="page-login--logo" src="./image/logo.png">
           <!-- form -->
           <div class="page-login--form">
@@ -59,21 +59,10 @@
         </div>
         <div class="page-login--content-footer">
           <p class="page-login--content-footer-locales">
-            <a
-              v-for="language in $languages"
-              :key="language.value"
-              @click="onChangeLocale(language.value)"
-            >{{ language.label }}</a>
-          </p>
           <p class="page-login--content-footer-copyright">
-            dengzehau
-            <d2-icon name="copyright" />2020 出品
-            <a href>@Fss</a>
-          </p>
-          <p class="page-login--content-footer-options">
-            <a href="#">帮助</a>
-            <a href="#">隐私</a>
-            <a href="#">条款</a>
+            <d2-icon name="copyright" />广州华南信息安全评测中心版权所有
+            <d2-icon name="copyright" />粤ICP备19011520号-1
+            <!-- <a href>@Fss</a> -->
           </p>
         </div>
       </div>
@@ -95,21 +84,7 @@ export default {
       // 快速选择用户
       dialogVisible: false,
       users: [
-        {
-          name: "Admin",
-          username: "admin",
-          password: "admin",
-        },
-        {
-          name: "Editor",
-          username: "editor",
-          password: "editor",
-        },
-        {
-          name: "User1",
-          username: "user1",
-          password: "user1",
-        },
+      
       ],
       // 表单
       formLogin: {
@@ -249,6 +224,9 @@ export default {
     width: 150px;
     margin-bottom: 2em;
     margin-top: -2em;
+  }
+  .page-login-logo_item{
+    margin-bottom: 35px;
   }
   // 登录表单
   .page-login--form {

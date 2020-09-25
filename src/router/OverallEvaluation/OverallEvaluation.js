@@ -32,7 +32,8 @@ export default {
       meta: {
         ...meta,
         title: '等级测评结论'
-      }
+      },
+      
     }
   ])('demo-OverallEvaluation-')
 }

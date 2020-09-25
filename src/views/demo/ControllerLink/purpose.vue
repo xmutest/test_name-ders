@@ -24,9 +24,23 @@
               </el-checkbox-group>
             </div>
           </div>
+          <div class="mude_text_item">
+            <div class="descTItle">其他评测依据</div>
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 4, maxRows: 8}"
+              placeholder="请以逗号隔开"
+              v-model="qita_text"
+              @text-change="textChangeHandler"
+            ></el-input>
+          </div>
+          <div class="clackbaoc">
+            <el-button type="primary" >提交保存</el-button>
+          </div>
+           
         </el-card>
       </div>
-      <el-button type="primary">提交保存</el-button>
+     
     </div>
   </d2-container>
 </template>
@@ -70,20 +84,29 @@ export default {
   }
   .to_tim {
     margin-top: 5px;
+    .el-checkbox-group{
+      .el-checkbox{
+        display: block;
+        margin: 5px 0;
+      }
+    }
     .el-tag {
       margin-right: 5px;
     }
   }
   .descTItle {
-   @extend %unable-border-left;
+    @extend %unable-border-left;
   }
   .mude_text_item {
-    border-bottom: 1px solid #ebeef5;
+    border-bottom: 0px solid #ebeef5;
     padding: 20px 0;
   }
 }
 .el-card__header {
   border-bottom: 0px solid #ebeef5;
+}
+.clackbaoc{
+  text-align: right;
 }
 </style>
 

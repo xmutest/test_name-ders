@@ -9,8 +9,21 @@
         <el-main style="padding: 0 20px 20px 20px;">
           <el-col class="box-card">
             <el-card shadow="hover">
+              <div class="search_ls">
+                <div>
+                  <span class="search_ls_name">项目名称</span>
+                  <el-input placeholder="请输入内容" v-model="search_list.project_name" clearable></el-input>
+                </div>
+                <div>
+                  <el-button icon="el-icon-search" circle></el-button>
+                </div>
+              </div>
               <div>
-                <el-table :data="tableData" style="width: 100%">
+                <el-table
+                  :data="tableData"
+                  style="width: 100%"
+                  :header-cell-style="{'background-color': 'rgba(238, 238, 238,1.0)'}"
+                >
                   <el-table-column label="项目名称">
                     <template slot-scope="scope">
                       <p>
@@ -24,32 +37,28 @@
                   <el-table-column label="系统名称">
                     <template slot-scope="scope">
                       <p>
-                        <span
-                        >{{ scope.row.system_name }}</span>
+                        <span>{{ scope.row.system_name }}</span>
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="等保等级">
                     <template slot-scope="scope">
                       <p>
-                        <span
-                        >{{ scope.row.lever }}</span>
+                        <span>{{ scope.row.lever }}</span>
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="创建人">
                     <template slot-scope="scope">
                       <p>
-                        <span
-                        >{{ scope.row.creater }}</span>
+                        <span>{{ scope.row.creater }}</span>
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="创建时间">
                     <template slot-scope="scope">
                       <p>
-                        <span
-                        >{{ scope.row.createrTime }}</span>
+                        <span>{{ scope.row.createrTime }}</span>
                       </p>
                     </template>
                   </el-table-column>
@@ -164,13 +173,13 @@ export default {
   data() {
     return {
       getTimeDate: "",
-      tableData: [              
+      tableData: [
         {
           project_name: "项目名称",
-          system_name:'系统名称',
-          lever:'等保等级',
-          creater:'创建人',
-          createrTime:'创建时间'
+          system_name: "系统名称",
+          lever: "等保等级",
+          creater: "创建人",
+          createrTime: "创建时间",
         },
       ],
       // 标准体系列表
@@ -207,6 +216,9 @@ export default {
         { label: "S3A2G3", value: 4 },
         { label: "S3A1G3", value: 5 },
       ],
+      search_list: {
+        project_name: "",
+      },
       dialogTableVisible: false,
       dialogFormVisible: false,
       xmform: {
@@ -228,7 +240,7 @@ export default {
         ],
         system_name: [
           { required: true, message: "请输入系统名称", trigger: "blur" },
-        ]
+        ],
       },
     };
   },
@@ -364,5 +376,22 @@ export default {
 }
 .optionTo_name {
   cursor: pointer;
+}
+.search_ls {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  div{
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    .search_ls_name{
+      font-family: 'Courier New', Courier, monospace;
+    }
+  }
+  .el-input {
+    max-width: 180px;
+    margin-left: 5px;
+  }
 }
 </style>

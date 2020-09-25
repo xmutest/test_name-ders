@@ -26,10 +26,12 @@ export default {
                <li>
                 华南信息评测中心
                </li>
-               <li>
+               <router-link to="demo/projectlist/Jinxm">
+               <li ref="axaxxa" data-index='/demo/projectlist/Jinxm'>
                <d2-icon name="calendar-times-o items"/>
-               <router-link to="">进行中的项目</router-link>
+               进行中的项目
                </li>
+               </router-link>
                <li>
                <d2-icon name="hourglass-o items1"/>
                  <router-link to="">我创建的项目</router-link></li>
@@ -57,6 +59,19 @@ export default {
     ])
   },
   watch: {
+    '$route':'getPath',
+    // $route:{
+    //   handler(val,oldval){
+    //     if(this.$route.path==this.$refs.axaxxa.dataset.index){
+    //       console.log(5);
+    //       this.$refs.axaxxa.style.backgroundColor  = "#fff";
+    //     }else{
+
+    //     }
+    //   },
+    //   // 深度观察监听
+    //   deep: true
+    // },
     // 折叠和展开菜单的时候销毁 better scroll
     asideCollapse (val) {
       this.scrollDestroy()
@@ -66,12 +81,16 @@ export default {
     }
   },
   mounted () {
-    this.scrollInit()
+    this.scrollInit();
+
   },
   beforeDestroy () {
     this.scrollDestroy()
   },
   methods: {
+    getPath(){
+      console.log(this.$refs.axaxxa)
+    },
     scrollInit () {
       this.BS = new BScroll(this.$el, {
         mouseWheel: true,
