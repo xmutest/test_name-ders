@@ -21,24 +21,20 @@ export default {
       </el-menu>
       {
         this.aside.length === 0 && !this.asideCollapse
-          ? <div class="d2-layout-header-aside-menu">
+          ? 
+          <div class="d2-layout-header-aside-menu">
+          <el-menu router defaultActive={ this.$route.fullPath }>
+           
              <ul>
                <li>
                 华南信息评测中心
-               </li>
-               <router-link to="demo/projectlist/Jinxm">
-               <li ref="axaxxa" data-index='/demo/projectlist/Jinxm'>
-               <d2-icon name="calendar-times-o items"/>
-               进行中的项目
-               </li>
-               </router-link>
-               <li>
-               <d2-icon name="hourglass-o items1"/>
-                 <router-link to="">我创建的项目</router-link></li>
-               <li>
-               <d2-icon name="power-off items2"/>
-                 <router-link to="">已完成的项目</router-link></li>
+               </li>   
+               <el-menu-item index="/Jinxm"><d2-icon name="calendar-times-o items"/>进行中的项目</el-menu-item>    
+               <el-menu-item index="/woxmu"><d2-icon name="hourglass-o items1"/>我创建的项目</el-menu-item>
+               <el-menu-item index="/onxmu"><d2-icon name="power-off items2"/>已完成的项目</el-menu-item>
              </ul>
+          
+          </el-menu>
           </div>
           : null
       }
@@ -59,7 +55,7 @@ export default {
     ])
   },
   watch: {
-    '$route':'getPath',
+    // '$route':'getPath',
     // $route:{
     //   handler(val,oldval){
     //     if(this.$route.path==this.$refs.axaxxa.dataset.index){
@@ -88,8 +84,11 @@ export default {
     this.scrollDestroy()
   },
   methods: {
-    getPath(){
-      console.log(this.$refs.axaxxa)
+    getTiso(){ 
+      this.$router.push({
+        path: '/woxmu'
+      }
+      )
     },
     scrollInit () {
       this.BS = new BScroll(this.$el, {

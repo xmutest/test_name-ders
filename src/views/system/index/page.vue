@@ -17,6 +17,9 @@
                 <div>
                   <el-button icon="el-icon-search" circle></el-button>
                 </div>
+                 <div>
+                   <el-button type="primary"><i class="el-icon--left el-icon-circle-plus-outline"></i>新增</el-button>
+                </div>
               </div>
               <div>
                 <el-table

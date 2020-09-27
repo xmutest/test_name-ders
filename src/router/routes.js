@@ -6,7 +6,7 @@ import GlobalAssessment from './GlobalAssessment/GlobalAssessment';
 import AssessmentAnd from './AssessmentAnd/AssessmentAnd';
 import caculateReport from './caculateReport/caculateReport';
 import OverallEvaluation from './OverallEvaluation/OverallEvaluation';
-import projectlist from './projectlist/projectlist';
+// import projectlist from './projectlist/projectlist';
 // 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
@@ -27,6 +27,33 @@ const frameIn = [
           auth: true
         },
         component: _import('system/index')
+      },
+      {
+        path: 'Jinxm',
+        name: 'Jinxm',
+        meta: {
+          auth: true,
+          title: '进行中的项目'
+        },
+        component: _import('system/Jinxm/Jinxm')
+      },
+      {
+        path: 'onxmu',
+        name: 'onxmu',
+        meta: {
+          auth: true,
+          title: '已完成的项目'
+        },
+        component: _import('system/onxmu/onxmu')
+      },
+      {
+        path: 'woxmu',
+        name: 'woxmu',
+        meta: {
+          auth: true,
+          title: '我创建的项目'
+        },
+        component: _import('system/woxmu/woxmu')
       },
       // 演示页面
       // 系统 前端日志
@@ -55,7 +82,6 @@ const frameIn = [
       }
     ]
   },
-  projectlist,
   controllerlink,
   SystemComposition,
   siteVerification,

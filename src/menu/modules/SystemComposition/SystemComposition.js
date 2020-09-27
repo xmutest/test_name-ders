@@ -3,7 +3,12 @@ export default {
   path: '/demo/SystemComposition',
   title: '系统构成',
   icon: 'folder-o',
-  children: (pre => [{
+  children: (pre => [
+    {
+      path: `${pre}import_data`,
+      title: '导入测评调研表'
+    },
+    {
       path: `${pre}jf`,
       title: '机房'
     },
