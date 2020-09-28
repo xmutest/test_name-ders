@@ -26,7 +26,11 @@
             <td v-if="!index" :rowspan="item1.contentList.length">
               {{ item1.safetyControlSpot }}
             </td>
-            <td  :style="{'background-color':itemsCoacr[item2.accordSituation].color}">
+            <td
+              :style="{
+                'background-color': itemsCoacr[item2.accordSituation].color,
+              }"
+            >
               <el-popover trigger="click" placement="top">
                 <div>
                   <p
@@ -37,8 +41,12 @@
                   </p>
                 </div>
                 <div slot="reference" class="name-wrapper">
-                  <span v-if="item2.accordSituation!=4">{{ item2.controlEntries.substr(0, 35) }}</span>
-                  <span v-else-if="item2.accordSituation==4"><del>{{ item2.controlEntries.substr(0, 35) }}</del></span>
+                  <span v-if="item2.accordSituation != 4">{{
+                    item2.controlEntries.substr(0, 35)
+                  }}</span>
+                  <span v-else-if="item2.accordSituation == 4"
+                    ><del>{{ item2.controlEntries.substr(0, 35) }}</del></span
+                  >
                 </div>
               </el-popover>
             </td>
@@ -103,8 +111,20 @@
                   >
                   </el-input>
                 </div>
-                <div slot="reference" class="name-wrapper">
+                <div
+                  slot="reference"
+                  v-if="item2.recordResults"
+                  class="name-wrapper"
+                >
                   {{ item2.recordResults.substr(0, 35) }}
+                </div>
+                <div
+                  style="min-height: 100px"
+                  slot="reference"
+                  v-else
+                  class="name-wrapper"
+                >
+                  <span style="opacity: 0">点击填写</span>
                 </div>
               </el-popover>
             </td>
@@ -157,15 +177,16 @@
 </template>
 
 <script>
+import { cloneDeep } from "lodash";
 export default {
   data() {
     return {
       itemsCoacr: [
-        { color: "#fff"},
-        { color: "#fff"},
-        { color: "#FFEB3B"},
-        { color: "#F44336"},
-        { color: "#fff"}
+        { color: "#fff" },
+        { color: "#fff" },
+        { color: "#FFEB3B" },
+        { color: "#F44336" },
+        { color: "#fff" },
       ],
       toSonData: 1,
       dataList: [],
@@ -199,7 +220,17 @@ export default {
     async getDataList() {
       const res = await this.$api.SYS_USER_ANQUAN_WU(this.api_data);
       if (res.code === 20000) {
-        this.dataList = res.data;
+        var listTs = cloneDeep(res.data);
+        listTs.forEach((element) => {
+          element.contentList.forEach((item) => {
+            if (!item.hasOwnProperty("accordSituation")) {
+              item.remark = "";
+              item.accordSituation = 1;
+              item.recordResults = "";
+            }
+          });
+        });
+        this.dataList = listTs;
       }
       //  const res= await this.$http.get('/api/safetyControl/findSpotByBookId',{params:this.api_data});
       //  this.dataList=res.data.data;

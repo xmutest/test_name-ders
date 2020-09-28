@@ -2,7 +2,7 @@
 export default {
   path: '/demo/GlobalAssessment',
   title: '整体评价',
-  icon: 'folder-o',
+  icon: 'sliders',
   children: (pre => [
     {
       path: `${pre}ztcp`,

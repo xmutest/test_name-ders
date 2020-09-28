@@ -2,7 +2,7 @@
 export default {
   path: '/demo/AssessmentAnd',
   title: '风险评估和评价',
-  icon: 'folder-o',
+  icon: 'heartbeat',
   children: (pre => [
     {
       path: `${pre}fxfx`,

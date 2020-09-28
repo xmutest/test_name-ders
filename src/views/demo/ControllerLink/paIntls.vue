@@ -58,10 +58,6 @@ export default {
   .descTItle {
     @extend %unable-border-left;
   }
-  .mude_text_item {
-    border-bottom: 1px solid #ebeef5;
-    padding: 20px 0;
-  }
 }
 .el-card__header {
   border-bottom: 0px solid #ebeef5;

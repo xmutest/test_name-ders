@@ -1,7 +1,6 @@
 <!-- 安全服务 -->
 <template>
   <d2-container>
-    
       <el-table :data="tabledatas" border>
         <el-table-column label="" width="80">
           <template slot-scope="scope">
@@ -58,12 +57,12 @@ export default {
           }, {
             date: '2016-05-03',
             name: '王小虎',
-        }]
-    }
+        }],
+        
     tabledatas:[]
+    }
   },
   created() {
-    // 设备名称	虚拟设备	系统及版本	品牌及型号	用途	备注	数量	重要程度	测评指导书	测评对象
     let list = [
       {
         serverName: "网站系统维护",

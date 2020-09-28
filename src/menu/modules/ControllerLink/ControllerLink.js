@@ -1,7 +1,7 @@
 export default {
   path: '/demo/ControllerLink',
   title: '项目概述',
-  icon: 'folder-o',
+  icon: 'bookmark-o',
   children: (pre => [
     {
       path: `${pre}purpose`,

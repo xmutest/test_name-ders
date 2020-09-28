@@ -6,7 +6,6 @@
       <!-- 富文本输入框 -->
       <div class="mude_is_left">
         <el-card class="box-card">
-          <el-button style="float: right; padding: 3px 0" type="text">提交保存</el-button>
           <div class="mude_text_item">
             <div class="descTItle">被测信息系统情况</div>
             <d2-quill
@@ -26,10 +25,14 @@
               />
             </div>
           </div>
+          <div class="tijiaobaoc">
+            <el-button style="float: right;" type="text">保存</el-button>
+          </div>
         </el-card>
       </div>
       <!-- 图片 -->
     </div>
+    
   </d2-container>
 </template>
 
@@ -63,10 +66,6 @@ export default {
   }
   .descTItle {
     @extend %unable-border-left;
-  }
-  .mude_text_item {
-    border-bottom: 1px solid #ebeef5;
-    padding: 20px 0;
   }
 }
 .el-card__header {

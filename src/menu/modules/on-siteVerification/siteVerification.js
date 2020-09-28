@@ -2,7 +2,7 @@
 export default {
   path: '/demo/siteVerification',
   title: '现场核查',
-  icon: 'folder-o',
+  icon: 'odnoklassniki',
   children: (pre => [
     {
       path: `${pre}safeEnviroment`,

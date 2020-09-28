@@ -88,7 +88,7 @@
               </div>
             </div>
           </div>
-          <div><el-button style="float: right; padding: 3px 0" type="text">保存</el-button></div>
+          <div class="tijiaobaoc"><el-button style="float: right;" type="text">保存</el-button></div>
         </el-card>
       </div>
     </div>
@@ -557,5 +557,6 @@ export default {
 .descTItle {
   @extend %unable-border-left;
 }
+
 </style>
 

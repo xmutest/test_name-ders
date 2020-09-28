@@ -2,7 +2,7 @@
 export default {
   path: '/demo/OverallEvaluation',
   title: '总体评价',
-  icon: 'folder-o',
+  icon: 'hospital-o',
   children: (pre => [
     {
       path: `${pre}ztpj`,
