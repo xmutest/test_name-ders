@@ -1,7 +1,7 @@
 //总体评价
 export default {
   path: '/demo/OverallEvaluation',
-  title: '总体评价',
+  title: '总体测评',
   icon: 'hospital-o',
   children: (pre => [
     {

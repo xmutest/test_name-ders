@@ -11,7 +11,8 @@ export default ({
   mock,
   faker,
   tools
-}) => ({
+}) => (
+  {
   /**
    * @description 安全物理环境
    * @param {Object} data 携带的信息

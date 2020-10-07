@@ -1,31 +1,38 @@
 <template>
   <d2-container class="page">
-    <div class="page_name" style="padding: 0 20px 20px 20px;">
-      <span>所有项目</span>
-      <span>{{getTimeDate}}</span>
+    <div class="page_name" style="padding: 0 20px 20px 20px">
+      <div class="search_ls">
+        <div>
+          <span class="search_ls_name">项目名称</span>
+          <el-input
+            placeholder="请输入内容"
+            v-model="search_list.projectName"
+            clearable
+          ></el-input>
+        </div>
+        <div>
+          <el-button icon="el-icon-search" circle></el-button>
+        </div>
+        <div class="die_roift">
+          <el-button @click="dialogFormVisible = true" type="primary"
+            ><i class="el-icon--left el-icon-circle-plus-outline"></i
+            >新增</el-button
+          >
+        </div>
+      </div>
     </div>
     <div class="page_ts">
       <el-container>
-        <el-main style="padding: 0 20px 20px 20px;">
+        <el-main style="padding: 0 20px 20px 20px">
           <el-col class="box-card">
             <el-card shadow="hover">
-              <div class="search_ls">
-                <div>
-                  <span class="search_ls_name">项目名称</span>
-                  <el-input placeholder="请输入内容" v-model="search_list.project_name" clearable></el-input>
-                </div>
-                <div>
-                  <el-button icon="el-icon-search" circle></el-button>
-                </div>
-                 <div>
-                   <el-button type="primary"><i class="el-icon--left el-icon-circle-plus-outline"></i>新增</el-button>
-                </div>
-              </div>
               <div>
                 <el-table
                   :data="tableData"
                   style="width: 100%"
-                  :header-cell-style="{'background-color': 'rgba(238, 238, 238,1.0)'}"
+                  :header-cell-style="{
+                    'background-color': 'rgba(238, 238, 238,1.0)',
+                  }"
                 >
                   <el-table-column label="项目名称">
                     <template slot-scope="scope">
@@ -33,45 +40,47 @@
                         <span
                           class="optionTo_name"
                           @click="optionTo(scope.$index, scope.row)"
-                        >{{ scope.row.project_name }}</span>
+                          >{{ scope.row.projectName }}</span
+                        >
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="系统名称">
                     <template slot-scope="scope">
                       <p>
-                        <span>{{ scope.row.system_name }}</span>
+                        <span>{{ scope.row.systemName }}</span>
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="等保等级">
+                  <el-table-column label="等保等级"  width="80">
                     <template slot-scope="scope">
                       <p>
                         <span>{{ scope.row.lever }}</span>
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="创建人">
+                  <el-table-column label="创建人"  width="150">
                     <template slot-scope="scope">
                       <p>
                         <span>{{ scope.row.creater }}</span>
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="创建时间">
+                  <el-table-column label="创建时间"  width="150">
                     <template slot-scope="scope">
                       <p>
                         <span>{{ scope.row.createrTime }}</span>
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="操作" width="180">
+                  <el-table-column label="操作" width="100">
                     <template slot-scope="scope">
                       <el-button
                         size="mini"
                         type="danger"
                         @click="xmuDelete(scope.$index, scope.row)"
-                      >删除</el-button>
+                        >删除</el-button
+                      >
                     </template>
                   </el-table-column>
                 </el-table>
@@ -83,20 +92,52 @@
     </div>
     <!-- 新增表单 -->
     <div class="add_from_xmu">
-      <el-dialog style="min-width: 960px;" title="新建项目" :visible.sync="dialogFormVisible">
+      <el-dialog
+        style="min-width: 960px"
+        title="新建项目"
+        :visible.sync="dialogFormVisible"
+      >
         <el-form :model="xmform" :rules="rules" ref="xmform">
-          <el-form-item label="项目名称" :label-width="formLabelWidth" prop="project_name">
-            <el-input v-model="xmform.project_name" clearable autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="系统名称" :label-width="formLabelWidth" prop="system_name">
-            <el-input v-model="xmform.system_name" clearable autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="被测单位名称" :label-width="formLabelWidth" prop="evaluated_unit">
-            <el-input v-model="xmform.evaluated_unit" clearable autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="备案证明编号" :label-width="formLabelWidth" prop="record_sn">
+          <el-form-item
+            label="项目名称"
+            :label-width="formLabelWidth"
+            prop="projectName"
+          >
             <el-input
-              v-model="xmform.record_sn"
+              v-model="xmform.projectName"
+              clearable
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="系统名称"
+            :label-width="formLabelWidth"
+            prop="systemName"
+          >
+            <el-input
+              v-model="xmform.systemName"
+              clearable
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="被测单位名称"
+            :label-width="formLabelWidth"
+            prop="evaluatedUnit"
+          >
+            <el-input
+              v-model="xmform.evaluatedUnit"
+              clearable
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="备案证明编号"
+            :label-width="formLabelWidth"
+            prop="recordSn"
+          >
+            <el-input
+              v-model="xmform.recordSn"
               clearable
               maxlength="17"
               placeholder="请输入格式为xxxxxxxxxxx-xxxxx"
@@ -106,7 +147,10 @@
           <div class="ist_lis">
             <div>
               <el-form-item label="标准体系" :label-width="formLabelWidth">
-                <el-select v-model="xmform.standard">
+                <el-select
+                  v-model="xmform.standard"
+                  @change="selectTrigger(xmform.standard)"
+                >
                   <el-option
                     v-for="item in standardlist"
                     :key="item.value"
@@ -118,9 +162,9 @@
             </div>
             <div>
               <el-form-item label="行业" :label-width="formLabelWidth">
-                <el-select v-model="xmform.standard_version">
+                <el-select v-model="xmform.standardVersion">
                   <el-option
-                    v-for="item in standard_versionlist"
+                    v-for="item in standardVersionlist[its_id_to - 1].value"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -130,12 +174,18 @@
             </div>
           </div>
           <el-form-item label="拓展标准" :label-width="formLabelWidth">
-            <el-input v-model="xmform.standard_extends" autocomplete="off"></el-input>
+            <el-input
+              v-model="xmform.standardExtends"
+              autocomplete="off"
+            ></el-input>
           </el-form-item>
           <div class="ist_lis">
             <div>
               <el-form-item label="等保等级" :label-width="formLabelWidth">
-                <el-select v-model="xmform.lever" @change="selectGoodsByGroupId($event)">
+                <el-select
+                  v-model="xmform.lever"
+                  @change="selectGoodsByGroupId($event)"
+                >
                   <el-option
                     v-for="item in leverlist"
                     :key="item.value"
@@ -158,10 +208,25 @@
               </el-form-item>
             </div>
           </div>
+          <el-form-item
+            label="创建人"
+            :label-width="formLabelWidth"
+            prop="creater"
+          >
+            <el-input
+              v-model="xmform.creater"
+              clearable
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
           <div class="dia-footer">
             <el-form-item>
-              <el-button type="primary" @click="submitForm('xmform')">立即创建</el-button>
-              <el-button type="danger" @click="resetForm('xmform')">重置</el-button>
+              <el-button type="primary" @click="submitForm('xmform')"
+                >立即创建</el-button
+              >
+              <el-button type="danger" @click="resetForm('xmform')"
+                >重置</el-button
+              >
               <el-button @click="dialogFormVisible = false">取 消</el-button>
             </el-form-item>
           </div>
@@ -176,32 +241,81 @@ export default {
   data() {
     return {
       getTimeDate: "",
+      its_id_to: 2,
       tableData: [
         {
-          project_name: "项目名称",
-          system_name: "系统名称",
-          lever: "等保等级",
-          creater: "创建人",
-          createrTime: "创建时间",
+          projectName: "佛山市三水区人民检察院网络安全等级保护测评项目",
+          systemName: "佛山市三水区人民检察院门户网站",
+          lever: "三级",
+          creater: "卢晓杰",
+          createrTime: "2020/9/17",
+        },
+        {
+          projectName: "佛山市高明区司法局网络安全等级保护测评项目",
+          systemName: "高明区一门式综合执法应用系统",
+          lever: "三级",
+          creater: "卢晓杰",
+          createrTime: "2020/9/8",
+        },
+        {
+          projectName: "广州市残疾人安养院网络安全等级保护测评项目",
+          systemName: "广州市残疾人安养院院务管理系统",
+          lever: "二级",
+          creater: "卢晓杰",
+          createrTime: "2020/8/15",
+        },
+        {
+          projectName: "佛山市顺德公安局网络安全等级保护测评项目",
+          systemName: "顺德智慧社区管理系统",
+          lever: "二级",
+          creater: "吴源超",
+          createrTime: "2020/8/11",
+        },
+        {
+          projectName: "广州市公安局特行场所图像智能应用平台等级保护项目",
+          systemName: "广州市公安局特行场所图像智能应用平台",
+          lever: "二级",
+          creater: "吴源超",
+          createrTime: "2020/8/6",
+        },
+        {
+          projectName: "广州市公安局刑事案件物证档案管理系统网络安全等级保护测评服务项目",
+          systemName: "刑事案件物证档案管理系统",
+          lever: "三级",
+          creater: "吴源超",
+          createrTime: "2020/7/22",
         },
       ],
       // 标准体系列表
       standardlist: [
         { label: "老国标", value: 1 },
-        { label: "新国标（2017试行版）", value: 2 },
-        { label: "新国标", value: 3 },
+        { label: "新国标", value: 2 },
+        { label: "新国标（2017试行版）", value: 3 },
       ],
       //行业列表
-      standard_versionlist: [
-        { label: "默认", value: 1 },
-        { label: "电力(生产控制信息系统类)", value: 2 },
-        { label: "电力(管理信息系统)", value: 3 },
-        { label: "证券期货行业", value: 4 },
-        { label: "金融行业", value: 5 },
-        { label: "云计算", value: 6 },
-        { label: "税务(试行)(平行权重)", value: 7 },
-        { label: "烟草", value: 8 },
-        { label: "征信(上海)", value: 9 },
+      standardVersionlist: [
+        {
+          id: 1,
+          value: [
+            { label: "默认", value: 1 },
+            { label: "电力(生产控制信息系统类)", value: 2 },
+            { label: "电力(管理信息系统)", value: 3 },
+            { label: "证券期货行业", value: 4 },
+            { label: "金融行业", value: 5 },
+            { label: "云计算", value: 6 },
+            { label: "税务(试行)(平行权重)", value: 7 },
+            { label: "烟草", value: 8 },
+            { label: "征信(上海)", value: 9 },
+          ],
+        },
+        {
+          id: 2,
+          value: [{ label: "GBT22239-2019", value: 1 }],
+        },
+        {
+          id: 3,
+          value: [{ label: "试行搞(2017-10-26)", value: 1 }],
+        },
       ],
       //等级保护
       leverlist: [
@@ -220,28 +334,29 @@ export default {
         { label: "S3A1G3", value: 5 },
       ],
       search_list: {
-        project_name: "",
+        projectName: "",
       },
       dialogTableVisible: false,
       dialogFormVisible: false,
       xmform: {
-        project_name: "", //COMMENT '项目名称
-        system_name: "", //系统名称
-        evaluated_unit: "", //被测单位名称
-        record_sn: "", //备案证明编号
+        projectName: "", //COMMENT '项目名称
+        systemName: "", //系统名称
+        evaluatedUnit: "", //被测单位名称
+        recordSn: "", //备案证明编号
         standard: 2, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
-        standard_version: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
-        standard_extends: "", //拓展标准
+        standardVersion: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
+        standardExtends: "", //拓展标准
         lever: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
         sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         creater: "", //创建人
+        manager: "aaa", //组长
       },
       formLabelWidth: "120px",
       rules: {
-        project_name: [
+        projectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" },
         ],
-        system_name: [
+        systemName: [
           { required: true, message: "请输入系统名称", trigger: "blur" },
         ],
       },
@@ -252,9 +367,13 @@ export default {
     this.getNowDate();
   },
   methods: {
+    // 选择绑定
+    selectTrigger(id) {
+      this.its_id_to = id;
+    },
     // 选择项目跳转
     optionTo(index, row) {
-      alert(`进入${row.project_name}`);
+      alert(`进入${row.projectName}`);
     },
     // 删除项目
     xmuDelete(index, row) {
@@ -266,9 +385,10 @@ export default {
     },
     // 提交
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          alert("submit!");
+          const res = await this.$api.API_Project_Creation(this.xmform);
+          console.log(res);
         } else {
           console.log("error submit!!");
           return false;
@@ -310,6 +430,9 @@ export default {
   }
   .page_ts {
     margin-top: 20px;
+    ::v-deep .el-card__body {
+      padding: 0;
+    }
     .box-card {
       ::v-deep .el-card__header {
         background-color: #dddddd;
@@ -381,20 +504,26 @@ export default {
   cursor: pointer;
 }
 .search_ls {
-  margin-bottom: 15px;
   display: flex;
   align-items: center;
-  div{
+  div {
     margin-right: 5px;
     display: flex;
     align-items: center;
-    .search_ls_name{
-      font-family: 'Courier New', Courier, monospace;
+    .search_ls_name {
+      font-family: "Courier New", Courier, monospace;
     }
   }
   .el-input {
     max-width: 180px;
     margin-left: 5px;
   }
+}
+.search_ls {
+  position: relative;
+}
+.die_roift {
+  position: absolute;
+  right: 0;
 }
 </style>

@@ -9,7 +9,7 @@
             <div class="descTItle">接入点描述</div>
             <d2-quill
               style="min-height: 200px; margin-bottom: 20px;"
-              v-model="jrdPoint"
+              v-model="access_point_describe"
               @text-change="textChangeHandler"
             />
           </div>
@@ -32,7 +32,7 @@
 export default {
   data() {
     return {
-      jrdPoint: "",
+      access_point_describe: "",
     };
   },
   methods: {

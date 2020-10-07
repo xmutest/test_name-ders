@@ -4,48 +4,62 @@
     <div class="reviewProcess">
       <div class="rev_jianjie">
         <el-card class="box-card">
-          <div  class="clearfix descTItle">
+          <div class="clearfix descTItle">
             <span>简介</span>
-            
           </div>
           <div>
             <el-input
               type="textarea"
-              :autosize="{ minRows: 8, maxRows: 15}"
+              :autosize="{ minRows: 8, maxRows: 15 }"
               placeholder="请输入内容"
-              v-model="rev_jianjie_text"
+              v-model="fromData.brief_introduction"
             ></el-input>
           </div>
           <div class="detailedPro">
             <div class="detailedtablo">
               <div class="clearfix descTItle">
                 <span>详细过程</span>
-                
               </div>
               <div class="detailedTime">
                 <el-row :gutter="20">
                   <el-col :span="6">
                     <div class="grid-content bg-purple">
                       <span>项目启动</span>
-                      <el-date-picker v-model="xmutime" type="date" placeholder="选择日期"></el-date-picker>
+                      <el-date-picker
+                        v-model="fromData.xmutime"
+                        type="date"
+                        placeholder="选择日期"
+                      ></el-date-picker>
                     </div>
                   </el-col>
                   <el-col :span="6">
                     <div class="grid-content bg-purple">
                       <span>启动会议</span>
-                      <el-date-picker v-model="qidohuiyi" type="date" placeholder="选择日期"></el-date-picker>
+                      <el-date-picker
+                        v-model="fromData.start_meeting_time"
+                        type="date"
+                        placeholder="选择日期"
+                      ></el-date-picker>
                     </div>
                   </el-col>
                   <el-col :span="6">
                     <div class="grid-content bg-purple">
                       <span>未次会议</span>
-                      <el-date-picker v-model="weicitime" type="date" placeholder="选择日期"></el-date-picker>
+                      <el-date-picker
+                        v-model="fromData.last_meeting_time"
+                        type="date"
+                        placeholder="选择日期"
+                      ></el-date-picker>
                     </div>
                   </el-col>
                   <el-col :span="6">
                     <div class="grid-content bg-purple">
                       <span>复核确认</span>
-                      <el-date-picker v-model="isqdtime" type="date" placeholder="选择日期"></el-date-picker>
+                      <el-date-picker
+                        v-model="fromData.confirm_time"
+                        type="date"
+                        placeholder="选择日期"
+                      ></el-date-picker>
                     </div>
                   </el-col>
                 </el-row>
@@ -62,33 +76,46 @@
                   <el-table-column label="实施项目" prop="name" width="180">
                     <template slot-scope="scope">
                       <span
-                        style="margin-left: 10px;font-weight: bold;"
+                        style="margin-left: 10px; font-weight: bold"
                         v-if="scope.row.highlight"
-                      >{{ scope.row.name }}</span>
-                      <span style="margin-left: 10px" v-else>{{ scope.row.name }}</span>
+                        >{{ scope.row.name }}</span
+                      >
+                      <span style="margin-left: 10px" v-else>{{
+                        scope.row.name
+                      }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column prop="amount1" label="实施细目">
                     <template slot-scope="scope">
-                      <span style="margin-left: 10px">{{ scope.row.amount1 }}</span>
+                      <span style="margin-left: 10px">{{
+                        scope.row.amount1
+                      }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column prop="amount2" label="测评周期(天)">
                     <template slot-scope="scope">
-                      <el-input-number v-model="scope.row.amount2" controls-position="right"  :min="0" ></el-input-number>
+                      <el-input-number
+                        v-model="scope.row.amount2"
+                        controls-position="right"
+                        :min="0"
+                      ></el-input-number>
                       <!-- <span style="margin-left: 10px">{{  }}</span> -->
                     </template>
                   </el-table-column>
                   <el-table-column prop="amount3" label="备注">
                     <template slot-scope="scope">
-                      <span style="margin-left: 10px">{{ scope.row.amount3 }}</span>
+                      <span style="margin-left: 10px">{{
+                        scope.row.amount3
+                      }}</span>
                     </template>
                   </el-table-column>
                 </el-table>
               </div>
             </div>
           </div>
-          <div class="tijiaobaoc"><el-button style="float: right;" type="text">保存</el-button></div>
+          <div class="tijiaobaoc">
+            <el-button style="float: right" type="text">保存</el-button>
+          </div>
         </el-card>
       </div>
     </div>
@@ -99,12 +126,15 @@
 export default {
   data() {
     return {
-      rev_jianjie_text: "",
-      xmutime: "",
-      qidohuiyi: "",
-      weicitime: "",
-      isqdtime: "",
-      input_number: "",
+      fromData: {
+        brief_introduction: "",
+        xmutime: "",
+        start_meeting_time: "",
+        last_meeting_time: "",
+        confirm_time: "",
+        input_number: "",
+      },
+
       tableData: [
         {
           name: "一、测评准备过程",
@@ -513,7 +543,7 @@ export default {
     },
   },
   created() {
-    this.rev_jianjie_text =
+    this.fromData.brief_introduction =
       "受广州泰康粤园医院有限公司委托，广州华南信息安全测评中心（广州市中邦信息工程有限公司）于YYYY年MM月DD日至YYYY年MM月DD日对广州泰康粤园医院医院信息系统进行了系统安全等级测评工作。本次安全测评的范围主要包括广州泰康粤园医院医院信息系统的物理环境、主机、网络、业务应用系统、安全管理制度和人员等。安全测评通过静态评估、现场测试、综合评估等相关环节和阶段，从安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设管理、安全运维管理等十个方面，对广州泰康粤园医院医院信息系统进行综合测评。";
   },
 };
@@ -557,6 +587,5 @@ export default {
 .descTItle {
   @extend %unable-border-left;
 }
-
 </style>
 

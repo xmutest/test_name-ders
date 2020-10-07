@@ -1,7 +1,7 @@
 //整体评价
 export default {
   path: '/demo/GlobalAssessment',
-  title: '整体评价',
+  title: '整体测评',
   icon: 'sliders',
   children: (pre => [
     {

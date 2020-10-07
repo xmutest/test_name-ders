@@ -1,7 +1,7 @@
 <!-- 安全服务 -->
 <template>
   <d2-container>
-      <el-table :data="tabledatas" border>
+      <el-table :data="t_security_services" border>
         <el-table-column label="" width="80">
           <template slot-scope="scope">
             <div class="itsz"></div>
@@ -11,22 +11,22 @@
 
         <el-table-column label="安全服务名称" width="450">
           <template slot-scope="scope">
-            <div @click="is_compile(scope.row,scope.$index,'serverName')" class="itsz"></div>
+            <div @click="is_compile(scope.row,scope.$index,'services_name')" class="itsz"></div>
             <el-input
-              :ref='"serverName"+scope.$index'
+              :ref='"services_name"+scope.$index'
               @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
-              v-model="scope.row.serverName"
+              v-model="scope.row.services_name"
             ></el-input>
-            <span v-show="!scope.row.show">{{scope.row.serverName}}</span>
+            <span v-show="!scope.row.show">{{scope.row.services_name}}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="安全服务商" width="450">
           <template slot-scope="scope">
-            <div @click="is_compile(scope.row,scope.$index,'serverBussiness')" class="itsz"></div>
-            <el-input :ref='"serverBussiness"+scope.$index' @blur="schujiaodian(scope.row)" placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.serverBussiness"></el-input>
-            <span v-show="!scope.row.show">{{scope.row.serverBussiness}}</span>
+            <div @click="is_compile(scope.row,scope.$index,'service_provider')" class="itsz"></div>
+            <el-input :ref='"service_provider"+scope.$index' @blur="schujiaodian(scope.row)" placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.service_provider"></el-input>
+            <span v-show="!scope.row.show">{{scope.row.service_provider}}</span>
           </template>
         </el-table-column>
 
@@ -34,7 +34,7 @@
           <template slot-scope="scope">
             <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
             <el-button size="mini" @click="is_preserve(scope.$index)">新增</el-button>
-            <el-button size="mini" type="danger" @click="deleteRow(scope.$index, tabledatas)">删除</el-button>
+            <el-button size="mini" type="danger" @click="deleteRow(scope.$index, t_security_services)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -44,39 +44,25 @@
 <script>
 export default {
   data(){
-    return{
-        tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-        }],
-        
-    tabledatas:[]
+    return{  
+    t_security_services:[]
     }
   },
   created() {
     let list = [
       {
-        serverName: "网站系统维护",
-        serverBussiness: "易宝系统(中国)有限公司",
+        services_name: "网站系统维护",
+        service_provider: "易宝系统(中国)有限公司",
       },
       {
-        serverName: "安全维护",
-        serverBussiness: "北京天融信网络安全技术有限公司",
+        services_name: "安全维护",
+        service_provider: "北京天融信网络安全技术有限公司",
       },
     ];
     list.forEach((element) => {
       element["show"] = false;
     });
-    this.tabledatas = list;
+    this.t_security_services = list;
     // })
   },
   methods: {
@@ -94,14 +80,14 @@ export default {
       console.log(item);
     },
     is_preserve(item) {
-      var itss=this.tabledatas;
+      var itss=this.t_security_services;
       var list =  {
-        serverName: "",
-        serverBussiness: "",
+        services_name: "",
+        service_provider: "",
         show:false
       };
       itss.splice(item+1, 0, list);
-     this.tabledatas = itss;
+     this.t_security_services = itss;
       // console.log();
     },
     deleteRow(index, rows) {

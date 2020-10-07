@@ -10,7 +10,7 @@
             <div class="descTItle">承载的业务情况</div>
             <d2-quill
               style="min-height: 200px; margin-bottom: 20px;"
-              v-model="jrdPoint"
+              v-model="business_situation"
               @text-change="textChangeHandler"
             />
           </div>
@@ -29,8 +29,7 @@
 export default {
   data() {
     return {
-      jrdPoint: "",
-      qianc_ko: "",
+      business_situation: "",
     };
   },
   methods: {

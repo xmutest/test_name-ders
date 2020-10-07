@@ -200,6 +200,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.el-table {
+  font-size: 12px;
+}
 </style>
-

@@ -9,7 +9,7 @@
             <div class="descTItle">网络结构描述</div>
             <d2-quill
               style="min-height: 200px; margin-bottom: 20px"
-              v-model="jrdPoint"
+              v-model="fromdata.network_structure_describe"
               @text-change="textChangeHandler"
             />
           </div>
@@ -29,7 +29,13 @@
           <div class="mude_text_item">
             <div class="descTItle">系统边界表(仅方案)</div>
             <div class="wangruo_table">
-              <el-table :data="tabledatas" border :header-cell-style="{'background-color': 'rgba(238, 238, 238,1.0)'}">
+              <el-table
+                :data="t_sys_boundary"
+                border
+                :header-cell-style="{
+                  'background-color': 'rgba(238, 238, 238,1.0)',
+                }"
+              >
                 <el-table-column label="" width="80">
                   <template slot-scope="scope">
                     <div class="itsz"></div>
@@ -40,17 +46,17 @@
                 <el-table-column label="边界名称">
                   <template slot-scope="scope">
                     <div
-                      @click="is_compile(scope.row, scope.$index, 'serverName')"
+                      @click="is_compile(scope.row, scope.$index, 'boundary_name')"
                       class="itsz"
                     ></div>
                     <el-input
-                      :ref="'serverName' + scope.$index"
+                      :ref="'boundary_name' + scope.$index"
                       @blur="schujiaodian(scope.row)"
                       v-show="scope.row.show"
-                      v-model="scope.row.serverName"
+                      v-model="scope.row.boundary_name"
                     ></el-input>
                     <span v-show="!scope.row.show">{{
-                      scope.row.serverName
+                      scope.row.boundary_name
                     }}</span>
                   </template>
                 </el-table-column>
@@ -59,19 +65,19 @@
                   <template slot-scope="scope">
                     <div
                       @click="
-                        is_compile(scope.row, scope.$index, 'serverBussiness')
+                        is_compile(scope.row, scope.$index, 'access_method')
                       "
                       class="itsz"
                     ></div>
                     <el-input
-                      :ref="'serverBussiness' + scope.$index"
+                      :ref="'access_method' + scope.$index"
                       @blur="schujiaodian(scope.row)"
                       placeholder="请输入内容"
                       v-show="scope.row.show"
-                      v-model="scope.row.serverBussiness"
+                      v-model="scope.row.access_method"
                     ></el-input>
                     <span v-show="!scope.row.show">{{
-                      scope.row.serverBussiness
+                      scope.row.access_method
                     }}</span>
                   </template>
                 </el-table-column>
@@ -79,18 +85,18 @@
                 <el-table-column label="承载主要业务应用">
                   <template slot-scope="scope">
                     <div
-                      @click="is_compile(scope.row, scope.$index, 'wangluyiny')"
+                      @click="is_compile(scope.row, scope.$index, 'main_business')"
                       class="itsz"
                     ></div>
                     <el-input
-                      :ref="'wangluyiny' + scope.$index"
+                      :ref="'main_business' + scope.$index"
                       @blur="schujiaodian(scope.row)"
                       placeholder="请输入内容"
                       v-show="scope.row.show"
-                      v-model="scope.row.wangluyiny"
+                      v-model="scope.row.main_business"
                     ></el-input>
                     <span v-show="!scope.row.show">{{
-                      scope.row.wangluyiny
+                      scope.row.main_business
                     }}</span>
                   </template>
                 </el-table-column>
@@ -104,7 +110,7 @@
                     <el-button
                       size="mini"
                       type="danger"
-                      @click="deleteRow(scope.$index, tabledatas)"
+                      @click="deleteRow(scope.$index, t_sys_boundary)"
                       >删除</el-button
                     >
                   </template>
@@ -126,9 +132,10 @@
 export default {
   data() {
     return {
-      jrdPoint: "",
-      qianc_ko: "",
-      tabledatas: [],
+      fromdata: {
+        network_structure_describe: "",
+      },
+      t_sys_boundary: [],
     };
   },
   created() {
@@ -138,20 +145,20 @@ export default {
     getlistdata() {
       let list = [
         {
-          serverName: "网站系统维护",
-          serverBussiness: "易宝系统(中国)有限公司",
-          wangluyiny: "",
+          boundary_name: "网站系统维护",
+          access_method: "易宝系统(中国)有限公司",
+          main_business: "",
         },
         {
-          serverName: "安全维护",
-          serverBussiness: "北京天融信网络安全技术有限公司",
-          wangluyiny: "",
+          boundary_name: "安全维护",
+          access_method: "北京天融信网络安全技术有限公司",
+          main_business: "",
         },
       ];
       list.forEach((element) => {
         element["show"] = false;
       });
-      this.tabledatas = list;
+      this.t_sys_boundary = list;
     },
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
@@ -170,15 +177,15 @@ export default {
       console.log(item);
     },
     is_preserve(item) {
-      var itss = this.tabledatas;
+      var itss = this.t_sys_boundary;
       var list = {
-        serverName: "",
-        serverBussiness: "",
-        wangluyiny: "",
+        boundary_name: "",
+        access_method: "",
+        main_business: "",
         show: false,
       };
       itss.splice(item + 1, 0, list);
-      this.tabledatas = itss;
+      this.t_sys_boundary = itss;
       // console.log();
     },
     deleteRow(index, rows) {

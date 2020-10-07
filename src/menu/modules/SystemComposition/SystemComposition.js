@@ -2,7 +2,7 @@
 export default {
   path: '/demo/SystemComposition',
   title: '系统构成',
-  icon: 'bar-chart',
+  icon: 'book',
   children: (pre => [
     {
       path: `${pre}import_data`,

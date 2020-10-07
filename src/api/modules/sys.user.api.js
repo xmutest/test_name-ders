@@ -28,4 +28,18 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       data
     })
   }
+,
+
+    /**
+   * @description 项目创建
+   * @param {Object} data 项目创建携带的信息
+   */
+  API_Project_Creation (data = {}) {
+    // 接口请求
+    return request({
+      url: '/project/save',
+      method: 'post',
+      data
+    })
+  }
 })

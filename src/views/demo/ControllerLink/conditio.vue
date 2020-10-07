@@ -2,15 +2,14 @@
 <template>
   <d2-container>
     <div class="mude_is">
-      
       <!-- 富文本输入框 -->
       <div class="mude_is_left">
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">被测信息系统情况</div>
             <d2-quill
-              style="min-height: 200px; margin-bottom: 20px;"
-              v-model="jrdPoint"
+              style="min-height: 200px; margin-bottom: 20px"
+              v-model="fromdata.system_situation"
               @text-change="textChangeHandler"
             />
           </div>
@@ -19,20 +18,19 @@
             <div class="descTItle">前次测评情况</div>
             <div class="to_tim">
               <d2-quill
-                style="min-height: 200px; margin-bottom: 20px;"
-                v-model="qianc_ko"
+                style="min-height: 200px; margin-bottom: 20px"
+                v-model="fromdata.last_evaluation_situation"
                 @text-change="textChangeHandler"
               />
             </div>
           </div>
           <div class="tijiaobaoc">
-            <el-button style="float: right;" type="text">保存</el-button>
+            <el-button style="float: right" type="text">保存</el-button>
           </div>
         </el-card>
       </div>
       <!-- 图片 -->
     </div>
-    
   </d2-container>
 </template>
 
@@ -40,8 +38,10 @@
 export default {
   data() {
     return {
-      jrdPoint: "",
-      qianc_ko: "",
+      fromdata: {
+        system_situation: "",
+        last_evaluation_situation:""
+      },
     };
   },
   methods: {
