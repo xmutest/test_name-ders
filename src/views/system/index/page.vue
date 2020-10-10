@@ -14,13 +14,14 @@
           <el-button icon="el-icon-search" circle></el-button>
         </div>
         <div class="die_roift">
-          <el-button @click="dialogFormVisible = true" type="primary"
+          <el-button @click="dialogFormVisibleList" type="primary"
             ><i class="el-icon--left el-icon-circle-plus-outline"></i
             >新增</el-button
           >
         </div>
       </div>
     </div>
+
     <div class="page_ts">
       <el-container>
         <el-main style="padding: 0 20px 20px 20px">
@@ -52,29 +53,37 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="等保等级"  width="80">
+                  <el-table-column label="等保等级" width="80">
                     <template slot-scope="scope">
                       <p>
-                        <span>{{ scope.row.lever }}</span>
+                        <span>{{ scope.row.level }}</span>
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="创建人"  width="150">
+                  <el-table-column label="创建人" width="150">
                     <template slot-scope="scope">
                       <p>
-                        <span>{{ scope.row.creater }}</span>
+                        <span>{{ scope.row.creator }}</span>
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="创建时间"  width="150">
+                  <el-table-column label="创建时间" width="150">
                     <template slot-scope="scope">
                       <p>
-                        <span>{{ scope.row.createrTime }}</span>
+                        <span>{{
+                          timestampToTime(scope.row.createdTime)
+                        }}</span>
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="操作" width="100">
+                  <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
+                      <el-button
+                        size="mini"
+                        type="primary"
+                        @click="xmuupdata(scope.$index, scope.row)"
+                        >更新</el-button
+                      >
                       <el-button
                         size="mini"
                         type="danger"
@@ -94,7 +103,7 @@
     <div class="add_from_xmu">
       <el-dialog
         style="min-width: 960px"
-        title="新建项目"
+        :title="table_name_el"
         :visible.sync="dialogFormVisible"
       >
         <el-form :model="xmform" :rules="rules" ref="xmform">
@@ -137,11 +146,12 @@
             prop="recordSn"
           >
             <el-input
+              type="text"
               v-model="xmform.recordSn"
-              clearable
               maxlength="17"
+              ref="cardInput"
               placeholder="请输入格式为xxxxxxxxxxx-xxxxx"
-              autocomplete="off"
+              @input="formatCardNumber(xmform.recordSn)"
             ></el-input>
           </el-form-item>
           <div class="ist_lis">
@@ -174,20 +184,29 @@
             </div>
           </div>
           <el-form-item label="拓展标准" :label-width="formLabelWidth">
-            <el-input
+            <el-select
               v-model="xmform.standardExtends"
-              autocomplete="off"
-            ></el-input>
+              multiple
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in standardExtend_list"
+                :key="item.value"
+                :label="item.label"
+                :value="item.label"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
           <div class="ist_lis">
             <div>
               <el-form-item label="等保等级" :label-width="formLabelWidth">
                 <el-select
-                  v-model="xmform.lever"
+                  v-model="xmform.level"
                   @change="selectGoodsByGroupId($event)"
                 >
                   <el-option
-                    v-for="item in leverlist"
+                    v-for="item in levellist"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -211,18 +230,29 @@
           <el-form-item
             label="创建人"
             :label-width="formLabelWidth"
-            prop="creater"
+            prop="creator"
           >
-            <el-input
-              v-model="xmform.creater"
-              clearable
-              autocomplete="off"
-            ></el-input>
+            {{ info.name }}
+          </el-form-item>
+          <el-form-item label="项目参与人" :label-width="formLabelWidth">
+            <el-select
+              v-model="xmform.membersIdList"
+              multiple
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in membersIdLists"
+                :key="item.userId"
+                :label="item.userName"
+                :value="item.userId"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
           <div class="dia-footer">
             <el-form-item>
-              <el-button type="primary" @click="submitForm('xmform')"
-                >立即创建</el-button
+              <el-button type="primary" @click="submitForm('xmform', ua_cre)"
+                >保存</el-button
               >
               <el-button type="danger" @click="resetForm('xmform')"
                 >重置</el-button
@@ -237,60 +267,65 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      ua_cre: 0, //0创建 1更新
+      table_name_el: "新建项目",
+      account: "",
       getTimeDate: "",
       its_id_to: 2,
       tableData: [
         {
           projectName: "佛山市三水区人民检察院网络安全等级保护测评项目",
           systemName: "佛山市三水区人民检察院门户网站",
-          lever: "三级",
-          creater: "卢晓杰",
-          createrTime: "2020/9/17",
+          level: "三级",
+          creator: "卢晓杰",
+          createdTime: "2020/9/17",
         },
         {
           projectName: "佛山市高明区司法局网络安全等级保护测评项目",
           systemName: "高明区一门式综合执法应用系统",
-          lever: "三级",
-          creater: "卢晓杰",
-          createrTime: "2020/9/8",
+          level: "三级",
+          creator: "卢晓杰",
+          createdTime: "2020/9/8",
         },
         {
           projectName: "广州市残疾人安养院网络安全等级保护测评项目",
           systemName: "广州市残疾人安养院院务管理系统",
-          lever: "二级",
-          creater: "卢晓杰",
-          createrTime: "2020/8/15",
+          level: "二级",
+          creator: "卢晓杰",
+          createdTime: "2020/8/15",
         },
         {
           projectName: "佛山市顺德公安局网络安全等级保护测评项目",
           systemName: "顺德智慧社区管理系统",
-          lever: "二级",
-          creater: "吴源超",
-          createrTime: "2020/8/11",
+          level: "二级",
+          creator: "吴源超",
+          createdTime: "2020/8/11",
         },
         {
           projectName: "广州市公安局特行场所图像智能应用平台等级保护项目",
           systemName: "广州市公安局特行场所图像智能应用平台",
-          lever: "二级",
-          creater: "吴源超",
-          createrTime: "2020/8/6",
+          level: "二级",
+          creator: "吴源超",
+          createdTime: "2020/8/6",
         },
         {
-          projectName: "广州市公安局刑事案件物证档案管理系统网络安全等级保护测评服务项目",
+          projectName:
+            "广州市公安局刑事案件物证档案管理系统网络安全等级保护测评服务项目",
           systemName: "刑事案件物证档案管理系统",
-          lever: "三级",
-          creater: "吴源超",
-          createrTime: "2020/7/22",
+          level: "三级",
+          creator: "吴源超",
+          createdTime: "2020/7/22",
         },
       ],
       // 标准体系列表
       standardlist: [
         { label: "老国标", value: 1 },
-        { label: "新国标", value: 2 },
-        { label: "新国标（2017试行版）", value: 3 },
+        { label: "新国标（2017试行版）", value: 2 },
+        { label: "新国标", value: 3 },
       ],
       //行业列表
       standardVersionlist: [
@@ -310,15 +345,15 @@ export default {
         },
         {
           id: 2,
-          value: [{ label: "GBT22239-2019", value: 1 }],
+          value: [{ label: "试行搞(2017-10-26)", value: 1 }],
         },
         {
           id: 3,
-          value: [{ label: "试行搞(2017-10-26)", value: 1 }],
+          value: [{ label: "GBT22239-2019", value: 1 }],
         },
       ],
       //等级保护
-      leverlist: [
+      levellist: [
         { label: "第一级", value: 1 },
         { label: "第二级", value: 2 },
         { label: "第三级", value: 3 },
@@ -333,9 +368,18 @@ export default {
         { label: "S3A2G3", value: 4 },
         { label: "S3A1G3", value: 5 },
       ],
+      // 扩展标准
+      standardExtend_list: [
+        { label: "云计算安全扩展要求", value: 1 },
+        { label: "移动互联安全扩展要求", value: 2 },
+        { label: "物联网安全扩展要求", value: 3 },
+        { label: "工业控制系统安全扩展要求", value: 4 },
+        { label: "大数据安全扩展要求", value: 5 },
+      ],
       search_list: {
         projectName: "",
       },
+      membersIdLists: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       xmform: {
@@ -343,13 +387,16 @@ export default {
         systemName: "", //系统名称
         evaluatedUnit: "", //被测单位名称
         recordSn: "", //备案证明编号
-        standard: 2, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
+        standard: 3, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
         standardVersion: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
         standardExtends: "", //拓展标准
-        lever: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
+        level: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
         sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
-        creater: "", //创建人
-        manager: "aaa", //组长
+        membersIdList: [], //项目参与人
+      },
+      projectModel: {
+        page: 1,
+        pageSize: 10,
       },
       formLabelWidth: "120px",
       rules: {
@@ -362,41 +409,230 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState("d2admin/user", ["info"]),
+  },
   components: {},
   created() {
-    this.getNowDate();
+    this.ProjectQueryList();
   },
   methods: {
+    //时间
+    timestampToTime(timestamp) {
+      var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      var Y = date.getFullYear() + "-";
+      var M =
+        (date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1) + "-";
+      var D = date.getDate() + " ";
+      return Y + M + D;
+    },
+    formatCardNumber(cardNum) {
+      // 获取input的dom对象，这里因为用的是element ui的input，所以需要这样拿到
+      const input = this.$refs.cardInput.$el.getElementsByTagName("input")[0];
+      // 获取当前光标的位置
+      const cursorIndex = input.selectionStart;
+      // 字符串中光标之前-的个数
+      const lineNumOfCursorLeft = (
+        cardNum.slice(0, cursorIndex).match(/-/g) || []
+      ).length;
+      // 去掉所有-的字符串
+      const noLine = cardNum.replace(/-/g, "-");
+      // 去除格式不对的字符并重新插入-的字符串
+      const newCardNum = noLine
+        .replace(/\D+/g, "")
+        .replace(/(\d{11})/g, "$1-")
+        .replace(/ $/, "-");
+      // 改后字符串中原光标之前-的个数
+      const newLineNumOfCursorLeft = (
+        newCardNum.slice(0, cursorIndex).match(/-/g) || []
+      ).length;
+      // 光标在改后字符串中应在的位置
+      const newCursorIndex =
+        cursorIndex + newLineNumOfCursorLeft - lineNumOfCursorLeft;
+      // 赋新值，nextTick保证-不能手动输入或删除，只能按照规则自动填入
+      this.$nextTick(() => {
+        this.xmform.recordSn = newCardNum;
+        // 修正光标位置，nextTick保证在渲染新值后定位光标
+        this.$nextTick(() => {
+          // selectionStart、selectionEnd分别代表选择一段文本时的开头和结尾位置
+          input.selectionStart = newCursorIndex;
+          input.selectionEnd = newCursorIndex;
+        });
+      });
+    },
     // 选择绑定
     selectTrigger(id) {
       this.its_id_to = id;
     },
     // 选择项目跳转
-    optionTo(index, row) {
-      alert(`进入${row.projectName}`);
+    async optionTo(index, row) {
+      // 设置 vuex 用户信息
+      await this.$store.dispatch(
+        "d2admin/xmu/set",
+        {
+          name: row.projectName,
+        },
+        {
+          root: true,
+        }
+      );
     },
     // 删除项目
     xmuDelete(index, row) {
-      console.log(index, row);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.API_department_delete({
+            projectId: row.projectId,
+          });
+          if (res.code === 20000) {
+            this.$message.success("删除成功！！");
+            this.ProjectQueryList();
+            //查询列表
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     // 等级联动
     selectGoodsByGroupId(enent) {
       this.xmform.sag = enent;
     },
     // 提交
-    submitForm(formName) {
+    submitForm(formName, ua_cre) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          const res = await this.$api.API_Project_Creation(this.xmform);
-          console.log(res);
+          // 创建
+          if (ua_cre === 0) {
+            this.xmform.standardExtends = this.xmform.standardExtends.join("┋");
+            const res = await this.$api.API_Project_Creation(this.xmform);
+            if (res.code === 20000) {
+              this.$message.success("创建成功！！");
+              this.dialogFormVisible = false;
+              this.ProjectQueryList();
+              //查询列表
+            } else {
+              this.$message.error(res.message);
+            }
+            this.resetForm("xmform");
+          } else if (ua_cre === 1) {
+            // 修改
+            this.xmform.standardExtends = this.xmform.standardExtends.join("┋");
+            const res = await this.$api.API_Project_updata(this.xmform);
+            if (res.code === 20000) {
+              this.$message.success("修改成功！！");
+              this.dialogFormVisible = false;
+              this.ProjectQueryList();
+              this.resetForm("xmform");
+              //查询列表
+            } else {
+              this.$message.error(res.message);
+            }
+          }
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
+    //查询项目
+    async ProjectQueryList() {
+      let res = await this.$api.API_Project_Query(this.projectModel);
+      if (res.code === 20000) {
+        this.tableData = res.data.list;
+      } else {
+        this.$message.error(res.message);
+      }
+    },
+    //获取项目参与人
+    async datalog_list_rom() {
+      let res = await this.$api.API_department_List();
+      if (res.code === 20000) {
+        this.membersIdLists = res.data;
+      } else {
+        this.$message.error(res.message);
+      }
+    },
+    // 新镇
+    dialogFormVisibleList() {
+      this.ua_cre = 0;
+      this.table_name_el = "新建项目";
+      this.resetForm("xmform");
+      this.datalog_list_rom();
+      this.dialogFormVisible = true;
+    },
+    xmuupdata(index, row) {
+      this.ua_cre = 1;
+      this.table_name_el = "更新项目";
+      this.datalog_list_rom();
+      Object.keys(this.xmform).forEach((key) => {
+        this.xmform[key] = row[key];
+        if (key == "standard") {
+          for (let item of this.standardlist) {
+            if (row[key] == item.label) {
+              console.log(row[key], item.value);
+              this.xmform[key] = item.value;
+            }
+          }
+        }
+        if (key == "standardVersion") {
+          for (let item of this.standardVersionlist) {
+            for (let items of item.value) {
+              if (row[key] == item.label) {
+                console.log(row[key], item.value);
+                this.xmform[key] = item.value;
+              }
+            }
+          }
+        }
+        if (key == "level") {
+          for (let item of this.levellist) {
+            if (row[key] == item.label) {
+              console.log(row[key], item.value);
+              this.xmform[key] = item.value;
+            }
+          }
+        }
+        if (key == "sag") {
+          for (let item of this.saglist) {
+            if (row[key] == item.label) {
+              console.log(row[key], item.value);
+              this.xmform[key] = item.value;
+            }
+          }
+        }
+      });
+      if (row.standardExtends) {
+        this.xmform.standardExtends = row.standardExtends.split("┋");
+      }
+      console.log(this.xmform);
+      this.dialogFormVisible = true;
+    },
+    // 清空
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.xmform = {
+        projectName: "", //COMMENT '项目名称
+        systemName: "", //系统名称
+        evaluatedUnit: "", //被测单位名称
+        recordSn: "", //备案证明编号
+        standard: 2, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
+        standardVersion: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
+        standardExtends: "", //拓展标准
+        level: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
+        sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
+        membersIdList: [], //项目参与人
+      };
     },
     getNowDate() {
       let date = new Date();

@@ -202,6 +202,7 @@ export default {
         assetsId: 1,
         guideBookId: 65,
         systemCompositionId: 1,
+        evaluationGrade:1
       },
     };
   },

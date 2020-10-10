@@ -118,8 +118,8 @@
               </el-table>
             </div>
           </div>
-          <div class="tijiaobaoc">
-            <el-button style="float: right" type="text">保存</el-button>
+       <div class="tijiaobaoc">
+            <el-button  type="primary" @click="submitReport">保存</el-button>
           </div>
         </el-card>
       </div>
@@ -162,6 +162,10 @@ export default {
     },
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
+    },
+    
+    submitReport(){
+      console.log(this.fromdata);
     },
     is_compile(item, index, itname) {
       // console.log(item,index,itname)

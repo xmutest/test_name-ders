@@ -2,7 +2,7 @@
   <div
     class="d2-layout-header-aside-group"
     :style="styleLayoutMainGroup"
-    :class="{grayMode: grayActive}"
+    :class="{ grayMode: grayActive }"
   >
     <!-- 半透明遮罩 -->
     <div class="d2-layout-header-aside-mask"></div>
@@ -17,15 +17,18 @@
       >
         <router-link
           to="/index"
-          :class="{'logo-group': true, 'logo-transition': asideTransition}"
-          :style="{width: asideCollapse ? asideWidthCollapse : asideWidth}"
+          :class="{ 'logo-group': true, 'logo-transition': asideTransition }"
+          :style="{ width: asideCollapse ? asideWidthCollapse : asideWidth }"
           flex-box="0"
         >
           <img
             v-if="asideCollapse"
             :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all1.png`"
           />
-          <img v-else :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all1.png`" />
+          <img
+            v-else
+            :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all1.png`"
+          />
         </router-link>
         <div class="toggle-aside-btn" @click="handleToggleAside" flex-box="0">
           <d2-icon name="bars" />
@@ -39,35 +42,56 @@
         </div>
       </div>
       <!-- 下面 主体 -->
-      
+
       <div class="d2-theme-container" flex-box="1" flex>
         <!-- 主体 侧边栏 -->
         <div
           flex-box="0"
           ref="aside"
-          :class="{'d2-theme-container-aside': true, 'd2-theme-container-transition': asideTransition}"
+          :class="{
+            'd2-theme-container-aside': true,
+            'd2-theme-container-transition': asideTransition,
+          }"
           :style="{
             width: asideCollapse ? asideWidthCollapse : asideWidth,
-            opacity: this.searchActive ? 0.5 : 1
+            opacity: this.searchActive ? 0.5 : 1,
           }"
         >
           <d2-menu-side />
         </div>
-        
+
         <!-- 主体 -->
         <div class="d2-theme-container-main" flex-box="1" flex>
-
           <!-- 内容 -->
-          
+
           <transition name="fade-scale">
-            
-            <div v-if="!searchActive" class="d2-theme-container-main-layer" flex="dir:top">
+            <div
+              v-if="!searchActive"
+              class="d2-theme-container-main-layer"
+              flex="dir:top"
+            >
               <!-- tab -->
-              <div style="margin: 10px 5px;">当前评测项目：xxxxxx----xxxxx-xxxx</div>
+              <div style="margin: 10px 5px">
+                当前评测项目：
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="xmu_info.name"
+                  placement="right-end"
+                >
+                  <el-button v-if="xmu_info.name" size='mini'>
+                    {{xmu_info.name.substring(0,15)}}....
+                  </el-button>
+                  <el-button v-else size='mini'>
+                    当前无项目选择
+                  </el-button>
+                 </el-tooltip
+                >
+              </div>
               <div class="d2-theme-container-main-header" flex-box="0">
                 <d2-tabs />
               </div>
-              
+
               <!-- 页面 -->
               <div class="d2-theme-container-main-body" flex-box="1">
                 <transition :name="transitionActive ? 'fade-transverse' : ''">
@@ -90,7 +114,6 @@ import d2MenuHeader from "./components/menu-header";
 import d2Tabs from "./components/tabs";
 import d2HeaderFullscreen from "./components/header-fullscreen";
 
-
 import d2HeaderUser from "./components/header-user";
 
 import { mapState, mapGetters, mapActions } from "vuex";
@@ -103,7 +126,7 @@ export default {
     d2MenuHeader,
     d2Tabs,
     d2HeaderFullscreen,
- 
+
     d2HeaderUser,
   },
   data() {
@@ -114,8 +137,7 @@ export default {
       asideWidthCollapse: "65px",
     };
   },
-  created() {
-  },
+  created() {},
   computed: {
     ...mapState("d2admin", {
       keepAlive: (state) => state.page.keepAlive,
@@ -123,6 +145,7 @@ export default {
       transitionActive: (state) => state.transition.active,
       asideCollapse: (state) => state.menu.asideCollapse,
       asideTransition: (state) => state.menu.asideTransition,
+      xmu_info: (state) => state.xmu.xmu_info,
     }),
     ...mapGetters("d2admin", {
       themeActiveSetting: "theme/activeSetting",
@@ -177,5 +200,4 @@ export default {
   .el-submenu__title {
   padding: 0 10px;
 }
-
 </style>
