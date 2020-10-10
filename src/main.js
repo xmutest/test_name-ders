@@ -13,6 +13,9 @@ import router from './router'
 import { menuHeader, menuAside } from '@/menu'
 import { frameInRoutes } from '@/router/routes'
 
+// 画布插件
+Vue.use(require('vue-easeljs'))
+
 // 核心插件
 Vue.use(d2Admin)
 

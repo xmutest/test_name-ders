@@ -19,6 +19,32 @@
             <div class="to_tim">
               <el-tag>操作提示</el-tag>
               <span>点击图片后可打开标记JA,JB等标记的页面</span>
+              <div class="canvasArea" ref="canvasArea">
+                <div class="toorBar">
+
+                </div>
+                <easel-canvas :width="cas.width" :height="cas.height">
+                  <!-- <easel-shape
+                      :x="200"
+                      :y="150"
+                      form="circle"
+                      fill="blue"
+                      :dimensions="20"
+                      :align="['center','center']"
+                  >
+                  </easel-shape> -->
+                  <!-- 使用图片要用require获取 -->
+                  <easel-bitmap
+                    :image="require('@/views/demo/ControllerLink/img/structure01.jpg')"
+                    :x="cas.width / 2"
+                    :y="0"
+                    :align="['center','top']"
+                  >
+                  </easel-bitmap>
+
+                </easel-canvas>
+              </div>
+              
             </div>
           </div>
         </el-card>
@@ -29,15 +55,44 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
       access_point_describe: "",
+      cas:{
+        width:0,
+        height:0
+      },
+      
     };
+  },
+  created() {
+    
+  },
+  mounted() {
+    this.casSize()
+  },
+  computed: {
+    
   },
   methods: {
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
+    },
+    getStyle(obj, attr) {
+      if (obj.currentStyle) {
+        return obj.currentStyle[attr];
+      } else {
+        return document.defaultView.getComputedStyle(obj, null)[attr];
+      }
+    },
+    casSize(){
+      let that = this
+      let casBox = this.$refs.canvasArea
+      
+      this.cas.width = parseInt(that.getStyle(casBox, 'width'));
+      this.cas.height = parseInt(that.getStyle(casBox, 'height'));
     },
   },
 };
@@ -54,6 +109,9 @@ export default {
     .el-tag {
       margin-right: 5px;
     }
+    span{
+      margin-bottom:20px;
+    }
   }
   .descTItle {
     @extend %unable-border-left;
@@ -61,5 +119,10 @@ export default {
 }
 .el-card__header {
   border-bottom: 0px solid #ebeef5;
+}
+.canvasArea{
+  width:100%;
+  height:400px;
+  border:1px solid #ccc;
 }
 </style>
