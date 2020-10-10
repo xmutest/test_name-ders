@@ -81,5 +81,17 @@ export default ({
       method: 'post',
       data: JSON.stringify(data)
     })
+  },
+    /**
+   * @description 项目详细
+   * @param {Object} data 
+   */
+  API_Project_detail(data = {}) {
+    // 接口请求
+    return request({
+      url: '/project/detail',
+      method: 'get',
+      params:data
+    })
   }
 })

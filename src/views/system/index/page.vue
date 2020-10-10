@@ -99,6 +99,22 @@
         </el-main>
       </el-container>
     </div>
+    <div class="page_name" style="padding: 0 20px 20px 20px">
+      <div class="search_ls">
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="projectModel.page"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="projectModel.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          >
+          </el-pagination>
+        </div>
+      </div>
+    </div>
     <!-- 新增表单 -->
     <div class="add_from_xmu">
       <el-dialog
@@ -228,13 +244,18 @@
             </div>
           </div>
           <el-form-item
+            v-if="ua_cre == 0"
             label="创建人"
             :label-width="formLabelWidth"
             prop="creator"
           >
             {{ info.name }}
           </el-form-item>
-          <el-form-item label="项目参与人" :label-width="formLabelWidth">
+          <el-form-item
+            label="项目参与人"
+            prop="membersIdList"
+            :label-width="formLabelWidth"
+          >
             <el-select
               v-model="xmform.membersIdList"
               multiple
@@ -271,56 +292,13 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      total:0,
       ua_cre: 0, //0创建 1更新
       table_name_el: "新建项目",
       account: "",
       getTimeDate: "",
       its_id_to: 2,
-      tableData: [
-        {
-          projectName: "佛山市三水区人民检察院网络安全等级保护测评项目",
-          systemName: "佛山市三水区人民检察院门户网站",
-          level: "三级",
-          creator: "卢晓杰",
-          createdTime: "2020/9/17",
-        },
-        {
-          projectName: "佛山市高明区司法局网络安全等级保护测评项目",
-          systemName: "高明区一门式综合执法应用系统",
-          level: "三级",
-          creator: "卢晓杰",
-          createdTime: "2020/9/8",
-        },
-        {
-          projectName: "广州市残疾人安养院网络安全等级保护测评项目",
-          systemName: "广州市残疾人安养院院务管理系统",
-          level: "二级",
-          creator: "卢晓杰",
-          createdTime: "2020/8/15",
-        },
-        {
-          projectName: "佛山市顺德公安局网络安全等级保护测评项目",
-          systemName: "顺德智慧社区管理系统",
-          level: "二级",
-          creator: "吴源超",
-          createdTime: "2020/8/11",
-        },
-        {
-          projectName: "广州市公安局特行场所图像智能应用平台等级保护项目",
-          systemName: "广州市公安局特行场所图像智能应用平台",
-          level: "二级",
-          creator: "吴源超",
-          createdTime: "2020/8/6",
-        },
-        {
-          projectName:
-            "广州市公安局刑事案件物证档案管理系统网络安全等级保护测评服务项目",
-          systemName: "刑事案件物证档案管理系统",
-          level: "三级",
-          creator: "吴源超",
-          createdTime: "2020/7/22",
-        },
-      ],
+      tableData: [],
       // 标准体系列表
       standardlist: [
         { label: "老国标", value: 1 },
@@ -406,6 +384,9 @@ export default {
         systemName: [
           { required: true, message: "请输入系统名称", trigger: "blur" },
         ],
+        membersIdList: [
+          { required: true, message: "请选择项目参与人", trigger: "blur" },
+        ],
       },
     };
   },
@@ -417,6 +398,15 @@ export default {
     this.ProjectQueryList();
   },
   methods: {
+    // 分页
+    handleSizeChange(val) {
+      this.projectModel.pageSize=val;
+      this.ProjectQueryList();
+    },
+    handleCurrentChange(val) {
+      this.projectModel.page=val;
+      this.ProjectQueryList();
+    },
     //时间
     timestampToTime(timestamp) {
       var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -551,6 +541,7 @@ export default {
       let res = await this.$api.API_Project_Query(this.projectModel);
       if (res.code === 20000) {
         this.tableData = res.data.list;
+        this.total=res.data.total;
       } else {
         this.$message.error(res.message);
       }
@@ -572,52 +563,27 @@ export default {
       this.datalog_list_rom();
       this.dialogFormVisible = true;
     },
-    xmuupdata(index, row) {
+    async xmuupdata(index, row) {
       this.ua_cre = 1;
       this.table_name_el = "更新项目";
       this.datalog_list_rom();
-      Object.keys(this.xmform).forEach((key) => {
-        this.xmform[key] = row[key];
-        if (key == "standard") {
-          for (let item of this.standardlist) {
-            if (row[key] == item.label) {
-              console.log(row[key], item.value);
-              this.xmform[key] = item.value;
-            }
-          }
-        }
-        if (key == "standardVersion") {
-          for (let item of this.standardVersionlist) {
-            for (let items of item.value) {
-              if (row[key] == item.label) {
-                console.log(row[key], item.value);
-                this.xmform[key] = item.value;
-              }
-            }
-          }
-        }
-        if (key == "level") {
-          for (let item of this.levellist) {
-            if (row[key] == item.label) {
-              console.log(row[key], item.value);
-              this.xmform[key] = item.value;
-            }
-          }
-        }
-        if (key == "sag") {
-          for (let item of this.saglist) {
-            if (row[key] == item.label) {
-              console.log(row[key], item.value);
-              this.xmform[key] = item.value;
-            }
-          }
-        }
+
+      let res = await this.$api.API_Project_detail({
+        projectId: row.projectId,
       });
-      if (row.standardExtends) {
-        this.xmform.standardExtends = row.standardExtends.split("┋");
+      if (res.code === 20000) {
+        this.xmform.projectId = row.projectId;
+        Object.keys(this.xmform).forEach((key) => {
+          this.xmform[key] = res.data[key];
+        });
+        if (row.standardExtends) {
+          this.xmform.standardExtends = row.standardExtends.split("┋");
+        }
+        this.dialogFormVisible = true;
+        //查询列表
+      } else {
+        this.$message.error(res.message);
       }
-      console.log(this.xmform);
-      this.dialogFormVisible = true;
     },
     // 清空
     resetForm(formName) {
