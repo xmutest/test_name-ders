@@ -9,7 +9,7 @@
             <div class="descTItle">被测信息系统情况</div>
             <d2-quill
               style="min-height: 200px; margin-bottom: 20px"
-              v-model="fromdata.system_situation"
+              v-model="fromdata.systemSituation"
               @text-change="textChangeHandler"
             />
           </div>
@@ -19,13 +19,13 @@
             <div class="to_tim">
               <d2-quill
                 style="min-height: 200px; margin-bottom: 20px"
-                v-model="fromdata.last_evaluation_situation"
+                v-model="fromdata.lastEvaluationSituation"
                 @text-change="textChangeHandler"
               />
             </div>
           </div>
           <div class="tijiaobaoc">
-            <el-button  type="primary" @click="submitReport">保存</el-button>
+            <el-button type="primary" @click="submitReport">保存</el-button>
           </div>
         </el-card>
       </div>
@@ -39,18 +39,26 @@ export default {
   data() {
     return {
       fromdata: {
-        system_situation: "",
-        last_evaluation_situation:""
+        systemSituation: "",
+        lastEvaluationSituation: "",
       },
     };
   },
+  created() {},
   methods: {
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
     },
-    submitReport(){
-      console.log(this.fromdata);
-    }
+    async submitReport() {
+      let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
+      if (res.code === 20000) {
+        this.$message.success("修改成功！！");
+        // this.ProjectQueryList();
+        //查询列表
+      } else {
+        this.$message.error("错误，请联系管理员" + res.message);
+      }
+    },
   },
 };
 </script>

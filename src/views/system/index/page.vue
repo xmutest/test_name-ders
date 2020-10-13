@@ -21,7 +21,6 @@
         </div>
       </div>
     </div>
-
     <div class="page_ts">
       <el-container>
         <el-main style="padding: 0 20px 20px 20px">
@@ -35,41 +34,74 @@
                     'background-color': 'rgba(238, 238, 238,1.0)',
                   }"
                 >
-                  <el-table-column label="项目名称">
+                  <el-table-column label="项目选择" width="100">
                     <template slot-scope="scope">
                       <p>
-                        <span
-                          class="optionTo_name"
-                          @click="optionTo(scope.$index, scope.row)"
-                          >{{ scope.row.projectName }}</span
+                        <el-radio
+                          v-model="radio_projectId"
+                          @change="optionTo(scope.$index, scope.row)"
+                          :label="scope.row.projectId"
                         >
+                          <i class="el-icon-edit"></i>
+                        </el-radio>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="项目名称">
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span class="optionTo_name">{{
+                          scope.row.projectName
+                        }}</span>
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="系统名称">
                     <template slot-scope="scope">
-                      <p>
+                      <p :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        ">
                         <span>{{ scope.row.systemName }}</span>
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="等保等级" width="80">
                     <template slot-scope="scope">
-                      <p>
+                      <p :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        ">
                         <span>{{ scope.row.level }}</span>
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="创建人" width="150">
                     <template slot-scope="scope">
-                      <p>
-                        <span>{{ scope.row.creator }}</span>
+                      <p :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        ">
+                        <span>{{ scope.row.creatorName }}</span>
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="创建时间" width="150">
                     <template slot-scope="scope">
-                      <p>
+                      <p :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        ">
                         <span>{{
                           timestampToTime(scope.row.createdTime)
                         }}</span>
@@ -131,6 +163,7 @@
             <el-input
               v-model="xmform.projectName"
               clearable
+              @click="searchBi"
               autocomplete="off"
             ></el-input>
           </el-form-item>
@@ -292,7 +325,8 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
-      total:0,
+      radio_projectId: 0,
+      total: 0,
       ua_cre: 0, //0创建 1更新
       table_name_el: "新建项目",
       account: "",
@@ -391,20 +425,28 @@ export default {
     };
   },
   computed: {
-    ...mapState("d2admin/user", ["info"]),
+    ...mapState("d2admin", {
+      info: (state) => state.user.info,
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   components: {},
   created() {
     this.ProjectQueryList();
   },
   methods: {
+    // 搜索
+    searchBi(){
+      this.projectModel.projectName=this.search_list.projectName;
+      this.ProjectQueryList();
+    },
     // 分页
     handleSizeChange(val) {
-      this.projectModel.pageSize=val;
+      this.projectModel.pageSize = val;
       this.ProjectQueryList();
     },
     handleCurrentChange(val) {
-      this.projectModel.page=val;
+      this.projectModel.page = val;
       this.ProjectQueryList();
     },
     //时间
@@ -463,6 +505,7 @@ export default {
         "d2admin/xmu/set",
         {
           name: row.projectName,
+          projectId: row.projectId,
         },
         {
           root: true,
@@ -541,14 +584,20 @@ export default {
       let res = await this.$api.API_Project_Query(this.projectModel);
       if (res.code === 20000) {
         this.tableData = res.data.list;
-        this.total=res.data.total;
+        this.total = res.data.total;
       } else {
         this.$message.error(res.message);
+      }
+      if (this.xmu_info.projectId && this.xmu_info.projectId !== "undefined") {
+        this.radio_projectId = this.xmu_info.projectId;
       }
     },
     //获取项目参与人
     async datalog_list_rom() {
-      let res = await this.$api.API_department_List();
+      let res = await this.$api.API_department_List({
+        userId: this.info.user_info.userId,
+      });
+
       if (res.code === 20000) {
         this.membersIdLists = res.data;
       } else {
@@ -727,5 +776,8 @@ export default {
 .die_roift {
   position: absolute;
   right: 0;
+}
+.blue-class {
+  color: #409eff;
 }
 </style>

@@ -54,7 +54,7 @@ export default ({
     return request({
       url: '/department/findList',
       method: 'get',
-      data: JSON.stringify(data)
+      params:data
     })
   },
    /**

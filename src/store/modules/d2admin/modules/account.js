@@ -38,7 +38,7 @@ export default {
       util.cookies.set('token', res.token)
       // 设置 vuex 用户信息
       await dispatch('d2admin/user/set', {
-        name: res.loginName,
+        name: res.userName,
         user_info: res
       }, {
         root: true
@@ -66,6 +66,9 @@ export default {
         util.cookies.remove('uuid')
         // 清空 vuex 用户信息
         await dispatch('d2admin/user/set', {}, {
+          root: true
+        })
+        await dispatch('d2admin/xmu/set', {}, {
           root: true
         })
         // 跳转路由

@@ -9,20 +9,20 @@
             <div class="descTItle">评测目的</div>
             <d2-quill
               style="min-height: 200px; margin-bottom: 20px"
-              v-model="fromdata.evaluation_objective"
+              v-model="fromdata.evaluationObjective"
               @text-change="textChangeHandler"
             />
           </div>
 
           <div class="mude_text_item">
             <div class="descTItle">评测依据选项</div>
-            <div class="to_tim">
-              <el-checkbox-group v-model="fromdata.evaluation_basis">
+            <div class="to_tims">
+              <el-checkbox-group v-model="fromdata.otherEvaluationBasis">
                 <el-checkbox
-                  label="复选框 Axsxxsxs xcxxxxxxxxxxxxxxxxxxxxx1"
+                  v-for="item in evaluation_list"
+                  :label="item.evaluationBasisName"
+                  :key="item.evaluationBasisName"
                 ></el-checkbox>
-                <el-checkbox label="复">复选框 B</el-checkbox>
-                <el-checkbox label="复选框 C"></el-checkbox>
               </el-checkbox-group>
             </div>
           </div>
@@ -32,12 +32,12 @@
               type="textarea"
               :autosize="{ minRows: 4, maxRows: 8 }"
               placeholder="请以逗号隔开"
-              v-model="fromdata.other_evaluation_basis"
+              v-model="fromdata.evaluationBasis"
               @text-change="textChangeHandler"
             ></el-input>
           </div>
-          <div class="clackbaoc">
-            <el-button type="primary">提交保存</el-button>
+          <div class="tijiaobaoc">
+            <el-button type="primary" @click="submitReport">保存</el-button>
           </div>
         </el-card>
       </div>
@@ -51,25 +51,49 @@ export default {
     return {
       fromdata: {
         //评测目的
-        evaluation_objective: "",
+        evaluationObjective: "",
         //其他依据
-        other_evaluation_basis: "",
+        evaluationBasis: "",
         // 依据选项
-        evaluation_basis: [],
+        otherEvaluationBasis: [],
       },
+      evaluation_list: [],
     };
   },
   created() {
-    this.fromdata.evaluation_objective = `安全等级测评的目的是通过对目标系统在安全技术及管理方面的测评，对目标系统的安全技术状态及安全管理状况做出初步判断，给出目标系统在安全技术及安全管理方面与其相应安全等级保护要求之间的差距。测评结论作为委托方进一步完善系统安全策略及安全技术防护措施依据。
+    this.fromdata.evaluationObjective = `安全等级测评的目的是通过对目标系统在安全技术及管理方面的测评，对目标系统的安全技术状态及安全管理状况做出初步判断，给出目标系统在安全技术及安全管理方面与其相应安全等级保护要求之间的差距。测评结论作为委托方进一步完善系统安全策略及安全技术防护措施依据。
          <br>
         为进一步提高信息系统的保障能力，根据《信息安全等级保护管理办法》（公通字2007【43】号）的精神，广州泰康粤园医院有限公司委托广州华南信息安全测评中心（广州市中邦信息工程有限公司）（DJCP2010440126）对广州泰康粤园医院医院信息系统实施等级测评，以期发现信息系统和等级保护标准的差距以及存在的安全隐患，为后续的安全整改工作提供参考依据。`;
+    this.getevaluationBasisFindAll();
   },
   methods: {
+    async getevaluationBasisFindAll() {
+      let res = await this.$api.API_evaluationBasisFindAll();
+      if (res.code === 20000) {
+        this.evaluation_list = res.data;
+        //查询列表
+      } else {
+        this.$message.error(res.message + "评测依据选项出差，请联系管理员");
+      }
+    },
     textChangeHandler(delta, oldDelta, source) {
       // console.group('QuillEditor textChangeHandler')
       // console.log(delta, oldDelta, source)
       // console.groupEnd()
-      console.log(this.fromdata.evaluation_basis);
+    },
+    async submitReport() {
+      this.fromdata.otherEvaluationBasis = this.fromdata.otherEvaluationBasis.join(
+        ","
+      );
+      let res =await this.$api.API_evaluationBasis_updata(this.fromdata);
+      if (res.code === 20000) {
+        this.$message.success("修改成功！！");
+        // this.ProjectQueryList();
+        //查询列表
+           this.fromdata.otherEvaluationBasis = this.fromdata.otherEvaluationBasis.split(',');
+      } else {
+        this.$message.error('错误，请联系管理员'+res.message);
+      }
     },
   },
 };
@@ -84,8 +108,10 @@ export default {
   .mude_is_right > div {
     margin: 20px 0;
   }
-  .to_tim {
-    margin-top: 5px;
+  .to_tims {
+    height: 300px;
+    overflow: auto;
+    margin: 5px 0 15px 0;
     .el-checkbox-group {
       .el-checkbox {
         display: block;
@@ -102,9 +128,6 @@ export default {
 }
 .el-card__header {
   border-bottom: 0px solid #ebeef5;
-}
-.clackbaoc {
-  text-align: right;
 }
 </style>
 

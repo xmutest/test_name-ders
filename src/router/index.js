@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import { MessageBox, Message } from "element-ui";  // 引入
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -13,11 +13,11 @@ import routes from './routes'
 
 // fix vue-router NavigationDuplicated
 const VueRouterPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (location) {
+VueRouter.prototype.push = function push(location) {
   return VueRouterPush.call(this, location).catch(err => err)
 }
 const VueRouterReplace = VueRouter.prototype.replace
-VueRouter.prototype.replace = function replace (location) {
+VueRouter.prototype.replace = function replace(location) {
   return VueRouterReplace.call(this, location).catch(err => err)
 }
 
@@ -46,8 +46,27 @@ router.beforeEach(async (to, from, next) => {
     // 这里暂时将cookie里是否存有token作为验证是否登录的条件
     // 请根据自身业务需要修改
     const token = util.cookies.get('token')
+    const xmu_info = await store.dispatch('d2admin/db/get', {
+      dbName: 'sys',
+      path: 'xmu.xmu_info',
+      defaultValue: {},
+      xmu: true
+    }, {
+      root: true
+    });
+    // console.log(xmu_info);
     if (token && token !== 'undefined') {
-      next()
+      if (to.matched.some(r => r.meta.project)) {
+        if (xmu_info.projectId && xmu_info.projectId !== 'undefined') {
+          next()
+        } else {
+          Message.error("请选择项目在进行操作！！");
+          next(false);
+        }
+      } else {
+        next()
+      }
+
     } else {
       // 没有登录的时候跳转到登录界面
       // 携带上登陆成功之后需要跳转的页面完整路径

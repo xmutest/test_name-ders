@@ -11,7 +11,6 @@ export default {
        * @param {*} xmu_info xmu_info
        */
       async set ({ state, dispatch }, xmu_info) {
-        console.log(xmu_info);
         // store 赋值
         state.xmu_info = xmu_info
         // 持久化

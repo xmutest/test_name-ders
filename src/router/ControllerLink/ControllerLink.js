@@ -5,7 +5,8 @@ import layoutHeaderAside from '@/layout/header-aside'
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 const meta = {
-  auth: true
+  auth: true,
+  project:true
 }
 
 export default {
