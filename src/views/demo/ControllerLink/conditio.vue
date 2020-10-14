@@ -44,8 +44,19 @@ export default {
       },
     };
   },
-  created() {},
+  created() {
+    this.getEtlist();
+  },
   methods: {
+    async getEtlist() {
+      let List = await this.$api.API_projectOverviewdObjfindSystemSituation();
+      if (List.code === 20000) {
+        this.fromdata.id = List.data.id;
+        //查询列表
+      } else {
+        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+      }
+    },
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
     },

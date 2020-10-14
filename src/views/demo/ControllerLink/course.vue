@@ -113,8 +113,8 @@
               </div>
             </div>
           </div>
-           <div class="tijiaobaoc">
-            <el-button  type="primary" @click="submitReport">保存</el-button>
+          <div class="tijiaobaoc">
+            <el-button type="primary" @click="submitReport">保存</el-button>
           </div>
         </el-card>
       </div>
@@ -484,10 +484,14 @@ export default {
       ],
     };
   },
+  created(){
+
+  },
   methods: {
-    submitReport(){
+    submitReport() {
       console.log(this.fromdata);
     },
+  
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
       if (row.isfor == true) {
         if (columnIndex === 0) {

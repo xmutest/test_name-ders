@@ -54,6 +54,7 @@ export default {
         evaluationObjective: "",
         //其他依据
         evaluationBasis: "",
+        id: "",
         // 依据选项
         otherEvaluationBasis: [],
       },
@@ -65,8 +66,18 @@ export default {
          <br>
         为进一步提高信息系统的保障能力，根据《信息安全等级保护管理办法》（公通字2007【43】号）的精神，广州泰康粤园医院有限公司委托广州华南信息安全测评中心（广州市中邦信息工程有限公司）（DJCP2010440126）对广州泰康粤园医院医院信息系统实施等级测评，以期发现信息系统和等级保护标准的差距以及存在的安全隐患，为后续的安全整改工作提供参考依据。`;
     this.getevaluationBasisFindAll();
+    this.getEtlist();
   },
   methods: {
+    async getEtlist() {
+      let List = await this.$api.API_projectOverviewObjective();
+      if (List.code === 20000) {
+        this.fromdata.id = List.data.id;
+        //查询列表
+      } else {
+        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+      }
+    },
     async getevaluationBasisFindAll() {
       let res = await this.$api.API_evaluationBasisFindAll();
       if (res.code === 20000) {
@@ -85,14 +96,16 @@ export default {
       this.fromdata.otherEvaluationBasis = this.fromdata.otherEvaluationBasis.join(
         ","
       );
-      let res =await this.$api.API_evaluationBasis_updata(this.fromdata);
+      let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         this.$message.success("修改成功！！");
         // this.ProjectQueryList();
         //查询列表
-           this.fromdata.otherEvaluationBasis = this.fromdata.otherEvaluationBasis.split(',');
+        this.fromdata.otherEvaluationBasis = this.fromdata.otherEvaluationBasis.split(
+          ","
+        );
       } else {
-        this.$message.error('错误，请联系管理员'+res.message);
+        this.$message.error("错误，请联系管理员" + res.message);
       }
     },
   },

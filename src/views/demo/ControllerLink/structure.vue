@@ -9,7 +9,7 @@
             <div class="descTItle">网络结构描述</div>
             <d2-quill
               style="min-height: 200px; margin-bottom: 20px"
-              v-model="fromdata.network_structure_describe"
+              v-model="fromdata.networkStructureDescribe"
               @text-change="textChangeHandler"
             />
           </div>
@@ -17,12 +17,19 @@
             <div class="descTItle">网络结构图</div>
             <div class="wangruo_ken">
               <div class="wangruo_img">
-                <img src="./img/structure01.jpg" alt="" />
+                <img :src="imgUrl" alt="" />
               </div>
               <div class="wangruo_updata">
-                <el-button type="primary" icon="el-icon-upload"
-                  >图片更新</el-button
+                <el-upload
+                  class="avatar-uploader"
+                  action=""
+                  :before-upload="beforePicUpload"
+                  :show-file-list="false"
                 >
+                  <el-button type="primary" icon="el-icon-upload"
+                    >图片更新</el-button
+                  >
+                </el-upload>
               </div>
             </div>
           </div>
@@ -46,17 +53,19 @@
                 <el-table-column label="边界名称">
                   <template slot-scope="scope">
                     <div
-                      @click="is_compile(scope.row, scope.$index, 'boundary_name')"
+                      @click="
+                        is_compile(scope.row, scope.$index, 'boundaryName')
+                      "
                       class="itsz"
                     ></div>
                     <el-input
-                      :ref="'boundary_name' + scope.$index"
+                      :ref="'boundaryName' + scope.$index"
                       @blur="schujiaodian(scope.row)"
                       v-show="scope.row.show"
-                      v-model="scope.row.boundary_name"
+                      v-model="scope.row.boundaryName"
                     ></el-input>
                     <span v-show="!scope.row.show">{{
-                      scope.row.boundary_name
+                      scope.row.boundaryName
                     }}</span>
                   </template>
                 </el-table-column>
@@ -65,19 +74,19 @@
                   <template slot-scope="scope">
                     <div
                       @click="
-                        is_compile(scope.row, scope.$index, 'access_method')
+                        is_compile(scope.row, scope.$index, 'accessMethod')
                       "
                       class="itsz"
                     ></div>
                     <el-input
-                      :ref="'access_method' + scope.$index"
+                      :ref="'accessMethod' + scope.$index"
                       @blur="schujiaodian(scope.row)"
                       placeholder="请输入内容"
                       v-show="scope.row.show"
-                      v-model="scope.row.access_method"
+                      v-model="scope.row.accessMethod"
                     ></el-input>
                     <span v-show="!scope.row.show">{{
-                      scope.row.access_method
+                      scope.row.accessMethod
                     }}</span>
                   </template>
                 </el-table-column>
@@ -85,18 +94,20 @@
                 <el-table-column label="承载主要业务应用">
                   <template slot-scope="scope">
                     <div
-                      @click="is_compile(scope.row, scope.$index, 'main_business')"
+                      @click="
+                        is_compile(scope.row, scope.$index, 'mainBusiness')
+                      "
                       class="itsz"
                     ></div>
                     <el-input
-                      :ref="'main_business' + scope.$index"
+                      :ref="'mainBusiness' + scope.$index"
                       @blur="schujiaodian(scope.row)"
                       placeholder="请输入内容"
                       v-show="scope.row.show"
-                      v-model="scope.row.main_business"
+                      v-model="scope.row.mainBusiness"
                     ></el-input>
                     <span v-show="!scope.row.show">{{
-                      scope.row.main_business
+                      scope.row.mainBusiness
                     }}</span>
                   </template>
                 </el-table-column>
@@ -110,7 +121,7 @@
                     <el-button
                       size="mini"
                       type="danger"
-                      @click="deleteRow(scope.$index, t_sys_boundary)"
+                      @click="deleteRow(scope.$index, scope.row)"
                       >删除</el-button
                     >
                   </template>
@@ -118,8 +129,8 @@
               </el-table>
             </div>
           </div>
-       <div class="tijiaobaoc">
-            <el-button  type="primary" @click="submitReport">保存</el-button>
+          <div class="tijiaobaoc">
+            <el-button type="primary" @click="submitReport">保存</el-button>
           </div>
         </el-card>
       </div>
@@ -133,68 +144,159 @@ export default {
   data() {
     return {
       fromdata: {
-        network_structure_describe: "",
+        networkStructureDescribe: "",
       },
-      t_sys_boundary: [],
+      imgUrl: "",
+      imgUrl_id: "",
+      t_sys_boundary: [
+        {
+          boundaryName: "",
+          accessMethod: "",
+          mainBusiness: "",
+          show: false,
+        },
+      ],
+      files: [],
     };
   },
   created() {
     this.getlistdata();
+    this.getlistdataImg();
   },
   methods: {
-    getlistdata() {
-      let list = [
-        {
-          boundary_name: "网站系统维护",
-          access_method: "易宝系统(中国)有限公司",
-          main_business: "",
-        },
-        {
-          boundary_name: "安全维护",
-          access_method: "北京天融信网络安全技术有限公司",
-          main_business: "",
-        },
-      ];
-      list.forEach((element) => {
-        element["show"] = false;
-      });
-      this.t_sys_boundary = list;
+    async beforePicUpload(file) {
+      const isLt1M = file.size / 1024 / 1024 < 1;
+      if (!isLt1M) {
+        this.$message.error("上传头像图片大小不能超过 1MB!");
+        return false;
+      }
+      if (this.imgUrl == "") {
+        let res = await this.$api.API_imgSaveNetworkImg({
+          file,
+        });
+        if (res.code === 20000) {
+          this.$message.success("更新图片成功！！");
+          this.getlistdataImg();
+          //查询列表
+        } else {
+          this.$message.error("错误，请联系管理员" + res.message);
+        }
+      } else {
+        let res = await this.$api.API_imgupdateImg({
+          file,
+          id: this.imgUrl_id,
+        });
+        if (res.code === 20000) {
+          this.$message.success("更新图片成功！！");
+          this.getlistdataImg();
+          //查询列表
+        } else {
+          this.$message.error("错误，请联系管理员" + res.message);
+        }
+      }
+      return false;
+    },
+    async getlistdataImg() {
+      //  获取图片
+      let res = await this.$api.API_findNetworkImg();
+      if (res.code === 20000) {
+        if (res.data !== null) {
+          this.imgUrl =
+            "/evaluation/static" + res.data.imgUrl + res.data.imgName;
+          this.imgUrl_id = res.data.id;
+        }
+      }
+      if (res.code !== 20000) {
+        this.$message.error("图片获取失败，请联系管理员" + res.message);
+      }
+    },
+    // 获取数据
+    async getlistdata() {
+      let res = await this.$api.API_sysBoundaryFindSysBoundary();
+      if (res.code === 20000) {
+        let List = res.data;
+        List.forEach((element) => {
+          element["show"] = false;
+        });
+        this.t_sys_boundary = List;
+        // this.ProjectQueryList();
+        //查询列表
+      } else {
+        this.$message.error("错误，数据查询失败" + res.message);
+      }
+      // this.list.forEach((element) => {
+      //   element["show"] = false;
+      // });
+      // ;
     },
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
     },
-    
-    submitReport(){
-      console.log(this.fromdata);
+
+    async submitReport() {
+      let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
+      if (res.code === 20000) {
+        this.$message.success("修改成功！！");
+        // this.ProjectQueryList();
+        //查询列表
+      } else {
+        this.$message.error("错误，请联系管理员" + res.message);
+      }
     },
     is_compile(item, index, itname) {
       // console.log(item,index,itname)
       item.show = true;
-      console.log(itname);
       setTimeout(() => {
         this.$refs[itname + index].focus();
       }, 1);
-      console.log(item);
     },
-    schujiaodian(item) {
+    async schujiaodian(item) {
       item.show = false;
-      console.log(item);
+      let res = await this.$api.API_sysBoundaryUpdate(item);
+      if (res.code === 20000) {
+        this.getlistdata();
+        //查询列表
+      } else {
+        this.$message.error("保存错误，请联系管理员" + res.message);
+      }
     },
     is_preserve(item) {
       var itss = this.t_sys_boundary;
       var list = {
-        boundary_name: "",
-        access_method: "",
-        main_business: "",
+        boundaryName: "",
+        accessMethod: "",
+        mainBusiness: "",
         show: false,
       };
       itss.splice(item + 1, 0, list);
       this.t_sys_boundary = itss;
       // console.log();
     },
-    deleteRow(index, rows) {
-      console.log(index, rows);
-      rows.splice(index, 1);
+    async deleteRow(index, rows) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.API_sysBoundaryDelSysBoundary({id:rows.id});
+          if (res.code === 20000) {
+            this.getlistdata();
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            //查询列表
+          } else {
+            this.$message.error("删除错误，请联系管理员" + res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };

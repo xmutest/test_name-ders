@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   props: {
     //第二种方式
@@ -35,6 +36,11 @@ export default {
       uploadFormFileList: [], // 确定上传文件
       ifsTo: false,
     };
+  },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   methods: {
     // 开始上传前验证
@@ -88,16 +94,20 @@ export default {
     // 上传文件
     handleUploadForm(param) {
       let thiz = this;
+      console.log(thiz.xmu_info);
       let formData = new FormData();
-      formData.append("projectId", this.toSonData); // 额外参数
+      formData.append("projectId", thiz.xmu_info.projectId); // 额外参数
       formData.append("files", param.file);
+      formData.append("sag", thiz.xmu_info.data.sag);
       let loading = thiz.$loading({
         lock: true,
         text: "上传中，请稍候...",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
-      thiz.$http.post("/api/import/check/upload", formData).then(({ data }) => {
+
+      // thiz.$http.post("/api/import/check/upload", formData)
+      this.$api.SYS_checkUpload(formData).then(({ data }) => {
         if (data.code === 20000) {
           thiz.$message({
             message: "上传文件成功，" + data.message,
@@ -112,8 +122,8 @@ export default {
           thiz.uploadFormFileList = [];
           thiz.$message("上传文件失败，" + data.message);
         }
-        loading.close();
       });
+      loading.close();
     },
   },
 };

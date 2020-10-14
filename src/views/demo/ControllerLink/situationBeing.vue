@@ -9,7 +9,7 @@
             <div class="descTItle">承载的业务情况</div>
             <d2-quill
               style="min-height: 200px; margin-bottom: 20px"
-              v-model="businessSituation"
+              v-model="fromdata.businessSituation"
               @text-change="textChangeHandler"
             />
           </div>
@@ -27,7 +27,9 @@
 export default {
   data() {
     return {
+      fromdata:{
       businessSituation: "",
+      }
     };
   },
   methods: {
@@ -44,7 +46,7 @@ export default {
       } else {
         this.$message.error("错误，请联系管理员" + res.message);
       }
-    },
+    }
   },
 };
 </script>

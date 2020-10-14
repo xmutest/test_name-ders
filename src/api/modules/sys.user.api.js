@@ -8,6 +8,19 @@ export default ({
   tools
 }) => ({
   /**
+   * @description 文件上传
+   * @param {Object} data 携带的信息
+   */
+  SYS_checkUpload(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/import/check/upload',
+      method: 'post',
+      data
+    })
+  },
+  /**
    * @description 登录
    * @param {Object} data 登录携带的信息
    */

@@ -38,11 +38,12 @@
                     <template slot-scope="scope">
                       <p>
                         <el-radio
+                          size="medium"
                           v-model="radio_projectId"
                           @change="optionTo(scope.$index, scope.row)"
                           :label="scope.row.projectId"
                         >
-                          <i class="el-icon-edit"></i>
+                          {{ "" }}
                         </el-radio>
                       </p>
                     </template>
@@ -64,44 +65,52 @@
                   </el-table-column>
                   <el-table-column label="系统名称">
                     <template slot-scope="scope">
-                      <p :class="
+                      <p
+                        :class="
                           radio_projectId == scope.row.projectId
                             ? 'blue-class'
                             : ''
-                        ">
+                        "
+                      >
                         <span>{{ scope.row.systemName }}</span>
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="等保等级" width="80">
                     <template slot-scope="scope">
-                      <p :class="
+                      <p
+                        :class="
                           radio_projectId == scope.row.projectId
                             ? 'blue-class'
                             : ''
-                        ">
+                        "
+                      >
                         <span>{{ scope.row.level }}</span>
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="创建人" width="150">
                     <template slot-scope="scope">
-                      <p :class="
+                      <p
+                        :class="
                           radio_projectId == scope.row.projectId
                             ? 'blue-class'
                             : ''
-                        ">
+                        "
+                      >
                         <span>{{ scope.row.creatorName }}</span>
                       </p>
                     </template>
                   </el-table-column>
                   <el-table-column label="创建时间" width="150">
                     <template slot-scope="scope">
-                      <p :class="
+                      <p
+                        :class="
                           radio_projectId == scope.row.projectId
                             ? 'blue-class'
                             : ''
-                        ">
+                        "
+                      >
                         <span>{{
                           timestampToTime(scope.row.createdTime)
                         }}</span>
@@ -436,8 +445,8 @@ export default {
   },
   methods: {
     // 搜索
-    searchBi(){
-      this.projectModel.projectName=this.search_list.projectName;
+    searchBi() {
+      this.projectModel.projectName = this.search_list.projectName;
       this.ProjectQueryList();
     },
     // 分页
@@ -496,16 +505,19 @@ export default {
     },
     // 选择绑定
     selectTrigger(id) {
+      console.log(id);
       this.its_id_to = id;
     },
     // 选择项目跳转
     async optionTo(index, row) {
+      let res =await this.Project_detail(row.projectId);
       // 设置 vuex 用户信息
       await this.$store.dispatch(
         "d2admin/xmu/set",
         {
           name: row.projectName,
           projectId: row.projectId,
+          data:res,
         },
         {
           root: true,
@@ -593,11 +605,14 @@ export default {
       }
     },
     //获取项目参与人
-    async datalog_list_rom() {
-      let res = await this.$api.API_department_List({
-        userId: this.info.user_info.userId,
-      });
-
+    async datalog_list_rom(id) {
+      let userId = "";
+      if (id && id !== "undefined") {
+        userId = id;
+      } else {
+        userId = this.info.user_info.userId;
+      }
+      let res = await this.$api.API_department_List({ userId });
       if (res.code === 20000) {
         this.membersIdLists = res.data;
       } else {
@@ -612,27 +627,34 @@ export default {
       this.datalog_list_rom();
       this.dialogFormVisible = true;
     },
-    async xmuupdata(index, row) {
-      this.ua_cre = 1;
-      this.table_name_el = "更新项目";
-      this.datalog_list_rom();
-
+    async Project_detail(PeID) {
+      if (!PeID && PeID == "undefined") {
+        return alert("错误！");
+      }
       let res = await this.$api.API_Project_detail({
-        projectId: row.projectId,
+        projectId: PeID,
       });
       if (res.code === 20000) {
-        this.xmform.projectId = row.projectId;
-        Object.keys(this.xmform).forEach((key) => {
-          this.xmform[key] = res.data[key];
-        });
-        if (row.standardExtends) {
-          this.xmform.standardExtends = row.standardExtends.split("┋");
-        }
-        this.dialogFormVisible = true;
-        //查询列表
+        return res.data;
       } else {
         this.$message.error(res.message);
       }
+    },
+    async xmuupdata(index, row) {
+      this.ua_cre = 1;
+      this.table_name_el = "更新项目";
+      this.datalog_list_rom(row.creator);
+
+      let res =await this.Project_detail(row.projectId);
+
+      this.xmform.projectId = row.projectId;
+      Object.keys(this.xmform).forEach((key) => {
+        this.xmform[key] = res.data[key];
+      });
+      if (row.standardExtends) {
+        this.xmform.standardExtends = row.standardExtends.split("┋");
+      }
+      this.dialogFormVisible = true;
     },
     // 清空
     resetForm(formName) {
