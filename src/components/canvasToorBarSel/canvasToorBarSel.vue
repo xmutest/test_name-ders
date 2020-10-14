@@ -1,11 +1,8 @@
 <template>
-    <div class="container">
+    <div class="container" v-if="showControl">
         <div class="selectArea">
-            <img :src="require('@/views/demo/ControllerLink/img/close.png')" alt="" class="btnClose">
-            <img :src="require('@/views/demo/ControllerLink/img/palntlsImg/ja1.png')" alt="" class="guidePic1">
-            <img :src="require('@/views/demo/ControllerLink/img/palntlsImg/ja2.png')" alt="" class="guidePic2">
-            <img :src="require('@/views/demo/ControllerLink/img/palntlsImg/ja3.png')" alt="" class="guidePic3">
-            <img :src="require('@/views/demo/ControllerLink/img/palntlsImg/ja4.png')" alt="" class="guidePic4">
+            <img :src="require('@/views/demo/ControllerLink/img/close.png')" alt="" class="btnClose" @click="closeTools">
+            <img :src="item" v-for="(item,i) in picArr" :key="i" :data-id="`j${selIndex + (i+1)}`" :class="'guidePic' + (i+1)" @click="outputSel($event)">
         </div>
     </div>
 </template>
@@ -20,9 +17,35 @@ export default {
     created() {
         
     },
-    methods: {
-        
+    mounted() {
+
     },
+    computed: {
+        picArr(){
+            let arr = []
+            for(let i = 0 ;i < 4;i++){
+                arr.push(require(`@/views/demo/ControllerLink/img/palntlsImg/j${this.selIndex + (i+1)}.png`))
+            }
+            return arr
+        }
+    },
+    methods: {
+        closeTools(){
+            this.$emit('close',false)
+        },
+        showselTools(){
+            this.picArr = []
+            for(let i = 0 ;i < 4;i++){
+                this.picArr.push(require(`@/views/demo/ControllerLink/img/palntlsImg/j${this.selIndex + (i+1)}.png`))
+            }
+        },
+        outputSel(e){
+            let addPic = e.currentTarget.dataset.id
+            this.$emit('close',false)
+            this.$emit('addPic',addPic)
+        }
+    },
+    props:['showControl','selIndex']
 }
 </script>
 
@@ -52,14 +75,17 @@ export default {
             top: 20px;
             right: 20px;
             z-index: 10;
+            cursor:pointer;
         }
         .guidePic1,.guidePic3{
             width: 279px;
             position: absolute;
+            cursor:pointer;
         }
         .guidePic2,.guidePic4{
             width:151px;
             position: absolute;
+            cursor:pointer;
         }
         .guidePic1{
             top: 100px;
