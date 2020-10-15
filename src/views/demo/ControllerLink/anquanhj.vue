@@ -71,7 +71,7 @@ export default {
     });
     this.tabledatas = list;
 
-    console.log('选项',this.importanceList)
+    // console.log('选项',this.importanceList)
   },
   methods: {
     

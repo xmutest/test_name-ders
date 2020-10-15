@@ -115,9 +115,6 @@ export default {
   mounted() {
     let that = this
     this.casSize()
-    // setTimeout(function(){
-    //   that.outputPic()
-    // },1000)
   },
   computed: {
     
@@ -272,11 +269,6 @@ export default {
   background:rgba(0,0,0,.7);
   z-index:10;
 }
-
-.canvasObj{
-  // margin:0 auto;
-}
-
 .openChangeMode{
   width:100%;
   padding:0 20px;
