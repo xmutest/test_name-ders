@@ -45,13 +45,13 @@
       <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
           <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
-          <el-button size="mini" @click="is_preserve(scope.$index)"
+          <el-button size="mini" @click="is_preserve(scope.$index, true)"
             >新增</el-button
           >
           <el-button
             size="mini"
             type="danger"
-            @click="deleteRow(scope.$index, t_security_services)"
+            @click="deleteRow(scope.$index, scope.row)"
             >删除</el-button
           >
         </template>
@@ -64,7 +64,10 @@
 export default {
   data() {
     return {
-      t_security_services: [],
+      Itzm: false,
+      t_security_services: [
+        { servicesName: "", serviceProvider: "", show: false },
+      ],
     };
   },
   created() {
@@ -80,9 +83,9 @@ export default {
           List.forEach((element) => {
             element["show"] = false;
           });
+          this.t_security_services = List;
         }
 
-        this.t_security_services = List;
         // this.ProjectQueryList();
         //查询列表
       } else {
@@ -102,26 +105,40 @@ export default {
     },
     async schujiaodian(item) {
       item.show = false;
-      let res = await this.$api.API_securityServicesupdateService(item);
+      let res = "";
+      if (item.id && item.id != "undefined") {
+        if (this.Itzm == true) {
+          res = await this.$api.API_securityServicessaveService(item);
+        } else {
+          res = await this.$api.API_securityServicesupdateService(item);
+        }
+      } else {
+        res = await this.$api.API_securityServicessaveService(item);
+      }
       if (res.code === 20000) {
         this.getlistdata();
+        this.Itzm = false;
         //查询列表
       } else {
         this.$message.error("保存错误，请联系管理员" + res.message);
       }
+      this.Itzm = false;
     },
-    is_preserve(item) {
+    is_preserve(item, Itzm) {
       var itss = this.t_security_services;
+      this.Itzm = Itzm;
       var list = {
         servicesName: "",
         serviceProvider: "",
         show: false,
+        sortNum: item + 1,
       };
       itss.splice(item + 1, 0, list);
       this.t_security_services = itss;
-      // console.log();
+      this.schujiaodian(this.t_security_services[item + 1]);
     },
     async deleteRow(index, rows) {
+      console.log(rows);
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

@@ -8,8 +8,8 @@
           <div class="mude_text_item">
             <div class="descTItle">接入点描述</div>
             <d2-quill
-              style="min-height: 200px; margin-bottom: 20px;"
-              v-model="access_point_describe"
+              style="min-height: 200px; margin-bottom: 20px"
+              v-model="fromdata.accessPointDescribe"
               @text-change="textChangeHandler"
             />
           </div>
@@ -21,59 +21,114 @@
               <span>点击图片后可打开标记JA,JB等标记的页面</span>
 
               <div class="openChangeMode">
-                <el-button type="primary" @click="showCanvas=true">修改</el-button>
+                <el-button type="primary" @click="showCanvas = true"
+                  >修改</el-button
+                >
               </div>
 
-              <canvasToorBarSel :showControl="showTools" :selIndex="inputIndex" @close="closeControl" @addPic="casAdd"></canvasToorBarSel>
+              <canvasToorBarSel
+                :showControl="showTools"
+                :selIndex="inputIndex"
+                @close="closeControl"
+                @addPic="casAdd"
+              ></canvasToorBarSel>
 
               <div class="casWindow" v-show="showCanvas">
                 <div class="canvasArea" ref="canvasArea">
                   <div class="toorBar">
-                    <el-button type="primary" data-index="a" @click="showToolsFun($event)">JA</el-button>
-                    <el-button type="primary" data-index="b" @click="showToolsFun($event)">JB</el-button>
-                    <el-button type="primary" data-index="c" @click="showToolsFun($event)">JC</el-button>
-                    <el-button type="primary" data-index="d" @click="showToolsFun($event)">JD</el-button>
-                    <el-button type="primary" data-index="e" @click="showToolsFun($event)">JE</el-button>
-                    <el-button type="primary" data-index="f" @click="showToolsFun($event)">JF</el-button>
+                    <el-button
+                      type="primary"
+                      data-index="a"
+                      @click="showToolsFun($event)"
+                      >JA</el-button
+                    >
+                    <el-button
+                      type="primary"
+                      data-index="b"
+                      @click="showToolsFun($event)"
+                      >JB</el-button
+                    >
+                    <el-button
+                      type="primary"
+                      data-index="c"
+                      @click="showToolsFun($event)"
+                      >JC</el-button
+                    >
+                    <el-button
+                      type="primary"
+                      data-index="d"
+                      @click="showToolsFun($event)"
+                      >JD</el-button
+                    >
+                    <el-button
+                      type="primary"
+                      data-index="e"
+                      @click="showToolsFun($event)"
+                      >JE</el-button
+                    >
+                    <el-button
+                      type="primary"
+                      data-index="f"
+                      @click="showToolsFun($event)"
+                      >JF</el-button
+                    >
 
-                    <el-button type="primary" >使用网络结构图</el-button>
-                    <el-button type="primary" @click="saveCanvas">保存</el-button>
-                    <img :src="require('@/views/demo/ControllerLink/img/close.png')" @click="showCanvas=false" class="casClose">
+                    <el-button type="primary">使用网络结构图</el-button>
+                    <el-button type="primary" @click="saveCanvas"
+                      >保存</el-button
+                    >
+                    <img
+                      :src="
+                        require('@/views/demo/ControllerLink/img/close.png')
+                      "
+                      @click="showCanvas = false"
+                      class="casClose"
+                    />
                   </div>
-                  <easel-canvas 
-                    :width="1000" 
-                    :height="500" 
+                  <easel-canvas
+                    :width="1000"
+                    :height="500"
                     ref="canvaspic"
                     class="canvasObj"
                   >
                     <!-- 使用图片要用require获取 -->
                     <easel-bitmap
-                      :image="require('@/views/demo/ControllerLink/img/structure01.jpg')"
+                      :image="
+                        require('@/views/demo/ControllerLink/img/structure01.jpg')
+                      "
                       :x="1000 / 2"
                       :y="0"
-                      :align="['center','top']"
+                      :align="['center', 'top']"
                     >
                     </easel-bitmap>
-                    
+
                     <easel-bitmap
-                      :image="require(`@/views/demo/ControllerLink/img/palntlsImg/${item}.png`)"
+                      :image="
+                        require(`@/views/demo/ControllerLink/img/palntlsImg/${item}.png`)
+                      "
                       :x="0"
                       :y="0"
-                      :align="['left','top']"
+                      :align="['left', 'top']"
                       @mousedown="objTouch($event)"
                       @pressmove.prevent="objMove($event)"
                       @mouseout="objOut($event)"
-                      v-for="(item,key) in bitmapArr"
+                      v-for="(item, key) in bitmapArr"
                       :key="key"
                     >
                     </easel-bitmap>
-                   
                   </easel-canvas>
                 </div>
               </div>
 
-              <img src="@/views/demo/ControllerLink/img/structure01.jpg" alt="" class="resPic">
+              <img
+                src="@/views/demo/ControllerLink/img/structure01.jpg"
+                alt=""
+                class="resPic"
+              />
             </div>
+          </div>
+          <div class="tijiaobaoc">
+            <el-button type="primary" @click="submitReport">保存</el-button>
           </div>
         </el-card>
       </div>
@@ -83,45 +138,83 @@
 </template>
 
 <script>
-import canvasToorBarSel from '@/components/canvasToorBarSel/canvasToorBarSel'
+import canvasToorBarSel from "@/components/canvasToorBarSel/canvasToorBarSel";
 export default {
   data() {
     return {
-      access_point_describe: "",
-      cas:{
-        width:0,
-        height:0
+      fromdata: {
+        id: "",
+        accessPointDescribe: "",
       },
-      mouseInfo:{
-        startX:0,
-        startY:0,
-        moveX:0,
-        moveY:0,
-        startLocateX:0,
-        startLocateY:0
+      cas: {
+        width: 0,
+        height: 0,
       },
-      showTools:false,
-      inputIndex:'',
-      showCanvas:false,
-      bitmapArr:[]
+      mouseInfo: {
+        startX: 0,
+        startY: 0,
+        moveX: 0,
+        moveY: 0,
+        startLocateX: 0,
+        startLocateY: 0,
+      },
+      showTools: false,
+      inputIndex: "",
+      showCanvas: false,
+      bitmapArr: [],
+      imgUrl:''
     };
   },
-  components:{
-    canvasToorBarSel
+  components: {
+    canvasToorBarSel,
   },
   created() {
-    
+    this.getEtlist();
   },
   mounted() {
-    let that = this
-    this.casSize()
+    let that = this;
+    this.casSize();
+    // setTimeout(function(){
+    //   that.outputPic()
+    // },1000)
   },
-  computed: {
-    
-  },
+  computed: {},
   methods: {
+    //  获取网络结构图片
+     async getlistdataImg() {
+      
+      let res = await this.$api.API_findNetworkImg();
+      if (res.code === 20000) {
+        if (res.data !== null) {
+          this.imgUrl =
+            "/evaluation/static" + res.data.imgUrl + res.data.imgName;
+        }
+      }
+      if (res.code !== 20000) {
+        this.$message.error("图片获取失败，请联系管理员" + res.message);
+      }
+    },
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
+    },
+    async getEtlist() {
+      let List = await this.$api.API_projectOverviewfindAccessPointDescribe();
+      if (List.code === 20000) {
+        this.fromdata = List.data;
+        //查询列表
+      } else {
+        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+      }
+    },
+    async submitReport() {
+      let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
+      if (res.code === 20000) {
+        this.$message.success("修改成功！！");
+        this.getEtlist();
+        //查询列表
+      } else {
+        this.$message.error("错误，请联系管理员" + res.message);
+      }
     },
     getStyle(obj, attr) {
       if (obj.currentStyle) {
@@ -131,93 +224,94 @@ export default {
       }
     },
     // 画布尺寸
-    casSize(){
-      let that = this
-      let casBox = this.$refs.canvasArea
+    casSize() {
+      let that = this;
+      let casBox = this.$refs.canvasArea;
     },
     // 保存图片
-    saveCanvas(){
-      let parper = this.$refs.canvaspic.$el
+    saveCanvas() {
+      let parper = this.$refs.canvaspic.$el;
       var result = parper.toDataURL("image/png");
 
       // 获取获取图片
-      let resPic = document.querySelector('.resPic')
-      resPic.src = result
+      let resPic = document.querySelector(".resPic");
+      resPic.src = result;
     },
     // 移动元素
-    objTouch(e){
-      let obj = e.currentTarget
-      this.mouseInfo.startLocateX = obj.x
-      this.mouseInfo.startLocateY = obj.y
+    objTouch(e) {
+      let obj = e.currentTarget;
+      this.mouseInfo.startLocateX = obj.x;
+      this.mouseInfo.startLocateY = obj.y;
 
-      this.mouseInfo.startX = e.stageX
-      this.mouseInfo.startY = e.stageY
+      this.mouseInfo.startX = e.stageX;
+      this.mouseInfo.startY = e.stageY;
     },
-    objMove(e){
-      this.mouseInfo.moveX = e.stageX
-      this.mouseInfo.moveY = e.stageY
-      let diveceX = this.mouseInfo.moveX - this.mouseInfo.startX
-      let diveceY = this.mouseInfo.moveY - this.mouseInfo.startY
+    objMove(e) {
+      this.mouseInfo.moveX = e.stageX;
+      this.mouseInfo.moveY = e.stageY;
+      let diveceX = this.mouseInfo.moveX - this.mouseInfo.startX;
+      let diveceY = this.mouseInfo.moveY - this.mouseInfo.startY;
 
       // 触发事件对象
-      let obj = e.currentTarget
+      let obj = e.currentTarget;
 
       // 获取图片宽高
-      let imgWidth = obj.image.width
-      let imgHeight = obj.image.height
+      let imgWidth = obj.image.width;
+      let imgHeight = obj.image.height;
 
-      obj.x = this.mouseInfo.startLocateX + diveceX
-      obj.y = this.mouseInfo.startLocateY + diveceY
+      obj.x = this.mouseInfo.startLocateX + diveceX;
+      obj.y = this.mouseInfo.startLocateY + diveceY;
 
       //超出做限制
-      if(obj.x < 0 || obj.x + imgWidth > 1000){
-        if(obj.x < 0){
-          obj.x = 0
-        }else{
-          obj.x = 1000 - imgWidth
+      if (obj.x < 0 || obj.x + imgWidth > 1000) {
+        if (obj.x < 0) {
+          obj.x = 0;
+        } else {
+          obj.x = 1000 - imgWidth;
         }
       }
 
-      if(obj.y < 0 || obj.y + imgHeight > 500){
-        if(obj.y < 0){
-          obj.y = 0
-        }else{
-          obj.y = 500 - imgHeight
+      if (obj.y < 0 || obj.y + imgHeight > 500) {
+        if (obj.y < 0) {
+          obj.y = 0;
+        } else {
+          obj.y = 500 - imgHeight;
         }
       }
     },
-    objOut(e){
+    objOut(e) {
       // 触发事件对象
-      let obj = e.currentTarget
+      let obj = e.currentTarget;
 
-      this.mouseInfo.startLocateX = obj.x
-      this.mouseInfo.startLocateY = obj.y
+      this.mouseInfo.startLocateX = obj.x;
+      this.mouseInfo.startLocateY = obj.y;
     },
     // 流程工具选择
-    showToolsFun(e){
-      let flag = false
-      for(let i = 0 ; i < this.bitmapArr.length;i++){
-        if(this.bitmapArr[i].indexOf(e.currentTarget.dataset.index) != -1) flag = true
+    showToolsFun(e) {
+      let flag = false;
+      for (let i = 0; i < this.bitmapArr.length; i++) {
+        if (this.bitmapArr[i].indexOf(e.currentTarget.dataset.index) != -1)
+          flag = true;
       }
 
-      if(flag){
-          return this.$message({
-            message: `已经选过 j${e.currentTarget.dataset.index} 了`,
-            type: 'warning'
-          });
+      if (flag) {
+        return this.$message({
+          message: `已经选过 j${e.currentTarget.dataset.index} 了`,
+          type: "warning",
+        });
       }
 
-      this.showTools = true
-      this.inputIndex = e.currentTarget.dataset.index
+      this.showTools = true;
+      this.inputIndex = e.currentTarget.dataset.index;
     },
-    closeControl(e){
-      this.showTools = e
+    closeControl(e) {
+      this.showTools = e;
     },
     // 动态往画布添加元素
-    casAdd(e){
-      let pic = require(`@/views/demo/ControllerLink/img/palntlsImg/${e}.png`)
-      this.bitmapArr.push(e)
-    }
+    casAdd(e) {
+      let pic = require(`@/views/demo/ControllerLink/img/palntlsImg/${e}.png`);
+      this.bitmapArr.push(e);
+    },
   },
 };
 </script>
@@ -233,8 +327,8 @@ export default {
     .el-tag {
       margin-right: 5px;
     }
-    span{
-      margin-bottom:20px;
+    span {
+      margin-bottom: 20px;
     }
   }
   .descTItle {
@@ -244,48 +338,53 @@ export default {
 .el-card__header {
   border-bottom: 0px solid #ebeef5;
 }
-.canvasArea{
-  width:1000px;
-  height:700px;
+.canvasArea {
+  width: 1000px;
+  height: 700px;
   position: absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  margin:auto;
-  border:1px solid #ccc;
-  background:#fff;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 1px solid #ccc;
+  background: #fff;
 }
-.resPic{
-  border:1px solid #ccc;
+.resPic {
+  border: 1px solid #ccc;
 }
 
-.casWindow{
+.casWindow {
   position: fixed;
-  top:0;
-  left:0;
-  width:100vw;
-  height:100vh;
-  background:rgba(0,0,0,.7);
-  z-index:10;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10;
 }
-.openChangeMode{
-  width:100%;
-  padding:0 20px;
-  margin-bottom:20px;
+
+.canvasObj {
+  // margin:0 auto;
 }
-.toorBar{
-  width:100%;
-  padding:0 20px;
-  margin-bottom:20px;
-  box-sizing:border-box;
+
+.openChangeMode {
+  width: 100%;
+  padding: 0 20px;
+  margin-bottom: 20px;
 }
-.casClose{
+.toorBar {
+  width: 100%;
+  padding: 0 20px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+.casClose {
   width: 30px;
   position: absolute;
   top: 20px;
   right: 20px;
   z-index: 10;
-  cursor:pointer;
+  cursor: pointer;
 }
 </style>

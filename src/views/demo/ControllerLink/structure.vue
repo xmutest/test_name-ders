@@ -1,4 +1,4 @@
-<!-- 承载的业务情况 -->
+<!-- 网络结构 -->
 <template>
   <d2-container>
     <div class="mude_is">
@@ -115,7 +115,9 @@
                 <el-table-column fixed="right" label="操作" width="200">
                   <template slot-scope="scope">
                     <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
-                    <el-button size="mini" @click="is_preserve(scope.$index)"
+                    <el-button
+                      size="mini"
+                      @click="is_preserve(scope.$index, true)"
                       >新增</el-button
                     >
                     <el-button
@@ -145,7 +147,9 @@ export default {
     return {
       fromdata: {
         networkStructureDescribe: "",
+        id: "",
       },
+      Itzm: false,
       imgUrl: "",
       imgUrl_id: "",
       t_sys_boundary: [
@@ -162,6 +166,7 @@ export default {
   created() {
     this.getlistdata();
     this.getlistdataImg();
+    this.getEtlist();
   },
   methods: {
     async beforePicUpload(file) {
@@ -215,10 +220,13 @@ export default {
       let res = await this.$api.API_sysBoundaryFindSysBoundary();
       if (res.code === 20000) {
         let List = res.data;
-        List.forEach((element) => {
-          element["show"] = false;
-        });
-        this.t_sys_boundary = List;
+        if (List.length > 0) {
+          List.forEach((element) => {
+            element["show"] = false;
+          });
+          this.t_sys_boundary = List;
+        }
+
         // this.ProjectQueryList();
         //查询列表
       } else {
@@ -232,12 +240,20 @@ export default {
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
     },
-
+    async getEtlist() {
+      let List = await this.$api.API_projectOverviewStructureDescribe();
+      if (List.code === 20000) {
+        this.fromdata = List.data;
+        //查询列表
+      } else {
+        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+      }
+    },
     async submitReport() {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         this.$message.success("修改成功！！");
-        // this.ProjectQueryList();
+        this.getEtlist();
         //查询列表
       } else {
         this.$message.error("错误，请联系管理员" + res.message);
@@ -252,25 +268,37 @@ export default {
     },
     async schujiaodian(item) {
       item.show = false;
-      let res = await this.$api.API_sysBoundaryUpdate(item);
+      let res = "";
+      if (item.id && item.id != "undefined") {
+        if (this.Itzm == true) {
+          res = await this.$api.API_sysBoundarySave(item);
+        } else {
+          res = await this.$api.API_sysBoundaryUpdate(item);
+        }
+      } else {
+        res = await this.$api.API_sysBoundarySave(item);
+      }
       if (res.code === 20000) {
         this.getlistdata();
+        this.Itzm = false;
         //查询列表
       } else {
         this.$message.error("保存错误，请联系管理员" + res.message);
       }
     },
-    is_preserve(item) {
+    is_preserve(item,Itzm) {
       var itss = this.t_sys_boundary;
+      this.Itzm = Itzm;
       var list = {
         boundaryName: "",
         accessMethod: "",
         mainBusiness: "",
         show: false,
+        sortNum: item + 1,
       };
       itss.splice(item + 1, 0, list);
       this.t_sys_boundary = itss;
-      // console.log();
+      this.schujiaodian(this.t_sys_boundary[item + 1]);
     },
     async deleteRow(index, rows) {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
@@ -279,7 +307,9 @@ export default {
         type: "warning",
       })
         .then(async () => {
-          let res = await this.$api.API_sysBoundaryDelSysBoundary({id:rows.id});
+          let res = await this.$api.API_sysBoundaryDelSysBoundary({
+            id: rows.id,
+          });
           if (res.code === 20000) {
             this.getlistdata();
             this.$message({

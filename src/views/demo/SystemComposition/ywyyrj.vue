@@ -1,5 +1,4 @@
 <!--业务应用软件/平台-->
-<!--区域边界-->
 <template>
   <d2-container>
     <el-table
@@ -10,19 +9,17 @@
       <el-table-column label="应用系统/平台名称">
         <template slot-scope="scope">
           <div
-            @click="
-              is_compile(scope.row, scope.$index, 'software_platform_name')
-            "
+            @click="is_compile(scope.row, scope.$index, 'softwarePlatformName')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'software_platform_name' + scope.$index"
+            :ref="'softwarePlatformName' + scope.$index"
             @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
-            v-model="scope.row.software_platform_name"
+            v-model="scope.row.softwarePlatformName"
           ></el-input>
           <span v-show="!scope.row.show">{{
-            scope.row.software_platform_name
+            scope.row.softwarePlatformName
           }}</span>
         </template>
       </el-table-column>
@@ -30,54 +27,52 @@
       <el-table-column label="主要功能">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'major_function')"
+            @click="is_compile(scope.row, scope.$index, 'majorFunction')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'major_function' + scope.$index"
+            :ref="'majorFunction' + scope.$index"
             @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
-            v-model="scope.row.major_function"
+            v-model="scope.row.majorFunction"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.major_function }}</span>
+          <span v-show="!scope.row.show">{{ scope.row.majorFunction }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="应用软件及版本">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'software_edition')"
+            @click="is_compile(scope.row, scope.$index, 'softwareEdition')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'software_edition' + scope.$index"
+            :ref="'softwareEdition' + scope.$index"
             @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
-            v-model="scope.row.software_edition"
+            v-model="scope.row.softwareEdition"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.software_edition }}</span>
+          <span v-show="!scope.row.show">{{ scope.row.softwareEdition }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="开发厂商">
         <template slot-scope="scope">
           <div
-            @click="
-              is_compile(scope.row, scope.$index, 'develop_manufacturers')
-            "
+            @click="is_compile(scope.row, scope.$index, 'developManufacturers')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'develop_manufacturers' + scope.$index"
+            :ref="'developManufacturers' + scope.$index"
             @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
-            v-model="scope.row.develop_manufacturers"
+            v-model="scope.row.developManufacturers"
           ></el-input>
           <span v-show="!scope.row.show">{{
-            scope.row.develop_manufacturers
+            scope.row.developManufacturers
           }}</span>
         </template>
       </el-table-column>
@@ -85,7 +80,8 @@
       <el-table-column label="重要程度">
         <template slot-scope="scope">
           <el-select
-            v-model="scope.row.important_degree"
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.importantDegree"
             filterable
             placeholder="请选择"
           >
@@ -99,42 +95,47 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="评测指导书">
+      <!-- <el-table-column label="评测指导书">
         <template slot-scope="scope">
           <div
             @click="
-              is_compile(scope.row, scope.$index, 'evaluation_instruction_book')
+              is_compile(scope.row, scope.$index, 'evaluationInstructionBookId')
             "
             class="itsz"
           ></div>
           <el-input
-            :ref="'evaluation_instruction_book' + scope.$index"
+            :ref="'evaluationInstructionBookId' + scope.$index"
             @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
-            v-model="scope.row.evaluation_instruction_book"
+            v-model="scope.row.evaluationInstructionBookId"
           ></el-input>
           <span v-show="!scope.row.show">{{
-            scope.row.evaluation_instruction_book
+            scope.row.evaluationInstructionBookId
           }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column label="测评对象" width="80">
         <template slot-scope="scope">
-          <el-checkbox v-model="scope.row.is_evaluation_obj"></el-checkbox>
+          <el-checkbox
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.isEvaluationObj"
+          ></el-checkbox>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
           <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
-          <el-button size="mini" @click="is_preserve(scope.$index)"
+          <el-button
+            size="mini"
+            @click="is_preserve(scope.$index, true, scope.row.sortNum)"
             >新增</el-button
           >
           <el-button
             size="mini"
             type="danger"
-            @click="deleteRow(scope.$index, tabledatas)"
+            @click="deleteRow(scope.$index, scope.row)"
             >删除</el-button
           >
         </template>
@@ -157,12 +158,14 @@ export default {
       ],
       tabledatas: [
         {
-          software_platform_name: "",
-          major_function: "",
-          software_edition: "",
-          important_degree: 1,
-          evaluation_instruction_book: "",
-          is_evaluation_obj: true,
+          softwarePlatformName: "",
+          majorFunction: "",
+          softwareEdition: "",
+          importantDegree: 1,
+          evaluationInstructionBookId: "",
+          isEvaluationObj: true,
+          developManufacturers: "",
+          sortNum: 1,
           show: false,
         },
       ],
@@ -172,29 +175,30 @@ export default {
     this.getlistdata();
   },
   methods: {
-    getlistdata() {
-      let list = [
-        {
-          software_platform_name: "边界名称",
-          major_function: "接入方式",
-          software_edition: "承载主要业务应用",
-          important_degree: 1,
-          evaluation_instruction_book: "安全区域边界",
-          is_evaluation_obj: true,
-        },
-        {
-          software_platform_name: "边界名称",
-          major_function: "接入方式",
-          software_edition: "承载主要业务应用",
-          important_degree: 1,
-          evaluation_instruction_book: "安全区域边界",
-          is_evaluation_obj: true,
-        },
-      ];
-      list.forEach((element) => {
-        element["show"] = false;
-      });
-      this.tabledatas = list;
+    async getlistdata() {
+      let res = await this.$api.APISoftwarePlatformFindsoftwarePlatform(
+        this.formPage
+      );
+      console.log(res);
+      if (res.code === 20000) {
+        let List = res.data.list;
+        if (res.data.list.length > 0) {
+          List.forEach((element) => {
+            if (element.isEvaluationObj == 1) {
+              element.isEvaluationObj = true;
+            } else {
+              element.isEvaluationObj = false;
+            }
+            element["show"] = false;
+          });
+          this.tabledatas = List;
+        }
+
+        // this.ProjectQueryList();
+        //查询列表
+      } else {
+        this.$message.error("错误，数据查询失败" + res.message);
+      }
     },
     is_compile(item, index, itname) {
       // console.log(item,index,itname)
@@ -205,28 +209,80 @@ export default {
       }, 1);
       console.log(item);
     },
-    schujiaodian(item) {
+    async schujiaodian(item) {
+      if (item.isEvaluationObj == true) {
+        item.isEvaluationObj = 1;
+      } else {
+        item.isEvaluationObj = 0;
+      }
       item.show = false;
-      console.log(item);
+      let res = "";
+      if (item.id && item.id != "undefined") {
+        if (this.Itzm == true) {
+          res = await this.$api.API_SoftwarePlatformSaveSoftwarePlatformt(item);
+        } else {
+          res = await this.$api.API_SoftwarePlatformUpdateSoftwarePlatform(
+            item
+          );
+        }
+      } else {
+        res = await this.$api.API_SoftwarePlatformSaveSoftwarePlatformt(item);
+      }
+      if (res.code === 20000) {
+        this.getlistdata();
+        this.Itzm = false;
+        //查询列表
+      } else {
+        this.$message.error("保存错误，请联系管理员" + res.message);
+      }
+      this.Itzm = false;
     },
-    is_preserve(item) {
+    is_preserve(item, Itzm, sortNum) {
       var itss = this.tabledatas;
+      this.Itzm = Itzm;
       var list = {
-        software_platform_name: "",
-        major_function: "",
-        software_edition: "",
-        important_degree: 1,
-        evaluation_instruction_book: "",
-        is_evaluation_obj: true,
+        softwarePlatformName: "",
+        majorFunction: "",
+        softwareEdition: "",
+        importantDegree: 1,
+        evaluationInstructionBookId: "",
+        isEvaluationObj: true,
+        developManufacturers: "",
+        sortNum,
         show: false,
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;
-      // console.log();
+      this.schujiaodian(this.tabledatas[item + 1]);
     },
-    deleteRow(index, rows) {
-      console.log(index, rows);
-      rows.splice(index, 1);
+    async deleteRow(index, rows) {
+      console.log(rows);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.APISoftwarePlatformDelSoftwarePlatform({
+            id: rows.id,
+          });
+          if (res.code === 20000) {
+            this.getlistdata();
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            //查询列表
+          } else {
+            this.$message.error("删除错误，请联系管理员" + res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };

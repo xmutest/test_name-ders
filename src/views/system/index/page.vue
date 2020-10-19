@@ -123,7 +123,7 @@
                         size="mini"
                         type="primary"
                         @click="xmuupdata(scope.$index, scope.row)"
-                        >更新</el-button
+                        >修改</el-button
                       >
                       <el-button
                         size="mini"
@@ -229,10 +229,13 @@
               </el-form-item>
             </div>
             <div>
-              <el-form-item label="行业" :label-width="formLabelWidth">
+              <el-form-item label="标准版本" :label-width="formLabelWidth">
                 <el-select v-model="xmform.standardVersion">
+                  <!-- <div v-if="">
+
+                  </div> -->
                   <el-option
-                    v-for="item in standardVersionlist[its_id_to - 1].value"
+                    v-for="item in standardVersionlist[xmform.standard].value"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -241,7 +244,7 @@
               </el-form-item>
             </div>
           </div>
-          <el-form-item label="拓展标准" :label-width="formLabelWidth">
+          <el-form-item label="扩展标准" :label-width="formLabelWidth">
             <el-select
               v-model="xmform.standardExtends"
               multiple
@@ -285,14 +288,6 @@
               </el-form-item>
             </div>
           </div>
-          <el-form-item
-            v-if="ua_cre == 0"
-            label="创建人"
-            :label-width="formLabelWidth"
-            prop="creator"
-          >
-            {{ info.name }}
-          </el-form-item>
           <el-form-item
             label="项目参与人"
             prop="membersIdList"
@@ -350,6 +345,7 @@ export default {
       ],
       //行业列表
       standardVersionlist: [
+        {},
         {
           id: 1,
           value: [
@@ -427,9 +423,9 @@ export default {
         systemName: [
           { required: true, message: "请输入系统名称", trigger: "blur" },
         ],
-        membersIdList: [
-          { required: true, message: "请选择项目参与人", trigger: "blur" },
-        ],
+        // membersIdList: [
+        //   { required: true, message: "请选择项目参与人", trigger: "blur" },
+        // ],
       },
     };
   },
@@ -649,7 +645,7 @@ export default {
 
       this.xmform.projectId = row.projectId;
       Object.keys(this.xmform).forEach((key) => {
-        this.xmform[key] = res.data[key];
+        this.xmform[key] = res[key];
       });
       if (row.standardExtends) {
         this.xmform.standardExtends = row.standardExtends.split("┋");
@@ -663,7 +659,7 @@ export default {
         systemName: "", //系统名称
         evaluatedUnit: "", //被测单位名称
         recordSn: "", //备案证明编号
-        standard: 2, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
+        standard: 3, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
         standardVersion: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
         standardExtends: "", //拓展标准
         level: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级

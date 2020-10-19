@@ -24,7 +24,7 @@
           flex="dir:top main:center cross:center"
         >
           <!-- logo -->
-          <div style="font-size: 1.3em" class="page-login-logo_item">
+          <div style="font-size: 1.5em;font-weight: 700;" class="page-login-logo_item">
             华南评测报告管理系统
           </div>
           <img class="page-login--logo" src="./image/logo.png" />
@@ -324,7 +324,7 @@ export default {
   // main
   .page-login--logo {
     width: 150px;
-    margin-bottom: 2em;
+    // margin-bottom: 2em;
     margin-top: -2em;
   }
   .page-login-logo_item {

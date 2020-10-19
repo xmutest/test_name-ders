@@ -27,26 +27,38 @@
 export default {
   data() {
     return {
-      fromdata:{
-      businessSituation: "",
-      }
+      fromdata: {
+        businessSituation: "",
+        id: "",
+      },
     };
+  },
+  created() {
+    this.getEtlist();
   },
   methods: {
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
     },
+     async getEtlist() {
+      let List = await this.$api.API_projectOverviewfindBusinessSituation();
+      if (List.code === 20000) {
+        this.fromdata=List.data
+        //查询列表
+      } else {
+        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+      }
+    },
     async submitReport() {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         this.$message.success("修改成功！！");
-        // this.ProjectQueryList();
+        this.getEtlist();
         //查询列表
-      
       } else {
         this.$message.error("错误，请联系管理员" + res.message);
       }
-    }
+    },
   },
 };
 </script>

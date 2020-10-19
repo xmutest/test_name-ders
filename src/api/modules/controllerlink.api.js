@@ -70,6 +70,7 @@ export default ({
       params: data
     })
   },
+
   // 查询项目概述的测评工具及接入点说明
   async API_projectOverviewfindAccessPointDescribe(data = {}) {
     data.projectId = await this.get_info();
@@ -110,6 +111,16 @@ export default ({
       params: data
     })
   },
+  // GET 查询项目概述的测评工具
+  async API_projectOverviewEvaluationToolFindAll(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/evaluationTool/findAll',
+      method: 'get',
+      params: data
+    })
+  },
   // 查询项目概述的网络结构
   async API_projectOverviewStructureDescribe(data = {}) {
     data.projectId = await this.get_info();
@@ -126,6 +137,16 @@ export default ({
     // 接口请求
     return request({
       url: '/projectOverview/findObjSelectionMethod',
+      method: 'get',
+      params: data
+    })
+  },
+  // 查询项目概述的安全环境
+  async API_projectOThreatClassificationFindAll(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/threatClassification/findAll',
       method: 'get',
       params: data
     })
@@ -264,7 +285,7 @@ export default ({
     // 接口请求
     return request({
       url: '/securityServices/delService',
-      method: 'delete',
+      method: 'get',
       params: data
     })
   },
@@ -290,7 +311,49 @@ export default ({
     return request({
       url: '/securityServices/saveService',
       method: 'post',
+      data
+    })
+  },
+  /**
+   * @description 项目概述-详细过程-查询
+   */
+  async API_TimeRecordFindTimeRecord(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/timeRecord/findTimeRecord',
+      method: 'get',
       params: data
+    })
+  },
+  /**
+   * @description 项目概述-详细过程-保存
+   */
+  async API_TimeRecordSaveTimeRecord(data = {}) {
+    let projectId = await this.get_info();
+    // 接口请求
+    data.timeRecords.forEach(element => {
+      element.projectId = projectId
+    });
+    return request({
+      url: '/timeRecord/saveTimeRecord',
+      method: 'post',
+      data: [...data.timeRecords]
+    })
+  },
+  /**
+   * @description 项目概述-详细过程-修改
+   */
+  async API_TimeRecordUpdateTimeRecord(data = {}) {
+    let projectId = await this.get_info();
+    // 接口请求
+    data.timeRecords.forEach(element => {
+      element.projectId = projectId
+    });
+    return request({
+      url: '/timeRecord/updateTimeRecord',
+      method: 'post',
+      data: [...data.timeRecords]
     })
   },
 })

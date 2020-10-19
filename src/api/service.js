@@ -46,6 +46,15 @@ function createService() {
           case 20000:
             // [ 示例 ] code === 0 代表没有错误
             return dataAxios
+          case 401, 555:
+            // [ 示例 ] code === 0 代表没有错误
+            return alert(dataAxios.data.message)
+          case 402, 403:
+            // [ 示例 ] code === 0 代表没有错误
+            this.logout({
+              confirm: true
+            })
+            return alert(dataAxios.data.message)
           default:
             // 不是正确的 code
             errorCreate(`${dataAxios}: ${response.config.url}`)
@@ -63,6 +72,9 @@ function createService() {
           error.message = '未授权，请登录';
           break
         case 403:
+          this.logout({
+            confirm: true
+          })
           error.message = '拒绝访问';
           break
         case 404:

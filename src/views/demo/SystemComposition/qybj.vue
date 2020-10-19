@@ -9,57 +9,58 @@
       <el-table-column label="边界名称">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'boundary_name')"
+            @click="is_compile(scope.row, scope.$index, 'boundaryName')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'boundary_name' + scope.$index"
+            :ref="'boundaryName' + scope.$index"
             @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
-            v-model="scope.row.boundary_name"
+            v-model="scope.row.boundaryName"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.boundary_name }}</span>
+          <span v-show="!scope.row.show">{{ scope.row.boundaryName }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="接入方式">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'access_mode')"
+            @click="is_compile(scope.row, scope.$index, 'accessMode')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'access_mode' + scope.$index"
+            :ref="'accessMode' + scope.$index"
             @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
-            v-model="scope.row.access_mode"
+            v-model="scope.row.accessMode"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.access_mode }}</span>
+          <span v-show="!scope.row.show">{{ scope.row.accessMode }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="承载主要业务应用">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'main_business')"
+            @click="is_compile(scope.row, scope.$index, 'mainBusiness')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'main_business' + scope.$index"
+            :ref="'mainBusiness' + scope.$index"
             @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
-            v-model="scope.row.main_business"
+            v-model="scope.row.mainBusiness"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.main_business }}</span>
+          <span v-show="!scope.row.show">{{ scope.row.mainBusiness }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="重要程度">
         <template slot-scope="scope">
           <el-select
-            v-model="scope.row.important_degree"
+            v-model="scope.row.importantDegree"
+            @change="schujiaodian(scope.row)"
             filterable
             placeholder="请选择"
           >
@@ -73,46 +74,44 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="评测指导书">
+      <!-- <el-table-column label="评测指导书">
         <template slot-scope="scope">
           <div
             @click="
-              is_compile(
-                scope.row,
-                scope.$index,
-                'evaluation_instruction_book_id'
-              )
+              is_compile(scope.row, scope.$index, 'evaluationInstructionBookId')
             "
             class="itsz"
           ></div>
           <el-input
-            :ref="'evaluation_instruction_book_id' + scope.$index"
+            :ref="'evaluationInstructionBookId' + scope.$index"
             @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
-            v-model="scope.row.evaluation_instruction_book_id"
+            v-model="scope.row.evaluationInstructionBookId"
           ></el-input>
           <span v-show="!scope.row.show">{{
-            scope.row.evaluation_instruction_book_id
+            scope.row.evaluationInstructionBookId
           }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column label="测评对象" width="80">
         <template slot-scope="scope">
-          <el-checkbox v-model="scope.row.is_evaluation_obj"></el-checkbox>
+          <el-checkbox  @change="schujiaodian(scope.row)" v-model="scope.row.isEvaluationObj"></el-checkbox>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
           <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
-          <el-button size="mini" @click="is_preserve(scope.$index)"
+          <el-button
+            size="mini"
+            @click="is_preserve(scope.$index, true, scope.row.sortNum)"
             >新增</el-button
           >
           <el-button
             size="mini"
             type="danger"
-            @click="deleteRow(scope.$index, tabledatas)"
+            @click="deleteRow(scope.$index, scope.row)"
             >删除</el-button
           >
         </template>
@@ -125,7 +124,8 @@
 export default {
   data() {
     return {
-      //  		重要程度	测评对象	排序号
+      Itzm: false,
+      //  		重要程度	测评对象	 排序号
       importance_list: [
         { value: 5, label: "非常重要(5)" },
         { value: 4, label: "重要（4）" },
@@ -133,36 +133,52 @@ export default {
         { value: 2, label: "不太重要（2）" },
         { value: 1, label: "不重要（1）" },
       ],
-      tabledatas: [],
+      tabledatas: [
+        {
+          boundaryName: "",
+          accessMode: "",
+          mainBusiness: "",
+          importantDegree: 1,
+          evaluationInstructionBookId: "",
+          isEvaluationObj: false,
+          sortNum: 1,
+          show: false,
+        },
+      ],
+      formPage: {
+        pageNum: 1,
+        pageSize: 10,
+      },
     };
   },
   created() {
     this.getlistdata();
   },
   methods: {
-    getlistdata() {
-      let list = [
-        {
-          boundary_name: "边界名称",
-          access_mode: "接入方式",
-          main_business: "承载主要业务应用",
-          important_degree: 1,
-          evaluation_instruction_book_id: "安全区域边界",
-          is_evaluation_obj: true,
-        },
-        {
-          boundary_name: "边界名称",
-          access_mode: "接入方式",
-          main_business: "承载主要业务应用",
-          important_degree: 1,
-          evaluation_instruction_book_id: "安全区域边界",
-          is_evaluation_obj: true,
-        },
-      ];
-      list.forEach((element) => {
-        element["show"] = false;
-      });
-      this.tabledatas = list;
+    async getlistdata() {
+      let res = await this.$api.API_JF_RegionBoundaryFndRegionBoundary(
+        this.formPage
+      );
+      console.log(res);
+      if (res.code === 20000) {
+        let List = res.data.list;
+        if (res.data.list.length > 0) {
+          List.forEach((element) => {
+            if (element.isEvaluationObj == 1) {
+              element.isEvaluationObj = true;
+            } else {
+              element.isEvaluationObj = false;
+            }
+            element["show"] = false;
+          });
+          this.tabledatas = List;
+        }
+
+        // this.ProjectQueryList();
+        //查询列表
+      } else {
+        this.$message.error("错误，数据查询失败" + res.message);
+      }
     },
     is_compile(item, index, itname) {
       // console.log(item,index,itname)
@@ -173,28 +189,77 @@ export default {
       }, 1);
       console.log(item);
     },
-    schujiaodian(item) {
+    async schujiaodian(item) {
+      if (item.isEvaluationObj == true) {
+        item.isEvaluationObj = 1;
+      } else {
+        item.isEvaluationObj = 0;
+      }
       item.show = false;
-      console.log(item);
+      let res = "";
+      if (item.id && item.id != "undefined") {
+        if (this.Itzm == true) {
+          res = await this.$api.API_RegionBoundarySaveRegionBoundary(item);
+        } else {
+          res = await this.$api.API_RegionBoundaryUpdateRegionBoundary(item);
+        }
+      } else {
+        res = await this.$api.API_RegionBoundarySaveRegionBoundary(item);
+      }
+      if (res.code === 20000) {
+        this.getlistdata();
+        this.Itzm = false;
+        //查询列表
+      } else {
+        this.$message.error("保存错误，请联系管理员" + res.message);
+      }
+      this.Itzm = false;
     },
-    is_preserve(item) {
+    is_preserve(item, Itzm, sortNum) {
       var itss = this.tabledatas;
+      this.Itzm = Itzm;
       var list = {
-          boundary_name: "",
-          access_mode: "",
-          main_business: "",
-          important_degree: 1,
-          evaluation_instruction_book_id: "",
-          is_evaluation_obj: true,
+        boundaryName: "",
+        accessMode: "",
+        mainBusiness: "",
+        importantDegree: 1,
+        evaluationInstructionBookId: "",
+        isEvaluationObj: false,
         show: false,
+        sortNum
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;
-      // console.log();
+      this.schujiaodian(this.tabledatas[item + 1]);
     },
-    deleteRow(index, rows) {
-      console.log(index, rows);
-      rows.splice(index, 1);
+    async deleteRow(index, rows) {
+      console.log(rows);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.API_RegionBoundaryDelRegionBoundary({
+            id: rows.id,
+          });
+          if (res.code === 20000) {
+            this.getlistdata();
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            //查询列表
+          } else {
+            this.$message.error("删除错误，请联系管理员" + res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };

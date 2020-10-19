@@ -29,7 +29,6 @@
           </div>
         </el-card>
       </div>
-      <!-- 图片 -->
     </div>
   </d2-container>
 </template>
@@ -41,6 +40,7 @@ export default {
       fromdata: {
         systemSituation: "",
         lastEvaluationSituation: "",
+        id:''
       },
     };
   },
@@ -51,7 +51,7 @@ export default {
     async getEtlist() {
       let List = await this.$api.API_projectOverviewdObjfindSystemSituation();
       if (List.code === 20000) {
-        this.fromdata.id = List.data.id;
+        this.fromdata=List.data
         //查询列表
       } else {
         this.$message.error(List.message + "评测依据选项出差，请联系管理员");
@@ -64,7 +64,7 @@ export default {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         this.$message.success("修改成功！！");
-        // this.ProjectQueryList();
+        this.getEtlist();
         //查询列表
       } else {
         this.$message.error("错误，请联系管理员" + res.message);

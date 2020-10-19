@@ -9,30 +9,30 @@
             <div class="descTItle">对被测系统的基本判断</div>
             <d2-quill
               style="min-height: 200px; margin-bottom: 20px"
-              v-model="fromdata.basic_judgment"
+              v-model="fromdata.basicJudgment"
               @text-change="textChangeHandler"
             />
           </div>
-           <div class="mude_text_item">
+          <div class="mude_text_item">
             <div class="descTItle">对方案中应关注的测评重点建议</div>
             <d2-quill
               style="min-height: 200px; margin-bottom: 20px"
-              v-model="fromdata.key_suggestions"
+              v-model="fromdata.keySuggestions"
               @text-change="textChangeHandler"
             />
           </div>
-           <div class="mude_text_item">
+          <div class="mude_text_item">
             <div class="descTItle">对系统实施渗透测试的初步考虑</div>
             <div class="pc_gonjv">
-               <d2-quill
-              style="min-height: 200px; margin-bottom: 20px"
-              v-model="fromdata.infiltration_test_suggestions"
-              @text-change="textChangeHandler"
-            />
+              <d2-quill
+                style="min-height: 200px; margin-bottom: 20px"
+                v-model="fromdata.infiltrationTestSuggestions"
+                @text-change="textChangeHandler"
+              />
             </div>
           </div>
           <div class="tijiaobaoc">
-            <el-button  type="primary" @click="submitReport">保存</el-button>
+            <el-button type="primary" @click="submitReport">保存</el-button>
           </div>
         </el-card>
       </div>
@@ -46,22 +46,42 @@ export default {
   data() {
     return {
       fromdata: {
+        id: "",
         //测评对象选择方法
-        basic_judgment: "",
+        basicJudgment: "",
         //测评方法
-        key_suggestions: "",
+        keySuggestions: "",
         //评测工具
-        infiltration_test_suggestions: '',
+        infiltrationTestSuggestions: "",
       },
     };
   },
+  created() {
+    this.getEtlist();
+  },
   methods: {
-      textChangeHandler(delta, oldDelta, source) {
+    textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
     },
-    submitReport(){
-      console.log(this.fromdata);
-    }
+    async getEtlist() {
+      let List = await this.$api.API_projectOverviewfindEvaluationFocus();
+      if (List.code === 20000) {
+        this.fromdata = List.data;
+        //查询列表
+      } else {
+        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+      }
+    },
+    async submitReport() {
+      let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
+      if (res.code === 20000) {
+        this.$message.success("修改成功！！");
+        this.getEtlist();
+        //查询列表
+      } else {
+        this.$message.error("错误，请联系管理员" + res.message);
+      }
+    },
   },
 };
 </script>

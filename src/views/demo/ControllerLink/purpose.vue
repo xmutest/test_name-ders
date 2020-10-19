@@ -35,6 +35,14 @@
               v-model="fromdata.evaluationBasis"
               @text-change="textChangeHandler"
             ></el-input>
+            <div
+              data-v-231d5a32=""
+              style="font-size: 12px; margin: 10px; color: red"
+            >
+              <span data-v-231d5a32="" style="/* font-size: 12px; */"
+                >请以逗号分割多个依据</span
+              >
+            </div>
           </div>
           <div class="tijiaobaoc">
             <el-button type="primary" @click="submitReport">保存</el-button>
@@ -46,6 +54,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -62,16 +71,38 @@ export default {
     };
   },
   created() {
-    this.fromdata.evaluationObjective = `安全等级测评的目的是通过对目标系统在安全技术及管理方面的测评，对目标系统的安全技术状态及安全管理状况做出初步判断，给出目标系统在安全技术及安全管理方面与其相应安全等级保护要求之间的差距。测评结论作为委托方进一步完善系统安全策略及安全技术防护措施依据。
-         <br>
-        为进一步提高信息系统的保障能力，根据《信息安全等级保护管理办法》（公通字2007【43】号）的精神，广州泰康粤园医院有限公司委托广州华南信息安全测评中心（广州市中邦信息工程有限公司）（DJCP2010440126）对广州泰康粤园医院医院信息系统实施等级测评，以期发现信息系统和等级保护标准的差距以及存在的安全隐患，为后续的安全整改工作提供参考依据。`;
     this.getevaluationBasisFindAll();
     this.getEtlist();
+  },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   methods: {
     async getEtlist() {
       let List = await this.$api.API_projectOverviewObjective();
+      let data = "";
       if (List.code === 20000) {
+        if (List.data.evaluationObjective != null) {
+          data = List.data.evaluationObjective;
+        } else {
+          data = `安全等级测评的目的是通过对目标系统在安全技术及管理方面的测评，对目标系统的安全技术状态及安全管理状况做出初步判断，给出目标系统在安全技术及安全管理方面与其相应安全等级保护要求之间的差距。测评结论作为委托方进一步完善系统安全策略及安全技术防护措施依据。
+         <br>
+        为进一步提高信息系统的保障能力，根据《信息安全等级保护管理办法》（公通字2007【43】号）的精神，${this.xmu_info.data.evaluatedUnit}委托广州华南信息安全测评中心（广州市中邦信息工程有限公司）（DJCP2010440126）对${this.xmu_info.data.systemName}实施等级测评，以期发现信息系统和等级保护标准的差距以及存在的安全隐患，为后续的安全整改工作提供参考依据。`;
+        }
+        if (List.data.otherEvaluationBasis != null) {
+          this.fromdata.otherEvaluationBasis = List.data.otherEvaluationBasis.split(
+            ","
+          );
+        }
+        if (List.data.evaluationBasis == null) {
+          this.fromdata.evaluationBasis = `${this.xmu_info.data.systemName}定级报告`;
+        } else {
+          this.fromdata.evaluationBasis = List.data.evaluationBasis;
+        }
+
+        this.fromdata.evaluationObjective = data;
         this.fromdata.id = List.data.id;
         //查询列表
       } else {
@@ -99,11 +130,8 @@ export default {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         this.$message.success("修改成功！！");
-        // this.ProjectQueryList();
+        this.getEtlist();
         //查询列表
-        this.fromdata.otherEvaluationBasis = this.fromdata.otherEvaluationBasis.split(
-          ","
-        );
       } else {
         this.$message.error("错误，请联系管理员" + res.message);
       }

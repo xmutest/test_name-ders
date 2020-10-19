@@ -12,28 +12,37 @@
         :on-exceed="formHandleExceed"
         :on-remove="formHandleRemove"
         :before-upload="beforeUploadForm"
-        accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+        accept="application/msword,application/vnd.ms-excel"
         multiple
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip">
-          上传文件只能是xlsx/xls/csv格式文件，且不超过10m
+          上传文件只能是docx/doc格式，且不超过10m
         </div>
       </el-upload>
+      <div class="ks_buttm">
+        <el-button type="primary" @click="ks_toBummt">导出模板</el-button>
+      </div>
     </div>
   </d2-container>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      formMaxSize: 10, // 上传文件大小
+      formMaxSize: 1, // 上传文件大小
       formFileList: [], // 显示上传文件
       uploadFormFileList: [], // 确定上传文件
       ifsTo: false,
     };
+  },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   methods: {
     // 开始上传前验证
@@ -56,11 +65,10 @@ export default {
       }
       // 验证文件类型
       var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      const extension =
-        testmsg === "xlsx" || testmsg === "xls" || testmsg === "csv";
+      const extension = testmsg === "doc" || testmsg === "docx";
       if (!extension) {
         this.$message({
-          message: "上传文件只能是xlsx/xls/csv格式!",
+          message: "上传文件只能是docx/doc格式!",
           type: "warning",
         });
       }
@@ -85,18 +93,20 @@ export default {
       );
     },
     // 上传文件
-    handleUploadForm(param) {
+    async handleUploadForm(param) {
       let thiz = this;
       let formData = new FormData();
       //formData.append("projectId", this.toSonData); // 额外参数
-      formData.append("files", param.file);
+      formData.append("file", param.file);
       let loading = thiz.$loading({
         lock: true,
         text: "上传中，请稍候...",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
-      thiz.$http.post("/api/import/check/upload", formData).then(({ data }) => {
+      formData.append("projectId", thiz.xmu_info.projectId);
+      thiz.$api.SYS_USER_InputDoc(formData).then(( data ) => {
+      
         if (data.code === 20000) {
           thiz.$message({
             message: "上传文件成功，" + data.message,
@@ -111,18 +121,49 @@ export default {
           thiz.uploadFormFileList = [];
           thiz.$message("上传文件失败，" + data.message);
         }
-        loading.close();
       });
+      loading.close();
+      // thiz.$http.post("/api/import/check/upload", formData).then(({ data }) => {
+
+      // });
+    },
+    // 导出
+    async ks_toBummt() {
+      let res = await this.$api.SYS_USER_DownLoadDoc();
+      let blob = new Blob([res], { type: "application/msword;charset=utf-8" });
+
+      //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+      if (window.navigator && window.navigator.msSaveBlob) {
+        //IE浏览器、微软浏览器
+        /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+              IE可不重命名，以防万一，所以都写上比较好 */
+        window.navigator.msSaveBlob(blob, "文件.doc");
+      } else {
+        //其他浏览器
+        let link = document.createElement("a"); // 创建a标签
+        link.style.display = "none";
+        let objectUrl = URL.createObjectURL(blob);
+        link.download = "系统构成表模板";
+        link.href = objectUrl;
+        link.click();
+        URL.revokeObjectURL(objectUrl);
+      }
+
+      // window.open('/downLoadDoc')
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.ks_to{
+.ks_to {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
+  .ks_buttm {
+    margin: 15px 0;
+    text-align: right;
+  }
 }
 </style>
