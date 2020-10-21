@@ -9,23 +9,24 @@
       <el-table-column label="设备名称">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'terminal_name')"
+            @click="is_compile(scope.row, scope.$index, 'terminalName')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'terminal_name' + scope.$index"
+            :ref="'terminalName' + scope.$index"
             @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
-            v-model="scope.row.terminal_name"
+            v-model="scope.row.terminalName"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.terminal_name }}</span>
+          <span v-show="!scope.row.show">{{ scope.row.terminalName }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="虚拟设备" width="80">
         <template slot-scope="scope">
           <el-checkbox
-            v-model="scope.row.is_fictitious_equipment"
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.isFictitiousEquipment"
           ></el-checkbox>
         </template>
       </el-table-column>
@@ -33,35 +34,33 @@
       <el-table-column label="操作系统/控制软件">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'operating_system')"
+            @click="is_compile(scope.row, scope.$index, 'operatingSystem')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'operating_system' + scope.$index"
+            :ref="'operatingSystem' + scope.$index"
             @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
-            v-model="scope.row.operating_system"
+            v-model="scope.row.operatingSystem"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.operating_system }}</span>
+          <span v-show="!scope.row.show">{{ scope.row.operatingSystem }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="设备类别/用途">
         <template slot-scope="scope">
           <div
-            @click="
-              is_compile(scope.row, scope.$index, 'terminal_type_purpose')
-            "
+            @click="is_compile(scope.row, scope.$index, 'terminalTypePurpose')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'terminal_type_purpose' + scope.$index"
+            :ref="'terminalTypePurpose' + scope.$index"
             @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
-            v-model="scope.row.terminal_type_purpose"
+            v-model="scope.row.terminalTypePurpose"
           ></el-input>
           <span v-show="!scope.row.show">{{
-            scope.row.terminal_type_purpose
+            scope.row.terminalTypePurpose
           }}</span>
         </template>
       </el-table-column>
@@ -85,25 +84,26 @@
       <el-table-column label="数量">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'terminal_num')"
+            @click="is_compile(scope.row, scope.$index, 'equipmentNum')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'terminal_num' + scope.$index"
+            :ref="'equipmentNum' + scope.$index"
             @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
-            v-model="scope.row.terminal_num"
+            v-model="scope.row.equipmentNum"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.terminal_num }}</span>
+          <span v-show="!scope.row.show">{{ scope.row.equipmentNum }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="重要程度">
         <template slot-scope="scope">
           <el-select
-            v-model="scope.row.important_degree"
+            v-model="scope.row.importantDegree"
             filterable
+            @change="schujiaodian(scope.row)"
             placeholder="请选择"
           >
             <el-option
@@ -117,19 +117,24 @@
       </el-table-column>
       <el-table-column label="测评对象" width="80">
         <template slot-scope="scope">
-          <el-checkbox v-model="scope.row.is_evaluation_obj"></el-checkbox>
+          <el-checkbox
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.isEvaluationObj"
+          ></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="200">
+      <el-table-column  label="操作" width="200">
         <template slot-scope="scope">
           <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
-          <el-button size="mini" @click="is_preserve(scope.$index)"
+          <el-button
+            size="mini"
+            @click="is_preserve(scope.$index, true, scope.row.sortNum)"
             >新增</el-button
           >
           <el-button
             size="mini"
             type="danger"
-            @click="deleteRow(scope.$index, tabledatas)"
+            @click="deleteRow(scope.$index, scope.row)"
             >删除</el-button
           >
         </template>
@@ -142,6 +147,7 @@
 export default {
   data() {
     return {
+      Itzm: false,
       //  		重要程度	测评对象	排序号
       importance_list: [
         { value: 5, label: "非常重要(5)" },
@@ -152,42 +158,55 @@ export default {
       ],
       tabledatas: [
         {
-          terminal_name: "",
-          is_fictitious_equipment: "",
-          operating_system: "",
-          terminal_type_purpose: "",
+          terminalName: "",
+          isFictitiousEquipment: "",
+          operatingSystem: "",
+          terminalTypePurpose: "",
           remarks: "",
-          terminal_num: 5,
-          important_degree: 1,
-          is_evaluation_obj: true,
+          equipmentNum: 5,
+          importantDegree: 1,
+          isEvaluationObj: true,
+          sortNum:1,
           show: false,
         },
       ],
+       formPage: {
+        pageNum: 1,
+        pageSize: 10,
+      },
     };
   },
   created() {
     this.getlistdata();
   },
   methods: {
-    getlistdata() {
-      let list = [
-        {
-          computer_room_name: "机房名称1",
-          terminal_num: "物理位置1",
-          important_degree: 1,
-          is_evaluation_obj: true,
-        },
-        {
-          computer_room_name: "机房名称2",
-          terminal_num: "物理位置2",
-          important_degree: 1,
-          is_evaluation_obj: true,
-        },
-      ];
-      list.forEach((element) => {
-        element["show"] = false;
-      });
-      // this.tabledatas = list;
+    async getlistdata() {
+      let res = await this.$api.APITerminalFindTerminal(this.formPage);
+      console.log(res);
+      if (res.code === 20000) {
+        let List = res.data.list;
+        if (res.data.list.length > 0) {
+          List.forEach((element) => {
+            if (element.isEvaluationObj == 1) {
+              element.isEvaluationObj = true;
+            } else {
+              element.isEvaluationObj = false;
+            }
+            if (element.isFictitiousEquipment == 1) {
+              element.isFictitiousEquipment = true;
+            } else {
+              element.isFictitiousEquipment = false;
+            }
+            element["show"] = false;
+          });
+          this.tabledatas = List;
+        }
+
+        // this.ProjectQueryList();
+        //查询列表
+      } else {
+        this.$message.error("错误，数据查询失败" + res.message);
+      }
     },
     is_compile(item, index, itname) {
       // console.log(item,index,itname)
@@ -198,30 +217,84 @@ export default {
       }, 1);
       console.log(item);
     },
-    schujiaodian(item) {
+    async schujiaodian(item) {
+      if (item.isEvaluationObj == true) {
+        item.isEvaluationObj = 1;
+      } else {
+        item.isEvaluationObj = 0;
+      }
+      if (item.isFictitiousEquipment == true) {
+        item.isFictitiousEquipment = 1;
+      } else {
+        item.isFictitiousEquipment = 0;
+      }
       item.show = false;
-      console.log(item);
+      let res = "";
+      if (item.id && item.id != "undefined") {
+        if (this.Itzm == true) {
+          res = await this.$api.API_TerminalSaveTerminal(item);
+        } else {
+          res = await this.$api.API_ServerTerminalUpdateTerminal(item);
+        }
+      } else {
+        res = await this.$api.API_TerminalSaveTerminal(item);
+      }
+      if (res.code === 20000) {
+        this.getlistdata();
+        this.Itzm = false;
+        //查询列表
+      } else {
+        this.$message.error("保存错误，请联系管理员" + res.message);
+      }
+      this.Itzm = false;
     },
-    is_preserve(item) {
+    is_preserve(item, Itzm, sortNum) {
       var itss = this.tabledatas;
+      this.Itzm = Itzm;
       var list = {
-        terminal_name: "",
-        is_fictitious_equipment: "",
-        operating_system: "",
-        terminal_type_purpose: "",
+        terminalName: "",
+        isFictitiousEquipment: "",
+        operatingSystem: "",
+        terminalTypePurpose: "",
         remarks: "",
-        terminal_num: 5,
-        important_degree: 1,
-        is_evaluation_obj: true,
+        equipmentNum: 5,
+        importantDegree: 1,
+        isEvaluationObj: true,
+        sortNum,
         show: false,
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;
-      // console.log();
+      this.schujiaodian(this.tabledatas[item + 1]);
     },
-    deleteRow(index, rows) {
-      console.log(index, rows);
-      rows.splice(index, 1);
+    async deleteRow(index, rows) {
+      console.log(rows);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.APITerminalDelTerminal({
+            id: rows.id,
+          });
+          if (res.code === 20000) {
+            this.getlistdata();
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            //查询列表
+          } else {
+            this.$message.error("删除错误，请联系管理员" + res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };

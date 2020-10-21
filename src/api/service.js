@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Adapter from 'axios-mock-adapter'
+import router from '@/router'
 import {
   get
 } from 'lodash'
@@ -46,15 +47,26 @@ function createService() {
           case 20000:
             // [ 示例 ] code === 0 代表没有错误
             return dataAxios
-          case 401, 555:
+          case 401:
             // [ 示例 ] code === 0 代表没有错误
-            return alert(dataAxios.data.message)
-          case 402, 403:
+            return alert(dataAxios.message)
+          case 555:
             // [ 示例 ] code === 0 代表没有错误
-            this.logout({
-              confirm: true
+            return alert(dataAxios.message)
+          case 402:
+            // [ 示例 ] code === 0 代表没有错误
+            alert(dataAxios.message)
+            router.push({
+              name: 'login'
             })
-            return alert(dataAxios.data.message)
+            return
+          case 403:
+            // [ 示例 ] code === 0 代表没有错误
+            alert(dataAxios.message)
+            router.push({
+              name: 'login'
+            })
+            return
           default:
             // 不是正确的 code
             errorCreate(`${dataAxios}: ${response.config.url}`)
@@ -72,9 +84,6 @@ function createService() {
           error.message = '未授权，请登录';
           break
         case 403:
-          this.logout({
-            confirm: true
-          })
           error.message = '拒绝访问';
           break
         case 404:

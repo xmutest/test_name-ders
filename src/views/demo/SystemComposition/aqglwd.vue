@@ -2,13 +2,6 @@
 <template>
     <d2-container>
       <el-table :data="tabledatas" border>
-        <el-table-column label="" width="80">
-          <template slot-scope="scope">
-            <div class="itsz"></div>
-            <span v-show="!scope.row.show">{{scope.$index + 1}}</span>
-          </template>
-        </el-table-column>
-
         <el-table-column label="文档名称" width="120">
           <template slot-scope="scope">
             <div
@@ -28,45 +21,30 @@
         <el-table-column label="主要内容" width="150">
           <template slot-scope="scope">
             <div
-              @click="is_compile(scope.row, scope.$index, 'mainContent')"
+              @click="is_compile(scope.row, scope.$index, 'fileContent')"
               class="itsz"
             ></div>
             <el-input
-              :ref="'mainContent' + scope.$index"
+              :ref="'fileContent' + scope.$index"
               @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
-              v-model="scope.row.mainContent"
+              v-model="scope.row.fileContent"
             ></el-input>
-            <span v-show="!scope.row.show">{{scope.row.mainContent}}</span>
+            <span v-show="!scope.row.show">{{scope.row.fileContent}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="排序号" width="80">
-          <template slot-scope="scope">
-            <div
-              @click="is_compile(scope.row, scope.$index, 'asc')"
-              class="itsz"
-            ></div>
-            <el-input
-              :ref="'asc' + scope.$index"
-              @blur="schujiaodian(scope.row)"
-              v-show="scope.row.show"
-              v-model="scope.row.asc"
-            ></el-input>
-            <span v-show="!scope.row.show">{{scope.row.asc}}</span>
-          </template>
-        </el-table-column>
 
-        <el-table-column fixed="right" label="操作" width="200">
+        <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
-            <el-button size="mini" @click="is_preserve(scope.$index)">
+            <el-button size="mini" @click="is_preserve(scope.$index, true, scope.row.sortNum)">
               新增
             </el-button>
             <el-button
               size="mini"
               type="danger"
-              @click="deleteRow(scope.$index)"
+              @click="deleteRow(scope.$index, scope.row)"
             >
               删除
             </el-button>
@@ -81,66 +59,105 @@
 export default {
   data(){
     return{
-      importance_list:[
-        { value: 3, label: "高" },
-        { value: 2, label: "中" },
-        { value: 1, label: "低" },
-      ],
-      tabledatas:[],
+      Itzm: false,
+      tabledatas:[{
+        fileName:'',
+        fileContent:'',
+        sortNum: 1,
+        show:false
+      }],
+      formPage: {
+        pageNum: 1,
+        pageSize: 10,
+      },
     };
   },
   created() {
-    let list = [
-      {
-        fileName:'文档1',
-        mainContent:'主要内容1',
-        asc:'1',
-      },
-      {
-        fileName:'文档2',
-        mainContent:'主要内容2',
-        asc:'2',
-      },
-    ];
-    list.forEach((element) => {
-      element["show"] = false;
-    });
-    this.tabledatas = list;
+     this.getlistdata();
   },
   methods: {
+     async getlistdata() {
+      let res = await this.$api.APISecurityManageFileFindSecurityManageFile(
+        this.formPage
+      );
+      console.log(res);
+      if (res.code === 20000) {
+        let List = res.data.list;
+        if (res.data.list.length > 0) {
+          List.forEach((element) => {
+            element["show"] = false;
+          });
+          this.tabledatas = List;
+        }
+
+        // this.ProjectQueryList();
+        //查询列表
+      } else {
+        this.$message.error("错误，数据查询失败" + res.message);
+      }
+    },
     is_compile(item, index, itname) {
       item.show = true;
       setTimeout(() => {
         this.$refs[itname + index].focus();
       }, 1);
     },
-    schujiaodian(item) {
+    async schujiaodian(item) {
       item.show = false;
+      let res = "";
+      if (item.id && item.id != "undefined") {
+        if (this.Itzm == true) {
+          res = await this.$api.API_SecurityManageFileSaveSecurityManageFile(item);
+        } else {
+          res = await this.$api.API_SecurityManageFileUpdateSecurityManageFile(item);
+        }
+      } else {
+        res = await this.$api.API_SecurityManageFileSaveSecurityManageFile(item);
+      }
+      if (res.code === 20000) {
+        this.getlistdata();
+        this.Itzm = false;
+        //查询列表
+      } else {
+        this.$message.error("保存错误，请联系管理员" + res.message);
+      }
+      this.Itzm = false;
     },
-    is_preserve(item) {
-      console.log(item)
+    is_preserve(item, Itzm, sortNum) {
+      this.Itzm = Itzm;
       var itss = this.tabledatas;
       var basicData = {
+        personnelName: "",
         fileName:'',
-        mainContent:'',
-        asc:'',
+        fileContent:'',
+        sortNum,
         show: false,
       };
       itss.splice(item + 1, 0, basicData);
       this.tabledatas = itss;
-      // console.log();
+      this.schujiaodian(this.tabledatas[item + 1]);
     },
-    deleteRow(index) {
+    async deleteRow(index, rows) {
+      console.log(rows);
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(async () => {
-          // rows.id
-
-          this.tabledatas.splice(index,1)
-
+          let res = await this.$api.APISecurityManageFileDelSecurityManageFile({
+            id: rows.id,
+          });
+          if (res.code === 20000) {
+            this.getlistdata();
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            //查询列表
+          } else {
+            this.$message.error("删除错误，请联系管理员" + res.message);
+          }
         })
         .catch(() => {
           this.$message({

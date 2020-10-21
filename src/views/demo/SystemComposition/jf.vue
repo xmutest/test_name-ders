@@ -65,7 +65,10 @@
       </el-table-column>
       <el-table-column label="测评对象" width="80">
         <template slot-scope="scope">
-          <el-checkbox @change="schujiaodian(scope.row)" v-model="scope.row.isEvaluationObj"></el-checkbox>
+          <el-checkbox
+            @change="schujiaodianTm(scope.row)"
+            v-model="scope.row.isEvaluationObj"
+          ></el-checkbox>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="200">
@@ -89,6 +92,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -120,7 +124,47 @@ export default {
   created() {
     this.getlistdata();
   },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
+  },
   methods: {
+    async schujiaodianTm(item) {
+      let data = {
+        assetsNum: 1,
+        assetsId: item.id,
+        guideBookId: item.evaluationGuideBookId,
+        projectId: this.xmu_info.projectId,
+        evaluationGrade: this.xmu_info.data.level,
+      };
+      this.$confirm("确认改变生产资产?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = "";
+          if (item.isEvaluationObj === true) {
+            res = await this.$api.SYS_FieldSurveyActive(data);
+          } else {
+            res = await this.$api.SYS_FieldSurveyDelete(data);
+          }
+          if (res.code === 20000) {
+            this.schujiaodian(item);
+            //查询列表
+          } else {
+            this.$message.error("删除错误，请联系管理员" + res.message);
+          }
+        })
+        .catch(() => {
+          item.isEvaluationObj = !item.isEvaluationObj;
+          this.$message({
+            type: "info",
+            message: "已取消",
+          });
+        });
+    },
     async getlistdata() {
       let res = await this.$api.API_JF_ComputerRoomFindComputerRoom(
         this.formPage

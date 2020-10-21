@@ -10,40 +10,43 @@
         <el-table-column label="设备名称" width="100">
           <template slot-scope="scope">
             <div
-              @click="is_compile(scope.row, scope.$index, 'serverName')"
+              @click="is_compile(scope.row, scope.$index, 'equipmentName')"
               class="itsz"
             ></div>
             <el-input
-              :ref="'serverName' + scope.$index"
+              :ref="'equipmentName' + scope.$index"
               @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
-              v-model="scope.row.serverName"
+              v-model="scope.row.equipmentName"
             ></el-input>
-            <span v-show="!scope.row.show">{{ scope.row.serverName }}</span>
+            <span v-show="!scope.row.show">{{ scope.row.equipmentName }}</span>
           </template>
         </el-table-column>
         <el-table-column label="虚拟设备" width="80">
           <template slot-scope="scope">
             <el-checkbox
-              v-model="scope.row.isFictitiodbManageSysquipment"
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isFictitiousEquipment"
             ></el-checkbox>
           </template>
         </el-table-column>
         <el-table-column label="系统及版本" width="100">
           <template slot-scope="scope">
             <div
-              @click="is_compile(scope.row, scope.$index, 'operatingSysEditio')"
+              @click="
+                is_compile(scope.row, scope.$index, 'operatingSysEdition')
+              "
               class="itsz"
             ></div>
             <el-input
-              :ref="'operatingSysEditio' + scope.$index"
+              :ref="'operatingSysEdition' + scope.$index"
               @blur="schujiaodian(scope.row)"
               placeholder="请输入内容"
               v-show="scope.row.show"
-              v-model="scope.row.operatingSysEditio"
+              v-model="scope.row.operatingSysEdition"
             ></el-input>
             <span v-show="!scope.row.show">{{
-              scope.row.operatingSysEditio
+              scope.row.operatingSysEdition
             }}</span>
           </template>
         </el-table-column>
@@ -97,7 +100,9 @@
               v-show="scope.row.show"
               v-model="scope.row.middlewareEdition"
             ></el-input>
-            <span v-show="!scope.row.show">{{ scope.row.middlewareEdition }}</span>
+            <span v-show="!scope.row.show">{{
+              scope.row.middlewareEdition
+            }}</span>
           </template>
         </el-table-column>
 
@@ -120,17 +125,17 @@
         <el-table-column label="数量" width="80">
           <template slot-scope="scope">
             <div
-              @click="is_compile(scope.row, scope.$index, 'terminalNum')"
+              @click="is_compile(scope.row, scope.$index, 'equipmentNum')"
               class="itsz"
             ></div>
             <el-input
               placeholder="请输入内容"
-              :ref="'terminalNum' + scope.$index"
+              :ref="'equipmentNum' + scope.$index"
               @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
-              v-model="scope.row.terminalNum"
+              v-model="scope.row.equipmentNum"
             ></el-input>
-            <span v-show="!scope.row.show">{{ scope.row.terminalNum }}</span>
+            <span v-show="!scope.row.show">{{ scope.row.equipmentNum }}</span>
           </template>
         </el-table-column>
         <el-table-column label="重要程度" width="150">
@@ -138,6 +143,7 @@
             <el-select
               v-model="scope.row.importantDegree"
               filterable
+              @change="schujiaodian(scope.row)"
               placeholder="请选择"
             >
               <el-option
@@ -151,19 +157,24 @@
         </el-table-column>
         <el-table-column label="测评对象" width="80">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.isEvaluationObj"></el-checkbox>
+            <el-checkbox
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isEvaluationObj"
+            ></el-checkbox>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
-            <el-button size="mini" @click="is_preserve(scope.$index)"
+            <el-button
+              size="mini"
+              @click="is_preserve(scope.$index, true, scope.row.sortNum)"
               >新增</el-button
             >
             <el-button
               size="mini"
               type="danger"
-              @click="deleteRow(scope.$index, tabledatas)"
+              @click="deleteRow(scope.$index, scope.row)"
               >删除</el-button
             >
           </template>
@@ -171,127 +182,7 @@
       </el-table>
     </div>
     <!-- 新增表单 -->
-    <div class="add_from_xmu">
-      <el-dialog
-        style="min-width: 960px"
-        title="新建设备"
-        :visible.sync="dialogFormVisible"
-      >
-        <el-form :model="xmform" :rules="rules" ref="xmform">
-          <el-form-item
-            label="设备名称"
-            :label-width="formLabelWidth"
-            prop="serverName"
-          >
-            <el-input
-              v-model="xmform.serverName"
-              clearable
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="虚拟设备"
-            :label-width="formLabelWidth"
-            prop="isFictitiodbManageSysquipment"
-          >
-            <el-checkbox
-              v-model="xmform.isFictitiodbManageSysquipment"
-            ></el-checkbox>
-          </el-form-item>
-          <el-form-item
-            label="系统及版本"
-            :label-width="formLabelWidth"
-            prop="operatingSysEditio"
-          >
-            <el-input
-              v-model="xmform.operatingSysEditio"
-              clearable
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="品牌及型号"
-            :label-width="formLabelWidth"
-            prop="softwarePlatformName"
-          >
-            <el-input
-              v-model="xmform.softwarePlatformName"
-              clearable
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="用途" :label-width="formLabelWidth">
-            <el-input
-              v-model="xmform.dbManageSys"
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
 
-          <el-form-item
-            label="备注"
-            :label-width="formLabelWidth"
-            prop="remarks"
-          >
-            <el-input
-              v-model="xmform.remarks"
-              clearable
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item
-            label="数量"
-            :label-width="formLabelWidth"
-            prop="terminalNum"
-          >
-            <el-input
-              v-model="xmform.terminalNum"
-              clearable
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item
-            label="重要程度"
-            :label-width="formLabelWidth"
-            prop="importantDegree"
-          >
-            <el-select
-              v-model="xmform.importantDegree"
-              filterable
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in importantDegree_list"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item
-            label="测评对象"
-            :label-width="formLabelWidth"
-            prop="isEvaluationObj"
-          >
-            <el-checkbox v-model="xmform.isEvaluationObj"></el-checkbox>
-          </el-form-item>
-
-          <div class="dia-footer">
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('xmform')"
-                >立即创建</el-button
-              >
-              <el-button type="danger" @click="resetForm('xmform')"
-                >重置</el-button
-              >
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-            </el-form-item>
-          </div>
-        </el-form>
-      </el-dialog>
-    </div>
   </d2-container>
 </template>
 
@@ -299,7 +190,23 @@
 export default {
   data() {
     return {
-      tabledatas: [],
+      Itzm: false,
+      tabledatas: [
+        {
+          equipmentName: "",
+          isFictitiousEquipment: false,
+          operatingSysEdition: "",
+          softwarePlatformName: "",
+          dbManageSys: "",
+          middlewareEdition: "",
+          remarks: "",
+          equipmentNum: 0,
+          importantDegree: 5,
+          isEvaluationObj: true,
+          show: false,
+          sortNum: 1,
+        },
+      ],
       dialogTableVisible: false,
       dialogFormVisible: false,
       importantDegree_list: [
@@ -310,56 +217,87 @@ export default {
         { value: 1, label: "不重要（1）" },
       ],
       xmform: {
-        serverName: "",
-        isFictitiodbManageSysquipment: false,
-        operatingSysEditio: "",
+        equipmentName: "",
+        isFictitiousEquipment: false,
+        operatingSysEdition: "",
         softwarePlatformName: "",
         dbManageSys: "",
         remarks: "",
-        terminalNum: 5,
+        equipmentNum: 5,
         importantDegree: 5,
         isEvaluationObj: true,
       },
       formLabelWidth: "120px",
       rules: {},
+      formPage: {
+        pageNum: 1,
+        pageSize: 10,
+      },
     };
   },
   created() {
     // 设备名称	虚拟设备	系统及版本	品牌及型号	用途	备注	数量	重要程度	测评指导书	测评对象
-    let list = [
-      {
-        serverName: "CPQY01-C",
-        isFictitiodbManageSysquipment: false,
-        operatingSysEditio: "ios-101",
-        softwarePlatformName: "cisco-FP",
-        dbManageSys: "安全设计",
-        remarks: "123",
-        terminalNum: 5,
-        importantDegree: 5,
-        isEvaluationObj: true,
-      },
-      {
-        serverName: "CPQY01-A",
-        isFictitiodbManageSysquipment: false,
-        operatingSysEditio: "ios-504",
-        softwarePlatformName: "cisco-FP",
-        dbManageSys: "安全设备",
-        remarks: "",
-        terminalNum: 5,
-        importantDegree: 5,
-        isEvaluationObj: true,
-      },
-    ];
-    list.forEach((element) => {
-      element["show"] = false;
-    });
-    this.tabledatas = list;
+    this.getlistdata();
     // })
   },
   methods: {
-    schujiaodian(item) {
+    async getlistdata() {
+      let res = await this.$api.APIServerStorageFindServerStorage(
+        this.formPage
+      );
+      console.log(res);
+      if (res.code === 20000) {
+        let List = res.data.list;
+        if (res.data.list.length > 0) {
+          List.forEach((element) => {
+            element.isEvaluationObj =
+              element.isEvaluationObj == 1 ? true : false;
+            if (element.isFictitiousEquipment == 1) {
+              element.isFictitiousEquipment = true;
+            } else {
+              element.isFictitiousEquipment = false;
+            }
+            element["show"] = false;
+          });
+          this.tabledatas = List;
+        }
+
+        // this.ProjectQueryList();
+        //查询列表
+      } else {
+        this.$message.error("错误，数据查询失败" + res.message);
+      }
+    },
+    async schujiaodian(item) {
+      if (item.isEvaluationObj == true) {
+        item.isEvaluationObj = 1;
+      } else {
+        item.isEvaluationObj = 0;
+      }
+      if (item.isFictitiousEquipment == true) {
+        item.isFictitiousEquipment = 1;
+      } else {
+        item.isFictitiousEquipment = 0;
+      }
       item.show = false;
-      console.log(item);
+      let res = "";
+      if (item.id && item.id != "undefined") {
+        if (this.Itzm == true) {
+          res = await this.$api.API_ServerStorageSaveServerStorage(item);
+        } else {
+          res = await this.$api.API_ServerStorageUpdateServerStorage(item);
+        }
+      } else {
+        res = await this.$api.API_ServerStorageSaveServerStorage(item);
+      }
+      if (res.code === 20000) {
+        this.getlistdata();
+        this.Itzm = false;
+        //查询列表
+      } else {
+        this.$message.error("保存错误，请联系管理员" + res.message);
+      }
+      this.Itzm = false;
     },
     // 提交
     submitForm(formName) {
@@ -383,28 +321,55 @@ export default {
       }, 1);
       console.log(item);
     },
-    is_preserve(item) {
+    is_preserve(item, Itzm, sortNum) {
       var itss = this.tabledatas;
+      this.Itzm = Itzm;
       var list = {
-        serverName: "",
-        isFictitiodbManageSysquipment: false,
-        operatingSysEditio: "",
+        equipmentName: "",
+        isFictitiousEquipment: false,
+        operatingSysEdition: "",
         softwarePlatformName: "",
         dbManageSys: "",
-        middlewareEdition:'',
+        middlewareEdition: "",
         remarks: "",
-        terminalNum: 5,
+        equipmentNum: 5,
         importantDegree: 5,
         isEvaluationObj: true,
+        sortNum,
         show: false,
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;
-      // console.log();
+      this.schujiaodian(this.tabledatas[item + 1]);
     },
-    deleteRow(index, rows) {
-      console.log(index, rows);
-      rows.splice(index, 1);
+    async deleteRow(index, rows) {
+      console.log(rows);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.APIServerStorageDelServerStorage({
+            id: rows.id,
+          });
+          if (res.code === 20000) {
+            this.getlistdata();
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            //查询列表
+          } else {
+            this.$message.error("删除错误，请联系管理员" + res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };

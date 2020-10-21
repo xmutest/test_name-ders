@@ -369,4 +369,381 @@ export default ({
     })
   },
 
+  // 终端/感知设备/现场设备接口 
+  /**
+   * @param {Object} data 
+   * GET 查询项目的终端/感知设备/现场设备接口 
+   */
+  async APITerminalFindTerminal(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/terminal/findTerminal',
+      method: 'get',
+      params: data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * post 
+保存终端/感知设备/现场设备接口 
+   */
+  async API_TerminalSaveTerminal(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/terminal/saveTerminal',
+      method: 'post',
+      data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * 
+删除终端/感知设备/现场设备接口 
+   */
+  async APITerminalDelTerminal(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/terminal/delTerminal',
+      method: 'post',
+      params:data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * POST 
+修改终端/感知设备/现场设备接口 
+   */
+  async API_ServerTerminalUpdateTerminal(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/terminal/updateTerminal',
+      method: 'post',
+      data,
+    })
+  },
+
+
+  // 数据库管理系统
+  /**
+   * @param {Object} data 
+   * GET 查询数据库管理系统接口 
+   */
+  async APIDbManageSysFindDbManageSys(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/dbManageSys/findDbManageSys',
+      method: 'get',
+      params: data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * post 
+保存数据库管理系统接口 
+   */
+  async API_DbManageSysSaveDbManageSys(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/dbManageSys/saveDbManageSys',
+      method: 'post',
+      data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * 
+删除数据库管理系统接口 
+   */
+  async APIDbManageSysDelDbManageSys(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/dbManageSys/delDbManageSys',
+      method: 'delete',
+      params:data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * POST 
+修改数据库管理系统
+   */
+  async API_DbManageSysUpdateDbManageSys(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/dbManageSys/updateDbManageSys',
+      method: 'post',
+      data,
+    })
+  },
+
+
+
+  // 关键数据类型接口
+  /**
+   * @param {Object} data 
+   * GET 查询关键数据类型接口
+   */
+  async APICruxDataTypeFindCruxDataType(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/cruxDataType/findCruxDataType',
+      method: 'get',
+      params: data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * post 
+保存关键数据类型接口
+   */
+  async API_CruxDataTypeSaveCruxDataType(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/cruxDataType/saveCruxDataType',
+      method: 'post',
+      data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * 
+删除关键数据类型接口
+   */
+  async APICruxDataTypeDelCruxDataType(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/cruxDataType/delCruxDataType',
+      method: 'post',
+      params:data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * POST 
+修改关键数据类型接口
+   */
+  async API_CruxDataTypeUpdateCruxDataType(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/cruxDataType/updateCruxDataType',
+      method: 'post',
+      data,
+    })
+  },
+
+
+  // 安全管理中心接口
+  /**
+   * @param {Object} data 
+   * GET 查询安全管理中心接口
+   */
+  async APISafeManageCenterFindSafeManageCenter(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/safeManageCenter/findSafeManageCenter',
+      method: 'get',
+      params: data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * post 
+保存安全管理中心接口
+   */
+  async API_SafeManageCenterSaveSafeManageCenter(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/safeManageCenter/saveSafeManageCenter',
+      method: 'post',
+      data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * 
+删除安全管理中心接口
+   */
+  async APISafeManageCenterDelSafeManageCenter(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/safeManageCenter/delSafeManageCenter',
+      method: 'post',
+      params:data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * POST 
+修改安全管理中心接口
+   */
+  async API_SafeManageCenterUpdateSafeManageCenter(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/safeManageCenter/updateSafeManageCenter',
+      method: 'post',
+      data,
+    })
+  },
+
+  
+    //密码产品接口接口
+  /**
+   * @param {Object} data 
+   * GET 查询密码产品接口接口
+   */
+  async APPwdProductFindPwdProduct(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/pwdProduct/findPwdProduct',
+      method: 'get',
+      params: data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * post 
+保存密码产品接口
+   */
+  async API_PwdProductSavePwdProduct(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/pwdProduct/savePwdProduct',
+      method: 'post',
+      data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * 
+删除密码产品接口
+   */
+  async APIPwdProductDelPwdProductr(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/pwdProduct/delPwdProduct',
+      method: 'post',
+      params:data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * POST 
+修改密码产品接口
+   */
+  async API_PwdProductUpdatePwdProduct(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/pwdProduct/updatePwdProduct',
+      method: 'post',
+      data,
+    })
+  },
+
+
+  //安全相关人员接口
+  /**
+   * @param {Object} data 
+   * GET 查询安全相关人员接口
+   */
+  async APISecurityPersonnelFindSecurityPersonnel(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/securityPersonnel/findSecurityPersonnel',
+      method: 'get',
+      params: data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * post 
+保存安全相关人员接口
+   */
+  async API_SecurityPersonnelSaveSecurityPersonnel(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/securityPersonnel/saveSecurityPersonnel',
+      method: 'post',
+      data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * 
+删除安全相关人员接口
+   */
+  async APISecurityPersonnelDelSecurityPersonnel(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/securityPersonnel/delSecurityPersonnel',
+      method: 'post',
+      params:data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * POST 
+修改安全相关人员接口
+   */
+  async API_SecurityPersonnelUpdateSecurityPersonnel(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/securityPersonnel/updateSecurityPersonnel',
+      method: 'post',
+      data,
+    })
+  },
+
+
+  //安全管理文档接口
+  /**
+   * @param {Object} data 
+   * GET 查询安全管理文档接口
+   */
+  async APISecurityManageFileFindSecurityManageFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/securityManageFile/findSecurityManageFile',
+      method: 'get',
+      params: data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * post 
+保存安全管理文档接口
+   */
+  async API_SecurityManageFileSaveSecurityManageFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/securityManageFile/saveSecurityManageFile',
+      method: 'post',
+      data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * 
+删除安全管理文档接口
+   */
+  async APISecurityManageFileDelSecurityManageFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/securityManageFile/delSecurityManageFile',
+      method: 'post',
+      params:data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * POST 
+修改安全管理文档接口
+   */
+  async API_SecurityManageFileUpdateSecurityManageFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/securityManageFile/updateSecurityManageFile',
+      method: 'post',
+      data,
+    })
+  },
 })

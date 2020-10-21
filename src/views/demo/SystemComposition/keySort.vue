@@ -80,32 +80,50 @@
 
         <el-table-column label="数据采集" width="70">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.isDataAcquisition"></el-checkbox>
+            <el-checkbox
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isDataAcquisition"
+            ></el-checkbox>
           </template>
         </el-table-column>
         <el-table-column label="数据储存" width="70">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.isDataStorage"></el-checkbox>
+            <el-checkbox
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isDataStorage"
+            ></el-checkbox>
           </template>
         </el-table-column>
         <el-table-column label="数据处理" width="70">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.isDataHandle"></el-checkbox>
+            <el-checkbox
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isDataHandle"
+            ></el-checkbox>
           </template>
         </el-table-column>
         <el-table-column label="数据应用" width="70">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.isDataApplication"></el-checkbox>
+            <el-checkbox
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isDataApplication"
+            ></el-checkbox>
           </template>
         </el-table-column>
         <el-table-column label="数据流动" width="70">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.isDataFlow"></el-checkbox>
+            <el-checkbox
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isDataFlow"
+            ></el-checkbox>
           </template>
         </el-table-column>
         <el-table-column label="数据销毁" width="70">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.isDataDestruction"></el-checkbox>
+            <el-checkbox
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isDataDestruction"
+            ></el-checkbox>
           </template>
         </el-table-column>
         <el-table-column label="重要程度" width="150">
@@ -113,6 +131,7 @@
             <el-select
               v-model="scope.row.importantDegree"
               filterable
+              @change="schujiaodian(scope.row)"
               placeholder="请选择"
             >
               <el-option
@@ -126,19 +145,24 @@
         </el-table-column>
         <el-table-column label="测评对象" width="70">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.isEvaluationObj"></el-checkbox>
+            <el-checkbox
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isEvaluationObj"
+            ></el-checkbox>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
-            <el-button size="mini" @click="is_preserve(scope.$index)"
+            <el-button
+              size="mini"
+              @click="is_preserve(scope.$index, true, scope.row.sortNum)"
               >新增</el-button
             >
             <el-button
               size="mini"
               type="danger"
-              @click="deleteRow(scope.$index, tabledatas)"
+              @click="deleteRow(scope.$index, scope.row)"
               >删除</el-button
             >
           </template>
@@ -152,6 +176,7 @@
 export default {
   data() {
     return {
+      Itzm: false,
       tabledatas: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -173,37 +198,77 @@ export default {
       },
       formLabelWidth: "120px",
       rules: {},
+      formPage: {
+        pageNum: 1,
+        pageSize: 10,
+      },
     };
   },
   created() {
-    // 设备名称	虚拟设备	系统及版本	品牌及型号	用途	备注	数量	重要程度	测评指导书	测评对象
-    let list = [
-      {
-        dataType: "",
-        isDataAcquisition: false,
-        isDataStorage: false,
-        isDataHandle: false,
-        isDataApplication: false,
-        isDataFlow: false,
-        isDataDestruction: false,
-        belongsBusiness: "",
-        safetyProtectionDemand: "",
-        storageDevice: "",
-        importantDegree: 5,
-        isEvaluationObj: true,
-        show: false,
-      },
-    ];
-    list.forEach((element) => {
-      element["show"] = false;
-    });
-    this.tabledatas = list;
+    this.getlistdata();
     // })
   },
+
   methods: {
-    schujiaodian(item) {
+    async getlistdata() {
+      let res = await this.$api.APICruxDataTypeFindCruxDataType(this.formPage);
+      console.log(res);
+      if (res.code === 20000) {
+        let List = res.data.list;
+        if (res.data.list.length > 0) {
+          List.forEach((element) => {
+            element.isEvaluationObj =
+              element.isEvaluationObj == 1 ? true : false;
+            element.isFictitiousEquipment =
+              element.isFictitiousEquipment == 1 ? true : false;
+            element.isDataAcquisition =
+              element.isDataAcquisition == 1 ? true : false;
+            element.isDataStorage = element.isDataStorage == 1 ? true : false;
+            element.isDataHandle = element.isDataHandle == 1 ? true : false;
+            element.isDataApplication =
+              element.isDataApplication == 1 ? true : false;
+            element.isDataFlow = element.isDataFlow == 1 ? true : false;
+            element.isDataDestruction =
+              element.isDataDestruction == 1 ? true : false;
+            element["show"] = false;
+          });
+          this.tabledatas = List;
+        }
+
+        // this.ProjectQueryList();
+        //查询列表
+      } else {
+        this.$message.error("错误，数据查询失败" + res.message);
+      }
+    },
+    async schujiaodian(item) {
+      item.isEvaluationObj = item.isEvaluationObj == true ? 1 : 0;
+      item.isFictitiousEquipment = item.isFictitiousEquipment == true ? 1 : 0;
+      item.isDataAcquisition = item.isDataAcquisition == true ? 1 : 0;
+      item.isDataStorage = item.isDataStorage == true ? 1 : 0;
+      item.isDataHandle = item.isDataHandle == true ? 1 : 0;
+      item.isDataApplication = item.isDataApplication == true ? 1 : 0;
+      item.isDataFlow = item.isDataFlow == true ? 1 : 0;
+      item.isDataDestruction = item.isDataDestruction == true ? 1 : 0;
       item.show = false;
-      console.log(item);
+      let res = "";
+      if (item.id && item.id != "undefined") {
+        if (this.Itzm == true) {
+          res = await this.$api.API_CruxDataTypeSaveCruxDataType(item);
+        } else {
+          res = await this.$api.API_CruxDataTypeUpdateCruxDataType(item);
+        }
+      } else {
+        res = await this.$api.API_CruxDataTypeSaveCruxDataType(item);
+      }
+      if (res.code === 20000) {
+        this.getlistdata();
+        this.Itzm = false;
+        //查询列表
+      } else {
+        this.$message.error("保存错误，请联系管理员" + res.message);
+      }
+      this.Itzm = false;
     },
     // 提交
     submitForm(formName) {
@@ -227,8 +292,9 @@ export default {
       }, 1);
       console.log(item);
     },
-    is_preserve(item) {
+    is_preserve(item, Itzm, sortNum) {
       var itss = this.tabledatas;
+      this.Itzm = Itzm;
       var list = {
         dataType: "",
         isDataAcquisition: false,
@@ -242,15 +308,41 @@ export default {
         storageDevice: "",
         importantDegree: 5,
         isEvaluationObj: true,
+        sortNum,
         show: false,
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;
-      // console.log();
+      this.schujiaodian(this.tabledatas[item + 1]);
     },
-    deleteRow(index, rows) {
-      console.log(index, rows);
-      rows.splice(index, 1);
+    async deleteRow(index, rows) {
+      console.log(rows);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.APICruxDataTypeDelCruxDataType({
+            id: rows.id,
+          });
+          if (res.code === 20000) {
+            this.getlistdata();
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            //查询列表
+          } else {
+            this.$message.error("删除错误，请联系管理员" + res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };

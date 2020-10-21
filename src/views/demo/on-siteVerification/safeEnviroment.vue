@@ -27,6 +27,7 @@
               {{ item1.safetyControlSpot }}
             </td>
             <td
+              
               :style="{
                 'background-color': itemsCoacr[item2.accordSituation].color,
               }"
@@ -198,11 +199,7 @@ export default {
       ],
       // 请求数据
       api_data: {
-        projectId: 1,
-        assetsId: 1,
-        guideBookId: 65,
-        systemCompositionId: 1,
-        evaluationGrade:1
+        sceneCheckId: 1,
       },
     };
   },
@@ -219,10 +216,10 @@ export default {
       console.log(5);
     },
     async getDataList() {
-      const res = await this.$api.SYS_USER_ANQUAN_WU(this.api_data);
+      const res = await this.$api.SYS_FieldSurveyFindAssetsList(this.api_data);
       if (res.code === 20000) {
         var listTs = cloneDeep(res.data);
-        listTs.forEach((element) => {
+        listTs[0].safetyControls.forEach((element) => {
           element.contentList.forEach((item) => {
             if (!item.hasOwnProperty("accordSituation")) {
               item.remark = "";
@@ -231,7 +228,7 @@ export default {
             }
           });
         });
-        this.dataList = listTs;
+        this.dataList = listTs[0].safetyControls;
       }
       //  const res= await this.$http.get('/api/safetyControl/findSpotByBookId',{params:this.api_data});
       //  this.dataList=res.data.data;

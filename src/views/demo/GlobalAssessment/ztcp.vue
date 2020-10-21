@@ -1,10 +1,6 @@
 <!--整体测评结果汇总-->
 <template>
   <d2-container>
-    <div class="schuan_s">
-      <!-- 上传 toSonData：传给后台的id  sendSonData上传成功的返回值-->
-      <upload-qu :toSonData="toSonData" @toFatherData="sendSonData"></upload-qu>
-    </div>
     <div class="ts_table">
       <table id="partnerTable">
         <thead>
@@ -187,7 +183,6 @@ export default {
         { color: "#F44336" },
         { color: "#fff" },
       ],
-      toSonData: 1,
       dataList: [],
       accordSituationlist: [
         { value: 4, label: "不适用" },
@@ -209,11 +204,7 @@ export default {
     this.getDataList();
   },
   methods: {
-    sendSonData(data) {
-      if (data === true) {
-        this.getDataList();
-      }
-    },
+   
     Totisadd() {
       console.log(5);
     },

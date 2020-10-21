@@ -18,7 +18,7 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip">
-          上传文件只能是docx/doc格式，且不超过10m
+          上传文件只能是doc格式，且不超过10m
         </div>
       </el-upload>
       <div class="ks_buttm">
@@ -65,10 +65,10 @@ export default {
       }
       // 验证文件类型
       var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      const extension = testmsg === "doc" || testmsg === "docx";
+      const extension = testmsg === "doc";
       if (!extension) {
         this.$message({
-          message: "上传文件只能是docx/doc格式!",
+          message: "上传文件只能是doc格式!",
           type: "warning",
         });
       }
