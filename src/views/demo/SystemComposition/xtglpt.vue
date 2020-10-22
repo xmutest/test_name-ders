@@ -168,6 +168,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -199,6 +200,11 @@ export default {
   },
   created() {
     this.getlistdata();
+  },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   methods: {
     async getlistdata() {
@@ -308,9 +314,9 @@ export default {
     },
     async schujiaodianTm(item) {
       let data = {
-        assetsNum: 1,
+        assetsNum: 6,
         assetsId: item.id,
-        guideBookId: item.evaluationGuideBookId,
+        guideBookId: item.evaluationInstructionBookId,
         projectId: this.xmu_info.projectId,
         evaluationGrade: this.xmu_info.data.level,
       };

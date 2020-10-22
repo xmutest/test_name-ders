@@ -123,7 +123,7 @@
           ></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column  label="操作" width="200">
+      <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
           <el-button
@@ -144,6 +144,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -166,11 +167,11 @@ export default {
           equipmentNum: 5,
           importantDegree: 1,
           isEvaluationObj: true,
-          sortNum:1,
+          sortNum: 1,
           show: false,
         },
       ],
-       formPage: {
+      formPage: {
         pageNum: 1,
         pageSize: 10,
       },
@@ -178,6 +179,11 @@ export default {
   },
   created() {
     this.getlistdata();
+  },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   methods: {
     async getlistdata() {
@@ -298,9 +304,9 @@ export default {
     },
     async schujiaodianTm(item) {
       let data = {
-        assetsNum: 1,
+        assetsNum: 9,
         assetsId: item.id,
-        guideBookId: item.evaluationGuideBookId,
+        guideBookId: item.evaluationInstructionBookId,
         projectId: this.xmu_info.projectId,
         evaluationGrade: this.xmu_info.data.level,
       };

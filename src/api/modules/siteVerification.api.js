@@ -67,5 +67,17 @@ export default ({
       method: 'get',
       params: data
     })
+  },
+
+  /**
+   * @description 修改现场核查控制项
+   * @param {Object} data 携带的信息
+   */
+  async SYS_FieldSurveYUpdate(data = {}) {
+    return request({
+      url: '/fieldSurvey/update',
+      method: 'post',
+      data
+    })
   }
 })

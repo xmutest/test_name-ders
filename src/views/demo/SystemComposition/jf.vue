@@ -134,7 +134,7 @@ export default {
       let data = {
         assetsNum: 1,
         assetsId: item.id,
-        guideBookId: item.evaluationGuideBookId,
+        guideBookId: item.evaluationInstructionBookId,
         projectId: this.xmu_info.projectId,
         evaluationGrade: this.xmu_info.data.level,
       };

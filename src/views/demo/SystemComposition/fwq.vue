@@ -182,11 +182,11 @@
       </el-table>
     </div>
     <!-- 新增表单 -->
-
   </d2-container>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -239,6 +239,11 @@ export default {
     // 设备名称	虚拟设备	系统及版本	品牌及型号	用途	备注	数量	重要程度	测评指导书	测评对象
     this.getlistdata();
     // })
+  },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   methods: {
     async getlistdata() {
@@ -373,9 +378,9 @@ export default {
     },
     async schujiaodianTm(item) {
       let data = {
-        assetsNum: 1,
+        assetsNum: 8,
         assetsId: item.id,
-        guideBookId: item.evaluationGuideBookId,
+        guideBookId: item.evaluationInstructionBookId,
         projectId: this.xmu_info.projectId,
         evaluationGrade: this.xmu_info.data.level,
       };

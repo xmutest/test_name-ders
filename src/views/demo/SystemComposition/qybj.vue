@@ -121,6 +121,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -139,7 +140,7 @@ export default {
           accessMode: "",
           mainBusiness: "",
           importantDegree: 1,
-          evaluationInstructionBookId: "",
+          evaluationInstructionBookId: 1,
           isEvaluationObj: false,
           sortNum: 1,
           show: false,
@@ -153,6 +154,11 @@ export default {
   },
   created() {
     this.getlistdata();
+  },
+   computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   methods: {
     async getlistdata() {
@@ -216,6 +222,7 @@ export default {
       this.Itzm = false;
     },
     is_preserve(item, Itzm, sortNum) {
+      console.log(sortNum);
       var itss = this.tabledatas;
       this.Itzm = Itzm;
       var list = {
@@ -223,7 +230,7 @@ export default {
         accessMode: "",
         mainBusiness: "",
         importantDegree: 1,
-        evaluationInstructionBookId: "",
+        evaluationInstructionBookId: 1,
         isEvaluationObj: false,
         show: false,
         sortNum
@@ -262,10 +269,11 @@ export default {
         });
     },
     async schujiaodianTm(item) {
+      console.log(item);
       let data = {
-        assetsNum: 1,
+        assetsNum: 2,
         assetsId: item.id,
-        guideBookId: item.evaluationGuideBookId,
+        guideBookId: item.evaluationInstructionBookId,
         projectId: this.xmu_info.projectId,
         evaluationGrade: this.xmu_info.data.level,
       };

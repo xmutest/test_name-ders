@@ -192,6 +192,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -232,6 +233,11 @@ export default {
   created() {
     this.getlistdata();
   },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
+  },
   methods: {
     async getlistdata() {
       let res = await this.$api.APIDbManageSysFindDbManageSys(this.formPage);
@@ -261,7 +267,7 @@ export default {
         this.$message.error("错误，数据查询失败" + res.message);
       }
     },
-     async schujiaodian(item) {
+    async schujiaodian(item) {
       if (item.isEvaluationObj == true) {
         item.isEvaluationObj = 1;
       } else {
@@ -366,9 +372,9 @@ export default {
     },
     async schujiaodianTm(item) {
       let data = {
-        assetsNum: 1,
+        assetsNum: 7,
         assetsId: item.id,
-        guideBookId: item.evaluationGuideBookId,
+        guideBookId: item.evaluationInstructionBookId,
         projectId: this.xmu_info.projectId,
         evaluationGrade: this.xmu_info.data.level,
       };

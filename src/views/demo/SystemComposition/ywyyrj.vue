@@ -145,6 +145,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -162,7 +163,6 @@ export default {
           majorFunction: "",
           softwareEdition: "",
           importantDegree: 1,
-          evaluationInstructionBookId: "",
           isEvaluationObj: true,
           developManufacturers: "",
           sortNum: 1,
@@ -173,6 +173,11 @@ export default {
   },
   created() {
     this.getlistdata();
+  },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   methods: {
     async getlistdata() {
@@ -245,7 +250,6 @@ export default {
         majorFunction: "",
         softwareEdition: "",
         importantDegree: 1,
-        evaluationInstructionBookId: "",
         isEvaluationObj: true,
         developManufacturers: "",
         sortNum,
@@ -286,9 +290,9 @@ export default {
     },
     async schujiaodianTm(item) {
       let data = {
-        assetsNum: 1,
+        assetsNum: 5,
         assetsId: item.id,
-        guideBookId: item.evaluationGuideBookId,
+        guideBookId: item.evaluationInstructionBookId,
         projectId: this.xmu_info.projectId,
         evaluationGrade: this.xmu_info.data.level,
       };
