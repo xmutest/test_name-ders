@@ -34,23 +34,41 @@ export default {
     };
   },
   created() {
-    // this.getEtlist();
+    this.getEtlist();
   },
   methods: {
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
     },
      async getEtlist() {
-      let List = await this.$api.API_projectOverviewfindverificationTest();
+      let List = await this.$api.API_WholeEvaluationFindWholeEvaluation();
       if (List.code === 20000) {
-        this.fromdata=List.data
+        if(List.data == null || List.data.verificationTest == null){
+          this.fromdata.verificationTest = `
+          <pre>
+            验证测试包括漏洞扫描，渗透测试等，验证测试发现的安全问题对应到相应的测评项的结果记录中。详细验证测试报告见报告附录A。
+          </pre>
+          `
+        }else{
+          this.fromdata.verificationTest = List.data.verificationTest
+
+          this.fromdata.id = List.data.id;
+        }
+
         //查询列表
       } else {
         this.$message.error(List.message + "评测依据选项出差，请联系管理员");
       }
     },
     async submitReport() {
-      let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
+      let res = '';
+      if(this.fromdata.id){
+        // 修改
+        res = await this.$api.API_WholeEvaluationUpdateWholeEvaluation(this.fromdata);
+      }else{
+        // 保存
+        res = await this.$api.API_WholeEvaluationSaveWholeEvaluation(this.fromdata);
+      }
       if (res.code === 20000) {
         this.$message.success("修改成功！！");
         this.getEtlist();
