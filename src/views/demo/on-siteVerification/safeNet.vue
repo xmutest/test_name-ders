@@ -2,9 +2,43 @@
 <template>
   <d2-container>
     <div class="schuan_s">
+      <div>
+        <el-button @click="dialogVisible = true" type="primary"
+          >安全保护</el-button
+        >
+      </div>
+      <div>
+        <upload-qu
+          :toSonData="toSonData"
+          @toFatherData="sendSonData"
+        ></upload-qu>
+      </div>
       <!-- 上传 toSonData：传给后台的id  sendSonData上传成功的返回值-->
-      <upload-qu :toSonData="toSonData" @toFatherData="sendSonData"></upload-qu>
     </div>
+    <!-- 安全保护 -->
+    <el-dialog
+      title="信息"
+      :visible.sync="dialogVisible"
+      width="80%"
+      :before-close="handleClose"
+    >
+      <div class="table_To1"></div>
+      <div class="ToMits">
+        <el-tabs v-loading="loading" class="container-tab" type="border-card">
+          <el-tab-pane v-for="Its in ToMitList" :key="Its.id" :label="Its.name">
+            <d2-quill
+              style="min-height: 200px; margin-bottom: 20px"
+              v-model="Its.content"
+            />
+            <div class="tijiaobaoc">
+              <el-button type="primary" @click="submitReport(Its)"
+                >保存</el-button
+              >
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    </el-dialog>
     <div class="ts_table">
       <el-tabs v-loading="loading" class="container-tab" type="card">
         <el-tab-pane v-for="Its in dataList" :key="Its.id" :label="Its.name">
@@ -82,7 +116,7 @@
                     </el-popover>
                   </td>
                   <td>
-                      <el-popover trigger="click" placement="top">
+                    <el-popover trigger="click" placement="top">
                       <div>
                         <p
                           v-for="(item3,
@@ -220,6 +254,7 @@ import { cloneDeep } from "lodash";
 export default {
   data() {
     return {
+      dialogVisible: false,
       loading: true,
       // activeName: "",
       itemsCoacr: [
@@ -231,6 +266,7 @@ export default {
       ],
       toSonData: 1,
       dataList: [],
+      ToMitList: [],
       accordSituationlist: [
         { value: 0, label: "请选择" },
         { value: 1, label: "符合(1分)" },
@@ -248,6 +284,24 @@ export default {
     this.getDataList();
   },
   methods: {
+    // 获取
+    async submitReport(item) {
+      let fractionModelList = [];
+      fractionModelList.push(item);
+      let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
+      console.log(res);
+      if (res.code === 20000) {
+        this.$message.success("保存成功");
+        this.getDataList();
+      }
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
     sendSonData(data) {
       if (data === true) {
         this.getDataList();
@@ -268,6 +322,7 @@ export default {
       const res = await this.$api.SYS_FieldSurveyFindAssetsList(this.api_data);
       if (res.code === 20000) {
         var listTs = cloneDeep(res.data.assetsList);
+        this.ToMitList = cloneDeep(res.data.protectiveList);
         this.loading = false;
         this.dataList = listTs;
       }
@@ -309,6 +364,9 @@ export default {
 
 .schuan_s {
   margin: 15px 0;
-  text-align: right;
+  display: flex;
+  div {
+    margin: 0 10px;
+  }
 }
 </style>

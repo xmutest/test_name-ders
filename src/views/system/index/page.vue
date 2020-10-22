@@ -254,7 +254,7 @@
                 v-for="item in standardExtend_list"
                 :key="item.value"
                 :label="item.label"
-                :value="item.label"
+                :value="item.value"
               >
               </el-option>
             </el-select>
@@ -387,11 +387,11 @@ export default {
       ],
       // 扩展标准
       standardExtend_list: [
-        { label: "云计算安全扩展要求", value: 1 },
-        { label: "移动互联安全扩展要求", value: 2 },
-        { label: "物联网安全扩展要求", value: 3 },
-        { label: "工业控制系统安全扩展要求", value: 4 },
-        { label: "大数据安全扩展要求", value: 5 },
+        { label: "云计算安全扩展要求", value: 2 },
+        { label: "移动互联安全扩展要求", value: 3 },
+        { label: "物联网安全扩展要求", value: 4 },
+        { label: "工业控制系统安全扩展要求", value: 5 },
+        { label: "大数据安全扩展要求", value: 6 },
       ],
       search_list: {
         projectName: "",
@@ -406,7 +406,7 @@ export default {
         recordSn: "", //备案证明编号
         standard: 3, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
         standardVersion: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
-        standardExtends: "", //拓展标准
+        standardExtends: [], //拓展标准
         level: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
         sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         membersIdList: [], //项目参与人
@@ -506,14 +506,14 @@ export default {
     },
     // 选择项目跳转
     async optionTo(index, row) {
-      let res =await this.Project_detail(row.projectId);
+      let res = await this.Project_detail(row.projectId);
       // 设置 vuex 用户信息
       await this.$store.dispatch(
         "d2admin/xmu/set",
         {
           name: row.projectName,
           projectId: row.projectId,
-          data:res,
+          data: res,
         },
         {
           root: true,
@@ -554,6 +554,7 @@ export default {
     submitForm(formName, ua_cre) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
+     
           // 创建
           if (ua_cre === 0) {
             this.xmform.standardExtends = this.xmform.standardExtends.join("┋");
@@ -641,14 +642,18 @@ export default {
       this.table_name_el = "更新项目";
       this.datalog_list_rom(row.creator);
 
-      let res =await this.Project_detail(row.projectId);
+      let res = await this.Project_detail(row.projectId);
 
       this.xmform.projectId = row.projectId;
       Object.keys(this.xmform).forEach((key) => {
         this.xmform[key] = res[key];
       });
       if (row.standardExtends) {
-        this.xmform.standardExtends = row.standardExtends.split("┋");
+        let nums = row.standardExtends.split("┋");
+        nums.forEach((item, index) => {
+          nums[index] = parseInt(nums[index]);
+        });
+        this.xmform.standardExtends = nums;
       }
       this.dialogFormVisible = true;
     },

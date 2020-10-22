@@ -208,7 +208,7 @@ export default {
           inEquipmentName: "",
           majorFunction: "",
           importantDegree: 1,
-          isEvaluationObj: true,
+          isEvaluationObj: false,
           sortNum: 1,
           show: false,
         },
@@ -333,7 +333,7 @@ export default {
         inEquipmentName: "",
         majorFunction: "",
         importantDegree: 1,
-        isEvaluationObj: true,
+        isEvaluationObj: false,
         sortNum,
         show: false,
       };

@@ -188,7 +188,7 @@ export default {
           platformExtendEdition: "",
           importantDegree: 1,
           remarks: "",
-          isEvaluationObj: true,
+          isEvaluationObj: false,
           show: false,
         },
       ],
@@ -276,7 +276,7 @@ export default {
         evaluation_instruction_book_id: "",
         remarks: "",
         sortNum,
-        isEvaluationObj: true,
+        isEvaluationObj: false,
         show: false,
       };
       itss.splice(item + 1, 0, list);

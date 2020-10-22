@@ -294,7 +294,7 @@ export default {
           remarks: "",
           equipmentNum: 5,
           importantDegree: 5,
-          isEvaluationObj: true,
+          isEvaluationObj: false,
           sortNum: 1,
           show: false,
         },
@@ -317,7 +317,7 @@ export default {
         remarks: "",
         equipmentNum: 5,
         importantDegree: 5,
-        isEvaluationObj: true,
+        isEvaluationObj: false,
       },
       formLabelWidth: "120px",
       rules: {},
@@ -469,7 +469,7 @@ export default {
         sortNum,
         importantDegree: 5,
         equipmentType: 2,
-        isEvaluationObj: true,
+        isEvaluationObj: false,
         show: false,
       };
       itss.splice(item + 1, 0, list);

@@ -79,5 +79,18 @@ export default ({
       method: 'post',
       data
     })
+  },
+
+  /**
+   * @description 批量更新保护措施
+   * @param {Object} data 携带的信息
+   */
+  async SYSFieldSurveyUpdateList(data = {}) {
+    return request({
+      url: '/fieldSurvey/updateList',
+      method: 'post',
+      data
+    })
   }
+
 })

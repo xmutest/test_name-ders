@@ -178,7 +178,24 @@ export default {
   data() {
     return {
       Itzm: false,
-      tabledatas: [],
+      tabledatas: [
+        {
+          dataType: "",
+          isDataAcquisition: false,
+          isDataStorage: false,
+          isDataHandle: false,
+          isDataApplication: false,
+          isDataFlow: false,
+          isDataDestruction: false,
+          belongsBusiness: "",
+          safetyProtectionDemand: "",
+          storageDevice: "",
+          importantDegree: 5,
+          isEvaluationObj: false,
+          sortNum: 1,
+          show: false,
+        },
+      ],
       dialogTableVisible: false,
       dialogFormVisible: false,
       importantDegree_list: [
@@ -195,7 +212,7 @@ export default {
         safetyProtectionDemand: "",
         storageDevice: "",
         importantDegree: 5,
-        isEvaluationObj: true,
+        isEvaluationObj: false,
       },
       formLabelWidth: "120px",
       rules: {},
@@ -312,7 +329,7 @@ export default {
         safetyProtectionDemand: "",
         storageDevice: "",
         importantDegree: 5,
-        isEvaluationObj: true,
+        isEvaluationObj: false,
         sortNum,
         show: false,
       };
