@@ -14,6 +14,8 @@ var _axios = _interopRequireDefault(require("axios"));
 
 var _router = _interopRequireDefault(require("./router"));
 
+var _vCharts = _interopRequireDefault(require("v-charts"));
+
 var _menu = require("@/menu");
 
 var _routes = require("@/router/routes");
@@ -25,7 +27,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 // store
 _vue["default"].prototype.$http = _axios["default"]; // 菜单和路由设置
 
-_vue["default"].use(require('vue-easeljs')); // 核心插件
+_vue["default"].use(require('vue-easeljs'));
+
+_vue["default"].use(_vCharts["default"]); // Vue.use(require('echarts'))
+// 核心插件
 
 
 _vue["default"].use(_d2admin["default"]);
