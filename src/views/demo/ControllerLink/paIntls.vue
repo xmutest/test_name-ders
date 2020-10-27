@@ -97,8 +97,8 @@
                         require('@/views/demo/ControllerLink/img/structure01.jpg')
                       "
                       :x="1000 / 2"
-                      :y="0"
-                      :align="['center', 'top']"
+                      :y="500 / 2"
+                      :align="['center', 'center']"
                     >
                     </easel-bitmap>
 
@@ -115,6 +115,17 @@
                       v-for="(item, key) in bitmapArr"
                       :key="key"
                     >
+                    <!-- <easel-bitmap
+                      :image="
+                        require(`@/views/demo/ControllerLink/img/palntlsImg/${item}.png`)
+                      "
+                      :x="0"
+                      :y="0"
+                      :align="['left', 'top']"
+                      @mousedown="objTouch($event)"
+                      v-for="(item, key) in bitmapArr"
+                      :key="key"
+                    > -->
                     </easel-bitmap>
                   </easel-canvas>
                 </div>
@@ -239,45 +250,123 @@ export default {
     },
     // 移动元素
     objTouch(e) {
+      let that = this
       let obj = e.currentTarget;
       this.mouseInfo.startLocateX = obj.x;
       this.mouseInfo.startLocateY = obj.y;
 
       this.mouseInfo.startX = e.stageX;
       this.mouseInfo.startY = e.stageY;
+      
+                      // @pressmove.prevent="objMove($event)"
+                      // @mouseout="objOut($event)"
+
+      // console.log(document.body)
+      // console.log(this.objMove)
+      // let body = document.body
+
+      
+      // console.log(that)
+      this.$el.addEventListener('mousemove',this.objMove(e))
+
     },
     objMove(e) {
-      this.mouseInfo.moveX = e.stageX;
-      this.mouseInfo.moveY = e.stageY;
-      let diveceX = this.mouseInfo.moveX - this.mouseInfo.startX;
-      let diveceY = this.mouseInfo.moveY - this.mouseInfo.startY;
-
+      
       // 触发事件对象
       let obj = e.currentTarget;
-
+      
       // 获取图片宽高
       let imgWidth = obj.image.width;
       let imgHeight = obj.image.height;
 
-      obj.x = this.mouseInfo.startLocateX + diveceX;
-      obj.y = this.mouseInfo.startLocateY + diveceY;
+
+
+
+      this.mouseInfo.moveX = e.stageX;
+      this.mouseInfo.moveY = e.stageY;
+      
+      let diveceX = this.mouseInfo.moveX - this.mouseInfo.startX;
+      let diveceY = this.mouseInfo.moveY - this.mouseInfo.startY;
+
+
+      let judgeX = this.mouseInfo.startLocateX + diveceX
+      let judgeY = this.mouseInfo.startLocateY + diveceY
+
+      if (judgeX < 0 || judgeX + imgWidth > 1000) {
+        if (judgeX < 0) {
+          judgeX = 0;
+        } else {
+          judgeX = 1000 - imgWidth;
+        }
+        // this.mouseInfo.moveX = 0
+        // this.objOut(e)
+      }
+
+      if (judgeY < 0 || judgeY + imgHeight > 500) {
+        if (judgeY < 0) {
+          judgeY = 0;
+        } else {
+          judgeY = 500 - imgHeight;
+        }
+        // this.mouseInfo.moveY = 0
+        // this.objOut(e)
+      }
+
+
+      obj.x = judgeX;
+      obj.y = judgeY;
 
       //超出做限制
-      if (obj.x < 0 || obj.x + imgWidth > 1000) {
-        if (obj.x < 0) {
-          obj.x = 0;
-        } else {
-          obj.x = 1000 - imgWidth;
-        }
-      }
+      // if (obj.x < 0 || obj.x + imgWidth > 1000) {
+      //   if (obj.x < 0) {
+      //     obj.x = 0;
+      //   } else {
+      //     obj.x = 1000 - imgWidth;
+      //   }
+      //   // this.mouseInfo.moveX = 0
+      //   // this.objOut(e)
+      // }else{
+        
+      // }
 
-      if (obj.y < 0 || obj.y + imgHeight > 500) {
-        if (obj.y < 0) {
-          obj.y = 0;
-        } else {
-          obj.y = 500 - imgHeight;
-        }
-      }
+      // if (obj.y < 0 || obj.y + imgHeight > 500) {
+      //   if (obj.y < 0) {
+      //     obj.y = 0;
+      //   } else {
+      //     obj.y = 500 - imgHeight;
+      //   }
+      //   // this.mouseInfo.moveY = 0
+      //   // this.objOut(e)
+      // }else{
+        
+      // }
+
+      console.log('移动',parseInt(obj.x),parseInt(obj.y),parseInt(this.mouseInfo.moveX),parseInt(this.mouseInfo.moveY))
+
+
+
+      // if (obj.x < 0 || obj.x + imgWidth > 1000){
+      //   // 左右顶边
+    
+      // }
+
+      // if(obj.x <= 0 && obj.y <= 0){
+      //   obj.x = 0,obj.y = 0
+      // }else if(obj.x <= 0 && obj.y + imgHeight > 500){
+      //   obj.x = 0,obj.y = 500 - imgHeight;
+      // }else if(obj.x <= 0 && obj.y > 0 && obj.y + imgHeight <= 500){
+      //   obj.x = 0
+      // }
+
+      // if(obj.x + imgWidth > 1000 && obj.y <= 0){
+      //   obj.x = 1000 - imgWidth,obj.y = 0
+      // }else if(obj.x + imgWidth > 1000 && obj.y + imgHeight > 500){
+      //   obj.x = 1000 - imgWidth,obj.y = 500 - imgHeight;
+      // }else if(obj.x + imgWidth > 1000 && obj.y > 0 && obj.y + imgHeight <= 500){
+      //   obj.x = 1000 - imgWidth
+      // }
+      
+
     },
     objOut(e) {
       // 触发事件对象
@@ -310,6 +399,12 @@ export default {
     // 动态往画布添加元素
     casAdd(e) {
       let pic = require(`@/views/demo/ControllerLink/img/palntlsImg/${e}.png`);
+      // let picData = {
+      //   src:pic,
+      //   locateX:0,
+      //   locateY:0,
+
+      // }
       this.bitmapArr.push(e);
     },
   },
@@ -365,6 +460,8 @@ export default {
 }
 
 .canvasObj {
+  border:2px solid black;
+  box-sizing:border-box;
   // margin:0 auto;
 }
 
@@ -375,7 +472,7 @@ export default {
 }
 .toorBar {
   width: 100%;
-  padding: 0 20px;
+  padding: 20px 20px 0;
   margin-bottom: 20px;
   box-sizing: border-box;
 }
