@@ -15,7 +15,7 @@ export default ({
     // 模拟数据
     // 接口请求
     return request({
-      url: '/import/check/upload',
+      url: '/input/sceneCheck',
       method: 'post',
       data
     })

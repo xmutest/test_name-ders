@@ -43,15 +43,6 @@ export default {
         ...meta,
         title: '安全问题汇总'
       }
-    },
-    {
-      path: 'zgzt',
-      name: `${pre}zgzt`,
-      component: _import('demo/AssessmentAnd/zgzt'),
-      meta: {
-        ...meta,
-        title: '整改状态调整'
-      }
-    },
+    }
   ])('demo-AssessmentAnd-')
 }

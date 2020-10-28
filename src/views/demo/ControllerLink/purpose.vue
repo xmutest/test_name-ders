@@ -40,7 +40,7 @@
               style="font-size: 12px; margin: 10px; color: red"
             >
               <span data-v-231d5a32="" style="/* font-size: 12px; */"
-                >请以逗号分割多个依据</span
+                >请以逗号分割多个依据，并且以《xxxx报告》的形式输入</span
               >
             </div>
           </div>
@@ -91,13 +91,15 @@ export default {
          <br>
         为进一步提高信息系统的保障能力，根据《信息安全等级保护管理办法》（公通字2007【43】号）的精神，${this.xmu_info.data.evaluatedUnit}委托广州华南信息安全测评中心（广州市中邦信息工程有限公司）（DJCP2010440126）对${this.xmu_info.data.systemName}实施等级测评，以期发现信息系统和等级保护标准的差距以及存在的安全隐患，为后续的安全整改工作提供参考依据。`;
         }
-        if (List.data.otherEvaluationBasis != null) {
+        if (
+          List.data.otherEvaluationBasis != null
+        ) {
           this.fromdata.otherEvaluationBasis = List.data.otherEvaluationBasis.split(
             ","
           );
         }
         if (List.data.evaluationBasis == null) {
-          this.fromdata.evaluationBasis = `${this.xmu_info.data.systemName}定级报告`;
+          this.fromdata.evaluationBasis = `《${this.xmu_info.data.systemName}定级报告》`;
         } else {
           this.fromdata.evaluationBasis = List.data.evaluationBasis;
         }
@@ -112,7 +114,20 @@ export default {
     async getevaluationBasisFindAll() {
       let res = await this.$api.API_evaluationBasisFindAll();
       if (res.code === 20000) {
-        this.evaluation_list = res.data;
+        let Tsop = [];
+        let Ts = [];
+        let Ls = [];
+        res.data.forEach((element) => {
+          if (element.status == 1) {
+            Ts.push(element);
+            Tsop.push(element.evaluationBasisName);
+          } else {
+            Ls.push(element);
+          }
+        });
+        Ts.push(...Ls);
+        this.evaluation_list = Ts;
+        this.fromdata.otherEvaluationBasis = Tsop;
         //查询列表
       } else {
         this.$message.error(res.message + "评测依据选项出差，请联系管理员");

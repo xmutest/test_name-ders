@@ -33,7 +33,7 @@ export default ({
     // 模拟数据
     // 接口请求
     return request({
-      url: '/inputDoc',
+      url: '/input/inputDoc',
       method: 'post',
       data
     })

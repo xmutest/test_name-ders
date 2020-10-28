@@ -29,6 +29,21 @@ export default ({
       return xmu_info.projectId;
     }
   },
+  /**
+   * @description 模板下载
+   * @param {Object} data 
+   */
+ async SYS_OutputSceneCheck(data = {}) {
+    data.projectId = await this.get_info();
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/output/sceneCheck',
+      method: 'get',
+      params:data,
+      responseType: 'blob',
+    })
+  },
   // 获取信息
   /**
    * @description 查询安全物理环境

@@ -29,56 +29,56 @@ export default ({
       return xmu_info.projectId;
     }
   },
-    /**
-   * @description 分页查询整体测评结果汇总
+  /**
+   * @description 查询查看风险分析和评价
    * @param {Object} data 携带的信息
    */
- async APIwholeEvaluationFindResults(data = {}) {
-  data.projectId = await this.get_info();  
-  // 接口请求
+  async API_RiskFindAmendAnalysis(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
     return request({
-      url: '/wholeEvaluation/findResults',
+      url: '/risk/findAmendAnalysis',
       method: 'get',
       params: data
     })
   },
   /**
-   * @description 查询整体评测
+   * @description 查询查看风险值修正
    * @param {Object} data 携带的信息
    */
- async API_WholeEvaluationFindWholeEvaluation(data = {}) {
-  data.projectId = await this.get_info();  
-  // 接口请求
+  async API_RiskFindRiskCorrections(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
     return request({
-      url: '/wholeEvaluation/findWholeEvaluation',
+      url: '/risk/findRiskCorrection',
       method: 'get',
       params: data
     })
   },
   /**
-   * @description 保存整体评测
+   * @description 查询查看风险值修正
    * @param {Object} data 携带的信息
    */
- async API_WholeEvaluationSaveWholeEvaluation(data = {}) {
-    // 接口请求
+  async API_RiskFindRiskKnowledge(data = {}) {
     data.projectId = await this.get_info();
+    // 接口请求
     return request({
-      url: '/wholeEvaluation/saveWholeEvaluation',
-      method: 'post',
-      data
+      url: '/risk/findRiskKnowledge',
+      method: 'get',
+      params: data
     })
   },
   /**
-   * @description 修改整体评测
+   * @description 修改风险值修正
    * @param {Object} data 携带的信息
    */
- async API_WholeEvaluationUpdateWholeEvaluation(data = {}) {
-    // 接口请求
+  async API_RiskUpdateAmendAnalysis(data = {}) {
     data.projectId = await this.get_info();
+    // 接口请求
     return request({
-      url: '/wholeEvaluation/updateWholeEvaluation',
+      url: '/risk/updateAmendAnalysis',
       method: 'post',
-      data
+      data:JSON.stringify(data)
     })
-  }
+  },
 })

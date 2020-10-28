@@ -16,10 +16,6 @@ export default {
       path: `${pre}wthz`,
       title: '安全问题汇总'
     },
-    {
-      path: `${pre}zgzt`,
-      title: '整改状态调整'
-    },
   ])('/demo/AssessmentAnd/')
 
 }

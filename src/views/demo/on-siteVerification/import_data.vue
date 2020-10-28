@@ -1,37 +1,42 @@
+<!--导入测评调研表-->
 <template>
-  <div>
-    <el-upload
-      class="upload-demo"
-      action
-      :limit="10"
-      :file-list="formFileList"
-      :http-request="handleUploadForm"
-      :on-exceed="formHandleExceed"
-      :on-remove="formHandleRemove"
-      :before-upload="beforeUploadForm"
-      multiple
-      accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
-    >
-      <el-button type="primary">导入</el-button>
-    </el-upload>
-  </div>
+  <d2-container>
+    <div class="ks_to">
+      <div class="ks_buttm">
+        <el-tag type="info">导入页面整体数据</el-tag>
+      </div>
+      <el-upload
+        class="upload-demo"
+        drag
+        action
+        :limit="10" 
+        :file-list="formFileList"
+        :http-request="handleUploadForm"
+        :on-exceed="formHandleExceed"
+        :on-remove="formHandleRemove"
+        :before-upload="beforeUploadForm"
+        accept="application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        multiple
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">
+          上传文件只能是xlsx/xls/csv格式，且不超过10m
+        </div>
+      </el-upload>
+      <!-- <div class="ks_buttm">
+        <el-button type="primary" @click="ks_toBummt">导出模板</el-button>
+      </div> -->
+    </div>
+  </d2-container>
 </template>
 
 <script>
 import { mapState } from "vuex";
 export default {
-  props: {
-    //第二种方式
-    toSonData: {
-      type: Number,
-      default: function () {
-        return 1;
-      },
-    },
-  },
   data() {
     return {
-      formMaxSize: 10, // 上传文件大小
+      formMaxSize: 1, // 上传文件大小
       formFileList: [], // 显示上传文件
       uploadFormFileList: [], // 确定上传文件
       ifsTo: false,
@@ -92,21 +97,19 @@ export default {
       );
     },
     // 上传文件
-    handleUploadForm(param) {
+    async handleUploadForm(param) {
       let thiz = this;
       let formData = new FormData();
-      formData.append("projectId", thiz.xmu_info.projectId); // 额外参数
+      //formData.append("projectId", this.toSonData); // 额外参数
       formData.append("files", param.file);
-      formData.append("sag", thiz.xmu_info.data.sag);
       let loading = thiz.$loading({
         lock: true,
         text: "上传中，请稍候...",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
-
-      // thiz.$http.post("/api/import/check/upload", formData)
-      this.$api.SYS_checkUpload(formData).then((data) => {
+      formData.append("projectId", thiz.xmu_info.projectId);
+      thiz.$api.SYS_checkUpload(formData).then((data) => {
         if (data.code === 20000) {
           thiz.$message({
             message: "上传文件成功，" + data.message,
@@ -123,10 +126,23 @@ export default {
         }
       });
       loading.close();
+      // thiz.$http.post("/api/import/check/upload", formData).then(({ data }) => {
+
+      // });
     },
   },
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.ks_to {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  .ks_buttm {
+    margin: 15px 0;
+    text-align: left;
+  }
+}
 </style>

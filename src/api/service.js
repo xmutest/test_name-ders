@@ -50,6 +50,9 @@ function createService() {
           case 401:
             // [ 示例 ] code === 0 代表没有错误
             return alert(dataAxios.message)
+          case 500:
+            // [ 示例 ] code === 0 代表没有错误
+            return alert(dataAxios.message)
           case 555:
             // [ 示例 ] code === 0 代表没有错误
             return alert(dataAxios.message)

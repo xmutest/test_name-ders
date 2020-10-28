@@ -14,6 +14,9 @@
           @toFatherData="sendSonData"
         ></upload-qu>
       </div>
+      <div>
+        <upload-dachu :toSonData="api_data.sceneCheckId"></upload-dachu>
+      </div>
       <!-- 上传 toSonData：传给后台的id  sendSonData上传成功的返回值-->
     </div>
     <!-- 安全保护 -->
@@ -42,7 +45,11 @@
     </el-dialog>
     <div class="ts_table">
       <el-tabs v-loading="loading" class="container-tab" type="card">
-        <el-tab-pane v-for="Its in dataList" :key="Its.id" :label="Its.name">
+        <el-tab-pane
+          v-for="Its in dataList"
+          :key="Its.id + Math.random()"
+          :label="Its.name"
+        >
           <div>
             <table id="partnerTable">
               <thead>

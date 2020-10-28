@@ -102,7 +102,10 @@ export default {
         { value: 1, label: "符合(1分)" },
       ],
       // 请求数据
-      api_data: {},
+      api_data: {
+        pageNo:1,
+        pageSize:1
+      },
     };
   },
   created() {
@@ -116,7 +119,8 @@ export default {
       let its = dataLists;
 
       this.dataList = its.data.pageData;
-      // const res = await this.$api.SYS_USER_ANQUAN_WU(this.api_data);
+      let res = await this.$api.APIwholeEvaluationFindResults(this.api_data);
+      console.log(res);
       // if (res.code === 20000) {
       //   var listTs = cloneDeep(res.data);
       //   listTs.forEach((element) => {

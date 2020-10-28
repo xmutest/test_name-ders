@@ -9,9 +9,12 @@
             <th>控制点</th>
             <th>关联资产</th>
             <th>控制项</th>
-            <th>结果记录</th>
-            <th>测评项权重</th>
-            <th>修正前</th>
+            <th>问题描述</th>
+            <th>问题分析</th>
+            <th>关联威胁</th>
+            <th>原始风险值</th>
+            <th>危害分析</th>
+            <th>整改建议</th>
           </tr>
         </thead>
         <template tbody v-for="item in dataList">
@@ -30,9 +33,9 @@
                   {{ item2.safetyControlSpot }}
                 </td>
 
-                <td @dblclick="shishiClick(item2, item3)">
+                <td @dblclick="shishiClick(item3)">
                   <div slot="reference" class="name-wrapper">
-                    {{ item3.assets.substr(0, 35) }}
+                    {{ item3.assets }}
                   </div>
                 </td>
                 <td>
@@ -42,10 +45,30 @@
                 </td>
                 <td>
                   <div slot="reference" class="name-wrapper">
-                    {{ item3.results.substr(0, 35) }}
+                    {{ item3.problemDescription.substr(0, 35) }}
                   </div>
                 </td>
-                <td>{{ item3.weight }}</td>
+                <td>{{ item3.problemAnalysis.substr(0, 35) }}</td>
+                <td>
+                  <div>
+                    {{ item3.relationThreaten.substr(0, 35) }}
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    {{ item3.originalRisk.substr(0, 35) }}
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    {{ item3.hazardAnalysis.substr(0, 35) }}
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    {{ item3.rectificationSuggestions.substr(0, 35) }}
+                  </div>
+                </td>
               </tr>
             </template>
           </tbody>
@@ -58,6 +81,30 @@
         :visible.sync="dialogVisible"
         :before-close="handleClose"
       >
+        <el-dialog
+          width="30%"
+          title="关联威胁值"
+          :visible.sync="innerVisible"
+          append-to-body
+          :before-close="handleClose"
+        >
+          <div class="relevanceWeiList">
+            <el-checkbox-group v-model="relevanceWeiList">
+              <el-checkbox
+                v-for="item in DataListPou"
+                :key="item.id"
+                :label="item.id"
+              >
+                {{ item.threatClassificationName }}({{ item.threatGrade }}风险)
+              </el-checkbox>
+            </el-checkbox-group>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button type="primary" size="mini" @click="relevanceMenace"
+              >确 定</el-button
+            >
+          </span>
+        </el-dialog>
         <div class="name_ts">
           <div>系统安全问题风险分析和评价</div>
           <div class="name_ro">
@@ -66,13 +113,32 @@
           </div>
         </div>
         <div class="relevance">1</div>
-        <div class="relevance">1</div>
+        <div class="relevance">
+          <el-tabs style="height: 200px" type="border-card">
+            <el-tab-pane label="风险知识库">
+              <div class="xuna">
+                <el-radio
+                  @change="Listdatamis(item)"
+                  v-for="(item, index) in relevanceList"
+                  :key="index"
+                  v-model="Ts_radio"
+                  :label="index"
+                  >{{ item.riskName }}</el-radio
+                >
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="高风险叛列">
+              {{ amendAnalysis.highRiskJudge }}
+            </el-tab-pane>
+          </el-tabs>
+        </div>
         <div class="up_wt">
           <div>
             <p>问题描述：</p>
             <el-input
               type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4 }"
+              v-model="amendAnalysis.problemDescription"
+              :rows="3"
               placeholder="请输入内容"
             >
             </el-input>
@@ -81,7 +147,8 @@
             <p>危害分析：</p>
             <el-input
               type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4 }"
+              :rows="3"
+              v-model="amendAnalysis.hazardAnalysis"
               placeholder="请输入内容"
             >
             </el-input>
@@ -90,7 +157,8 @@
             <p>问题分析：</p>
             <el-input
               type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4 }"
+              :rows="3"
+              v-model="amendAnalysis.problemAnalysis"
               placeholder="请输入内容"
             >
             </el-input>
@@ -99,13 +167,70 @@
             <p>整改建议：</p>
             <el-input
               type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4 }"
+              :rows="3"
+              v-model="amendAnalysis.rectificationSuggestions"
               placeholder="请输入内容"
             >
             </el-input>
           </div>
         </div>
-        <div class="">1</div>
+        <div class="Threats">
+          <div>
+            <el-popover width="600" trigger="hover">
+              <el-button
+                @click="FmeListo('高')"
+                :style="
+                  amendAnalysis.originalRisk == '高' ||
+                  amendAnalysis.riskGrade == 1
+                    ? 'background-color: red'
+                    : ''
+                "
+                slot="reference"
+              >
+                高风险
+              </el-button>
+            </el-popover>
+          </div>
+          <div>
+            <el-popover width="600" trigger="hover">
+              <el-button
+                @click="FmeListo('中')"
+                :style="
+                  amendAnalysis.originalRisk == '中' ||
+                  amendAnalysis.riskGrade == 2
+                    ? 'background-color: #FFEB3B'
+                    : ''
+                "
+                slot="reference"
+                >中风险</el-button
+              >
+            </el-popover>
+          </div>
+          <div>
+            <el-popover width="600" trigger="hover">
+              <el-button
+                slot="reference"
+                @click="FmeListo('低')"
+                :style="
+                  amendAnalysis.originalRisk == '低' ||
+                  amendAnalysis.riskGrade == 3
+                    ? 'background-color: #4CAF50'
+                    : ''
+                "
+                >低风险</el-button
+              >
+            </el-popover>
+          </div>
+          <div>
+            <el-button type="info" @click="innerVisible = true"
+              >关联威胁</el-button
+            >
+          </div>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="Tolist()">确 定</el-button>
+          <el-button @click="dialogVisible = false">取 消</el-button>
+        </span>
       </el-dialog>
     </div>
   </d2-container>
@@ -117,7 +242,8 @@ import dataLists from "./responseResult1";
 export default {
   data() {
     return {
-      dialogVisible: true,
+      innerVisible: false,
+      dialogVisible: false,
       itemsCoacr: [
         { color: "#fff" },
         { color: "#fff" },
@@ -126,47 +252,104 @@ export default {
         { color: "#fff" },
       ],
       dataList: [],
+      // 风险
+      DataListPou: [],
       accordSituationlist: [
         { value: 4, label: "不适用" },
         { value: 3, label: "不符合(0分)" },
         { value: 2, label: "部分符合(0.5分)" },
         { value: 1, label: "符合(1分)" },
       ],
+      relevanceList: [],
+      relevanceWeiList: [],
       // 请求数据
-      api_data: {},
+      api_data: {
+        pageNum: 1,
+        pageSize: 30,
+        amendId: 1,
+        safetyControlId: 136,
+      },
+      amendAnalysis: {
+        problemDescription: "",
+        hazardAnalysis: "",
+        problemAnalysis: "",
+        rectificationSuggestions: "",
+        originalRisk: "",
+        relationThreaten: "",
+        highRiskJudge: "",
+      },
+      Ts_radio: "",
     };
   },
   created() {
     this.getDataList();
   },
   methods: {
+    Listdatamis(item) {
+      let amendId = this.amendAnalysis.amendId;
+      this.amendAnalysis = item;
+      this.amendAnalysis.amendId = amendId;
+    },
     Totisadd() {
       console.log(5);
     },
-    shishiClick(item2, item3) {
-      console.log(item2, item3);
+    shishiClick(item3) {
+      this.amendAnalysis = item3;
+      console.log(item3);
+      this.api_data.amendId = item3.amendId;
+      this.api_data.safetyControlId = item3.safetyControlId;
       this.dialogVisible = true;
+      this.getDaPuList();
+      this.getDataListPou();
+    },
+    async Tolist() {
+      this.amendAnalysis.threadId = this.relevanceWeiList;
+      let res = await this.$api.API_RiskUpdateAmendAnalysis(this.amendAnalysis);
+      console.log(res);
+    },
+    async getDaPuList() {
+      let res = await this.$api.API_RiskFindRiskKnowledge(this.api_data);
+      // console.log(res);
+      if (res.code == 20000) {
+        this.relevanceList = res.data[0];
+        this.relevanceWeiList = res.data[1];
+      } else {
+        this.$message.error("信息加载出错");
+      }
     },
     async getDataList() {
-      let its = dataLists;
+      // let its = dataLists;
 
-      this.dataList = its.data.pageData;
-      // const res = await this.$api.SYS_USER_ANQUAN_WU(this.api_data);
-      // if (res.code === 20000) {
-      //   var listTs = cloneDeep(res.data);
-      //   listTs.forEach((element) => {
-      //     element.contentList.forEach((item) => {
-      //       if (!item.hasOwnProperty("accordSituation")) {
-      //         item.remark = "";
-      //         item.accordSituation = 1;
-      //         item.recordResults = "";
-      //       }
-      //     });
-      //   });
-      //   this.dataList = listTs;
-      // }
-      //  const res= await this.$http.get('/api/safetyControl/findSpotByBookId',{params:this.api_data});
-      //  this.dataList=res.data.data;
+      // this.dataList = its.data.pageData;
+      let res = await this.$api.API_RiskFindAmendAnalysis(this.api_data);
+      if (res.code == 20000) {
+        this.dataList = res.data.pageData;
+      } else {
+        this.$message.error("信息加载出错");
+      }
+    },
+    // 获取关联威胁
+    async getDataListPou() {
+      let res = await this.$api.API_projectOThreatClassificationFindAll();
+      if (res.code == 20000) {
+        this.DataListPou = res.data;
+      } else {
+        this.$message.error("信息加载关联威胁出错");
+      }
+    },
+    FmeListo(item) {
+      this.amendAnalysis.originalRisk = item;
+      if (item == "高") {
+        this.amendAnalysis.riskGrade = 1;
+      } else if (item == "中") {
+        this.amendAnalysis.riskGrade = 2;
+      } else {
+        this.amendAnalysis.riskGrade = 3;
+      }
+    },
+    // 设置关联威胁
+    relevanceMenace() {
+      this.innerVisible = false;
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -207,12 +390,21 @@ export default {
     font-size: 13px;
   }
 }
-
+.relevanceWeiList {
+  height: 150px;
+  overflow: auto;
+  .el-checkbox-group {
+    .el-checkbox {
+      display: block;
+      margin: 5px 0;
+    }
+  }
+}
 .schuan_s {
   margin: 15px 0;
   text-align: right;
 }
-.el-dialog {
+::v-deep .el-dialog {
   width: 900px;
 }
 .updata_dialog {
@@ -232,16 +424,30 @@ export default {
     }
   }
   .relevance {
-    height: 150px;
-    overflow: auto;
+    height: 200px;
+    .xuna {
+      overflow: auto;
+      height: 135px;
+      .el-radio {
+        display: block;
+        margin: 5px 0;
+      }
+    }
   }
   .up_wt {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     div {
-      width: 300px;
-      padding:0 10px;
+      width: 400px;
+      padding: 0 10px;
+    }
+  }
+  .Threats {
+    padding: 10px;
+    display: flex;
+    div {
+      margin: 0 10px;
     }
   }
 }

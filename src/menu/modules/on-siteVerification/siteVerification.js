@@ -3,7 +3,10 @@ export default {
   path: '/demo/siteVerification',
   title: '现场核查',
   icon: 'odnoklassniki',
-  children: (pre => [
+  children: (pre => [{
+      path: `${pre}import_data`,
+      title: '导入测评调研表'
+    },
     {
       path: `${pre}safeEnviroment`,
       title: '安全物理环境'
@@ -39,8 +42,7 @@ export default {
     {
       path: `${pre}buildManger`,
       title: '安全建设管理'
-    }
-    ,
+    },
     {
       path: `${pre}ywgl`,
       title: '安全运维管理'
