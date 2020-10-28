@@ -20,7 +20,7 @@
         <template tbody v-for="item in dataList">
           <tbody v-for="(item1, index1) in item.resultData" :key="index1">
             <tr>
-              <td :rowspan="item1.sceneCheckData.length * 20">
+              <td :rowspan="item1.sceneCheckData.length * Toamount">
                 {{ item1.sceneCheckName }}
               </td>
             </tr>
@@ -242,6 +242,7 @@ import dataLists from "./responseResult1";
 export default {
   data() {
     return {
+      Toamount: 5,
       innerVisible: false,
       dialogVisible: false,
       itemsCoacr: [
@@ -295,7 +296,6 @@ export default {
     },
     shishiClick(item3) {
       this.amendAnalysis = item3;
-      console.log(item3);
       this.api_data.amendId = item3.amendId;
       this.api_data.safetyControlId = item3.safetyControlId;
       this.dialogVisible = true;
@@ -303,9 +303,14 @@ export default {
       this.getDataListPou();
     },
     async Tolist() {
-      this.amendAnalysis.threadId = this.relevanceWeiList;
+      this.amendAnalysis.threatId = this.relevanceWeiList;
       let res = await this.$api.API_RiskUpdateAmendAnalysis(this.amendAnalysis);
-      console.log(res);
+      if (res.code == 20000) {
+        this.dialogVisible = false;
+        this.getDataList();
+      } else {
+        this.$message.error("保存出错");
+      }
     },
     async getDaPuList() {
       let res = await this.$api.API_RiskFindRiskKnowledge(this.api_data);
@@ -324,6 +329,7 @@ export default {
       let res = await this.$api.API_RiskFindAmendAnalysis(this.api_data);
       if (res.code == 20000) {
         this.dataList = res.data.pageData;
+        this.Toamount = res.data.count + 5;
       } else {
         this.$message.error("信息加载出错");
       }

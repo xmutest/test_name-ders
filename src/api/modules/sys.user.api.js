@@ -55,7 +55,11 @@ export default ({
     return request({
       url: '/project/findList',
       method: 'post',
-      data: JSON.stringify(data)
+      data:JSON.stringify(data),
+      params:{
+        page:data.page,
+        pageSize:data.pageSize
+      }
     })
   },
   /**

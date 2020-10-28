@@ -69,6 +69,19 @@ export default ({
     })
   },
   /**
+   * @description 查看安全问题汇总
+   * @param {Object} data 携带的信息
+   */
+  async API_RiskFindSummary(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/risk/findSummary',
+      method: 'get',
+      params: data
+    })
+  },
+  /**
    * @description 修改风险值修正
    * @param {Object} data 携带的信息
    */
@@ -77,6 +90,32 @@ export default ({
     // 接口请求
     return request({
       url: '/risk/updateAmendAnalysis',
+      method: 'post',
+      data:JSON.stringify(data)
+    })
+  },
+    /**
+   * @description 风险值修正
+   * @param {Object} data 携带的信息
+   */
+  async API_RiskUpdateRiskCorrection(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/risk/updateRiskCorrection',
+      method: 'post',
+      data:JSON.stringify(data)
+    })
+  },
+   /**
+   * @description 更新修正后风险值
+   * @param {Object} data 携带的信息
+   */
+  async API_RiskUpdateAfterAmendRisk(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/risk/updateAfterAmendRisk',
       method: 'post',
       data:JSON.stringify(data)
     })

@@ -9,7 +9,7 @@ import {
   errorLog,
   errorCreate
 } from './tools'
-
+import ElementUI from "element-ui";
 /**
  * @description 创建请求实例
  */
@@ -71,6 +71,12 @@ function createService() {
             })
             return
           default:
+            ElementUI.Message({
+              title: '警告',
+              message: `请求 ${response.config.url}出错，请联系管理员`,
+              type: 'error'
+            });
+            alert('请求出错，请联系管理员');
             // 不是正确的 code
             errorCreate(`${dataAxios}: ${response.config.url}`)
             break

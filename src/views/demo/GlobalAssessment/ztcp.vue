@@ -2,7 +2,7 @@
 <template>
   <d2-container>
     <div class="ts_table">
-      <table>
+      <table v-loading="loading">
         <thead>
           <tr>
             <th>安全层面</th>
@@ -17,12 +17,7 @@
         <template tbody v-for="item in dataList">
           <tbody v-for="(item1, index1) in item.resultData" :key="index1">
             <tr>
-              <td
-                :rowspan="
-                  item1.sceneCheckData.length *
-                  20
-                "
-              >
+              <td :rowspan="item1.sceneCheckData.length * ToListm">
                 {{ item1.sceneCheckName }}
               </td>
             </tr>
@@ -34,8 +29,7 @@
                 <td v-if="!index3" :rowspan="item2.controlEntriesData.length">
                   {{ item2.safetyControlSpot }}
                 </td>
-
-                <td>
+                <td v-if="item3.assets">
                   <el-popover trigger="click" width="200" placement="top">
                     <div>
                       <p>
@@ -43,9 +37,19 @@
                       </p>
                     </div>
                     <div slot="reference" class="name-wrapper">
-                      {{ item3.assets.substr(0, 35) }}
+                      {{
+                        item3.assets == ""
+                          ? item3.assets
+                          : item3.assets.substr(0, 35)
+                      }}
                     </div>
                   </el-popover>
+                </td>
+                <td
+                  v-else
+                  :rowspan="item1.sceneCheckData.length * ToListm"
+                >
+                  {{ item1.assets }}
                 </td>
                 <td>
                   <el-popover trigger="click" width="200" placement="top">
@@ -55,7 +59,11 @@
                       </p>
                     </div>
                     <div slot="reference" class="name-wrapper">
-                      {{ item3.controlEntries.substr(0, 35) }}
+                      {{
+                        item3.controlEntries == ""
+                          ? item3.controlEntries
+                          : item3.controlEntries.substr(0, 35)
+                      }}
                     </div>
                   </el-popover>
                 </td>
@@ -67,11 +75,16 @@
                       </p>
                     </div>
                     <div slot="reference" class="name-wrapper">
-                      {{ item3.results.substr(0, 35) }}
+                      {{
+                        item3.results == ""
+                          ? item3.results
+                          : item3.results.substr(0, 35)
+                      }}
                     </div>
                   </el-popover>
                 </td>
                 <td>{{ item3.weight }}</td>
+                <td>{{ item3.beforeModificationSeverity }}</td>
               </tr>
             </template>
           </tbody>
@@ -87,6 +100,7 @@ import dataLists from "./responseResult1";
 export default {
   data() {
     return {
+      loading: true,
       itemsCoacr: [
         { color: "#fff" },
         { color: "#fff" },
@@ -95,6 +109,7 @@ export default {
         { color: "#fff" },
       ],
       dataList: [],
+      ToListm: 20,
       accordSituationlist: [
         { value: 4, label: "不适用" },
         { value: 3, label: "不符合(0分)" },
@@ -103,8 +118,8 @@ export default {
       ],
       // 请求数据
       api_data: {
-        pageNo:1,
-        pageSize:1
+        pageNo: 1,
+        pageSize: 1,
       },
     };
   },
@@ -116,11 +131,24 @@ export default {
       console.log(5);
     },
     async getDataList() {
-      let its = dataLists;
-
-      this.dataList = its.data.pageData;
+      this.loading = true;
       let res = await this.$api.APIwholeEvaluationFindResults(this.api_data);
       console.log(res);
+      if (res.code === 20000) {
+        if (res.data.totalSize > 1) {
+          this.ToListm = res.data.totalSize * 2;
+        }
+
+        if (res.data.pageData.length > 0) {
+          this.dataList = res.data.pageData;
+        } else {
+          this.$message("数据为空");
+        }
+        this.loading = false;
+      } else {
+        this.$message.error("加载信息出错，请联系管理员");
+      }
+
       // if (res.code === 20000) {
       //   var listTs = cloneDeep(res.data);
       //   listTs.forEach((element) => {

@@ -6,12 +6,12 @@
           <span class="search_ls_name">项目名称</span>
           <el-input
             placeholder="请输入内容"
-            v-model="search_list.projectName"
+            v-model="projectModel.projectName"
             clearable
           ></el-input>
         </div>
         <div>
-          <el-button icon="el-icon-search" circle></el-button>
+          <el-button icon="el-icon-search" @click="searchBi" circle></el-button>
         </div>
         <div class="die_roift">
           <el-button @click="dialogFormVisibleList" type="primary"
@@ -172,7 +172,7 @@
             <el-input
               v-model="xmform.projectName"
               clearable
-              @click="searchBi"
+              
               autocomplete="off"
             ></el-input>
           </el-form-item>
@@ -393,9 +393,6 @@ export default {
         { label: "工业控制系统安全扩展要求", value: 5 },
         { label: "大数据安全扩展要求", value: 6 },
       ],
-      search_list: {
-        projectName: "",
-      },
       membersIdLists: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -414,6 +411,7 @@ export default {
       projectModel: {
         page: 1,
         pageSize: 10,
+        projectName: "",
       },
       formLabelWidth: "120px",
       rules: {
@@ -442,7 +440,6 @@ export default {
   methods: {
     // 搜索
     searchBi() {
-      this.projectModel.projectName = this.search_list.projectName;
       this.ProjectQueryList();
     },
     // 分页

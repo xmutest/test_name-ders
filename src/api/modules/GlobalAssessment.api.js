@@ -30,7 +30,7 @@ export default ({
     }
   },
     /**
-   * @description 分页查询整体测评结果汇总
+   * @description 分页查询整体测评结果汇总 
    * @param {Object} data 携带的信息
    */
  async APIwholeEvaluationFindResults(data = {}) {
