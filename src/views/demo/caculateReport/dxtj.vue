@@ -185,6 +185,116 @@ export default {
             },
           ]
         },
+        {
+          groupName:'安全物理环境',
+          group:[
+            {
+              name:'物理位置选择',
+              item:[
+                {
+                  itemName:`a)机房场地应选择...`,
+                  cpobjNum:2,
+                  pass:`20%`,
+                  halfPass:'0%',
+                  noPass:'50%',
+                  notUse:'0'
+                },
+                {
+                  itemName:`b)避免设在建筑物的顶层`,
+                  cpobjNum:2,
+                  pass:`20%`,
+                  halfPass:'0%',
+                  noPass:'50%',
+                  notUse:'0'
+                },
+                {
+                  itemName:`z)zzzzz`,
+                  cpobjNum:2,
+                  pass:`20%`,
+                  halfPass:'0%',
+                  noPass:'50%',
+                  notUse:'0'
+                },
+              ],
+              cpxs:211,
+              objNum:431,
+              totalNum:1411,
+            },
+            {
+              name:'物理访问控制',
+              item:[
+                {
+                  itemName:`x)xxxxxxx...`,
+                  cpobjNum:2,
+                  pass:`20%`,
+                  halfPass:'0%',
+                  noPass:'50%',
+                  notUse:'0'
+                },
+                {
+                  itemName:`v)vvvvvvv`,
+                  cpobjNum:2,
+                  pass:`20%`,
+                  halfPass:'0%',
+                  noPass:'50%',
+                  notUse:'0'
+                },
+              ],
+              cpxs:211,
+              objNum:431,
+              totalNum:1411,
+            },
+            {
+              name:'防盗窃和防破坏',
+              item:[
+                {
+                  itemName:`e)鹅鹅鹅曲项向天歌...`,
+                  cpobjNum:2,
+                  pass:`20%`,
+                  halfPass:'0%',
+                  noPass:'50%',
+                  notUse:'0'
+                },
+                {
+                  itemName:`f)避免设在建筑物的顶层`,
+                  cpobjNum:2,
+                  pass:`20%`,
+                  halfPass:'0%',
+                  noPass:'50%',
+                  notUse:'0'
+                },
+              ],
+              cpxs:211,
+              objNum:431,
+              totalNum:1411,
+            },
+            {
+              name:'防雷击',
+              item:[
+                {
+                  itemName:`a)aaAaaaAAAaa...`,
+                  cpobjNum:2,
+                  pass:`20%`,
+                  halfPass:'0%',
+                  noPass:'50%',
+                  notUse:'0'
+                },
+                {
+                  itemName:`b)bbbbbb`,
+                  cpobjNum:2,
+                  pass:`20%`,
+                  halfPass:'0%',
+                  noPass:'50%',
+                  notUse:'0'
+                },
+              ],
+              cpxs:211,
+              objNum:431,
+              totalNum:1411,
+            },
+          ]
+        },
+        
       ],  //模拟数据
       tableImitateDate:[],
       tableImitateIndex:[],
@@ -200,16 +310,23 @@ export default {
   methods: {
     arrengeData(){
       let imitateData = this.imitateData
-      let groupIndex = 0,groupLength = 0
+      let groupIndex = 0,groupItemIndex = 0
       for(let i=0;i<imitateData.length;i++){
         let groupName = imitateData[i].groupName
+        // groupIndex += imitateData[i].group.length
         this.tableImitateIndex.push(groupIndex)
-        groupIndex += imitateData[i].group.length
-
-        groupLength += imitateData[i].group.length
+        
 
         for(let j=0;j<imitateData[i].group.length;j++){
           let name = imitateData[i]['group'][j].name
+          
+          
+          groupIndex += imitateData[i]['group'][j].item.length
+
+          
+          this.tableImitateItemIndex.push(groupItemIndex)
+          groupItemIndex += imitateData[i]['group'][j].item.length
+
           for(let k=0;k<imitateData[i]['group'][j].item.length;k++){
             
             let paramsJson = {
@@ -225,28 +342,54 @@ export default {
             // 处理插入的数据
             this.tableImitateDate.push(paramsJson)
           }
-          // tableImitateIndex
+          
         }
+        
+        
       }
-        this.tableImitateIndex.push(groupLength)
+        this.tableImitateIndex.push(groupIndex)
+        this.tableImitateItemIndex.push(groupItemIndex)
+        
 
-        //将合并数量插入到对应合并首行的数据中
+        //将合并数量插入到对应合并首行的数据中(第一级合并)
         for(let i=0;i<this.tableImitateIndex.length - 1;i++){
           this.tableImitateDate[this.tableImitateIndex[i]].rowspan = this.tableImitateIndex[i+1] - this.tableImitateIndex[i]
         }
+
+        for(let j=0;j<this.tableImitateItemIndex.length - 1;j++){
+          this.tableImitateDate[this.tableImitateItemIndex[j]].rowspanItem = this.tableImitateItemIndex[j+1] - this.tableImitateItemIndex[j]
+        }
+        // 
+        // for(let j=0;j<this.tableImitateItemIndex.length - 1)
 
       
 
         console.log(this.tableImitateDate)
         console.log(this.tableImitateIndex)
+        console.log('二级合并',this.tableImitateItemIndex)
     },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       for(let i=0;i<this.tableImitateIndex.length - 1;i++){
         // 仅限第一行
-        if(columnIndex === 0){
-          if(row.rowspan>=1){
+        if(columnIndex === 0 ){
+            if(row.rowspan>=1){
+              return{
+                rowspan:row.rowspan,
+                colspan:1
+              }
+            }else{
+              return {
+                rowspan:0,
+                colspan:0
+              }
+            }
+          
+        }
+        
+        if(columnIndex === 1){
+          if(row.rowspanItem>=1){
             return{
-              rowspan:row.rowspan,
+              rowspan:row.rowspanItem,
               colspan:1
             }
           }else{
@@ -255,14 +398,20 @@ export default {
               colspan:0
             }
           }
-          
         }
+
+        // if(columnIndex === 1){
+        //   return {
+        //     rowspan:2,
+        //     colspan:0
+        //   }
+        // }
       }
     },
     async func_get_config(){
       let res = await this.$api.API_ProjectfindOverallEvaluation()
       console.log(res)
-    }
+    } 
   },
 }
 </script>
