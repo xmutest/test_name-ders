@@ -23,15 +23,23 @@
                   label="安全控制点">
                 </el-table-column>
                 <el-table-column
-                  prop="cpxs"
+                  prop="cpobjNum"
                   label="测评项数">
                 </el-table-column>
                 <el-table-column
-                  prop="objNum"
+                  prop="pass"
                   label="测评对象数">
                 </el-table-column>
                 <el-table-column
-                  prop="totalNum"
+                  prop="halfPass"
+                  label="测评项总数">
+                </el-table-column>
+                <el-table-column
+                  prop="noPass"
+                  label="测评项总数">
+                </el-table-column>
+                <el-table-column
+                  prop="notUse"
                   label="测评项总数">
                 </el-table-column>
               </el-table>
@@ -107,9 +115,6 @@ export default {
                   notUse:'0'
                 },
               ],
-              cpxs:211,
-              objNum:431,
-              totalNum:1411,
             },
             {
               name:'物理访问控制',
@@ -131,9 +136,6 @@ export default {
                   notUse:'0'
                 },
               ],
-              cpxs:211,
-              objNum:431,
-              totalNum:1411,
             },
             {
               name:'防盗窃和防破坏',
@@ -155,9 +157,6 @@ export default {
                   notUse:'0'
                 },
               ],
-              cpxs:211,
-              objNum:431,
-              totalNum:1411,
             },
             {
               name:'防雷击',
@@ -179,9 +178,6 @@ export default {
                   notUse:'0'
                 },
               ],
-              cpxs:211,
-              objNum:431,
-              totalNum:1411,
             },
           ]
         },
@@ -216,9 +212,6 @@ export default {
                   notUse:'0'
                 },
               ],
-              cpxs:211,
-              objNum:431,
-              totalNum:1411,
             },
             {
               name:'物理访问控制',
@@ -240,9 +233,6 @@ export default {
                   notUse:'0'
                 },
               ],
-              cpxs:211,
-              objNum:431,
-              totalNum:1411,
             },
             {
               name:'防盗窃和防破坏',
@@ -264,9 +254,6 @@ export default {
                   notUse:'0'
                 },
               ],
-              cpxs:211,
-              objNum:431,
-              totalNum:1411,
             },
             {
               name:'防雷击',
@@ -288,9 +275,6 @@ export default {
                   notUse:'0'
                 },
               ],
-              cpxs:211,
-              objNum:431,
-              totalNum:1411,
             },
           ]
         },
@@ -333,11 +317,11 @@ export default {
               groName:groupName,
               name:name,
               itemName:imitateData[i]['group'][j]['item'][k].itemName,
-              cpobjNum:imitateData[i]['group'][j].cpxs,
-              pass:imitateData[i]['group'][j].objNum,
-              halfPass:imitateData[i]['group'][j].totalNum,
-              noPass:imitateData[i]['group'][j].totalNum,
-              notUse:imitateData[i]['group'][j].totalNum,
+              cpobjNum:imitateData[i]['group'][j]['item'][k].cpobjNum,
+              pass:imitateData[i]['group'][j]['item'][k].pass,
+              halfPass:imitateData[i]['group'][j]['item'][k].halfPass,
+              noPass:imitateData[i]['group'][j]['item'][k].noPass,
+              notUse:imitateData[i]['group'][j]['item'][k].notUse,
             }
             // 处理插入的数据
             this.tableImitateDate.push(paramsJson)
@@ -364,9 +348,9 @@ export default {
 
       
 
-        console.log(this.tableImitateDate)
-        console.log(this.tableImitateIndex)
-        console.log('二级合并',this.tableImitateItemIndex)
+        // console.log(this.tableImitateDate)
+        // console.log(this.tableImitateIndex)
+        // console.log('二级合并',this.tableImitateItemIndex)
     },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       for(let i=0;i<this.tableImitateIndex.length - 1;i++){

@@ -8,7 +8,7 @@
           :span-method="objectSpanMethod"
           border
           show-summary
-          sum-text="安全通用要求"
+          sum-text="总计"
           style="width: 100%; margin-top: 20px"
         >
           <el-table-column
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -186,11 +187,20 @@ export default {
       tableImitateIndex: [],
     };
   },
+  computed: {
+    ...mapState("d2admin", {
+      info: (state) => state.user.info,
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
+  },
   created() {
-    // this.func_get_config()
+    // console.log('项目信息',this.xmu_info)
+    
+    
   },
   mounted() {
     this.arrengeData();
+    this.func_get_config()
   },
   methods: {
     arrengeData() {
@@ -222,8 +232,8 @@ export default {
           this.tableImitateIndex[i + 1] - this.tableImitateIndex[i];
       }
 
-      console.log(this.tableImitateDate);
-      console.log(this.tableImitateIndex);
+      // console.log(this.tableImitateDate);
+      // console.log(this.tableImitateIndex);
     },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       for (let i = 0; i < this.tableImitateIndex.length - 1; i++) {
@@ -244,8 +254,13 @@ export default {
       }
     },
     async func_get_config() {
-      let res = await this.$api.API_ProjectfindOverallEvaluation();
-      console.log(res);
+
+      let res = await this.$api.API_CalculateFractionControlStatistics();
+      
+      let {dataList} = res.data
+      console.log(dataList)
+      // this.xmu_info.level  等保等级
+    // standardExtends
     },
   },
 };
