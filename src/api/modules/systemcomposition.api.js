@@ -46,7 +46,7 @@ export default ({
     // 模拟数据
     // 接口请求
     return request({
-      url: '/downLoadDoc',
+      url: '/input/downLoadDoc',
       method: 'get',
       data,
       responseType: 'blob',

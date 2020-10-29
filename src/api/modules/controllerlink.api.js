@@ -167,7 +167,6 @@ export default ({
    */
   async API_findNetworkImg(data = {}) {
     data.projectId = await this.get_info();
-    data.id = 3;
     // 接口请求
     return request({
       url: '/img/findNetworkImg',
@@ -187,6 +186,35 @@ export default ({
     // 接口请求
     return request({
       url: '/img/saveNetworkImg',
+      method: 'post',
+      data
+    })
+  },
+   /**
+   * @description 项目概述-查询入点图片
+   * @param {Object} data 携带的信息
+   */
+  async API_ImgFindAccessPointImg(data = {}) {
+    data.projectId = await this.get_info();;
+    // 接口请求
+    return request({
+      url: '/img/findAccessPointImg',
+      method: 'get',
+      params:data
+    })
+  },
+  /**
+   * @description 项目概述-保存接入点图片
+   * @param {Object} data 携带的信息
+   */
+  async API_ImgSaveAccessPointImg(data = {}) {
+    let formData = new FormData();
+    formData.append("projectId", await this.get_info()); // 额外参数
+    formData.append("files", data.file);
+    data = formData;
+    // 接口请求
+    return request({
+      url: '/img/saveAccessPointImg',
       method: 'post',
       data
     })

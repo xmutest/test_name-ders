@@ -105,8 +105,7 @@ export default {
         background: "rgba(0, 0, 0, 0.7)",
       });
       formData.append("projectId", thiz.xmu_info.projectId);
-      thiz.$api.SYS_USER_InputDoc(formData).then(( data ) => {
-      
+      thiz.$api.SYS_USER_InputDoc(formData).then((data) => {
         if (data.code === 20000) {
           thiz.$message({
             message: "上传文件成功，" + data.message,
@@ -130,23 +129,29 @@ export default {
     // 导出
     async ks_toBummt() {
       let res = await this.$api.SYS_USER_DownLoadDoc();
-      let blob = new Blob([res], { type: "application/msword;charset=utf-8" });
-
-      //浏览器兼容，Google和火狐支持a标签的download，IE不支持
-      if (window.navigator && window.navigator.msSaveBlob) {
-        //IE浏览器、微软浏览器
-        /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
-              IE可不重命名，以防万一，所以都写上比较好 */
-        window.navigator.msSaveBlob(blob, "文件.doc");
+      if (res.code == 500) {
+        alert(res.message);
       } else {
-        //其他浏览器
-        let link = document.createElement("a"); // 创建a标签
-        link.style.display = "none";
-        let objectUrl = URL.createObjectURL(blob);
-        link.download = "系统构成表模板";
-        link.href = objectUrl;
-        link.click();
-        URL.revokeObjectURL(objectUrl);
+        let blob = new Blob([res], {
+          type: "application/msword;charset=utf-8",
+        });
+
+        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        if (window.navigator && window.navigator.msSaveBlob) {
+          //IE浏览器、微软浏览器
+          /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+              IE可不重命名，以防万一，所以都写上比较好 */
+          window.navigator.msSaveBlob(blob, "文件.doc");
+        } else {
+          //其他浏览器
+          let link = document.createElement("a"); // 创建a标签
+          link.style.display = "none";
+          let objectUrl = URL.createObjectURL(blob);
+          link.download = "系统构成表模板";
+          link.href = objectUrl;
+          link.click();
+          URL.revokeObjectURL(objectUrl);
+        }
       }
 
       // window.open('/downLoadDoc')

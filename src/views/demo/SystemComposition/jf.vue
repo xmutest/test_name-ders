@@ -6,13 +6,6 @@
       border
       :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
     >
-      <el-table-column label="" width="80">
-        <template slot-scope="scope">
-          <div class="itsz"></div>
-          <span v-show="!scope.row.show">{{ scope.$index + 1 }}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column label="机房名称">
         <template slot-scope="scope">
           <div
@@ -276,5 +269,12 @@ export default {
 <style lang="scss" scoped>
 .el-table {
   font-size: 12px;
+}
+.itsz {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
 }
 </style>

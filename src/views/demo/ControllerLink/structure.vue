@@ -206,8 +206,7 @@ export default {
       let res = await this.$api.API_findNetworkImg();
       if (res.code === 20000) {
         if (res.data !== null) {
-          this.imgUrl =
-            "/evaluation/static" + res.data.imgUrl + res.data.imgName;
+          this.imgUrl = '/evaluation'+res.data.imgUrl + res.data.imgName;
           this.imgUrl_id = res.data.id;
         }
       }
@@ -253,7 +252,7 @@ export default {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         this.$message.success("修改成功！！");
-        this.getEtlist();
+        this.getEtlist(); 
         //查询列表
       } else {
         this.$message.error("错误，请联系管理员" + res.message);
@@ -351,7 +350,9 @@ export default {
     display: flex;
     align-items: center;
     .wangruo_img {
-      width: 800px;
+      width: 600px;
+      height: 400px;
+      margin-right: 10px;
       img {
         width: 100%;
       }

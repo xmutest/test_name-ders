@@ -21,7 +21,7 @@
                 {{ item1.sceneCheckName }}
               </td>
             </tr>
-            <template v-for="item2 in item1.sceneCheckData">
+            <template v-for="(item2, index2) in item1.sceneCheckData">
               <tr
                 v-for="(item3, index3) in item2.controlEntriesData"
                 :key="Math.random() + index3"
@@ -46,11 +46,12 @@
                   </el-popover>
                 </td>
                 <td
-                  v-else
+                  v-else-if="!index2 && !index3"
                   :rowspan="item1.sceneCheckData.length * ToListm"
                 >
                   {{ item1.assets }}
                 </td>
+
                 <td>
                   <el-popover trigger="click" width="200" placement="top">
                     <div>

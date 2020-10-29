@@ -1,71 +1,74 @@
 <!--安全管理文档-->
 <template>
-    <d2-container>
-      <el-table :data="tabledatas" border>
-        <el-table-column label="文档名称" width="120">
-          <template slot-scope="scope">
-            <div
-              @click="is_compile(scope.row, scope.$index, 'fileName')"
-              class="itsz"
-            ></div>
-            <el-input
-              :ref="'fileName' + scope.$index"
-              @blur="schujiaodian(scope.row)"
-              v-show="scope.row.show"
-              v-model="scope.row.fileName"
-            ></el-input>
-            <span v-show="!scope.row.show">{{scope.row.fileName}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="主要内容" width="150">
-          <template slot-scope="scope">
-            <div
-              @click="is_compile(scope.row, scope.$index, 'fileContent')"
-              class="itsz"
-            ></div>
-            <el-input
-              :ref="'fileContent' + scope.$index"
-              @blur="schujiaodian(scope.row)"
-              v-show="scope.row.show"
-              v-model="scope.row.fileContent"
-            ></el-input>
-            <span v-show="!scope.row.show">{{scope.row.fileContent}}</span>
-          </template>
-        </el-table-column>
-
-
-        <el-table-column label="操作" width="150">
-          <template slot-scope="scope">
-            <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
-            <el-button size="mini" @click="is_preserve(scope.$index, true, scope.row.sortNum)">
-              新增
-            </el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="deleteRow(scope.$index, scope.row)"
-            >
-              删除
-            </el-button>
-          </template>
+  <d2-container>
+    <el-table :data="tabledatas" border>
+      <el-table-column label="文档名称" width="120">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'fileName')"
+            class="itsz"
+          ></div>
+          <el-input
+            :ref="'fileName' + scope.$index"
+            @blur="schujiaodian(scope.row)"
+            v-show="scope.row.show"
+            v-model="scope.row.fileName"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.fileName }}</span>
+        </template>
       </el-table-column>
 
-      </el-table>
+      <el-table-column label="主要内容" width="150">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'fileContent')"
+            class="itsz"
+          ></div>
+          <el-input
+            :ref="'fileContent' + scope.$index"
+            @blur="schujiaodian(scope.row)"
+            v-show="scope.row.show"
+            v-model="scope.row.fileContent"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.fileContent }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="操作" width="150">
+        <template slot-scope="scope">
+          <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
+          <el-button
+            size="mini"
+            @click="is_preserve(scope.$index, true, scope.row.sortNum)"
+          >
+            新增
+          </el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="deleteRow(scope.$index, scope.row)"
+          >
+            删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </d2-container>
 </template>
 
 <script>
 export default {
-  data(){
-    return{
+  data() {
+    return {
       Itzm: false,
-      tabledatas:[{
-        fileName:'',
-        fileContent:'',
-        sortNum: 1,
-        show:false
-      }],
+      tabledatas: [
+        {
+          fileName: "",
+          fileContent: "",
+          sortNum: 1,
+          show: false,
+        },
+      ],
       formPage: {
         pageNum: 1,
         pageSize: 10,
@@ -73,10 +76,10 @@ export default {
     };
   },
   created() {
-     this.getlistdata();
+    this.getlistdata();
   },
   methods: {
-     async getlistdata() {
+    async getlistdata() {
       let res = await this.$api.APISecurityManageFileFindSecurityManageFile(
         this.formPage
       );
@@ -107,12 +110,18 @@ export default {
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {
-          res = await this.$api.API_SecurityManageFileSaveSecurityManageFile(item);
+          res = await this.$api.API_SecurityManageFileSaveSecurityManageFile(
+            item
+          );
         } else {
-          res = await this.$api.API_SecurityManageFileUpdateSecurityManageFile(item);
+          res = await this.$api.API_SecurityManageFileUpdateSecurityManageFile(
+            item
+          );
         }
       } else {
-        res = await this.$api.API_SecurityManageFileSaveSecurityManageFile(item);
+        res = await this.$api.API_SecurityManageFileSaveSecurityManageFile(
+          item
+        );
       }
       if (res.code === 20000) {
         this.getlistdata();
@@ -128,8 +137,8 @@ export default {
       var itss = this.tabledatas;
       var basicData = {
         personnelName: "",
-        fileName:'',
-        fileContent:'',
+        fileName: "",
+        fileContent: "",
         sortNum,
         show: false,
       };
@@ -167,9 +176,14 @@ export default {
         });
     },
   },
-}
+};
 </script>
-
-<style>
-
+<style lang="scss" scoped>
+.itsz {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
 </style>

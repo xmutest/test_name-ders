@@ -73,7 +73,9 @@
                       >JF</el-button
                     >
 
-                    <el-button type="primary">使用网络结构图</el-button>
+                    <el-button type="primary" @click="getlistdataImg()"
+                      >使用网络结构图</el-button
+                    >
                     <el-button type="primary" @click="saveCanvas"
                       >保存</el-button
                     >
@@ -93,9 +95,7 @@
                   >
                     <!-- 使用图片要用require获取 -->
                     <easel-bitmap
-                      :image="
-                        require('@/views/demo/ControllerLink/img/structure01.jpg')
-                      "
+                      :image="imgUrls"
                       :x="1000 / 2"
                       :y="500 / 2"
                       :align="['center', 'center']"
@@ -115,7 +115,7 @@
                       v-for="(item, key) in bitmapArr"
                       :key="key"
                     >
-                    <!-- <easel-bitmap
+                      <!-- <easel-bitmap
                       :image="
                         require(`@/views/demo/ControllerLink/img/palntlsImg/${item}.png`)
                       "
@@ -131,11 +131,7 @@
                 </div>
               </div>
 
-              <img
-                src="@/views/demo/ControllerLink/img/structure01.jpg"
-                alt=""
-                class="resPic"
-              />
+              <img :src="imgUrls" alt="" class="resPic" />
             </div>
           </div>
           <div class="tijiaobaoc">
@@ -173,7 +169,11 @@ export default {
       inputIndex: "",
       showCanvas: false,
       bitmapArr: [],
-      imgUrl:''
+      imgUrl_id:'',
+      // 网络结构图
+      imgUrl: "",
+      // 接入点图片
+      imgUrls: "",
     };
   },
   components: {
@@ -185,20 +185,36 @@ export default {
   mounted() {
     let that = this;
     this.casSize();
+    this.getimgUrls();
     // setTimeout(function(){
     //   that.outputPic()
     // },1000)
   },
   computed: {},
   methods: {
+    //  获取接入点图片
+    async getimgUrls() {
+      let res = await this.$api.API_ImgFindAccessPointImg();
+      if (res.code === 20000) {
+        if (res.data !== null) {
+          this.imgUrls = '/evaluation/img/' + res.data.imgName;
+          this.imgUrl_id = res.data.id;
+        } else {
+          this.getlistdataImg();
+        }
+      }
+      if (res.code !== 20000) {
+        this.$message.error("图片获取失败，请联系管理员" + res.message);
+      }
+    },
     //  获取网络结构图片
-     async getlistdataImg() {
-      
+    async getlistdataImg() {
       let res = await this.$api.API_findNetworkImg();
       if (res.code === 20000) {
         if (res.data !== null) {
-          this.imgUrl =
-            "/evaluation/static" + res.data.imgUrl + res.data.imgName;
+          this.imgUrl_id = res.data.id;
+          this.imgUrl = res.data.imgUrl + res.data.imgName;
+          this.imgUrls = this.imgUrl;
         }
       }
       if (res.code !== 20000) {
@@ -239,58 +255,91 @@ export default {
       let that = this;
       let casBox = this.$refs.canvasArea;
     },
-    // 保存图片
-    saveCanvas() {
+    // 图片转换成二进制
+    dataURLtoBlob(dataurl) {
+      var arr = dataurl.split(","),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new Blob([u8arr], {
+        type: mime,
+      });
+    },
+
+    // 保存接入点图片
+    async saveCanvas() {
       let parper = this.$refs.canvaspic.$el;
       var result = parper.toDataURL("image/png");
-
       // 获取获取图片
       let resPic = document.querySelector(".resPic");
+      let file = this.dataURLtoBlob(result);
+      // console.log(result);
+      if (this.imgUrls == "") {
+        let res = await this.$api.API_ImgSaveAccessPointImg({
+          file,
+        });
+        if (res.code === 20000) {
+          this.$message.success("保存图片成功！！");
+          this.getimgUrls();
+          //查询列表
+        } else {
+          this.$message.error("错误，请联系管理员" + res.message);
+        }
+      } else {
+        let res = await this.$api.API_imgupdateImg({
+          file,
+          id: this.imgUrl_id,
+        });
+        if (res.code === 20000) {
+          this.$message.success("更新图片成功！！");
+          this.getimgUrls();
+          //查询列表
+        } else {
+          this.$message.error("错误，请联系管理员" + res.message);
+        }
+      }
       resPic.src = result;
     },
     // 移动元素
     objTouch(e) {
-      let that = this
+      let that = this;
       let obj = e.currentTarget;
       this.mouseInfo.startLocateX = obj.x;
       this.mouseInfo.startLocateY = obj.y;
 
       this.mouseInfo.startX = e.stageX;
       this.mouseInfo.startY = e.stageY;
-      
-                      // @pressmove.prevent="objMove($event)"
-                      // @mouseout="objOut($event)"
+
+      // @pressmove.prevent="objMove($event)"
+      // @mouseout="objOut($event)"
 
       // console.log(document.body)
       // console.log(this.objMove)
       // let body = document.body
 
-      
       // console.log(that)
-      this.$el.addEventListener('mousemove',this.objMove(e))
-
+      this.$el.addEventListener("mousemove", this.objMove(e));
     },
     objMove(e) {
-      
       // 触发事件对象
       let obj = e.currentTarget;
-      
+
       // 获取图片宽高
       let imgWidth = obj.image.width;
       let imgHeight = obj.image.height;
 
-
-
-
       this.mouseInfo.moveX = e.stageX;
       this.mouseInfo.moveY = e.stageY;
-      
+
       let diveceX = this.mouseInfo.moveX - this.mouseInfo.startX;
       let diveceY = this.mouseInfo.moveY - this.mouseInfo.startY;
 
-
-      let judgeX = this.mouseInfo.startLocateX + diveceX
-      let judgeY = this.mouseInfo.startLocateY + diveceY
+      let judgeX = this.mouseInfo.startLocateX + diveceX;
+      let judgeY = this.mouseInfo.startLocateY + diveceY;
 
       if (judgeX < 0 || judgeX + imgWidth > 1000) {
         if (judgeX < 0) {
@@ -312,7 +361,6 @@ export default {
         // this.objOut(e)
       }
 
-
       obj.x = judgeX;
       obj.y = judgeY;
 
@@ -326,7 +374,7 @@ export default {
       //   // this.mouseInfo.moveX = 0
       //   // this.objOut(e)
       // }else{
-        
+
       // }
 
       // if (obj.y < 0 || obj.y + imgHeight > 500) {
@@ -338,16 +386,14 @@ export default {
       //   // this.mouseInfo.moveY = 0
       //   // this.objOut(e)
       // }else{
-        
+
       // }
 
-      console.log('移动',parseInt(obj.x),parseInt(obj.y),parseInt(this.mouseInfo.moveX),parseInt(this.mouseInfo.moveY))
-
-
+      // console.log('移动',parseInt(obj.x),parseInt(obj.y),parseInt(this.mouseInfo.moveX),parseInt(this.mouseInfo.moveY))
 
       // if (obj.x < 0 || obj.x + imgWidth > 1000){
       //   // 左右顶边
-    
+
       // }
 
       // if(obj.x <= 0 && obj.y <= 0){
@@ -365,8 +411,6 @@ export default {
       // }else if(obj.x + imgWidth > 1000 && obj.y > 0 && obj.y + imgHeight <= 500){
       //   obj.x = 1000 - imgWidth
       // }
-      
-
     },
     objOut(e) {
       // 触发事件对象
@@ -460,8 +504,8 @@ export default {
 }
 
 .canvasObj {
-  border:2px solid black;
-  box-sizing:border-box;
+  border: 2px solid black;
+  box-sizing: border-box;
   // margin:0 auto;
 }
 
@@ -483,5 +527,9 @@ export default {
   right: 20px;
   z-index: 10;
   cursor: pointer;
+}
+.resPic{
+  max-width: 900px;
+  max-height: 600px;
 }
 </style>
