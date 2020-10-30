@@ -77,7 +77,12 @@ export default {
           amount3: 15,
         },
       ],
-      imitateData: [
+      imitateData: [{
+      extendedStandard:'aaa',
+      extendedStandardItemSizeSUM:1,
+      extendedStandardItemTotalSizeSUM:0,
+      extendedStandardObjSizeSUM:100,
+      resData:[
         {
           groupName: "安全物理环境",
           group: [
@@ -182,7 +187,8 @@ export default {
             },
           ],
         },
-      ], //模拟数据
+      ]
+      }], //模拟数据
       tableImitateDate: [],
       tableImitateIndex: [],
     };
@@ -199,13 +205,27 @@ export default {
     
   },
   mounted() {
-    this.arrengeData();
     this.func_get_config()
   },
   methods: {
-    arrengeData() {
-      let imitateData = this.imitateData;
+    arrengeData(res) {
+      let imitateData = res
       let groupIndex = 0;
+
+      for(let a=0;a<imitateData.length;a++){
+        let item = imitateData[a]
+        let paramsFirst = {
+          extendedStandard:item.extendedStandard,
+          extendedStandardItemSizeSUM:item.extendedStandardItemSizeSUM,
+          extendedStandardItemTotalSizeSUM:item.extendedStandardItemTotalSizeSUM,
+          extendedStandardObjSizeSUM:item.extendedStandardObjSizeSUM,
+          colspan:2
+        }
+        // 最外层遍历获取.然后进内部继续遍历(做到这里)
+
+        this.tableImitateDate.push(paramsFirst)
+      }
+
       for (let i = 0; i < imitateData.length; i++) {
         let groupName = imitateData[i].groupName;
         this.tableImitateIndex.push(groupIndex);
@@ -259,6 +279,8 @@ export default {
       
       let {dataList} = res.data
       console.log(dataList)
+      this.arrengeData(dataList)
+
       // this.xmu_info.level  等保等级
     // standardExtends
     },
