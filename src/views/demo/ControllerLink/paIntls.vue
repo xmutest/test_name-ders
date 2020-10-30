@@ -106,6 +106,7 @@
                       :image="
                         require(`@/views/demo/ControllerLink/img/palntlsImg/${item}.png`)
                       "
+                      class="resPics"
                       :x="0"
                       :y="0"
                       :align="['left', 'top']"
@@ -169,11 +170,11 @@ export default {
       inputIndex: "",
       showCanvas: false,
       bitmapArr: [],
-      imgUrl_id:'',
       // 网络结构图
       imgUrl: "",
       // 接入点图片
       imgUrls: "",
+      imgUrlsid:''
     };
   },
   components: {
@@ -197,8 +198,8 @@ export default {
       let res = await this.$api.API_ImgFindAccessPointImg();
       if (res.code === 20000) {
         if (res.data !== null) {
-          this.imgUrls = '/evaluation/img/' + res.data.imgName;
-          this.imgUrl_id = res.data.id;
+          this.imgUrls =  res.data.imgUrl +res.data.imgName;
+          this.imgUrlsid = res.data.id;
         } else {
           this.getlistdataImg();
         }
@@ -212,7 +213,6 @@ export default {
       let res = await this.$api.API_findNetworkImg();
       if (res.code === 20000) {
         if (res.data !== null) {
-          this.imgUrl_id = res.data.id;
           this.imgUrl = res.data.imgUrl + res.data.imgName;
           this.imgUrls = this.imgUrl;
         }
@@ -278,7 +278,7 @@ export default {
       let resPic = document.querySelector(".resPic");
       let file = this.dataURLtoBlob(result);
       // console.log(result);
-      if (this.imgUrls == "") {
+      if (this.imgUrlsid == "") {
         let res = await this.$api.API_ImgSaveAccessPointImg({
           file,
         });
@@ -292,7 +292,7 @@ export default {
       } else {
         let res = await this.$api.API_imgupdateImg({
           file,
-          id: this.imgUrl_id,
+          id: this.imgUrlsid,
         });
         if (res.code === 20000) {
           this.$message.success("更新图片成功！！");
@@ -529,6 +529,10 @@ export default {
   cursor: pointer;
 }
 .resPic{
+  max-width: 900px;
+  max-height: 600px;
+}
+.resPics{
   max-width: 900px;
   max-height: 600px;
 }

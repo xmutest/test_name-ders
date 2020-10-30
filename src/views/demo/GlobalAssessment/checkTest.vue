@@ -45,9 +45,9 @@ export default {
       if (List.code === 20000) {
         if(List.data == null || List.data.verificationTest == null){
           this.fromdata.verificationTest = `
-          <pre>
+          
             验证测试包括漏洞扫描，渗透测试等，验证测试发现的安全问题对应到相应的测评项的结果记录中。详细验证测试报告见报告附录A。
-          </pre>
+          
           `
         }else{
           this.fromdata.verificationTest = List.data.verificationTest

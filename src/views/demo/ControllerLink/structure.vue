@@ -170,9 +170,9 @@ export default {
   },
   methods: {
     async beforePicUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1;
+      const isLt1M = file.size / 1024 / 1024 < 5;
       if (!isLt1M) {
-        this.$message.error("上传头像图片大小不能超过 1MB!");
+        this.$message.error("上传图片大小不能超过 5MB!");
         return false;
       }
       if (this.imgUrl == "") {
@@ -206,7 +206,7 @@ export default {
       let res = await this.$api.API_findNetworkImg();
       if (res.code === 20000) {
         if (res.data !== null) {
-          this.imgUrl = '/evaluation'+res.data.imgUrl + res.data.imgName;
+          this.imgUrl = res.data.imgUrl + res.data.imgName;
           this.imgUrl_id = res.data.id;
         }
       }
