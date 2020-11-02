@@ -5,7 +5,7 @@ export default {
   icon: 'odnoklassniki',
   children: (pre => [{
       path: `${pre}import_data`,
-      title: '导入测评调研表'
+      title: '导入现场记录表'
     },
     {
       path: `${pre}safeEnviroment`,

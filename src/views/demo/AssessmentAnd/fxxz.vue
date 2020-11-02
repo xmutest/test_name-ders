@@ -42,15 +42,15 @@
                 </td>
                 <td>
                   <div slot="reference" class="name-wrapper">
-                    {{ item3.controlEntries.substr(0, 35) }}
+                    {{ item3.controlEntries }}
                   </div>
                 </td>
                 <td>
                   <div slot="reference" class="name-wrapper">
-                    {{ item3.problemDescription.substr(0, 35) }}
+                    {{ item3.problemDescription }}
                   </div>
                 </td>
-                <td>{{ item3.originalRisk.substr(0, 35) }}</td>
+                <td>{{ item3.originalRisk }}</td>
                 <!-- 修正前严重程度 -->
                 <td>
                   <div>
@@ -90,11 +90,11 @@
                     </div>
                     <div slot="reference" class="name-wrapper">
                       <span style="opacity: 0">.</span
-                      >{{ item3.correctReason.substr(0, 35) }}
+                      >{{ item3.correctReason }}
                     </div>
                   </el-popover>
                   <!-- <div>
-                    {{ item3.correctReason.substr(0, 35) }}
+                    {{ item3.correctReason }}
                   </div> -->
                 </td>
                 <!-- 修正后风险值 -->
@@ -118,7 +118,7 @@
                 <!-- 修正后严重程度 -->
                 <td>
                   <div>
-                    {{ item3.afterAmendSeverity.substr(0, 35) }}
+                    {{ item3.afterAmendSeverity }}
                   </div>
                 </td>
                 <!-- 权重 -->

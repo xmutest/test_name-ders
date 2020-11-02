@@ -42,23 +42,23 @@
                 </td>
                 <td>
                   <div slot="reference" class="name-wrapper">
-                    {{ item3.controlEntries.substr(0, 35) }}
+                    {{ item3.controlEntries }}
                   </div>
                 </td>
                 <td>
                   <div slot="reference" class="name-wrapper">
-                    {{ item3.problemDescription.substr(0, 35) }}
+                    {{ item3.problemDescription }}
                   </div>
                 </td>
-                <td>{{ item3.problemAnalysis.substr(0, 35) }}</td>
+                <td>{{ item3.problemAnalysis }}</td>
                 <!-- 关联威胁 -->
                 <td>
                   <div>
-                    {{ item3.relationThreaten.substr(0, 35) }}
+                    {{ item3.relationThreaten }}
                   </div>
                 </td>
                 <!-- 原始风险值 -->
-                <td>{{ item3.originalRisk.substr(0, 35) }}</td>
+                <td>{{ item3.originalRisk }}</td>
                 <!-- 修正后风险值 -->
                 <td>
                   <div>
@@ -67,12 +67,12 @@
                 </td>
                 <td>
                   <div>
-                    {{ item3.hazardAnalysis.substr(0, 35) }}
+                    {{ item3.hazardAnalysis }}
                   </div>
                 </td>
                 <td>
                   <div>
-                    {{ item3.rectificationSuggestions.substr(0, 35) }}
+                    {{ item3.rectificationSuggestions }}
                   </div>
                 </td>
                 <!-- 权重 -->

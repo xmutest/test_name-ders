@@ -40,33 +40,33 @@
                 </td>
                 <td>
                   <div slot="reference" class="name-wrapper">
-                    {{ item3.controlEntries.substr(0, 35) }}
+                    {{ item3.controlEntries }}
                   </div>
                 </td>
                 <td>
                   <div slot="reference" class="name-wrapper">
-                    {{ item3.problemDescription.substr(0, 35) }}
+                    {{ item3.problemDescription }}
                   </div>
                 </td>
-                <td>{{ item3.problemAnalysis.substr(0, 35) }}</td>
+                <td>{{ item3.problemAnalysis }}</td>
                 <td>
                   <div>
-                    {{ item3.relationThreaten.substr(0, 35) }}
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    {{ item3.originalRisk.substr(0, 35) }}
+                    {{ item3.relationThreaten }}
                   </div>
                 </td>
                 <td>
                   <div>
-                    {{ item3.hazardAnalysis.substr(0, 35) }}
+                    {{ item3.originalRisk }}
                   </div>
                 </td>
                 <td>
                   <div>
-                    {{ item3.rectificationSuggestions.substr(0, 35) }}
+                    {{ item3.hazardAnalysis }}
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    {{ item3.rectificationSuggestions }}
                   </div>
                 </td>
               </tr>
@@ -303,6 +303,13 @@ export default {
       this.getDataListPou();
     },
     async Tolist() {
+      console.log(this.DataListPou);
+      // relationThreaten
+      let ls = "";
+      this.relevanceWeiList.forEach((item) => {
+        ls += this.DataListPou[item].threatClassificationName + ",";
+      });
+      this.amendAnalysis.relationThreaten = ls;
       this.amendAnalysis.threatId = this.relevanceWeiList;
       let res = await this.$api.API_RiskUpdateAmendAnalysis(this.amendAnalysis);
       if (res.code == 20000) {

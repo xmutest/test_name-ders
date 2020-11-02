@@ -9,7 +9,7 @@
         class="upload-demo"
         drag
         action
-        :limit="10" 
+        :limit="10"
         :file-list="formFileList"
         :http-request="handleUploadForm"
         :on-exceed="formHandleExceed"
@@ -27,6 +27,9 @@
       <!-- <div class="ks_buttm">
         <el-button type="primary" @click="ks_toBummt">导出模板</el-button>
       </div> -->
+    </div>
+    <div class="ks_buttm">
+      <el-button type="primary" @click="ks_toBummt">导出模板</el-button>
     </div>
   </d2-container>
 </template>
@@ -129,6 +132,13 @@ export default {
       // thiz.$http.post("/api/import/check/upload", formData).then(({ data }) => {
 
       // });
+    },
+    // 导出
+    async ks_toBummt() {
+      //localhost:8080/api/output/sceneCheck?projectId=8
+      // console.log();
+      let url = `${window.location.protocol}${process.env.VUE_APP_API}/output/allSceneCheck?projectId=${this.xmu_info.projectId}`;
+      window.open(url);
     },
   },
 };

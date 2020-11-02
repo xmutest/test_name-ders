@@ -559,7 +559,6 @@ export default {
             }
           // 创建
           if (ua_cre === 0) {
-            this.xmform.standardExtends = this.xmform.standardExtends.join("┋");
             const res = await this.$api.API_Project_Creation(this.xmform);
             if (res.code === 20000) {
               this.$message.success("创建成功！！");

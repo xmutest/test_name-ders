@@ -43,9 +43,19 @@
       </div>
     </el-dialog>
     <div class="ts_table">
-      <el-tabs v-loading="loading" class="container-tab" type="card">
-        <el-tab-pane v-for="Its in dataList" :key="Its.id" :label="Its.name">
-          <div>
+      <el-tabs
+        v-loading="loading"
+        v-model="activeNameTabs"
+        class="container-tab"
+        type="card"
+      >
+        <el-tab-pane
+          v-for="Its in dataList"
+          :name="Its.name + Its.id"
+          :key="Its.id"
+          :label="Its.name"
+        >
+          <div v-if="activeNameTabs == Its.name + Its.id">
             <table id="partnerTable">
               <thead>
                 <tr>
@@ -257,6 +267,7 @@ import { cloneDeep } from "lodash";
 export default {
   data() {
     return {
+      activeNameTabs: "",
       dialogVisible: false,
       loading: true,
       // activeName: "",
@@ -326,6 +337,9 @@ export default {
       if (res.code === 20000) {
         var listTs = cloneDeep(res.data.assetsList);
         this.ToMitList = cloneDeep(res.data.protectiveList);
+        if (this.activeNameTabs == 0) {
+          this.activeNameTabs = listTs[0].name + listTs[0].id;
+        }
         this.loading = false;
         this.dataList = listTs;
       }
