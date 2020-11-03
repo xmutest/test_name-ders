@@ -12,34 +12,38 @@
                 style="width: 100%; margin-top: 20px"
               >
                 <el-table-column
-                  prop="groName"
+                  prop="firstName"
                   label="安全类"
                   width="180"
                   max-height="100"
                 >
                 </el-table-column>
                 <el-table-column
-                  prop="name"
+                  prop="secondName"
                   label="安全控制点">
                 </el-table-column>
                 <el-table-column
-                  prop="cpobjNum"
+                  prop="name"
                   label="测评项数">
                 </el-table-column>
                 <el-table-column
-                  prop="pass"
+                  prop="objCount"
                   label="测评对象数">
                 </el-table-column>
                 <el-table-column
-                  prop="halfPass"
+                  prop="accord"
                   label="测评项总数">
                 </el-table-column>
                 <el-table-column
-                  prop="noPass"
+                  prop="sectionAccord"
                   label="测评项总数">
                 </el-table-column>
                 <el-table-column
-                  prop="notUse"
+                  prop="notAccord"
+                  label="测评项总数">
+                </el-table-column>
+                <el-table-column
+                  prop="notBeApplicable"
                   label="测评项总数">
                 </el-table-column>
               </el-table>
@@ -286,65 +290,77 @@ export default {
     }
   },
   created() {
-    // this.func_get_config()
+    this.func_get_config()
   },
   mounted() {
-    this.arrengeData()
+
   },
   methods: {
-    arrengeData(){
-      let imitateData = this.imitateData
-      let groupIndex = 0,groupItemIndex = 0
+    arrengeData(res){
+      let imitateData = res
       for(let i=0;i<imitateData.length;i++){
-        let groupName = imitateData[i].groupName
-        // groupIndex += imitateData[i].group.length
-        this.tableImitateIndex.push(groupIndex)
-        
-
-        for(let j=0;j<imitateData[i].group.length;j++){
-          let name = imitateData[i]['group'][j].name
-          
-          
-          groupIndex += imitateData[i]['group'][j].item.length
-
-          
-          this.tableImitateItemIndex.push(groupItemIndex)
-          groupItemIndex += imitateData[i]['group'][j].item.length
-
-          for(let k=0;k<imitateData[i]['group'][j].item.length;k++){
-            
-            let paramsJson = {
-              groName:groupName,
-              name:name,
-              itemName:imitateData[i]['group'][j]['item'][k].itemName,
-              cpobjNum:imitateData[i]['group'][j]['item'][k].cpobjNum,
-              pass:imitateData[i]['group'][j]['item'][k].pass,
-              halfPass:imitateData[i]['group'][j]['item'][k].halfPass,
-              noPass:imitateData[i]['group'][j]['item'][k].noPass,
-              notUse:imitateData[i]['group'][j]['item'][k].notUse,
-            }
-            // 处理插入的数据
-            this.tableImitateDate.push(paramsJson)
-          }
-          
+        let list = imitateData[i]
+        console.log(list)
+        let params = {
+          firstName:list.extendedStandard,
+          secondName:'',
+          name:'',
+          objCount:list.esObjSize,
+          accord:'',
+          sectionAccord:'',
+          notAccord:'',
+          notBeApplicable:list.esNotBeApplicable,
         }
-        
-        
       }
-        this.tableImitateIndex.push(groupIndex)
-        this.tableImitateItemIndex.push(groupItemIndex)
+
+      // let groupIndex = 0,groupItemIndex = 0
+      // for(let i=0;i<imitateData.length;i++){
+      //   let groupName = imitateData[i].groupName
+      //   this.tableImitateIndex.push(groupIndex)
         
 
-        //将合并数量插入到对应合并首行的数据中(第一级合并)
-        for(let i=0;i<this.tableImitateIndex.length - 1;i++){
-          this.tableImitateDate[this.tableImitateIndex[i]].rowspan = this.tableImitateIndex[i+1] - this.tableImitateIndex[i]
-        }
+      //   for(let j=0;j<imitateData[i].group.length;j++){
+      //     let name = imitateData[i]['group'][j].name
+          
+          
+      //     groupIndex += imitateData[i]['group'][j].item.length
 
-        for(let j=0;j<this.tableImitateItemIndex.length - 1;j++){
-          this.tableImitateDate[this.tableImitateItemIndex[j]].rowspanItem = this.tableImitateItemIndex[j+1] - this.tableImitateItemIndex[j]
-        }
-        // 
-        // for(let j=0;j<this.tableImitateItemIndex.length - 1)
+          
+      //     this.tableImitateItemIndex.push(groupItemIndex)
+      //     groupItemIndex += imitateData[i]['group'][j].item.length
+
+      //     for(let k=0;k<imitateData[i]['group'][j].item.length;k++){
+            
+      //       let paramsJson = {
+      //         groName:groupName,
+      //         name:name,
+      //         itemName:imitateData[i]['group'][j]['item'][k].itemName,
+      //         cpobjNum:imitateData[i]['group'][j]['item'][k].cpobjNum,
+      //         pass:imitateData[i]['group'][j]['item'][k].pass,
+      //         halfPass:imitateData[i]['group'][j]['item'][k].halfPass,
+      //         noPass:imitateData[i]['group'][j]['item'][k].noPass,
+      //         notUse:imitateData[i]['group'][j]['item'][k].notUse,
+      //       }
+      //       // 处理插入的数据
+      //       this.tableImitateDate.push(paramsJson)
+      //     }
+          
+      //   }
+        
+        
+      // }
+      //   this.tableImitateIndex.push(groupIndex)
+      //   this.tableImitateItemIndex.push(groupItemIndex)
+        
+
+      //   //将合并数量插入到对应合并首行的数据中(第一级合并)
+      //   for(let i=0;i<this.tableImitateIndex.length - 1;i++){
+      //     this.tableImitateDate[this.tableImitateIndex[i]].rowspan = this.tableImitateIndex[i+1] - this.tableImitateIndex[i]
+      //   }
+
+      //   for(let j=0;j<this.tableImitateItemIndex.length - 1;j++){
+      //     this.tableImitateDate[this.tableImitateItemIndex[j]].rowspanItem = this.tableImitateItemIndex[j+1] - this.tableImitateItemIndex[j]
+      //   }
 
       
 
@@ -393,8 +409,11 @@ export default {
       }
     },
     async func_get_config(){
-      let res = await this.$api.API_ProjectfindOverallEvaluation()
-      console.log(res)
+      let res = await this.$api.API_CalculateFractionAccordSituationStatistics()
+      // console.log(res)
+      if(res.code != 20000) return console.log(res.message)
+      let {dataInfo} = res.data
+      this.arrengeData(dataInfo)
     } 
   },
 }

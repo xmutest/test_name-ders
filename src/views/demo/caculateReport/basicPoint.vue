@@ -8,7 +8,7 @@
           :span-method="objectSpanMethod"
           border
           show-summary
-          sum-text="总计"
+          sum-text="安全通用要求"
           style="width: 100%; margin-top: 20px"
         >
           <el-table-column
@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -77,12 +76,7 @@ export default {
           amount3: 15,
         },
       ],
-      imitateData: [{
-      extendedStandard:'aaa',
-      extendedStandardItemSizeSUM:1,
-      extendedStandardItemTotalSizeSUM:0,
-      extendedStandardObjSizeSUM:100,
-      resData:[
+      imitateData: [
         {
           groupName: "安全物理环境",
           group: [
@@ -187,45 +181,21 @@ export default {
             },
           ],
         },
-      ]
-      }], //模拟数据
+      ], //模拟数据
       tableImitateDate: [],
       tableImitateIndex: [],
     };
   },
-  computed: {
-    ...mapState("d2admin", {
-      info: (state) => state.user.info,
-      xmu_info: (state) => state.xmu.xmu_info,
-    }),
-  },
   created() {
-    // console.log('项目信息',this.xmu_info)
-    
-    
+    // this.func_get_config()
   },
   mounted() {
-    this.func_get_config()
+    this.arrengeData();
   },
   methods: {
-    arrengeData(res) {
-      let imitateData = res
+    arrengeData() {
+      let imitateData = this.imitateData;
       let groupIndex = 0;
-
-      for(let a=0;a<imitateData.length;a++){
-        let item = imitateData[a]
-        let paramsFirst = {
-          extendedStandard:item.extendedStandard,
-          extendedStandardItemSizeSUM:item.extendedStandardItemSizeSUM,
-          extendedStandardItemTotalSizeSUM:item.extendedStandardItemTotalSizeSUM,
-          extendedStandardObjSizeSUM:item.extendedStandardObjSizeSUM,
-          colspan:2
-        }
-        // 最外层遍历获取.然后进内部继续遍历(做到这里)
-
-        this.tableImitateDate.push(paramsFirst)
-      }
-
       for (let i = 0; i < imitateData.length; i++) {
         let groupName = imitateData[i].groupName;
         this.tableImitateIndex.push(groupIndex);
@@ -252,8 +222,8 @@ export default {
           this.tableImitateIndex[i + 1] - this.tableImitateIndex[i];
       }
 
-      // console.log(this.tableImitateDate);
-      // console.log(this.tableImitateIndex);
+      console.log(this.tableImitateDate);
+      console.log(this.tableImitateIndex);
     },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       for (let i = 0; i < this.tableImitateIndex.length - 1; i++) {
@@ -274,15 +244,8 @@ export default {
       }
     },
     async func_get_config() {
-
-      let res = await this.$api.API_CalculateFractionControlStatistics();
-      
-      let {dataList} = res.data
-      console.log(dataList)
-      this.arrengeData(dataList)
-
-      // this.xmu_info.level  等保等级
-    // standardExtends
+      let res = await this.$api.API_ProjectfindOverallEvaluation();
+      console.log(res);
     },
   },
 };
