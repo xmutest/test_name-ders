@@ -162,7 +162,10 @@ export default {
   mounted() {
     var that = this;
     document.addEventListener("click", function (e) {
-      if (e.target.className == "d2-container-full__body") {
+      if (
+        e.target.className != "itsz" &&
+        e.target.className != "el-input__inner"
+      ) {
         that.indexs = "";
         that.getlistdata();
       }
@@ -194,7 +197,6 @@ export default {
           if (this.indexs || this.indexs === 0) {
             this.tabledatas[this.indexs].show = true;
           }
-          
         }
 
         // this.ProjectQueryList();
@@ -216,7 +218,6 @@ export default {
       setTimeout(() => {
         this.$refs[itname + index].focus();
       }, 1);
-      
     },
     async schujiaodian(item) {
       if (item.isEvaluationObj == true) {
@@ -245,7 +246,6 @@ export default {
       this.Itzm = false;
     },
     is_preserve(item, Itzm, sortNum) {
- 
       var itss = this.tabledatas;
       this.Itzm = Itzm;
       var list = {
@@ -263,7 +263,6 @@ export default {
       this.schujiaodian(this.tabledatas[item + 1]);
     },
     async deleteRow(index, rows) {
-  
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -292,7 +291,6 @@ export default {
         });
     },
     async schujiaodianTm(item) {
-  
       let data = {
         assetsNum: 2,
         assetsId: item.id,

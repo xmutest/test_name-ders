@@ -150,7 +150,10 @@ export default {
   mounted() {
     var that = this;
     document.addEventListener("click", function (e) {
-      if (e.target.className == "d2-container-full__body") {
+      if (
+        e.target.className != "itsz" &&
+        e.target.className != "el-input__inner"
+      ) {
         that.indexs = "";
         that.getlistdata();
       }

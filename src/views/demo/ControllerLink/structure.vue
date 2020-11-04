@@ -13,24 +13,27 @@
               @text-change="textChangeHandler"
             />
           </div>
+          <div class="tijiaobaoc">
+            <el-button type="primary" @click="submitReport">保存</el-button>
+          </div>
           <div class="mude_text_item">
             <div class="descTItle">网络结构图</div>
             <div class="wangruo_ken">
               <div class="wangruo_img">
                 <img :src="imgUrl" alt="" />
               </div>
-              <div class="wangruo_updata">
-                <el-upload
-                  class="avatar-uploader"
-                  action=""
-                  :before-upload="beforePicUpload"
-                  :show-file-list="false"
+            </div>
+            <div class="wangruo_updata">
+              <el-upload
+                class="avatar-uploader"
+                action=""
+                :before-upload="beforePicUpload"
+                :show-file-list="false"
+              >
+                <el-button type="primary" icon="el-icon-upload"
+                  >上传图片</el-button
                 >
-                  <el-button type="primary" icon="el-icon-upload"
-                    >图片更新</el-button
-                  >
-                </el-upload>
-              </div>
+              </el-upload>
             </div>
           </div>
           <div class="mude_text_item">
@@ -43,13 +46,6 @@
                   'background-color': 'rgba(238, 238, 238,1.0)',
                 }"
               >
-                <el-table-column label="" width="80">
-                  <template slot-scope="scope">
-                    <div class="itsz"></div>
-                    <span v-show="!scope.row.show">{{ scope.$index + 1 }}</span>
-                  </template>
-                </el-table-column>
-
                 <el-table-column label="边界名称">
                   <template slot-scope="scope">
                     <div
@@ -117,7 +113,7 @@
                     <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
                     <el-button
                       size="mini"
-                      @click="is_preserve(scope.$index, true)"
+                      @click="is_preserve(scope.$index, true, scope.row.sortNum)"
                       >新增</el-button
                     >
                     <el-button
@@ -130,9 +126,6 @@
                 </el-table-column>
               </el-table>
             </div>
-          </div>
-          <div class="tijiaobaoc">
-            <el-button type="primary" @click="submitReport">保存</el-button>
           </div>
         </el-card>
       </div>
@@ -161,12 +154,25 @@ export default {
         },
       ],
       files: [],
+      indexs: null,
     };
   },
   created() {
     this.getlistdata();
     this.getlistdataImg();
     this.getEtlist();
+  },
+  mounted() {
+    var that = this;
+    document.addEventListener("click", function (e) {
+      if (
+        e.target.className != "itsz" &&
+        e.target.className != "el-input__inner"
+      ) {
+        that.indexs = "";
+        that.getlistdata();
+      }
+    });
   },
   methods: {
     async beforePicUpload(file) {
@@ -224,6 +230,9 @@ export default {
             element["show"] = false;
           });
           this.t_sys_boundary = List;
+          if (this.indexs || this.indexs === 0) {
+            this.t_sys_boundary[this.indexs].show = true;
+          }
         }
 
         // this.ProjectQueryList();
@@ -252,21 +261,27 @@ export default {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         this.$message.success("修改成功！！");
-        this.getEtlist(); 
+        this.getEtlist();
         //查询列表
       } else {
         this.$message.error("错误，请联系管理员" + res.message);
       }
     },
     is_compile(item, index, itname) {
-      // console.log(item,index,itname)
-      item.show = true;
+      if (this.indexs == index || this.indexs == "") {
+        item.show = true;
+      } else {
+        this.t_sys_boundary.forEach((items) => {
+          items.show = false;
+        });
+        item.show = true;
+      }
+      this.indexs = index;
       setTimeout(() => {
         this.$refs[itname + index].focus();
       }, 1);
     },
     async schujiaodian(item) {
-      item.show = false;
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {
@@ -285,15 +300,16 @@ export default {
         this.$message.error("保存错误，请联系管理员" + res.message);
       }
     },
-    is_preserve(item,Itzm) {
+    is_preserve(item, Itzm, sortNum) {
       var itss = this.t_sys_boundary;
       this.Itzm = Itzm;
+      console.log();
       var list = {
         boundaryName: "",
         accessMethod: "",
         mainBusiness: "",
         show: false,
-        sortNum: item + 1,
+        sortNum: sortNum+1,
       };
       itss.splice(item + 1, 0, list);
       this.t_sys_boundary = itss;
@@ -350,8 +366,8 @@ export default {
     display: flex;
     align-items: center;
     .wangruo_img {
-      width: 600px;
-      height: 400px;
+      max-width: 600px;
+      max-height: 400px;
       margin-right: 10px;
       img {
         width: 100%;
@@ -361,5 +377,9 @@ export default {
 }
 .el-card__header {
   border-bottom: 0px solid #ebeef5;
+}
+.wangruo_updata {
+  margin: 5px 0;
+  text-align: right;
 }
 </style>

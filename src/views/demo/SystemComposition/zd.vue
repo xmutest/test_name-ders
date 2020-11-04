@@ -187,10 +187,13 @@ export default {
     }),
   },
   mounted() {
-    var that=this;
+    var that = this;
     document.addEventListener("click", function (e) {
-      if (e.target.className == "d2-container-full__body") {
-        that.indexs='';
+      if (
+        e.target.className != "itsz" &&
+        e.target.className != "el-input__inner"
+      ) {
+        that.indexs = "";
         that.getlistdata();
       }
     });
@@ -228,7 +231,7 @@ export default {
     },
     is_compile(item, index, itname) {
       // console.log(item,index,itname)
-       if (this.indexs == index || this.indexs == "") {
+      if (this.indexs == index || this.indexs == "") {
         item.show = true;
       } else {
         this.tabledatas.forEach((items) => {

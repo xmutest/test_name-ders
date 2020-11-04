@@ -180,6 +180,18 @@ export default {
       xmu_info: (state) => state.xmu.xmu_info,
     }),
   },
+  mounted() {
+    var that = this;
+    document.addEventListener("click", function (e) {
+      if (
+        e.target.className != "itsz" &&
+        e.target.className != "el-input__inner"
+      ) {
+        that.indexs = "";
+        that.getlistdata();
+      }
+    });
+  },
   methods: {
     async getlistdata() {
       let res = await this.$api.APISoftwarePlatformFindsoftwarePlatform(

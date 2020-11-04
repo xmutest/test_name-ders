@@ -137,7 +137,9 @@ export default {
       asideWidthCollapse: "65px",
     };
   },
-  created() {},
+  created() {
+   
+  },
   computed: {
     ...mapState("d2admin", {
       keepAlive: (state) => state.page.keepAlive,

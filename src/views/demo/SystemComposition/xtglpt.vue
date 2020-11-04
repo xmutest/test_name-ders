@@ -114,30 +114,23 @@
         </template>
       </el-table-column>
 
-      <!-- <el-table-column label="评测指导书">
+      <el-table-column label="评测指导书">
         <template slot-scope="scope">
-          <div
-            @click="
-              is_compile(
-                scope.row,
-                scope.$index,
-                'evaluation_instruction_book_id'
-              )
-            "
-            class="itsz"
-          ></div>
-          <el-input
-            :ref="'evaluation_instruction_book_id' + scope.$index"
-            @blur="schujiaodian(scope.row)"
-            placeholder="请输入内容"
-            v-show="scope.row.show"
-            v-model="scope.row.evaluation_instruction_book_id"
-          ></el-input>
-          <span v-show="!scope.row.show">{{
-            scope.row.evaluation_instruction_book_id
-          }}</span>
+          <el-select
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.evaluationInstructionBookId"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in evaluationBookNameList"
+              :key="item.id"
+              :label="item.label"
+              :value="item.id"
+            ></el-option>
+          </el-select>
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
       <el-table-column label="测评对象" width="80">
         <template slot-scope="scope">
@@ -173,6 +166,14 @@ export default {
   data() {
     return {
       Itzm: false,
+      evaluationBookNameList: [
+        { id: 24, label: "业务应用系统" },
+        { id: 25, label: "云管理平台（扩展）" },
+        { id: 26, label: "移动管理平台（扩展）" },
+        { id: 27, label: "物联管理平台（扩展）" },
+        { id: 28, label: "工控管理平台（扩展）" },
+        { id: 29, label: "大数据管理平台（扩展）" },
+      ],
       //  		重要程度	测评对象	排序号
       importance_list: [
         { value: 5, label: "非常重要(5)" },
@@ -188,6 +189,7 @@ export default {
           platformExtendEdition: "",
           importantDegree: 1,
           remarks: "",
+          evaluationInstructionBookId:'',
           isEvaluationObj: false,
           show: false,
         },
@@ -289,7 +291,7 @@ export default {
         inEquipmentName: "",
         platformExtendEdition: "",
         importantDegree: 1,
-        evaluation_instruction_book_id: "",
+        evaluationInstructionBookId: "",
         remarks: "",
         sortNum,
         isEvaluationObj: false,

@@ -17,7 +17,10 @@
             <th>整改建议</th>
           </tr>
         </thead>
-        <template tbody v-for="item in dataList">
+        <template tbody v-for="(item, ins) in dataList">
+          <tr class="List_b" :key="ins">
+            <td colspan="10">{{ item.extendedStandard }}</td>
+          </tr>
           <tbody v-for="(item1, index1) in item.resultData" :key="index1">
             <tr>
               <td :rowspan="item1.sceneCheckData.length * Toamount">
@@ -76,10 +79,7 @@
       </table>
     </div>
     <div class="updata_dialog">
-      <el-dialog
-        :visible.sync="dialogVisible"
-        :before-close="handleClose"
-      >
+      <el-dialog :visible.sync="dialogVisible" :before-close="handleClose">
         <el-dialog
           width="30%"
           title="关联威胁值"
@@ -108,7 +108,7 @@
           <div>系统安全问题风险分析和评价</div>
           <div class="name_ro">
             <div>修改后测评符合程度：0</div>
-            <div>严重程度值：{{beforeModificationSeverity}}</div>
+            <div>严重程度值：{{ beforeModificationSeverity }}</div>
           </div>
         </div>
         <div class="relevance">1</div>
@@ -279,7 +279,7 @@ export default {
         highRiskJudge: "",
       },
       Ts_radio: "",
-      beforeModificationSeverity:''
+      beforeModificationSeverity: "",
     };
   },
   created() {
@@ -296,7 +296,7 @@ export default {
     },
     shishiClick(item3) {
       this.amendAnalysis = item3;
-      this.beforeModificationSeverity=item3.beforeModificationSeverity;
+      this.beforeModificationSeverity = item3.beforeModificationSeverity;
       this.api_data.amendId = item3.amendId;
       this.api_data.safetyControlId = item3.safetyControlId;
       this.dialogVisible = true;
@@ -307,7 +307,7 @@ export default {
       // relationThreaten
       let ls = "";
       this.relevanceWeiList.forEach((item) => {
-        ls += this.DataListPou[item-1].threatClassificationName + ",";
+        ls += this.DataListPou[item - 1].threatClassificationName + ",";
       });
       this.amendAnalysis.relationThreaten = ls;
       this.amendAnalysis.threatId = this.relevanceWeiList;
@@ -461,6 +461,13 @@ export default {
     div {
       margin: 0 10px;
     }
+  }
+}
+.List_b {
+  height: 40px ;
+  background-color: darkseagreen;
+  td{
+    color: #fff !important;
   }
 }
 </style>

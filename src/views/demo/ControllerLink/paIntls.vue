@@ -13,18 +13,18 @@
               @text-change="textChangeHandler"
             />
           </div>
-
+          <div class="tijiaobaoc">
+            <el-button type="primary" @click="submitReport">保存</el-button>
+          </div>
           <div class="mude_text_item">
             <div class="descTItle">接入点图片</div>
-            <div class="to_tim">
-              <el-tag>操作提示</el-tag>
-              <span>点击图片后可打开标记JA,JB等标记的页面</span>
-
-              <div class="openChangeMode">
+              <div class="tijiaobaoc">
                 <el-button type="primary" @click="showCanvas = true"
                   >修改</el-button
                 >
               </div>
+            <div class="to_tim">
+           
 
               <canvasToorBarSel
                 :showControl="showTools"
@@ -135,9 +135,7 @@
               <img :src="imgUrls" alt="" class="resPic" />
             </div>
           </div>
-          <div class="tijiaobaoc">
-            <el-button type="primary" @click="submitReport">保存</el-button>
-          </div>
+            
         </el-card>
       </div>
       <!-- 图片 -->
@@ -174,7 +172,7 @@ export default {
       imgUrl: "",
       // 接入点图片
       imgUrls: "",
-      imgUrlsid:''
+      imgUrlsid: "",
     };
   },
   components: {
@@ -198,7 +196,7 @@ export default {
       let res = await this.$api.API_ImgFindAccessPointImg();
       if (res.code === 20000) {
         if (res.data !== null) {
-          this.imgUrls =  res.data.imgUrl +res.data.imgName;
+          this.imgUrls = res.data.imgUrl + res.data.imgName;
           this.imgUrlsid = res.data.id;
         } else {
           this.getlistdataImg();
@@ -528,11 +526,11 @@ export default {
   z-index: 10;
   cursor: pointer;
 }
-.resPic{
+.resPic {
   max-width: 900px;
   max-height: 600px;
 }
-.resPics{
+.resPics {
   max-width: 900px;
   max-height: 600px;
 }

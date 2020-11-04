@@ -33,16 +33,29 @@ export default ({
    * @description 模板下载
    * @param {Object} data 
    */
- async SYS_OutputSceneCheck(data = {}) {
+  async SYS_OutputSceneCheck(data = {}) {
     data.projectId = await this.get_info();
     // 模拟数据
     // 接口请求
     return request({
       url: '/output/sceneCheck',
       method: 'get',
-      params:data,
+      params: data,
       responseType: 'blob',
     })
+  },
+  /**
+   * @description 获取项目总分数
+   * @param {Object} data 携带的信息
+   */
+  async CalculateFractionTotalFraction(data = {}) {
+    data.projectId = await this.get_info();
+    let res=await request({
+      url: '/calculateFraction/totalFraction',
+      method: 'get',
+      params: data
+    });
+    console.log(res);
   },
   // 获取信息
   /**
@@ -51,6 +64,7 @@ export default ({
    */
   async SYS_FieldSurveyFindAssetsList(data = {}) {
     data.projectId = await this.get_info();
+    // this.CalculateFractionTotalFraction();
     // 安全物理环境
     // 接口请求
     return request({
@@ -93,7 +107,7 @@ export default ({
       url: '/fieldSurvey/update',
       method: 'post',
       data
-    })
+    });
   },
 
   /**
@@ -106,6 +120,7 @@ export default ({
       method: 'post',
       data
     })
-  }
+  },
+
 
 })

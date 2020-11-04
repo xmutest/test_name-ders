@@ -2,27 +2,43 @@
 <template>
   <d2-container>
     <div class="ks_to">
-      <el-upload
-        class="upload-demo"
-        drag
-        action
-        :limit="10"
-        :file-list="formFileList"
-        :http-request="handleUploadForm"
-        :on-exceed="formHandleExceed"
-        :on-remove="formHandleRemove"
-        :before-upload="beforeUploadForm"
-        accept="application/msword,application/vnd.ms-excel"
-        multiple
-      >
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">
-          上传文件只能是doc格式，且不超过10m
+      <div>
+        <div class="ks_to_name">下载模板，填写测评调研表</div>
+        <div class="ks_to_text">
+          <span>1.请勿修改模板表头和字段</span>
+          <span>2.是否虚拟设备字段以及是否抽选的字段只能填写是或者否</span>
+          <span
+            >3.重要程度一共有以下分级：不重要；不太重要；一般；重要；非常重要，填写过程只允许填写这5个分级</span
+          >
+          <span>4.数量字段的填写必须是数字</span>
+          <div class="ks_buttm">
+            <el-link @click="ks_toBummt" icon="el-icon-download"
+              >下载导入模板</el-link
+            >
+          </div>
         </div>
-      </el-upload>
-      <div class="ks_buttm">
-        <el-button type="primary" @click="ks_toBummt">导出模板</el-button>
+      </div>
+      <div>
+        <div class="ks_to_name">导入模板</div>
+        <el-upload
+          class="upload-demo"
+          drag
+          action
+          :limit="10"
+          :file-list="formFileList"
+          :http-request="handleUploadForm"
+          :on-exceed="formHandleExceed"
+          :on-remove="formHandleRemove"
+          :before-upload="beforeUploadForm"
+          accept="application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          multiple
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__tip" slot="tip">
+            上传文件只能是doc格式，且不超过10m
+          </div>
+        </el-upload>
       </div>
     </div>
   </d2-container>
@@ -33,7 +49,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      formMaxSize: 1, // 上传文件大小
+      formMaxSize: 10, // 上传文件大小
       formFileList: [], // 显示上传文件
       uploadFormFileList: [], // 确定上传文件
       ifsTo: false,
@@ -65,10 +81,10 @@ export default {
       }
       // 验证文件类型
       var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      const extension = testmsg === "doc";
+      const extension = testmsg === "doc" || testmsg === "docx";
       if (!extension) {
         this.$message({
-          message: "上传文件只能是doc格式!",
+          message: "上传文件只能是doc/docx格式!",
           type: "warning",
         });
       }
@@ -141,13 +157,16 @@ export default {
           //IE浏览器、微软浏览器
           /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
               IE可不重命名，以防万一，所以都写上比较好 */
-          window.navigator.msSaveBlob(blob, "文件.doc");
+          window.navigator.msSaveBlob(
+            blob,
+            "网络安全等级保护测评调研表（模板).doc"
+          );
         } else {
           //其他浏览器
           let link = document.createElement("a"); // 创建a标签
           link.style.display = "none";
           let objectUrl = URL.createObjectURL(blob);
-          link.download = "系统构成表模板";
+          link.download = "网络安全等级保护测评调研表（模板)";
           link.href = objectUrl;
           link.click();
           URL.revokeObjectURL(objectUrl);
@@ -168,7 +187,24 @@ export default {
   transform: translate(-50%, -50%);
   .ks_buttm {
     margin: 15px 0;
-    text-align: right;
+    .el-link.el-link--default{
+      color: burlywood;
+    }
+  }
+  .ks_to_name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  .ks_to_text {
+    padding-left: 10px;
+    margin: 15px 0;
+    span {
+      display: block;
+      font-size: 14px;
+      margin: 10px 0;
+      font-family: "Courier New", Courier, monospace;
+    }
   }
 }
 </style>
