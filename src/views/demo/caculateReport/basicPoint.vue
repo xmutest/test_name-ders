@@ -233,12 +233,12 @@ export default {
             return {
               rowspan: row.rowspan,
               colspan: 1,
-            };
+            }
           } else {
             return {
               rowspan: 0,
               colspan: 0,
-            };
+            }
           }
         }
       }
