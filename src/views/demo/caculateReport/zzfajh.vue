@@ -8,14 +8,87 @@
           <div class="mude_text_item">
             <div class="descTItle">被测评单位(委托单位)</div>
             <div class="demo-input-suffix">
-              属性方式：
-              <el-input
-                placeholder="请选择日期"
-                suffix-icon="el-icon-date"
-                v-model="input1"
-                size='small'
-              >
-              </el-input>
+              <div>
+                <span>单位名称：</span>
+                <el-input
+                  placeholder="请输入"
+                  v-model="BeingMeasured.companyName"
+                  size="small"
+                >
+                </el-input>
+              </div>
+              <div>
+                <span>联系人：</span>
+                <el-input
+                  placeholder="请输入"
+                  v-model="BeingMeasured.contacts"
+                  size="small"
+                >
+                </el-input>
+              </div>
+              <div>
+                <span>移动电话：</span>
+                <el-input
+                  placeholder="请输入"
+                  v-model="BeingMeasured.mobilePhone"
+                  size="small"
+                >
+                </el-input>
+              </div>
+              <div>
+                <span>所在部门：</span>
+                <el-input
+                  placeholder="请输入"
+                  v-model="BeingMeasured.department"
+                  size="small"
+                >
+                </el-input>
+              </div>
+              <div>
+                <span>职务/职称：</span>
+                <el-input
+                  placeholder="请输入"
+                  v-model="BeingMeasured.companyPosition"
+                  size="small"
+                >
+                </el-input>
+              </div>
+              <div>
+                <span>邮政编码：</span>
+                <el-input
+                  placeholder="请输入"
+                  v-model="BeingMeasured.postalCode"
+                  size="small"
+                >
+                </el-input>
+              </div>
+              <div>
+                <span>办公电话：</span>
+                <el-input
+                  placeholder="请输入"
+                  v-model="BeingMeasured.officesPhone"
+                  size="small"
+                >
+                </el-input>
+              </div>
+              <div>
+                <span>通讯地址：</span>
+                <el-input
+                  placeholder="请输入"
+                  v-model="BeingMeasured.companyAddress"
+                  size="small"
+                >
+                </el-input>
+              </div>
+              <div>
+                <span>电子邮箱：</span>
+                <el-input
+                  placeholder="请输入"
+                  v-model="BeingMeasured.email"
+                  size="small"
+                >
+                </el-input>
+              </div>
             </div>
           </div>
           <div class="mude_text_item">
@@ -99,5 +172,21 @@ export default {
 }
 .el-card__header {
   border-bottom: 0px solid #ebeef5;
+}
+.demo-input-suffix {
+  display: flex;
+  align-items: center;
+  flex-flow: wrap;
+  div {
+    margin: 5px;
+    width: 300px;
+    span {
+      font-size: 12px;
+      min-width: 80px;
+    }
+    .el-input {
+      width: 220px;
+    }
+  }
 }
 </style>

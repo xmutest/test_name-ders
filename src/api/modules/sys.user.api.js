@@ -110,5 +110,17 @@ export default ({
       method: 'get',
       params:data
     })
+  },
+   /**
+   * @description 获取sag等级
+   * @param {Object} data 
+   */
+  API_SagFindSagByLevel(data = {}) {
+    // 接口请求
+    return request({
+      url: '/sag/findSagByLevel',
+      method: 'get',
+      params:data
+    })
   }
 })

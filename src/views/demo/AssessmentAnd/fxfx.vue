@@ -77,7 +77,6 @@
     </div>
     <div class="updata_dialog">
       <el-dialog
-        title="评测助手网页版"
         :visible.sync="dialogVisible"
         :before-close="handleClose"
       >
@@ -109,7 +108,7 @@
           <div>系统安全问题风险分析和评价</div>
           <div class="name_ro">
             <div>修改后测评符合程度：0</div>
-            <div>严重程度值：4</div>
+            <div>严重程度值：{{beforeModificationSeverity}}</div>
           </div>
         </div>
         <div class="relevance">1</div>
@@ -280,6 +279,7 @@ export default {
         highRiskJudge: "",
       },
       Ts_radio: "",
+      beforeModificationSeverity:''
     };
   },
   created() {
@@ -296,6 +296,7 @@ export default {
     },
     shishiClick(item3) {
       this.amendAnalysis = item3;
+      this.beforeModificationSeverity=item3.beforeModificationSeverity;
       this.api_data.amendId = item3.amendId;
       this.api_data.safetyControlId = item3.safetyControlId;
       this.dialogVisible = true;
@@ -303,11 +304,10 @@ export default {
       this.getDataListPou();
     },
     async Tolist() {
-      console.log(this.DataListPou);
       // relationThreaten
       let ls = "";
       this.relevanceWeiList.forEach((item) => {
-        ls += this.DataListPou[item].threatClassificationName + ",";
+        ls += this.DataListPou[item-1].threatClassificationName + ",";
       });
       this.amendAnalysis.relationThreaten = ls;
       this.amendAnalysis.threatId = this.relevanceWeiList;
@@ -321,7 +321,6 @@ export default {
     },
     async getDaPuList() {
       let res = await this.$api.API_RiskFindRiskKnowledge(this.api_data);
-      // console.log(res);
       if (res.code == 20000) {
         this.relevanceList = res.data[0];
         this.relevanceWeiList = res.data[1];

@@ -2,21 +2,14 @@
 <template>
   <d2-container>
     <el-table :data="t_security_services" border>
-      <el-table-column label="" width="80">
-        <template slot-scope="scope">
-          <div class="itsz"></div>
-          <span v-show="!scope.row.show">{{ scope.$index + 1 }}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column label="安全服务名称" width="450">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'servicesName')"
+            @click="is_compile(scope.row, scope.$index + 1, 'servicesName')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'servicesName' + scope.$index"
+            :ref="'servicesName' + scope.$index + 1"
             @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.servicesName"
@@ -42,7 +35,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column fixed="right" label="操作" width="200">
+      <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
           <el-button size="mini" @click="is_preserve(scope.$index, true)"
@@ -68,11 +61,21 @@ export default {
       t_security_services: [
         { servicesName: "", serviceProvider: "", show: false },
       ],
+      indexs: "",
     };
   },
   created() {
     this.getlistdata();
     // })
+  },
+  mounted() {
+    var that = this;
+    document.addEventListener("click", function (e) {
+      if (e.target.className == "d2-container-full__body") {
+        that.indexs = "";
+        that.getlistdata();
+      }
+    });
   },
   methods: {
     async getlistdata() {
@@ -84,6 +87,9 @@ export default {
             element["show"] = false;
           });
           this.t_security_services = List;
+          if (this.indexs || this.indexs === 0) {
+            this.t_security_services[this.indexs].show = true;
+          }
         }
 
         // this.ProjectQueryList();
@@ -97,14 +103,23 @@ export default {
       // ;
     },
     is_compile(item, index, itname) {
-      // console.log(item,index,itname)
-      item.show = true;
+      console.log(item, index, itname);
+      if (this.indexs == index || this.indexs == "") {
+        item.show = true;
+      } else {
+        this.t_security_services.forEach((items) => {
+          items.show = false;
+        });
+        item.show = true;
+      }
+      this.indexs = index;
       setTimeout(() => {
         this.$refs[itname + index].focus();
       }, 1);
+      console.log(item);
     },
     async schujiaodian(item) {
-      item.show = false;
+      // item.show = false;
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {

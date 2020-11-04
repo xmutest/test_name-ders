@@ -303,7 +303,6 @@ export default {
       let fractionModelList = [];
       fractionModelList.push(item);
       let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
-      console.log(res);
       if (res.code === 20000) {
         this.$message.success("保存成功");
         this.getDataList();
@@ -325,7 +324,6 @@ export default {
       let fractionModelList = [];
       fractionModelList.push(item);
       let res = await this.$api.SYS_FieldSurveYUpdate(fractionModelList);
-      console.log(res);
       if (res.code === 20000) {
         this.$message.success("保存成功");
         this.getDataList();
@@ -335,6 +333,10 @@ export default {
       this.loading = true;
       const res = await this.$api.SYS_FieldSurveyFindAssetsList(this.api_data);
       if (res.code === 20000) {
+        if(res.data.assetsList.length==0){
+          this.loading = false;
+          return this.$message.info("无数据,请添加数据在查看");
+        }
         var listTs = cloneDeep(res.data.assetsList);
         this.ToMitList = cloneDeep(res.data.protectiveList);
         if (this.activeNameTabs == 0) {

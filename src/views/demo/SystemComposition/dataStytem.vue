@@ -228,6 +228,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
+      indexs: null,
     };
   },
   created() {
@@ -238,10 +239,18 @@ export default {
       xmu_info: (state) => state.xmu.xmu_info,
     }),
   },
+  mounted() {
+    var that = this;
+    document.addEventListener("click", function (e) {
+      if (e.target.className == "d2-container-full__body") {
+        that.indexs = "";
+        that.getlistdata();
+      }
+    });
+  },
   methods: {
     async getlistdata() {
       let res = await this.$api.APIDbManageSysFindDbManageSys(this.formPage);
-      console.log(res);
       if (res.code === 20000) {
         let List = res.data.list;
         if (res.data.list.length > 0) {
@@ -259,6 +268,9 @@ export default {
             element["show"] = false;
           });
           this.tabledatas = List;
+          if (this.indexs || this.indexs === 0) {
+            this.tabledatas[this.indexs].show = true;
+          }
         }
 
         // this.ProjectQueryList();
@@ -278,7 +290,6 @@ export default {
       } else {
         item.isFictitiousEquipment = 0;
       }
-      item.show = false;
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {
@@ -304,7 +315,6 @@ export default {
         if (valid) {
           alert("submit!");
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -313,12 +323,18 @@ export default {
       this.$refs[formName].resetFields();
     },
     is_compile(item, index, itname) {
-      item.show = true;
-      console.log(itname);
+      if (this.indexs == index || this.indexs == "") {
+        item.show = true;
+      } else {
+        this.tabledatas.forEach((items) => {
+          items.show = false;
+        });
+        item.show = true;
+      }
+      this.indexs = index;
       setTimeout(() => {
         this.$refs[itname + index].focus();
       }, 1);
-      console.log(item);
     },
     is_preserve(item, Itzm, sortNum) {
       var itss = this.tabledatas;
@@ -342,7 +358,6 @@ export default {
       this.schujiaodian(this.tabledatas[item + 1]);
     },
     async deleteRow(index, rows) {
-      console.log(rows);
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

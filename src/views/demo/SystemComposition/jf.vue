@@ -112,10 +112,20 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
+      indexs: null,
     };
   },
   created() {
     this.getlistdata();
+  },
+  mounted() {
+    var that = this;
+    document.addEventListener("click", function (e) {
+      if (e.target.className == "d2-container-full__body") {
+        that.indexs = "";
+        that.getlistdata();
+      }
+    });
   },
   computed: {
     ...mapState("d2admin", {
@@ -162,7 +172,6 @@ export default {
       let res = await this.$api.API_JF_ComputerRoomFindComputerRoom(
         this.formPage
       );
-      console.log(res);
       if (res.code === 20000) {
         let List = res.data.list;
         if (res.data.list.length > 0) {
@@ -175,6 +184,9 @@ export default {
             element["show"] = false;
           });
           this.tabledatas = List;
+          if (this.indexs || this.indexs === 0) {
+            this.tabledatas[this.indexs].show = true;
+          }
         }
 
         // this.ProjectQueryList();
@@ -185,8 +197,15 @@ export default {
     },
     is_compile(item, index, itname) {
       // console.log(item,index,itname)
-      item.show = true;
-      console.log(itname);
+      if (this.indexs == index || this.indexs == "") {
+        item.show = true;
+      } else {
+        this.tabledatas.forEach((items) => {
+          items.show = false;
+        });
+        item.show = true;
+      }
+      this.indexs = index;
       setTimeout(() => {
         this.$refs[itname + index].focus();
       }, 1);
@@ -198,7 +217,7 @@ export default {
       } else {
         item.isEvaluationObj = 0;
       }
-      item.show = false;
+      // item.show = false;
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {

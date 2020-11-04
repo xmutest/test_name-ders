@@ -276,12 +276,12 @@
             </div>
             <div>
               <el-form-item label="SAG等级" :label-width="formLabelWidth">
-                <el-select v-model="xmform.sag">
+                <el-select v-model="xmform.sag" placeholder="请选择">
                   <el-option
                     v-for="item in saglist"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                    :key="item.id"
+                    :label="item.sagCombination"
+                    :value="item.id"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -404,7 +404,7 @@ export default {
         standardVersion: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
         standardExtends: "", //拓展标准
         level: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
-        sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
+        sag: "", //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         membersIdList: [], //项目参与人
       },
       projectModel: {
@@ -497,7 +497,6 @@ export default {
     },
     // 选择绑定
     selectTrigger(id) {
-      console.log(id);
       this.its_id_to = id;
     },
     // 选择项目跳转
@@ -524,6 +523,9 @@ export default {
         type: "warning",
       })
         .then(async () => {
+          if(this.xmu_info.projectId==row.projectId){
+            return this.$message.error("当前项目为选中项目，禁止删除！");
+          }
           let res = await this.$api.API_department_delete({
             projectId: row.projectId,
           });
@@ -543,20 +545,22 @@ export default {
         });
     },
     // 等级联动
-    selectGoodsByGroupId(enent) {
-      this.xmform.sag = enent;
+    async selectGoodsByGroupId(enent) {
+      let res = await this.$api.API_SagFindSagByLevel({ sagLevel: enent });
+      if (res.code === 20000) {
+        this.saglist = res.data;
+        this.xmform.sag = res.data[0].id;
+      }
     },
     // 提交
     submitForm(formName, ua_cre) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-           if (this.xmform.standardExtends.length == 0) {
-              this.xmform.standardExtends=''
-            } else {
-              this.xmform.standardExtends = this.xmform.standardExtends.join(
-                "┋"
-              );
-            }
+          if (this.xmform.standardExtends.length == 0) {
+            this.xmform.standardExtends = "";
+          } else {
+            this.xmform.standardExtends = this.xmform.standardExtends.join("┋");
+          }
           // 创建
           if (ua_cre === 0) {
             const res = await this.$api.API_Project_Creation(this.xmform);
@@ -619,6 +623,7 @@ export default {
     // 新镇
     dialogFormVisibleList() {
       this.ua_cre = 0;
+      this.selectGoodsByGroupId(this.xmform.level);
       this.table_name_el = "新建项目";
       this.resetForm("xmform");
       this.datalog_list_rom();
@@ -639,11 +644,12 @@ export default {
     },
     async xmuupdata(index, row) {
       this.ua_cre = 1;
+
       this.table_name_el = "更新项目";
       this.datalog_list_rom(row.creator);
 
       let res = await this.Project_detail(row.projectId);
-
+      this.selectGoodsByGroupId(res.level);
       this.xmform.projectId = row.projectId;
       Object.keys(this.xmform).forEach((key) => {
         this.xmform[key] = res[key];
