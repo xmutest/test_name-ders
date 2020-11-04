@@ -31,7 +31,7 @@ export default ({
    */
  async API_CalculateFractionControlStatistics(data = {}) {
   data.projectId = await this.get_info();
-  data.projectId = 5;
+  // data.projectId = 5;
   // 接口请求
     return request({
     //   url: '/project/findOverallEvaluation',

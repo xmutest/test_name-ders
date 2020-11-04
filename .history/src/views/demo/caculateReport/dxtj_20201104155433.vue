@@ -22,7 +22,7 @@
                 </el-table-column>
                 <el-table-column
                   prop="name"
-                  label="测评项">
+                  label="测评项数">
                 </el-table-column>
                 <el-table-column
                   prop="objCount"
@@ -30,19 +30,19 @@
                 </el-table-column>
                 <el-table-column
                   prop="accord"
-                  label="符合率">
+                  label="测评项总数">
                 </el-table-column>
                 <el-table-column
                   prop="sectionAccord"
-                  label="部分符合">
+                  label="测评项总数">
                 </el-table-column>
                 <el-table-column
                   prop="notAccord"
-                  label="不符合率">
+                  label="测评项总数">
                 </el-table-column>
                 <el-table-column
                   prop="notBeApplicable"
-                  label="不适用数">
+                  label="测评项总数">
                 </el-table-column>
               </el-table>
         </el-card>

@@ -7,6 +7,8 @@
                 :data="tableImitateDate"
                 :span-method="objectSpanMethod"
                 border
+                show-summary
+                sum-text="安全通用要求"
                 style="width: 100%; margin-top: 20px"
               >
                 <el-table-column
@@ -22,7 +24,7 @@
                 </el-table-column>
                 <el-table-column
                   prop="name"
-                  label="测评项">
+                  label="测评项数">
                 </el-table-column>
                 <el-table-column
                   prop="objCount"
@@ -30,19 +32,19 @@
                 </el-table-column>
                 <el-table-column
                   prop="accord"
-                  label="符合率">
+                  label="测评项总数">
                 </el-table-column>
                 <el-table-column
                   prop="sectionAccord"
-                  label="部分符合">
+                  label="测评项总数">
                 </el-table-column>
                 <el-table-column
                   prop="notAccord"
-                  label="不符合率">
+                  label="测评项总数">
                 </el-table-column>
                 <el-table-column
                   prop="notBeApplicable"
-                  label="不适用数">
+                  label="测评项总数">
                 </el-table-column>
               </el-table>
         </el-card>
@@ -312,17 +314,23 @@ export default {
         }
         this.tableImitateDate.push(paramsData)
         for(let j=0;j<list.resultData.length;j++){
-          let item = list.resultData[j],firstName = item.sceneCheckName,rowNum = 0
-
-          for(let g=0;g<item.sceneCheckData.length;g++){
-              rowNum += item.sceneCheckData[g].controlEntriesData.length
-          }
+          let item = list.resultData[j],firstName = item.sceneCheckName
 
           for(let k=0;k<item.sceneCheckData.length;k++){
             let value = item.sceneCheckData[k],secondName = value.safetyControlSpot,
-            shouldAdd = false
-            
+            shouldAdd = false,rowNum = 0
+            // debugger
             if(k == 0) shouldAdd = true
+
+            if(shouldAdd){
+              for(let g=0;g<value.controlEntriesData.length;g++){
+                rowNum += value.controlEntriesData.length
+              }
+              console.log('rowNum',rowNum)
+            }
+
+            // console.log(params)
+            // console.log(value)
             for(let n=0;n<value.controlEntriesData.length;n++){
               let pre = value.controlEntriesData[n]
               
@@ -340,7 +348,7 @@ export default {
 
               if(n == 0) params.rowspanItem = value.controlEntriesData.length
 
-              if(shouldAdd && n == 0) params.rowspan = rowNum
+              if(shouldAdd && n == 0) params.rowspan = item.sceneCheckData.length
 
               this.tableImitateDate.push(params)
 
@@ -352,10 +360,66 @@ export default {
         }
 
       }
+      console.log('result',this.tableImitateDate)
+
+      // let groupIndex = 0,groupItemIndex = 0
+      // for(let i=0;i<imitateData.length;i++){
+      //   let groupName = imitateData[i].groupName
+      //   this.tableImitateIndex.push(groupIndex)
+        
+
+      //   for(let j=0;j<imitateData[i].group.length;j++){
+      //     let name = imitateData[i]['group'][j].name
+          
+          
+      //     groupIndex += imitateData[i]['group'][j].item.length
+
+          
+      //     this.tableImitateItemIndex.push(groupItemIndex)
+      //     groupItemIndex += imitateData[i]['group'][j].item.length
+
+      //     for(let k=0;k<imitateData[i]['group'][j].item.length;k++){
+            
+      //       let paramsJson = {
+      //         groName:groupName,
+      //         name:name,
+      //         itemName:imitateData[i]['group'][j]['item'][k].itemName,
+      //         cpobjNum:imitateData[i]['group'][j]['item'][k].cpobjNum,
+      //         pass:imitateData[i]['group'][j]['item'][k].pass,
+      //         halfPass:imitateData[i]['group'][j]['item'][k].halfPass,
+      //         noPass:imitateData[i]['group'][j]['item'][k].noPass,
+      //         notUse:imitateData[i]['group'][j]['item'][k].notUse,
+      //       }
+      //       // 处理插入的数据
+      //       this.tableImitateDate.push(paramsJson)
+      //     }
+          
+      //   }
+        
+        
+      // }
+      //   this.tableImitateIndex.push(groupIndex)
+      //   this.tableImitateItemIndex.push(groupItemIndex)
+        
+
+      //   //将合并数量插入到对应合并首行的数据中(第一级合并)
+      //   for(let i=0;i<this.tableImitateIndex.length - 1;i++){
+      //     this.tableImitateDate[this.tableImitateIndex[i]].rowspan = this.tableImitateIndex[i+1] - this.tableImitateIndex[i]
+      //   }
+
+      //   for(let j=0;j<this.tableImitateItemIndex.length - 1;j++){
+      //     this.tableImitateDate[this.tableImitateItemIndex[j]].rowspanItem = this.tableImitateItemIndex[j+1] - this.tableImitateItemIndex[j]
+      //   }
+
       
+
+        // console.log(this.tableImitateDate)
+        // console.log(this.tableImitateIndex)
+        // console.log('二级合并',this.tableImitateItemIndex)
     },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       
+      // for(let i=0;i<this.tableImitateIndex.length - 1;i++){
         // 仅限第一行
         if(row.colspan >= 1){
           if(columnIndex == 0){
@@ -399,6 +463,13 @@ export default {
           }
         }
 
+        // if(columnIndex === 1){
+        //   return {
+        //     rowspan:2,
+        //     colspan:0
+        //   }
+        // }
+      // }
     },
     async func_get_config(){
       let res = await this.$api.API_CalculateFractionAccordSituationStatistics()
