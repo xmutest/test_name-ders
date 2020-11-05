@@ -27,8 +27,7 @@
           <el-table-column prop="name" label="安全控制点"> </el-table-column>
           <el-table-column prop="itemSize" label="测评项数"> </el-table-column>
           <el-table-column prop="itemTotalSize" label="测评对象数"> </el-table-column>
-          <el-table-column prop="objSize" label="测评项总数">
-          </el-table-column>
+          <el-table-column prop="objSize" label="测评项总数"></el-table-column>
         </el-table>
       </el-card>
     </div>

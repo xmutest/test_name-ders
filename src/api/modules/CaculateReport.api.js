@@ -43,7 +43,7 @@ export default ({
   /**
    * @description 查询单项符合情况统计
    * @param {Object} data 携带的信息
-   */
+  */
  async API_CalculateFractionAccordSituationStatistics(data = {}) {
     // 接口请求
     data.projectId = await this.get_info();
@@ -55,16 +55,17 @@ export default ({
     })
   },
   /**
-   * @description 修改整体评测
+   * @description 查询控制点符合情况汇总  
    * @param {Object} data 携带的信息
-   */
- async API_ProjectupdateOverallEvaluation(data = {}) {
+  */
+ async API_CalculateFractionCalculateControlSpotFraction(data = {}) {
     // 接口请求
     data.projectId = await this.get_info();
+    data.projectId = 5;
     return request({
-      url: '/project/updateOverallEvaluation',
-      method: 'post',
+      url: '/calculateFraction/calculateControlSpotFraction',
+      method: 'get',
       params:data
     })
-  }
+  },
 })
