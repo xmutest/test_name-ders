@@ -79,14 +79,14 @@
                   :content="xmu_info.name"
                   placement="right-end"
                 >
-                  <el-button v-if="xmu_info.name" size='mini'>
-                    {{xmu_info.name.substring(0,15)}}....
+                  <el-button v-if="xmu_info.name" size="mini">
+                    {{ xmu_info.name.substring(0, 15) }}....
                   </el-button>
-                  <el-button v-else size='mini'>
-                    当前无项目选择
-                  </el-button>
-                 </el-tooltip
-                >
+                  <el-button v-else size="mini"> 当前无项目选择 </el-button>
+                </el-tooltip>
+                <span style="margin: 15px; font-size: 14px">总分数：<span v-if="totalscore">{{totalscore.totalFraction}}</span>
+                <span v-else>无</span>
+                </span>
               </div>
               <div class="d2-theme-container-main-header" flex-box="0">
                 <d2-tabs />
@@ -138,7 +138,6 @@ export default {
     };
   },
   created() {
-   
   },
   computed: {
     ...mapState("d2admin", {
@@ -148,6 +147,7 @@ export default {
       asideCollapse: (state) => state.menu.asideCollapse,
       asideTransition: (state) => state.menu.asideTransition,
       xmu_info: (state) => state.xmu.xmu_info,
+      totalscore: (state) => state.totalscore.totalscore.data,
     }),
     ...mapGetters("d2admin", {
       themeActiveSetting: "theme/activeSetting",

@@ -21,7 +21,7 @@
           <tr class="List_b" :key="ins">
             <td colspan="10">{{ item.extendedStandard }}</td>
           </tr>
-          <tbody v-for="(item1, index1) in item.resultData" :key="index1">
+          <tbody v-for="item1 in item.resultData" :key="item1.id">
             <tr>
               <td :rowspan="item1.sceneCheckData.length * Toamount">
                 {{ item1.sceneCheckName }}
@@ -111,7 +111,14 @@
             <div>严重程度值：{{ beforeModificationSeverity }}</div>
           </div>
         </div>
-        <div class="relevance">1</div>
+        <div class="relevance relevance_tyu">
+          <div>
+            <div class="textName">
+              {{ tsAmlist.assets }}({{ tsAmlist.fraction }}分)
+            </div>
+            <div class="text_fininfo">{{ tsAmlist.recordResults }}</div>
+          </div>
+        </div>
         <div class="relevance">
           <el-tabs style="height: 200px" type="border-card">
             <el-tab-pane label="风险知识库">
@@ -228,7 +235,9 @@
         </div>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="Tolist()">确 定</el-button>
-          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button @click="(dialogVisible = false), getDataList()"
+            >取 消</el-button
+          >
         </span>
       </el-dialog>
     </div>
@@ -237,7 +246,6 @@
 
 <script>
 import { cloneDeep } from "lodash";
-import dataLists from "./responseResult1";
 export default {
   data() {
     return {
@@ -269,6 +277,7 @@ export default {
         amendId: 1,
         safetyControlId: 136,
       },
+      tsAmlist:{},
       amendAnalysis: {
         problemDescription: "",
         hazardAnalysis: "",
@@ -295,6 +304,7 @@ export default {
       console.log(5);
     },
     shishiClick(item3) {
+      this.tsAmlist=item3;
       this.amendAnalysis = item3;
       this.beforeModificationSeverity = item3.beforeModificationSeverity;
       this.api_data.amendId = item3.amendId;
@@ -464,10 +474,23 @@ export default {
   }
 }
 .List_b {
-  height: 40px ;
+  height: 40px;
   background-color: darkseagreen;
-  td{
+  td {
     color: #fff !important;
+  }
+}
+.relevance_tyu {
+  width: 300px;
+  display: flex;
+  overflow: auto;
+  flex-wrap: wrap;
+  .textName {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .text_fininfo {
+    font-size: 12px;
   }
 }
 </style>

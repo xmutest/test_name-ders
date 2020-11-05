@@ -2,34 +2,47 @@
 <template>
   <d2-container>
     <div class="ks_to">
-      <div class="ks_buttm">
-        <el-tag type="info">导入页面整体数据</el-tag>
-      </div>
-      <el-upload
-        class="upload-demo"
-        drag
-        action
-        :limit="10"
-        :file-list="formFileList"
-        :http-request="handleUploadForm"
-        :on-exceed="formHandleExceed"
-        :on-remove="formHandleRemove"
-        :before-upload="beforeUploadForm"
-        accept="application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        multiple
-      >
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">
-          上传文件只能是xlsx/xls/csv格式，且不超过10m
+      <div>
+        <div class="ks_to_name">下载模板，填写现场核查记录</div>
+        <div class="ks_to_text">
+          <span>1.请勿修改模板表头和字段</span>
+          <span>2.添加资产后请勿直接复制sheet，需重新生成模板</span>
+          <span
+            >3.符合情况只能填写：符合、部分符合、不符合、不适用</span
+          >
+          <div class="ks_buttm">
+            <el-link @click="ks_toBummt" icon="el-icon-download"
+              >下载导入模板</el-link
+            >
+          </div>
         </div>
-      </el-upload>
+      </div>
+      <div>
+        <div class="ks_to_name">导入模板</div>
+        <el-upload
+          class="upload-demo"
+          drag
+          action
+          :limit="10"
+          :file-list="formFileList"
+          :http-request="handleUploadForm"
+          :on-exceed="formHandleExceed"
+          :on-remove="formHandleRemove"
+          :before-upload="beforeUploadForm"
+          accept="application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          multiple
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__tip" slot="tip">
+            上传文件只能是xlsx格式，且不超过50m
+          </div>
+        </el-upload>
+      </div>
+
       <!-- <div class="ks_buttm">
         <el-button type="primary" @click="ks_toBummt">导出模板</el-button>
       </div> -->
-    </div>
-    <div class="ks_buttm">
-      <el-button type="primary" @click="ks_toBummt">导出模板</el-button>
     </div>
   </d2-container>
 </template>
@@ -39,7 +52,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      formMaxSize: 1, // 上传文件大小
+      formMaxSize: 50, // 上传文件大小
       formFileList: [], // 显示上传文件
       uploadFormFileList: [], // 确定上传文件
       ifsTo: false,
@@ -72,10 +85,10 @@ export default {
       // 验证文件类型
       var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
       const extension =
-        testmsg === "xlsx" || testmsg === "xls" || testmsg === "csv";
+        testmsg === "xlsx";
       if (!extension) {
         this.$message({
-          message: "上传文件只能是xlsx/xls/csv格式!",
+          message: "上传文件只能是xlsx格式!",
           type: "warning",
         });
       }
@@ -152,7 +165,24 @@ export default {
   transform: translate(-50%, -50%);
   .ks_buttm {
     margin: 15px 0;
-    text-align: left;
+    .el-link.el-link--default{
+      color: burlywood;
+    }
+  }
+  .ks_to_name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  .ks_to_text {
+    padding-left: 10px;
+    margin: 15px 0;
+    span {
+      display: block;
+      font-size: 14px;
+      margin: 10px 0;
+      font-family: "Courier New", Courier, monospace;
+    }
   }
 }
 </style>

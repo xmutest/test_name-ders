@@ -514,6 +514,7 @@ export default {
           root: true,
         }
       );
+      this.$api.CalculateFractionTotalFraction();
     },
     // 删除项目
     xmuDelete(index, row) {

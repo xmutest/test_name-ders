@@ -70,6 +70,9 @@ export default {
         await dispatch('d2admin/xmu/set', {}, {
           root: true
         })
+        await dispatch('d2admin/totalscore/set', {}, {
+          root: true
+        })
         // 跳转路由
         router.push({
           name: 'login'
@@ -112,10 +115,14 @@ export default {
       await dispatch('d2admin/user/load', null, {
         root: true
       })
-         // 加载项目
-         await dispatch('d2admin/xmu/load', null, {
-          root: true
-        })
+      // 加载分数
+      await dispatch('d2admin/totalscore/load', null, {
+        root: true
+      })
+      // 加载项目
+      await dispatch('d2admin/xmu/load', null, {
+        root: true
+      })
       // 加载主题
       await dispatch('d2admin/theme/load', null, {
         root: true

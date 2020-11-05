@@ -14,7 +14,10 @@
             <th>修正前</th>
           </tr>
         </thead>
-        <template tbody v-for="item in dataList">
+        <template tbody v-for="(item,ins) in dataList">
+          <tr class="List_b" :key="ins">
+            <td colspan="10">{{ item.extendedStandard }}</td>
+          </tr>
           <tbody v-for="(item1, index1) in item.resultData" :key="index1">
             <tr>
               <td :rowspan="item1.sceneCheckData.length * ToListm">
@@ -202,6 +205,13 @@ export default {
 .schuan_s {
   margin: 15px 0;
   text-align: right;
+}
+.List_b {
+  height: 40px;
+  background-color: darkseagreen;
+  td {
+    color: #fff !important;
+  }
 }
 </style>
 

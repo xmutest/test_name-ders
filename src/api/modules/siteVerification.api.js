@@ -2,7 +2,8 @@ import {
   find,
   assign
 } from 'lodash'
-
+import store from '@/store/index';
+import ElementUI from "element-ui";
 export default ({
   service,
   request,
@@ -50,12 +51,26 @@ export default ({
    */
   async CalculateFractionTotalFraction(data = {}) {
     data.projectId = await this.get_info();
-    let res=await request({
+    let res = await request({
       url: '/calculateFraction/totalFraction',
       method: 'get',
       params: data
     });
-    console.log(res);
+    if (res.code === 20000) {
+      await store.dispatch(
+        "d2admin/totalscore/set", {
+          data: res.data,
+        }, {
+          root: true,
+        }
+      );
+    } else {
+      ElementUI.Message({
+        title: '警告',
+        message: `请求总分数出错，请联系管理员`,
+        type: 'error'
+      });
+    }
   },
   // 获取信息
   /**
@@ -64,7 +79,7 @@ export default ({
    */
   async SYS_FieldSurveyFindAssetsList(data = {}) {
     data.projectId = await this.get_info();
-    // this.CalculateFractionTotalFraction();
+    this.CalculateFractionTotalFraction();
     // 安全物理环境
     // 接口请求
     return request({
