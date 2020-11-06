@@ -1,4 +1,4 @@
-<!--基本指标-->
+
 <template>
   <d2-container>
     <div class="mude_is">

@@ -7,8 +7,6 @@
           :data="tableImitateDate"
           :span-method="objectSpanMethod"
           border
-          show-summary
-          sum-text="总计"
           style="width: 100%; margin-top: 20px"
         >
           <el-table-column
@@ -24,11 +22,35 @@
             </template>
           </el-table-column>
           <el-table-column prop="name" label="安全控制点"> </el-table-column>
-          <el-table-column prop="itemSize" label="控制点得分"> </el-table-column>
-          <el-table-column prop="itemTotalSize" label="符合"> </el-table-column>
-          <el-table-column prop="objSize" label="部分符合"></el-table-column>
-          <el-table-column prop="objSize" label="不符合"></el-table-column>
-          <el-table-column prop="objSize" label="不适用">
+          <el-table-column prop="controlFraction" label="控制点得分"> </el-table-column>
+
+          <el-table-column prop="accordSituation" label="符合"> 
+            <template slot-scope="scope">
+              <div>
+                {{ scope.row.accordSituation==1 ? '√' :''}}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="accordSituation" label="部分符合">
+            <template slot-scope="scope">
+              <div>
+                {{ scope.row.accordSituation==2 ? '√' :''}}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="accordSituation" label="不符合">
+            <template slot-scope="scope">
+              <div>
+                {{ scope.row.accordSituation==3 ? '√' :''}}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="accordSituation" label="不适用">
+            <template slot-scope="scope">
+              <div>
+                {{ scope.row.accordSituation==4 ? '√' :''}}
+              </div>
+            </template>
           </el-table-column>
         </el-table>
       </el-card>
@@ -166,7 +188,6 @@ export default {
   created() {
     // console.log('项目信息',this.xmu_info)
     
-    
   },
   mounted() {
     this.func_get_config()
@@ -176,14 +197,15 @@ export default {
       let imitateData = res
       let groupIndex = 0;
 
+      // console.log('res',res)
+
       for(let a=0;a<imitateData.length;a++){
         let item = imitateData[a]
         let paramsFirst = {
           firstName:item.extendedStandard,
           name:'',
-          itemSize:item.extendedStandardItemSizeSUM,
-          itemTotalSize:item.extendedStandardItemTotalSizeSUM,
-          objSize:item.extendedStandardObjSizeSUM,
+          controlFraction:'',
+          accordSituation:'',
           colspan:2
         }
         this.tableImitateDate.push(paramsFirst)
@@ -192,54 +214,24 @@ export default {
           let list = item.resultData[j],secondName = item.resultData[j].sceneCheckName
           for(let k=0;k<list.sceneCheckData.length;k++){
             let value = list.sceneCheckData[k]
+            let valueControlFraction = value.controlFraction
+            if(typeof value.controlFraction == 'string') valueControlFraction = '-'
             let params = {
               firstName:secondName,
-              name:value.controlSpot,
-              objSize:value.objSize,
-              itemSize:value.itemSize,
-              itemTotalSize:value.itemTotalSize,
+              name:value.safetyControlSpot,
+              controlFraction:value.controlFraction,
+              accordSituation:value.accordSituation,
             }
             if(k == 0) params.rowspan = list.sceneCheckData.length
             this.tableImitateDate.push(params)
           }
         }
-
         
       }
 
-      console.log('result',this.tableImitateDate)
-
-      // for (let i = 0; i < imitateData.length; i++) {
-      //   let groupName = imitateData[i].groupName;
-      //   this.tableImitateIndex.push(groupIndex);
-      //   groupIndex += imitateData[i].group.length;
-      //   for (let j = 0; j < imitateData[i].group.length; j++) {
-      //     let paramsJson = {
-      //       groName: groupName,
-      //       name: imitateData[i]["group"][j].name,
-      //       cpxs: imitateData[i]["group"][j].cpxs,
-      //       objNum: imitateData[i]["group"][j].objNum,
-      //       totalNum: imitateData[i]["group"][j].totalNum,
-      //     };
-
-      //     // 处理插入的数据
-      //     this.tableImitateDate.push(paramsJson);
-      //     // tableImitateIndex
-      //   }
-      // }
-      // this.tableImitateIndex.push(this.tableImitateDate.length);
-
-      // //将合并数量插入到对应合并首行的数据中
-      // for (let i = 0; i < this.tableImitateIndex.length - 1; i++) {
-      //   this.tableImitateDate[this.tableImitateIndex[i]].rowspan =
-      //     this.tableImitateIndex[i + 1] - this.tableImitateIndex[i];
-      // }
-
-      // console.log(this.tableImitateDate);
-      // console.log(this.tableImitateIndex);
+      // console.log('result',this.tableImitateDate)
     },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-      // for (let i = 0; i < this.tableImitateIndex.length - 1; i++) {
         if(row.colspan >= 1){
           if(columnIndex == 0){
             return {
@@ -268,17 +260,13 @@ export default {
             };
           }
         }
-
-        
-      // }
     },
     async func_get_config() {
 
       let res = await this.$api.API_CalculateFractionCalculateControlSpotFraction();
       
-      let {dataList} = res.data
-      console.log(dataList)
-      this.arrengeData(dataList)
+      let {data} = res
+      this.arrengeData(data)
 
       // this.xmu_info.level  等保等级
     // standardExtends

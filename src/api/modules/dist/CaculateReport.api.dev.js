@@ -153,6 +153,38 @@ var _default = function _default(_ref) {
           }
         }
       }, null, this);
+    },
+
+    /**
+     * @description 查询系统安全防护评估 
+     * @param {Object} data 携带的信息
+    */
+    API_CalculateFractionSafetyClassStatistics: function API_CalculateFractionSafetyClassStatistics() {
+      var data,
+          _args5 = arguments;
+      return regeneratorRuntime.async(function API_CalculateFractionSafetyClassStatistics$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              data = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : {};
+              _context5.next = 3;
+              return regeneratorRuntime.awrap(this.get_info());
+
+            case 3:
+              data.projectId = _context5.sent;
+              data.projectId = 5;
+              return _context5.abrupt("return", request({
+                url: '/calculateFraction/safetyClassStatistics',
+                method: 'get',
+                params: data
+              }));
+
+            case 6:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, null, this);
     }
   };
 };

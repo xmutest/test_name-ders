@@ -68,4 +68,19 @@ export default ({
       params:data
     })
   },
+  /**
+   * @description 查询系统安全防护评估 
+   * @param {Object} data 携带的信息
+  */
+  async API_CalculateFractionSafetyClassStatistics(data = {}) {
+    // 接口请求
+    data.projectId = await this.get_info();
+    data.projectId = 5;
+    return request({
+      url: '/calculateFraction/safetyClassStatistics',
+      method: 'get',
+      params:data
+    })
+  },
+
 })
