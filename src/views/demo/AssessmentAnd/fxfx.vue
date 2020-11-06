@@ -277,7 +277,7 @@ export default {
         amendId: 1,
         safetyControlId: 136,
       },
-      tsAmlist:{},
+      tsAmlist: {},
       amendAnalysis: {
         problemDescription: "",
         hazardAnalysis: "",
@@ -296,15 +296,36 @@ export default {
   },
   methods: {
     Listdatamis(item) {
+      let ls = [
+        {
+          id: 1,
+          value: "高",
+        },
+        {
+          id: 2,
+          value: "中",
+        },
+        {
+          id: 3,
+          value: "低",
+        },
+      ];
       let amendId = this.amendAnalysis.amendId;
       this.amendAnalysis = item;
+      this.relevanceWeiList=item.threatId;
       this.amendAnalysis.amendId = amendId;
+       ls.forEach((it) => {
+        console.log(item.riskGrade);
+        if (it.id == item.riskGrade) {
+          this.amendAnalysis.originalRisk = it.value;
+        }
+      });
     },
     Totisadd() {
       console.log(5);
     },
     shishiClick(item3) {
-      this.tsAmlist=item3;
+      this.tsAmlist = item3;
       this.amendAnalysis = item3;
       this.beforeModificationSeverity = item3.beforeModificationSeverity;
       this.api_data.amendId = item3.amendId;

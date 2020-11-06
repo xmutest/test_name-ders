@@ -1,7 +1,7 @@
 <!--密码产品-->
 <template>
   <d2-container>
-    <el-table :data="tabledatas" border>
+    <el-table :data="tabledatas" border :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }">
       <el-table-column label="产品名称" width="180">
         <template slot-scope="scope">
           <div

@@ -1,7 +1,7 @@
 <!--安全管理中心-->
 <template>
   <d2-container>
-    <el-table :data="tabledatas" border>
+    <el-table :data="tabledatas" border :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }">
       <el-table-column label="名称" width="120">
         <template slot-scope="scope">
           <div

@@ -1,8 +1,8 @@
 <!--安全管理文档-->
 <template>
   <d2-container>
-    <el-table :data="tabledatas" border>
-      <el-table-column label="文档名称" width="120">
+    <el-table :data="tabledatas" border :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }">
+      <el-table-column label="文档名称" >
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'fileName')"
@@ -18,7 +18,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="主要内容" width="150">
+      <el-table-column label="主要内容" >
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'fileContent')"
@@ -200,6 +200,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.el-table {
+  font-size: 12px;
+}
 .itsz {
   position: absolute;
   width: 100%;

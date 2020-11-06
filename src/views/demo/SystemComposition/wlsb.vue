@@ -497,7 +497,11 @@ export default {
         projectId: this.xmu_info.projectId,
         evaluationGrade: this.xmu_info.data.level,
       };
-      this.$confirm("确认改变生产资产?", "提示", {
+      let lsmin =
+        item.isEvaluationObj == true
+          ? "确定设置为测评对象？"
+          : "确定设置为非测评对象？系统将删除与其相关的测评数据";
+      this.$confirm(lsmin, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

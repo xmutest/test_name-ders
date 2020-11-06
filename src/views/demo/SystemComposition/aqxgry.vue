@@ -1,7 +1,7 @@
 <!--安全相关人员-->
 <template>
   <d2-container>
-    <el-table :data="tabledatas" border>
+    <el-table :data="tabledatas" border :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }">
       <el-table-column label="姓名" width="120">
         <template slot-scope="scope">
           <div
@@ -217,6 +217,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-table {
+  font-size: 12px;
+}
 .itsz {
   position: absolute;
   width: 100%;

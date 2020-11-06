@@ -104,6 +104,36 @@ export default {
         logout()
       }
     },
+    logouts({
+      commit,
+      dispatch
+    }, {
+      confirm = false
+    } = {}) {
+      /**
+       * @description 注销
+       */
+      async function logout() {
+        // 删除cookie
+        util.cookies.remove('token')
+        util.cookies.remove('uuid')
+        // 清空 vuex 用户信息
+        await dispatch('d2admin/user/set', {}, {
+          root: true
+        })
+        await dispatch('d2admin/xmu/set', {}, {
+          root: true
+        })
+        await dispatch('d2admin/totalscore/set', {}, {
+          root: true
+        })
+        // 跳转路由
+        router.push({
+          name: 'login'
+        })
+      }
+      logout();
+    },
     /**
      * @description 用户登录后从持久化数据加载一系列的设置
      * @param {Object} context

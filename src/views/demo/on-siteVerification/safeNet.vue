@@ -47,7 +47,7 @@
         v-loading="loading"
         v-model="activeNameTabs"
         class="container-tab"
-        type="card"
+        type="border-card"
       >
         <el-tab-pane
           v-for="Its in dataList"
@@ -90,7 +90,11 @@
                           : ''
                       "
                     >
-                      <el-popover trigger="click" placement="top">
+                      <el-popover
+                        title="控制项"
+                        trigger="click"
+                        placement="top"
+                      >
                         <div>
                           <p
                             v-for="(item3,
@@ -113,7 +117,11 @@
                       </el-popover>
                     </td>
                     <td>
-                      <el-popover trigger="click" placement="top">
+                      <el-popover
+                        title="检查内容"
+                        trigger="click"
+                        placement="top"
+                      >
                         <div>
                           <p
                             v-for="(item3,
@@ -129,7 +137,11 @@
                       </el-popover>
                     </td>
                     <td>
-                      <el-popover trigger="click" placement="top">
+                      <el-popover
+                        title="检查方法"
+                        trigger="click"
+                        placement="top"
+                      >
                         <div>
                           <p
                             v-for="(item3,
@@ -146,6 +158,7 @@
                     </td>
                     <td>
                       <el-popover
+                        title="推荐值"
                         v-if="item2.recommendedValue"
                         trigger="click"
                         placement="top"
@@ -168,7 +181,11 @@
                       </div>
                     </td>
                     <td>
-                      <el-popover trigger="click" placement="top">
+                      <el-popover
+                        title="判断标准"
+                        trigger="click"
+                        placement="top"
+                      >
                         <div>
                           <p
                             v-for="(item3,
@@ -376,6 +393,8 @@ export default {
     color: #909399;
     height: 40px;
     border: 1px solid #cad9ea;
+    font-size: 14px;
+    font-weight: bold;
   }
   table thead th {
     background-color: rgba(238, 238, 238, 1);
@@ -384,7 +403,7 @@ export default {
   table td {
     border: 1px solid #cad9ea;
     color: #666;
-    font-size: 13px;
+    font-size: 12px;
   }
 }
 
@@ -396,10 +415,25 @@ export default {
   }
 }
 .List_b {
-  height: 40px ;
+  height: 40px;
   background-color: darkseagreen;
-  td{
+  td {
     color: #fff !important;
   }
 }
 </style>
+<style lang="scss">
+.el-popover {
+  background-color: #ddd;
+  color: black;
+  .el-popover__title {
+    color: red;
+    // font-size: 20px;
+    font-family: cursive;
+    font-weight: bold;
+  }
+}
+.el-popper[x-placement^="top"] .popper__arrow::after {
+  border-top-color: #ddd !important;
+}
+</style> 
