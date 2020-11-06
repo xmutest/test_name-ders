@@ -8,6 +8,8 @@
           :span-method="objectSpanMethod"
           border
           style="width: 100%; margin-top: 20px"
+          :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
+          :cell-style="tableStyle"
         >
           <el-table-column
             prop="firstName"
@@ -260,6 +262,23 @@ export default {
             };
           }
         }
+    },
+    tableStyle({ row, column, rowIndex, columnIndex }){
+      if(columnIndex == 1){
+        if(row.controlFraction == 'N/A' || row.controlFraction == '-'){
+          return{
+            'text-decoration':'line-through'
+          }
+        }else if(row.controlFraction == 0){
+          return{
+            background:'#E11820'
+          }
+        }else if(row.controlFraction < 10 && row.controlFraction > 0){
+          return{
+            background:'#E77C14'
+          }
+        }
+      }
     },
     async func_get_config() {
 

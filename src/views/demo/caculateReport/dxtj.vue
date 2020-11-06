@@ -8,6 +8,7 @@
                 :span-method="objectSpanMethod"
                 border
                 style="width: 100%; margin-top: 20px"
+                :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
               >
                 <el-table-column
                   prop="firstName"

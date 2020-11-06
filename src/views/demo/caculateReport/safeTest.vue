@@ -8,25 +8,38 @@
                 :span-method="objectSpanMethod"
                 border
                 style="width: 100%; margin-top: 20px"
+                :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
+                :cell-style="tableStyle"
               >
                 <el-table-column
                   prop="firstName"
                   label="安全类"
-                  width="180"
+                  width="300"
                   max-height="100"
+                  
                 >
+                  <template slot-scope="scope">
+                    <div>
+                      {{ scope.row.firstName }}
+                    </div>
+                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="name"
-                  label="安全控制点">
+                  label="安全控制点"
+                >
                 </el-table-column>
                 <el-table-column
                   prop="spotGrade"
-                  label="控制点得分">
+                  label="控制点得分"
+                  width="130"  
+                >
                 </el-table-column>
                 <el-table-column
                   prop="totalGrade"
-                  label="层面得分">
+                  label="层面得分"
+                  width="130" 
+                >
                 </el-table-column>
               </el-table>
         </el-card>
@@ -433,6 +446,32 @@ export default {
         //     }
         //   }
         // }
+
+    },
+    tableStyle({ row, column, rowIndex, columnIndex }){
+      if(row.colspan >= 1){
+        if(columnIndex == 0){
+          return{
+            background:'#A4D38A'
+          }
+        }
+      }
+
+      if(columnIndex == 1){
+        if(row.spotGrade == 'N/A' || row.spotGrade == '-'){
+          return{
+            'text-decoration':'line-through'
+          }
+        }else if(row.spotGrade == 0){
+          return{
+            background:'#E11820'
+          }
+        }else if(row.spotGrade < 10 && row.spotGrade > 0){
+          return{
+            background:'#E77C14'
+          }
+        }
+      }
 
     },
     async func_get_config(){

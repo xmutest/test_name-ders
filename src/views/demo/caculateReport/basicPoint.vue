@@ -10,6 +10,7 @@
           show-summary
           sum-text="总计"
           style="width: 100%; margin-top: 20px"
+          :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
         >
           <el-table-column
             prop="firstName"
@@ -18,9 +19,9 @@
             max-height="100"
           >
             <template slot-scope="scope">
-              <div :style="scope.row.objNum==438?'background:red':''">
+              <!-- <div :style="scope.row.objNum==438?'background:red':''"> -->
                 {{ scope.row.firstName }}
-              </div>
+              <!-- </div> -->
             
             </template>
           </el-table-column>
