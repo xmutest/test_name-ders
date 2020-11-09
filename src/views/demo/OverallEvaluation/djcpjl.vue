@@ -5,7 +5,7 @@
       <el-card class="box-card">
         <div class="gradeUpside">
           <div class="leftSide">
-            <img src="@/views/demo/ControllerLink/img/structure01.jpg" class="gradeLogo" alt="">
+            <!-- <img src="@/views/demo/ControllerLink/img/structure01.jpg" class="gradeLogo" alt=""> -->
             <div class="gradeInfo">
               <div>指标符合率:67.61%</div>
               <div>指标部分符合率:67.61%</div>
@@ -18,11 +18,11 @@
             </div>
           </div>
           <div class="rightSide">
-            <ve-histogram :data="chartData" :settings="chartSettings" id="main" width="auto" height="300px"></ve-histogram>
+            <ve-histogram ref="echartsArea" :data="chartData" :settings="chartSettings" id="main" ></ve-histogram>
           </div>
         </div>
         <div class="gradeDownside">
-            <el-table
+          <el-table
             :data="tableData"
             border
             style="width: 100%"
@@ -67,20 +67,26 @@
 export default {
     data(){
       this.chartSettings = {
-        metrics: ['用户', '通过率'],
-        dimension: ['日期']
+        metrics: ['数值'],
+        dimension: ['name'],
+        
       }
       return{
         chartData: {
-          columns: ['日期', '用户', '下单用户', '通过率'],
+          columns: ['name', '数值'],
           rows: [
-            { '日期': '1/1', '用户': 1393, '通过率': 1093, },
-            { '日期': '1/2', '用户': 3530, '通过率': 3230, },
-            { '日期': '1/3', '用户': 2923, '通过率': 2623, },
-            { '日期': '1/4', '用户': 1723, '通过率': 1423, },
-            { '日期': '1/5', '用户': 3792, '通过率': 3492, },
-            { '日期': '1/6', '用户': 4593, '通过率': 4293, }
-          ]
+            // { 'name': '1/1', '数值': 1393},
+            // { 'name': '1/2', '数值': 3530},
+            // { 'name': '1/3', '数值': 2923},
+            // { 'name': '1/4', '数值': 1723},
+            // { 'name': '1/5', '数值': 3792},
+            // { 'name': '1/6', '数值': 4593}
+          ],
+          xAxis:{
+            axisLabel:{
+              rotate:20,
+            },
+          }
         },
         tableData: [
           {
@@ -103,11 +109,12 @@ export default {
             section3: '差',
             section4: '差'
           }
-        ]
+        ],
+
       }
     },
     created() {
-      
+      this.func_getChartsData()
     },
     mounted() {
       setTimeout(() => {
@@ -125,6 +132,24 @@ export default {
       headerStyle({row, column, rowIndex, columnIndex}){
         return `r${rowIndex}c${columnIndex}`
       },
+      async func_getChartsData(){
+        let that = this
+        let res = await this.$api.API_CalculateFractionSummaryGraph()
+        console.log('res',res)
+        let {data} = res
+        let mycharts = this.$refs.echartsArea
+        data.map(result=>{
+          let preName = result.sceneCheckName.length > 3? result.sceneCheckName.substr(0,3) : result.sceneCheckName
+
+          let params = {
+            name:result.sceneCheckName,
+            '数值':result.sceneCheckFraction
+          }
+        
+          that.chartData.rows.push(params)
+        })
+        
+      }
     }
 }
 </script>
@@ -216,13 +241,13 @@ export default {
     }
 
     .rightSide{
-      width:calc(100% - 300px);
+      width:calc(100% );
       height: 400px;
       padding: 0 20px;
       box-sizing:border-box;
       #main{
         width:100%;
-        height:210px;
+        height:100%;
         border:1px solid black;
       }
     }

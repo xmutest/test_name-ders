@@ -401,6 +401,7 @@ export default {
         }
 
     },
+    
     async func_get_config(){
       let res = await this.$api.API_CalculateFractionAccordSituationStatistics()
       // console.log(res)

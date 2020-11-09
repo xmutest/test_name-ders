@@ -64,5 +64,20 @@ export default ({
       method: 'post',
       params:data
     })
-  }
+  },
+  /**
+   * @description 查询 等级测评统计图数据
+   * @param {Object} data 携带的信息
+   */
+  async API_CalculateFractionSummaryGraph(data = {}) {
+    // 接口请求
+    data.projectId = await this.get_info();
+    data.projectId = 5
+    return request({
+      url: '/calculateFraction/summaryGraph',
+      method: 'get',
+      params:data
+    })
+  },
 })
+  
