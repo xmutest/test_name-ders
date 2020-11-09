@@ -94,7 +94,7 @@
                     <div slot="reference" class="name-wrapper">
                       <span style="opacity: 0">.</span
                       >
-                      <span v-if="item3.correctReason!='null'">{{ item3.correctReason }}</span>
+                      <span v-if="item3.correctReason!=null">{{ item3.correctReason }}</span>
                     </div>
                   </el-popover>
                   <!-- <div>

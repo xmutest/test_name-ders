@@ -190,7 +190,7 @@ export default ({
       data
     })
   },
-   /**
+  /**
    * @description 项目概述-查询入点图片
    * @param {Object} data 携带的信息
    */
@@ -200,7 +200,7 @@ export default ({
     return request({
       url: '/img/findAccessPointImg',
       method: 'get',
-      params:data
+      params: data
     })
   },
   /**
@@ -382,6 +382,30 @@ export default ({
       url: '/timeRecord/updateTimeRecord',
       method: 'post',
       data: [...data.timeRecords]
+    })
+  },
+  /**
+   * @description 查询被测评单位(委托单位)
+   */
+  async PassiveCompanyFindModel(data = {}) {
+    let projectId = await this.get_info();
+    data.projectId = projectId;
+    return request({
+      url: '/passiveCompany/findModel',
+      method: 'get',
+      params: data
+    })
+  },
+  /**
+   * @description 更新被测评单位(委托单位)
+   */
+  async API_PassiveCompanyUpdate(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/passiveCompany/update',
+      method: 'post',
+      data
     })
   },
 })

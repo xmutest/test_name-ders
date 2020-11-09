@@ -53,16 +53,16 @@
           <table id="partnerTable">
             <thead>
               <tr>
-                <th>安全控制点</th>
+                <th style="width: 100px;" >安全控制点</th>
                 <th>控制项</th>
                 <th>检查内容</th>
                 <th>检查方法</th>
                 <th>推荐值</th>
                 <th>判断标准</th>
                 <th>结果记录</th>
-                <th>符合情况</th>
+                <th style="width: 130px;" >符合情况</th>
                 <th>备注</th>
-                <th>权重</th>
+                <th style="width: 50px;" >权重</th>
               </tr>
             </thead>
             <template v-for="(ite, ins) in Its.safetyControls">
@@ -339,7 +339,7 @@ export default {
       fractionModelList.push(item);
       let res = await this.$api.SYS_FieldSurveYUpdate(fractionModelList);
       if (res.code === 20000) {
-        this.$message.success("保存成功");
+        // this.$message.success("保存成功");
         this.getDataList();
       }
     },
@@ -416,6 +416,7 @@ export default {
 .el-popover {
   background-color: #ddd;
   color: black;
+  width: 400px;
   .el-popover__title {
     color: red;
     // font-size: 20px;
@@ -426,4 +427,5 @@ export default {
 .el-popper[x-placement^="top"] .popper__arrow::after {
   border-top-color: #ddd !important;
 }
+
 </style> 

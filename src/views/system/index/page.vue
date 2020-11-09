@@ -306,6 +306,21 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item
+            label="项目状态"
+            prop="status"
+            :label-width="formLabelWidth"
+          >
+            <el-select v-model="xmform.status" placeholder="请选择">
+              <el-option
+                v-for="item in statusList"
+                :key="item.id"
+                :label="item.value"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
           <div class="dia-footer">
             <el-form-item>
               <el-button type="primary" @click="submitForm('xmform', ua_cre)"
@@ -328,6 +343,11 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      // 项目是否进行
+      statusList: [
+        { id: 1, value: "进行中" },
+        { id: 2, value: "已完成" },
+      ],
       radio_projectId: 0,
       total: 0,
       ua_cre: 0, //0创建 1更新
@@ -406,11 +426,13 @@ export default {
         level: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
         sag: "", //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         membersIdList: [], //项目参与人
+        status: 1,
       },
       projectModel: {
         page: 1,
         pageSize: 10,
         projectName: "",
+        queryType: 1,
       },
       formLabelWidth: "120px",
       rules: {
@@ -524,7 +546,7 @@ export default {
         type: "warning",
       })
         .then(async () => {
-          if(this.xmu_info.projectId==row.projectId){
+          if (this.xmu_info.projectId == row.projectId) {
             return this.$message.error("当前项目为选中项目，禁止删除！");
           }
           let res = await this.$api.API_department_delete({
@@ -652,6 +674,7 @@ export default {
       let res = await this.Project_detail(row.projectId);
       this.selectGoodsByGroupId(res.level);
       this.xmform.projectId = row.projectId;
+      this.xmform.status = res.status;
       Object.keys(this.xmform).forEach((key) => {
         this.xmform[key] = res[key];
       });
@@ -677,6 +700,7 @@ export default {
         level: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
         sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         membersIdList: [], //项目参与人
+        status: 1,
       };
     },
     getNowDate() {
@@ -792,6 +816,7 @@ export default {
     display: flex;
     align-items: center;
     .search_ls_name {
+      font-size: 12px;
       font-family: "Courier New", Courier, monospace;
     }
   }
