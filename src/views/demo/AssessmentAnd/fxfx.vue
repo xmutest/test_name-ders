@@ -79,7 +79,7 @@
       </table>
     </div>
     <div class="updata_dialog">
-      <el-dialog :visible.sync="dialogVisible" :before-close="handleClose">
+      <el-dialog title="系统安全问题风险分析和评价" :visible.sync="dialogVisible" :before-close="handleClose">
         <el-dialog
           width="30%"
           title="关联威胁值"
@@ -105,7 +105,7 @@
           </span>
         </el-dialog>
         <div class="name_ts">
-          <div>系统安全问题风险分析和评价</div>
+          <div></div>
           <div class="name_ro">
             <div>修改后测评符合程度：0</div>
             <div>严重程度值：{{ beforeModificationSeverity }}</div>

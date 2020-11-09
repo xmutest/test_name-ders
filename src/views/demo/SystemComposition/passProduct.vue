@@ -1,7 +1,11 @@
 <!--密码产品-->
 <template>
   <d2-container>
-    <el-table :data="tabledatas" border :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }">
+    <el-table
+      :data="tabledatas"
+      border
+      :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
+    >
       <el-table-column label="产品名称" width="180">
         <template slot-scope="scope">
           <div
@@ -172,6 +176,19 @@ export default {
           if (this.indexs || this.indexs === 0) {
             this.tabledatas[this.indexs].show = true;
           }
+        } else {
+          this.tabledatas = [
+            {
+              productName: "",
+              manufacturer: "",
+              pwdModel: "",
+              pwdAlgorithm: "",
+              productPurpose: "",
+              productNum: "",
+              sortNum: 1,
+              show: false,
+            },
+          ];
         }
 
         // this.ProjectQueryList();
@@ -232,7 +249,7 @@ export default {
       this.schujiaodian(this.tabledatas[item + 1]);
     },
     async deleteRow(index, rows) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("确定删除此记录?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

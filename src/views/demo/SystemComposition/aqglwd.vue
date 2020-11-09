@@ -1,8 +1,12 @@
 <!--安全管理文档-->
 <template>
   <d2-container>
-    <el-table :data="tabledatas" border :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }">
-      <el-table-column label="文档名称" >
+    <el-table
+      :data="tabledatas"
+      border
+      :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
+    >
+      <el-table-column label="文档名称">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'fileName')"
@@ -18,7 +22,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="主要内容" >
+      <el-table-column label="主要内容">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'fileContent')"
@@ -106,6 +110,15 @@ export default {
           if (this.indexs || this.indexs === 0) {
             this.tabledatas[this.indexs].show = true;
           }
+        } else {
+          this.tabledatas = [
+            {
+              fileName: "",
+              fileContent: "",
+              sortNum: 1,
+              show: false,
+            },
+          ];
         }
 
         // this.ProjectQueryList();
@@ -169,7 +182,7 @@ export default {
       this.schujiaodian(this.tabledatas[item + 1]);
     },
     async deleteRow(index, rows) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("确定删除此记录？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

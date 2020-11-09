@@ -1,7 +1,11 @@
 <!--安全管理中心-->
 <template>
   <d2-container>
-    <el-table :data="tabledatas" border :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }">
+    <el-table
+      :data="tabledatas"
+      border
+      :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
+    >
       <el-table-column label="名称" width="120">
         <template slot-scope="scope">
           <div
@@ -119,11 +123,11 @@ export default {
   data() {
     return {
       importantDegree_list: [
-        { value: 5, label: "非常重要(5)" },
-        { value: 4, label: "重要（4）" },
-        { value: 3, label: "一般（3）" },
-        { value: 2, label: "不太重要（2）" },
-        { value: 1, label: "不重要（1）" },
+        { value: 5, label: "非常重要" },
+        { value: 4, label: "重要" },
+        { value: 3, label: "一般" },
+        { value: 2, label: "不太重要" },
+        { value: 1, label: "不重要" },
       ],
       tabledatas: [
         {
@@ -151,7 +155,7 @@ export default {
   mounted() {
     var that = this;
     document.addEventListener("click", function (e) {
-       if (
+      if (
         e.target.className != "itsz" &&
         e.target.className != "el-input__inner"
       ) {
@@ -180,6 +184,20 @@ export default {
           if (this.indexs || this.indexs === 0) {
             this.tabledatas[this.indexs].show = true;
           }
+        } else {
+          this.tabledatas = [
+            {
+              safeManageCenterName: "",
+              functionDescription: "",
+              importantDegree: 1,
+              isSysManage: false,
+              isAuditManage: false,
+              isSafeManage: false,
+              isCentralizedControl: false,
+              sortNum: 1,
+              show: false,
+            },
+          ];
         }
 
         // this.ProjectQueryList();
@@ -247,7 +265,7 @@ export default {
       this.schujiaodian(this.tabledatas[item + 1]);
     },
     async deleteRow(index, rows) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm(" 确定删除此记录？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

@@ -302,11 +302,11 @@ export default {
       dialogTableVisible: false,
       dialogFormVisible: false,
       importantDegree_list: [
-        { value: 5, label: "非常重要(5)" },
-        { value: 4, label: "重要（4）" },
-        { value: 3, label: "一般（3）" },
-        { value: 2, label: "不太重要（2）" },
-        { value: 1, label: "不重要（1）" },
+        { value: 5, label: "非常重要" },
+        { value: 4, label: "重要" },
+        { value: 3, label: "一般" },
+        { value: 2, label: "不太重要" },
+        { value: 1, label: "不重要" },
       ],
       xmform: {
         equipmentName: "",
@@ -412,6 +412,23 @@ export default {
           this.tabledatas = List;
           if (this.indexs || this.indexs === 0) {
             this.tabledatas[this.indexs].show = true;
+          } else {
+            this.tabledatas = [
+              {
+                equipmentName: "",
+                isFictitiousEquipment: false,
+                systemAndEdition: "",
+                brandAndModel: "",
+                purpose: "",
+                remarks: "",
+                equipmentNum: 5,
+                sortNum: 1,
+                importantDegree: 5,
+                equipmentType: 2,
+                isEvaluationObj: false,
+                show: false,
+              },
+            ];
           }
         }
 
@@ -501,7 +518,7 @@ export default {
       this.schujiaodian(this.tabledatas[item + 1]);
     },
     async deleteRow(index, rows) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("确定删除此记录？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

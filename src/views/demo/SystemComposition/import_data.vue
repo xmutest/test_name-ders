@@ -3,14 +3,14 @@
   <d2-container>
     <div class="ks_to">
       <div>
-        <div class="ks_to_name">下载模板，填写测评调研表</div>
+        <div class="ks_to_name">1.下载模板，填写测评调研表</div>
         <div class="ks_to_text">
-          <span>1.请勿修改模板表头和字段</span>
-          <span>2.是否虚拟设备字段以及是否抽选的字段只能填写是或者否</span>
+          <span>(1)请勿修改模板表头和字段</span>
+          <span>(2)"是否虚拟设备"和"是否抽选"只能填写是或否</span>
           <span
-            >3.重要程度一共有以下分级：不重要；不太重要；一般；重要；非常重要，填写过程只允许填写这5个分级</span
+            >(3)"重要程度"有5个级别：不重要；不太重要；一般；重要；非常重要，请按此5个级别填写</span
           >
-          <span>4.数量字段的填写必须是数字</span>
+          <span>(4)"数量"字段只能填写数字</span>
           <div class="ks_buttm">
             <el-link @click="ks_toBummt" icon="el-icon-download"
               >下载导入模板</el-link
@@ -19,7 +19,7 @@
         </div>
       </div>
       <div>
-        <div class="ks_to_name">导入模板</div>
+        <div class="ks_to_name">2.导入数据</div>
         <el-upload
           class="upload-demo"
           drag
@@ -36,7 +36,7 @@
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           <div class="el-upload__tip" slot="tip">
-            上传文件只能是doc格式，且不超过10m
+            上传文件只能是doc/docx格式，且不超过10m
           </div>
         </el-upload>
       </div>

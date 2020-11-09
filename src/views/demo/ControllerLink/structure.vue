@@ -113,7 +113,9 @@
                     <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
                     <el-button
                       size="mini"
-                      @click="is_preserve(scope.$index, true, scope.row.sortNum)"
+                      @click="
+                        is_preserve(scope.$index, true, scope.row.sortNum)
+                      "
                       >新增</el-button
                     >
                     <el-button
@@ -233,6 +235,15 @@ export default {
           if (this.indexs || this.indexs === 0) {
             this.t_sys_boundary[this.indexs].show = true;
           }
+        } else {
+          this.t_sys_boundary = [
+            {
+              boundaryName: "",
+              accessMethod: "",
+              mainBusiness: "",
+              show: false,
+            },
+          ];
         }
 
         // this.ProjectQueryList();
@@ -309,14 +320,14 @@ export default {
         accessMethod: "",
         mainBusiness: "",
         show: false,
-        sortNum: sortNum+1,
+        sortNum: sortNum + 1,
       };
       itss.splice(item + 1, 0, list);
       this.t_sys_boundary = itss;
       this.schujiaodian(this.t_sys_boundary[item + 1]);
     },
     async deleteRow(index, rows) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("确定删除此记录?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -381,5 +392,12 @@ export default {
 .wangruo_updata {
   margin: 5px 0;
   text-align: right;
+}
+.itsz {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
 }
 </style>

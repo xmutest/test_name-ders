@@ -1,5 +1,4 @@
 <!--安全计算环境-->
-<!--安全物理环境-->
 <template>
   <d2-container>
     <div class="schuan_s">
@@ -308,9 +307,9 @@ export default {
       ToMitList: [],
       accordSituationlist: [
         { value: 0, label: "请选择" },
-        { value: 1, label: "符合(1分)" },
-        { value: 2, label: "部分符合(0.5分)" },
-        { value: 3, label: "不符合(0分)" },
+        { value: 1, label: "符合" },
+        { value: 2, label: "部分符合" },
+        { value: 3, label: "不符合" },
         { value: 4, label: "不适用" },
       ],
       // 请求数据

@@ -34,7 +34,7 @@
                     'background-color': 'rgba(238, 238, 238,1.0)',
                   }"
                 >
-                  <el-table-column label="项目选择" width="100">
+                  <el-table-column label="选择" width="80">
                     <template slot-scope="scope">
                       <p>
                         <el-radio
@@ -89,7 +89,7 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="创建人" width="150">
+                  <el-table-column label="创建人" width="120">
                     <template slot-scope="scope">
                       <p
                         :class="
@@ -102,7 +102,7 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="创建时间" width="150">
+                  <el-table-column label="创建时间" width="100">
                     <template slot-scope="scope">
                       <p
                         :class="
@@ -117,7 +117,7 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="操作" width="180">
+                  <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
                       <el-button
                         size="mini"
@@ -518,7 +518,7 @@ export default {
     },
     // 删除项目
     xmuDelete(index, row) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("确定删除此记录", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

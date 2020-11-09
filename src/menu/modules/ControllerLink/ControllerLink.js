@@ -13,7 +13,7 @@ export default {
     },
     {
       path: `${pre}conditio`,
-      title: '被测信息系统情况'
+      title: '被测单位信息'
     },
     {
       path: `${pre}situationBeing`,

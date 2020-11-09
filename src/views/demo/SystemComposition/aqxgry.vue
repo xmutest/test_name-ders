@@ -1,7 +1,11 @@
 <!--安全相关人员-->
 <template>
   <d2-container>
-    <el-table :data="tabledatas" border :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }">
+    <el-table
+      :data="tabledatas"
+      border
+      :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
+    >
       <el-table-column label="姓名" width="120">
         <template slot-scope="scope">
           <div
@@ -99,7 +103,7 @@ export default {
   mounted() {
     var that = this;
     document.addEventListener("click", function (e) {
-       if (
+      if (
         e.target.className != "itsz" &&
         e.target.className != "el-input__inner"
       ) {
@@ -123,6 +127,16 @@ export default {
           if (this.indexs || this.indexs === 0) {
             this.tabledatas[this.indexs].show = true;
           }
+        } else {
+          this.tabledatas = [
+            {
+              personnelName: "",
+              personnelPost: "",
+              telephone: "",
+              sortNum: 1,
+              show: false,
+            },
+          ];
         }
 
         // this.ProjectQueryList();
@@ -185,7 +199,7 @@ export default {
     },
     async deleteRow(index, rows) {
       console.log(rows);
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("确定删除此记录？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

@@ -3,12 +3,12 @@
   <d2-container>
     <div class="ks_to">
       <div>
-        <div class="ks_to_name">下载模板，填写现场核查记录</div>
+        <div class="ks_to_name">1.下载模板(包括01-10现场记录表)，填写现场核查记录</div>
         <div class="ks_to_text">
-          <span>1.请勿修改模板表头和字段</span>
-          <span>2.添加资产后请勿直接复制sheet，需重新生成模板</span>
+          <span>(1)请勿修改模板表头和字段</span>
+          <span>(2)添加资产后请勿直接复制sheet，需重新生成模板</span>
           <span
-            >3.符合情况只能填写：符合、部分符合、不符合、不适用</span
+            >(3)"符合情况"只能填写：符合、部分符合、不符合、不适用</span
           >
           <div class="ks_buttm">
             <el-link @click="ks_toBummt" icon="el-icon-download"
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div>
-        <div class="ks_to_name">导入模板</div>
+        <div class="ks_to_name">2.导入数据</div>
         <el-upload
           class="upload-demo"
           drag

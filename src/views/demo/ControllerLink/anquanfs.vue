@@ -90,6 +90,10 @@ export default {
           if (this.indexs || this.indexs === 0) {
             this.t_security_services[this.indexs].show = true;
           }
+        } else {
+          this.t_security_services = [
+            { servicesName: "", serviceProvider: "", show: false },
+          ];
         }
 
         // this.ProjectQueryList();
@@ -154,7 +158,7 @@ export default {
     },
     async deleteRow(index, rows) {
       console.log(rows);
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("确定删除此记录?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",

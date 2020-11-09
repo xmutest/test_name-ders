@@ -1,4 +1,4 @@
-<!--被测信息系统情况-->
+<!--被测单位信息-->
 <template>
   <d2-container>
     <div class="mude_is">

@@ -42,7 +42,7 @@ export default {
       component: _import('demo/ControllerLink/conditio'),
       meta: {
         ...meta,
-        title: '被测信息系统情况'
+        title: '被测单位信息'
       }
     }
     ,
