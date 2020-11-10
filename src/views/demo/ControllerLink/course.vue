@@ -4,8 +4,14 @@
     <div class="reviewProcess">
       <div class="rev_jianjie">
         <el-card class="box-card">
+          
           <div class="clearfix descTItle">
             <span>简介</span>
+            <div class="tijiaobaoc">
+              <el-button type="primary" @click="submitReportTable"
+                >保存</el-button
+              >
+            </div>
           </div>
           <div>
             <el-input
@@ -17,8 +23,14 @@
           </div>
           <div class="detailedPro">
             <div class="detailedtablo">
+              
               <div class="clearfix descTItle">
                 <span>详细过程</span>
+                <div class="tijiaobaoc">
+                  <el-button type="primary" @click="preview"
+                    >预览</el-button
+                  >
+                </div>
               </div>
               <div class="detailedTime">
                 <el-row :gutter="24">
@@ -48,7 +60,7 @@
                   </el-col>
                   <el-col :span="6">
                     <div class="grid-content bg-purple">
-                      <span>未次会议</span>
+                      <span>末次会议</span>
                       <el-date-picker
                         v-model="fromData.lastMeetingTime"
                         type="date"
@@ -69,11 +81,7 @@
                         value-format="timestamp"
                       ></el-date-picker>
                     </div>
-                    <div class="tijiaobaoc">
-                      <el-button type="primary" @click="submitReport"
-                        >保存</el-button
-                      >
-                    </div>
+                    
                   </el-col>
                 </el-row>
               </div>
@@ -148,14 +156,15 @@
                     </template>
                   </el-table-column>
                 </el-table>
+                <div class="tijiaobaoc">
+                  <el-button type="primary" @click="submitReport"
+                    >保存</el-button
+                  >
+                </div>
               </div>
             </div>
           </div>
-          <div class="tijiaobaoc">
-            <el-button type="primary" @click="submitReportTable"
-              >保存</el-button
-            >
-          </div>
+          
         </el-card>
       </div>
     </div>
@@ -170,10 +179,10 @@ export default {
       fromData: {
         id: "",
         briefIntroduction: "",
-        projectStartTime: "",
-        startMeetingTime: "",
-        lastMeetingTime: "",
-        confirmTime: "",
+        projectStartTime: "", //项目启动
+        startMeetingTime: "", //启动会议
+        lastMeetingTime: "",  //末次会议
+        confirmTime: "",  //复核确认
         input_number: "",
       },
 
@@ -735,6 +744,45 @@ export default {
         }
       }
     },
+    preview(){
+      // 集成各阶段所需时间
+      // 转成毫秒运算后再转成正常时间
+      console.log(this.tableData)
+      let allTime = []
+      this.tableData.map((res)=>{
+        allTime.push(res.evaluationCycle)
+      })
+
+      this.timeArr = [
+        this.transferDate(allTime[1]+allTime[2]),  //第一阶段
+        this.transferDate(allTime[5]), //第二阶段
+        this.transferDate(allTime[8] + allTime[9] + allTime[10] + allTime[11] + allTime[12] + allTime[20] + allTime[21] + allTime[26]
+        + allTime[28] + allTime[29] + allTime[30]),  //第三阶段
+        this.transferDate(allTime[33] + allTime[34])  //第四阶段
+      ]
+      console.log(this.timeArr)
+      // console.log(this.fromData)
+      // fromData: {
+      //   id: "",
+      //   briefIntroduction: "",
+      //   projectStartTime: "", //项目启动
+      //   startMeetingTime: "", //启动会议
+      //   lastMeetingTime: "",  //末次会议
+      //   confirmTime: "",  //复核确认
+      //   input_number: "",
+      // },
+      let startTime = this.fromData.projectStartTime
+      console.log(startTime,new Date(startTime))
+      // 
+
+    },
+    // 转换毫秒
+    transferDate(normalTIme){
+      return new Date(normalTIme+'').getTime()
+    },
+    calDateFun(startTime,usedTime){
+
+    }
   },
 };
 </script>
@@ -776,6 +824,16 @@ export default {
 }
 .descTItle {
   @extend %unable-border-left;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.descTItle .tijiaobaoc{
+  display:inline-block;
+  margin:0;
 }
 </style>
 

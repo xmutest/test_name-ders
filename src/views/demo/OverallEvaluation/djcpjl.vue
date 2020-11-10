@@ -7,18 +7,17 @@
           <div class="leftSide">
             <!-- <img src="@/views/demo/ControllerLink/img/structure01.jpg" class="gradeLogo" alt=""> -->
             <div class="gradeInfo">
-              <div>指标符合率:67.61%</div>
-              <div>指标部分符合率:67.61%</div>
-              <div>指标不符合率:67.61%</div>
-              <div>指标不适用数:67个</div>
-            </div>
-            <div class="gradeDesc">
-              <p>测评结论:良</p>
-              <p>综合得分:88分</p>
+              <div>指标符合率:{{markData.accord}}</div>
+              <div>指标部分符合率:{{markData.sectionAccord}}</div>
+              <div>指标不符合率:{{markData.notAccord}}</div>
+              <div>指标不适用数:{{markData.notBeApplicable}}</div>
+              <div>测评结论:{{markData.fractionResult}}</div>
+              <div>综合得分:{{markData.totalFraction}}分</div>
             </div>
           </div>
           <div class="rightSide">
-            <ve-histogram ref="echartsArea" :data="chartData" :settings="chartSettings" id="main" ></ve-histogram>
+            <!-- <ve-histogram ref="echartsArea" :data="chartData" :settings="chartSettings" id="main" ></ve-histogram> -->
+            <div id="main" ref="echartsArea"></div>
           </div>
         </div>
         <div class="gradeDownside">
@@ -62,32 +61,11 @@
 
 <script>
 
-
+import echarts from 'echarts'
 
 export default {
     data(){
-      this.chartSettings = {
-        metrics: ['数值'],
-        dimension: ['name'],
-        
-      }
       return{
-        chartData: {
-          columns: ['name', '数值'],
-          rows: [
-            // { 'name': '1/1', '数值': 1393},
-            // { 'name': '1/2', '数值': 3530},
-            // { 'name': '1/3', '数值': 2923},
-            // { 'name': '1/4', '数值': 1723},
-            // { 'name': '1/5', '数值': 3792},
-            // { 'name': '1/6', '数值': 4593}
-          ],
-          xAxis:{
-            axisLabel:{
-              rotate:20,
-            },
-          }
-        },
         tableData: [
           {
             name: '低',
@@ -110,10 +88,18 @@ export default {
             section4: '差'
           }
         ],
-
+        markData:{
+          accord:'',
+          notAccord:'',
+          notBeApplicable:'',
+          sectionAccord:'',
+          totalFraction:'',
+          fractionResult:''
+        }
       }
     },
     created() {
+      this.func_getMark()
       this.func_getChartsData()
     },
     mounted() {
@@ -134,21 +120,45 @@ export default {
       },
       async func_getChartsData(){
         let that = this
+        let paramsData = {
+          key:[],
+          value:[],
+        }
         let res = await this.$api.API_CalculateFractionSummaryGraph()
-        console.log('res',res)
         let {data} = res
         let mycharts = this.$refs.echartsArea
         data.map(result=>{
-          let preName = result.sceneCheckName.length > 3? result.sceneCheckName.substr(0,3) : result.sceneCheckName
-
-          let params = {
-            name:result.sceneCheckName,
-            '数值':result.sceneCheckFraction
-          }
-        
-          that.chartData.rows.push(params)
+          paramsData.value.push(result.sceneCheckFraction)
+          paramsData.key.push(result.sceneCheckName)
         })
+
+        // echarts
+        let option = {
+            xAxis: {
+                type: 'category',
+                data: paramsData.key,
+                axisLabel:{
+                  rotate:30
+                }
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: paramsData.value,
+                type: 'bar'
+            }]
+        };
         
+        setTimeout(function(){
+          echarts.init(that.$refs.echartsArea).setOption(option)
+        },500)
+      },
+      async func_getMark(){
+        let res = await this.$api.API_CalculateFractionInConclusionFraction()
+        let {data} = res
+        
+        this.markData = data
       }
     }
 }

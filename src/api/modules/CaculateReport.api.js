@@ -31,7 +31,7 @@ export default ({
    */
  async API_CalculateFractionControlStatistics(data = {}) {
   data.projectId = await this.get_info();
-  data.projectId = 5;
+  // data.projectId = 5;
   // 接口请求
     return request({
     //   url: '/project/findOverallEvaluation',
@@ -47,7 +47,7 @@ export default ({
  async API_CalculateFractionAccordSituationStatistics(data = {}) {
     // 接口请求
     data.projectId = await this.get_info();
-    data.projectId = 5;
+    // data.projectId = 5;
     return request({
       url: '/calculateFraction/accordSituationStatistics',
       method: 'get',
@@ -61,7 +61,7 @@ export default ({
  async API_CalculateFractionCalculateControlSpotFraction(data = {}) {
     // 接口请求
     data.projectId = await this.get_info();
-    data.projectId = 5;
+    // data.projectId = 5;
     return request({
       url: '/calculateFraction/calculateControlSpotFraction',
       method: 'get',
@@ -75,7 +75,7 @@ export default ({
   async API_CalculateFractionSafetyClassStatistics(data = {}) {
     // 接口请求
     data.projectId = await this.get_info();
-    data.projectId = 5;
+    // data.projectId = 5;
     return request({
       url: '/calculateFraction/safetyClassStatistics',
       method: 'get',

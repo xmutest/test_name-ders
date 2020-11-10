@@ -78,6 +78,20 @@ export default ({
       method: 'get',
       params:data
     })
+  },  
+  /**
+  * @description 查询  等级测评结论 分数
+  * @param {Object} data 携带的信息
+  */
+  async API_CalculateFractionInConclusionFraction(data = {}) {
+   // 接口请求
+   data.projectId = await this.get_info();
+   data.projectId = 5
+   return request({
+     url: '/calculateFraction/inConclusionFraction',
+     method: 'get',
+     params:data
+   })
   },
 })
   

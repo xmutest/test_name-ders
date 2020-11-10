@@ -11,14 +11,12 @@ import axios from 'axios'
 Vue.prototype.$http = axios
 // 菜单和路由设置
 import router from './router'
-import VCharts from 'v-charts'
 import { menuHeader, menuAside } from '@/menu'
 import { frameInRoutes } from '@/router/routes'
 
 
 // 画布插件
 Vue.use(require('vue-easeljs'))
-Vue.use(VCharts)
 // Vue.use(require('echarts'))
 
 // 核心插件
