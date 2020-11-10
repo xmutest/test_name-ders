@@ -97,7 +97,6 @@
           <span v-show="!scope.row.show">{{ scope.row.equipmentNum }}</span>
         </template>
       </el-table-column>
-
       <el-table-column label="重要程度">
         <template slot-scope="scope">
           <el-select
@@ -165,7 +164,7 @@ export default {
           terminalTypePurpose: "",
           remarks: "",
           equipmentNum: 5,
-          importantDegree: 1,
+          importantDegree: 5,
           isEvaluationObj: false,
           sortNum: 1,
           show: false,
@@ -230,7 +229,7 @@ export default {
               terminalTypePurpose: "",
               remarks: "",
               equipmentNum: 5,
-              importantDegree: 1,
+              importantDegree: 5,
               isEvaluationObj: false,
               sortNum: 1,
               show: false,
@@ -299,7 +298,7 @@ export default {
         terminalTypePurpose: "",
         remarks: "",
         equipmentNum: 5,
-        importantDegree: 1,
+        importantDegree: 5,
         isEvaluationObj: false,
         sortNum,
         show: false,

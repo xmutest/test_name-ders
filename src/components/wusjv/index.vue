@@ -1,6 +1,6 @@
 <template>
   <div class="ks_sjv">
-    <div class="ks_sjis"><i class="el-icon-edit"></i><span>暂无数据,请添加数据后在查看</span></div>
+    <div class="ks_sjis"><i class="el-icon-edit"></i><span>暂无数据,请添加数据后再查看</span></div>
   </div>
 </template>
 

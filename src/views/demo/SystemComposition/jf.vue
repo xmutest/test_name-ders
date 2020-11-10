@@ -102,7 +102,7 @@ export default {
         {
           computerRoomName: "",
           physicalPosition: "",
-          importantDegree: 1,
+          importantDegree: 5,
           isEvaluationObj: false,
           sortNum: 1,
           show: false,
@@ -199,7 +199,7 @@ export default {
             {
               computerRoomName: "",
               physicalPosition: "",
-              importantDegree: 1,
+              importantDegree: 5,
               isEvaluationObj: false,
               sortNum: 1,
               show: false,
@@ -261,7 +261,7 @@ export default {
       var list = {
         computerRoomName: "",
         physicalPosition: "",
-        importantDegree: 1,
+        importantDegree: 5,
         isEvaluationObj: 0,
         show: false,
         sortNum: sortNum,

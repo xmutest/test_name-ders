@@ -172,7 +172,7 @@ export default {
         e.target.className != "el-input__inner"
       ) {
         that.indexs = "";
-        that.getlistdata();
+        // that.getlistdata(); 
       }
     });
   },

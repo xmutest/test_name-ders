@@ -1,6 +1,6 @@
 <template>
   <div class="ks_buttm">
-    <el-button type="primary" @click="ks_toBummt">导出模板</el-button>
+    <el-button type="primary" @click="ks_toBummt">导出</el-button>
   </div>
 </template>
 

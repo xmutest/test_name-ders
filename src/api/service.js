@@ -11,6 +11,10 @@ import {
   errorCreate
 } from './tools'
 import ElementUI from "element-ui";
+import {
+  MessageBox
+} from "element-ui";
+
 /**
  * @description 创建请求实例
  */
@@ -50,38 +54,59 @@ function createService() {
               return dataAxios
             case 401:
               // [ 示例 ] code === 0 代表没有错误
-              return alert(dataAxios.message)
+              return  ElementUI.Message({
+                title: '警告',
+                message: `请求出错: ${dataAxios.message}，请联系管理员`,
+                type: 'error'
+              });
             case 500:
               // [ 示例 ] code === 0 代表没有错误
-              return alert(dataAxios.message)
+              return  ElementUI.Message({
+                title: '警告',
+                message: `请求出错: ${dataAxios.message}，请联系管理员`,
+                type: 'error'
+              });
             case 555:
               // [ 示例 ] code === 0 代表没有错误
-              return alert(dataAxios.message)
+              return  ElementUI.Message({
+                title: '警告',
+                message: `请求出错: ${dataAxios.message}，请联系管理员`,
+                type: 'error'
+              });
             case 402:
-              // [ 示例 ] code === 0 代表没有错误
-              alert(dataAxios.message)
-              await store.dispatch(
-                "d2admin/account/logouts", {
-                  confirm: true
+              return MessageBox.alert(dataAxios.message, '错误信息', {
+                confirmButtonText: '确定',
+                showClose: false,
+                type: 'error',
+                callback: action => {
+                  store.dispatch(
+                    "d2admin/account/logouts", {
+                      confirm: true
+                    }
+                  );
                 }
-              );
-              return
+              });
             case 403:
               // [ 示例 ] code === 0 代表没有错误
-              alert(dataAxios.message)
-              await store.dispatch(
-                "d2admin/account/logouts", {
-                  confirm: true
+              return MessageBox.alert('dataAxios.message', '标题名称', {
+                confirmButtonText: '确定',
+
+                callback: action => {
+                  // alert(dataAxios.message)
+                  store.dispatch(
+                    "d2admin/account/logouts", {
+                      confirm: true
+                    }
+                  );
                 }
-              );
-              return
+              });
+
             default:
               ElementUI.Message({
                 title: '警告',
-                message: `请求 ${response.config.url}出错，请联系管理员`,
+                message: `请求出错: ${response.config.url}，请联系管理员`,
                 type: 'error'
               });
-              alert('请求出错，请联系管理员');
               // 不是正确的 code
               errorCreate(`${dataAxios}: ${response.config.url}`)
               break

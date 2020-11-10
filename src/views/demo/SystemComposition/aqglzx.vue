@@ -133,7 +133,7 @@ export default {
         {
           safeManageCenterName: "管理",
           functionDescription: "功能描述",
-          importantDegree: 1,
+          importantDegree: 5,
           isSysManage: false,
           isAuditManage: false,
           isSafeManage: false,
@@ -189,7 +189,7 @@ export default {
             {
               safeManageCenterName: "",
               functionDescription: "",
-              importantDegree: 1,
+              importantDegree: 5,
               isSysManage: false,
               isAuditManage: false,
               isSafeManage: false,
@@ -252,7 +252,7 @@ export default {
       var basicData = {
         safeManageCenterName: "",
         functionDescription: "",
-        importantDegree: 1,
+        importantDegree: 5,
         isSysManage: false,
         isAuditManage: false,
         isSafeManage: false,

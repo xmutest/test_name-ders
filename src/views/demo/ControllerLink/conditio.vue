@@ -19,7 +19,7 @@
                 </el-input>
               </div>
               <div>
-                <span>联系人：</span>
+                <span>联系人姓名：</span>
                 <el-input
                   placeholder="请输入"
                   v-model="BeingMeasured.contacts"
@@ -55,7 +55,7 @@
                 </el-input>
               </div>
               <div>
-                <span>邮政编码：</span>
+                <span>邮政编码号：</span>
                 <el-input
                   placeholder="请输入"
                   v-model="BeingMeasured.postalCode"
@@ -73,7 +73,7 @@
                 </el-input>
               </div>
               <div>
-                <span>通讯地址：</span>
+                <span>单位地址：</span>
                 <el-input
                   placeholder="请输入"
                   v-model="BeingMeasured.companyAddress"
@@ -90,7 +90,7 @@
                 >
                 </el-input>
               </div>
-              <div>
+              <!-- <div>
                 <span>行业类型：</span>
                 <el-select
                   size="small"
@@ -123,13 +123,13 @@
                   >
                   </el-option>
                 </el-select>
-              </div>
-              <upload-city
+              </div> -->
+              <!-- <upload-city
                 ref="addFormProvince"
                 :provinceCode='BeingMeasured.provincesCities'
                 :cityCode='BeingMeasured.districtCounty'
                 @selectChange="selectChange"
-              ></upload-city>
+              ></upload-city> -->
             </div>
             <div class="tijiaobaoc">
               <el-button
@@ -137,7 +137,7 @@
                 size="small"
                 icon="el-icon-folder-opened"
                 @click="PassiveCompanyUpdate"
-                >纳入委托单位</el-button
+                >保存委托单位</el-button
               >
               <!-- <el-button
                 type="primary"
@@ -304,6 +304,7 @@ export default {
     },
     async submitReport() {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
+      this.PassiveCompanyUpdate();
       if (res.code === 20000) {
         this.$message.success("修改成功！！");
         this.getEtlist();

@@ -467,7 +467,8 @@ export default {
     }
   }
   .relevance {
-    height: 200px;
+    max-height: 200px;
+    margin: 15px 0;
     .xuna {
       overflow: auto;
       height: 135px;

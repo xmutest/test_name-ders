@@ -18,14 +18,12 @@
           </div>
           <div class="mude_text_item">
             <div class="descTItle">接入点图片</div>
-              <div class="tijiaobaoc">
-                <el-button type="primary" @click="showCanvas = true"
-                  >修改</el-button
-                >
-              </div>
+            <div class="tijiaobaoc">
+              <el-button type="primary" @click="showCanvas = true"
+                >修改</el-button
+              >
+            </div>
             <div class="to_tim">
-           
-
               <canvasToorBarSel
                 :showControl="showTools"
                 :selIndex="inputIndex"
@@ -76,6 +74,14 @@
                     <el-button type="primary" @click="getlistdataImg()"
                       >使用网络结构图</el-button
                     >
+                    <el-upload
+                      class="avatar-uploader"
+                      action=""
+                      :before-upload="beforePicUpload"
+                      :show-file-list="false"
+                    >
+                      <el-button type="primary">使用其他图片</el-button>
+                    </el-upload>
                     <el-button type="primary" @click="saveCanvas"
                       >保存</el-button
                     >
@@ -135,7 +141,6 @@
               <img :src="imgUrls" alt="" class="resPic" />
             </div>
           </div>
-            
         </el-card>
       </div>
       <!-- 图片 -->
@@ -191,6 +196,33 @@ export default {
   },
   computed: {},
   methods: {
+    // 使用其他图片
+    async beforePicUpload(file) {
+      if (this.imgUrlsid == "") {
+        let res = await this.$api.API_ImgSaveAccessPointImg({
+          file,
+        });
+        if (res.code === 20000) {
+          this.$message.success("保存图片成功！！");
+          this.getimgUrls();
+          //查询列表
+        } else {
+          this.$message.error("错误，请联系管理员" + res.message);
+        }
+      } else {
+        let res = await this.$api.API_imgupdateImg({
+          file,
+          id: this.imgUrlsid,
+        });
+        if (res.code === 20000) {
+          this.$message.success("更新图片成功！！");
+          this.getimgUrls();
+          //查询列表
+        } else {
+          this.$message.error("错误，请联系管理员" + res.message);
+        }
+      }
+    },
     //  获取接入点图片
     async getimgUrls() {
       let res = await this.$api.API_ImgFindAccessPointImg();
@@ -533,5 +565,9 @@ export default {
 .resPics {
   max-width: 900px;
   max-height: 600px;
+}
+.avatar-uploader {
+  display: inline-block;
+  margin: 0 5px;
 }
 </style>
