@@ -72,7 +72,6 @@ export default ({
   async API_CalculateFractionSummaryGraph(data = {}) {
     // 接口请求
     data.projectId = await this.get_info();
-    data.projectId = 5
     return request({
       url: '/calculateFraction/summaryGraph',
       method: 'get',
@@ -86,7 +85,6 @@ export default ({
   async API_CalculateFractionInConclusionFraction(data = {}) {
    // 接口请求
    data.projectId = await this.get_info();
-   data.projectId = 5
    return request({
      url: '/calculateFraction/inConclusionFraction',
      method: 'get',

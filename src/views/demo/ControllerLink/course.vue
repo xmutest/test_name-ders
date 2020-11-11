@@ -114,6 +114,9 @@
                   <el-table-column prop="evaluationCycle" label="测评周期(天)">
                     <template slot-scope="scope">
                       <span v-if="scope.row.highlight"></span>
+                      <span v-else-if="scope.row.name=='总计'">
+                        {{scope.row.evaluationCycle}}
+                      </span>
                       <el-input-number
                         v-else
                         @change="Itsclik()"
@@ -168,6 +171,43 @@
         </el-card>
       </div>
     </div>
+
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="50%">
+      <div class="sentences">
+        &nbsp;&nbsp;本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
+      </div>
+      <div class="sentences" v-html="sentences">
+      </div>
+      <!-- // fromData: {
+      //   id: "",
+      //   briefIntroduction: "",
+      //   projectStartTime: "", //项目启动
+      //   startMeetingTime: "", //启动会议
+      //   lastMeetingTime: "",  //末次会议
+      //   confirmTime: "",  //复核确认
+      //   input_number: "",
+      // }, -->
+      <div class="sentences">
+        &nbsp;&nbsp;其中，
+        <span>{{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getFullYear() : 'YYYY'}}年
+        {{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getMonth() + 1: 'MM'}}月
+        {{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getDate(): 'DD'}}</span>日召开了项目启动会议，
+        确定了工作方案及项目人员名单；
+        <span>{{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getFullYear() : 'YYYY'}}年
+        {{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getMonth() + 1: 'MM'}}月
+        {{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getDate(): 'DD'}}</span>日召开了项目末次会议，确认了测评发现的问题；
+        <span>{{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getFullYear() : 'YYYY'}}年
+        {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getMonth() + 1: 'MM'}}月
+        {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getDate(): 'DD'}}</span>日对系统的整改情况进行了复核确认。
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </d2-container>
 </template>
 
@@ -185,7 +225,7 @@ export default {
         confirmTime: "",  //复核确认
         input_number: "",
       },
-
+      sentences:'',
       tableData: [
         {
           name: "一、测评准备过程",
@@ -578,6 +618,7 @@ export default {
           isfor: true,
         },
       ],
+      dialogVisible:false
     };
   },
   created() {
@@ -747,6 +788,8 @@ export default {
     preview(){
       // 集成各阶段所需时间
       // 转成毫秒运算后再转成正常时间
+      
+      this.dialogVisible = true
       console.log(this.tableData)
       let allTime = []
       this.tableData.map((res)=>{
@@ -762,26 +805,71 @@ export default {
       ]
       console.log(this.timeArr)
       // console.log(this.fromData)
-      // fromData: {
-      //   id: "",
-      //   briefIntroduction: "",
-      //   projectStartTime: "", //项目启动
-      //   startMeetingTime: "", //启动会议
-      //   lastMeetingTime: "",  //末次会议
-      //   confirmTime: "",  //复核确认
-      //   input_number: "",
-      // },
+      
       let startTime = this.fromData.projectStartTime
-      console.log(startTime,new Date(startTime))
-      // 
+      // console.log(startTime,new Date(startTime))
+      // startTime
+      // let realityTime = [
+      //   {
+      //     startTIme:0,
+      //     endTime:0
+      //   },
+      // ]
+      let that = this
+      let realityTime = []
+      this.timeArr.map(res=>{
+        let endTime = startTime + res
+        
+        let transferEndTime = that.transferDate(endTime,1)
+        let transferStartTime = that.transferDate(startTime,1)
+
+        // console.log(transferTime)
+        let preRealityTime = {
+          startTime : startTime,
+          endTime : endTime
+        }
+        realityTime.push(preRealityTime)
+
+        startTime = endTime
+        // console.log(endTime,transferTime)
+
+      })
+
+      // <div>1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。</div>
+      // <div>2、YYYY年MM月DD日~YYYY年MM月DD日，方案编制过程。</div>
+      // <div>3、YYYY年MM月DD日~YYYY年MM月DD日，现场实施过程。</div>
+      // <div>4、YYYY年MM月DD日~YYYY年MM月DD日，分析与报告编制过程。</div>
+
+      console.log(realityTime)
+
+      if(realityTime[0].startTime != 0){
+        this.sentences = `
+          <div>1、<span class="styleRed" style="color:red;">${new Date(realityTime[0].startTime).getFullYear()}年${new Date(realityTime[0].startTime).getMonth() + 1}月${new Date(realityTime[0].startTime).getDate()}日~${new Date(realityTime[0].endTime).getFullYear()}年${new Date(realityTime[0].endTime).getMonth() + 1}月${new Date(realityTime[0].endTime).getDate()}日</span>，测评准备阶段。</div>
+          <div>2、<span class="styleRed" style="color:red;">${new Date(realityTime[1].startTime).getFullYear()}年${new Date(realityTime[1].startTime).getMonth() + 1}月${new Date(realityTime[1].startTime).getDate()}日~${new Date(realityTime[1].endTime).getFullYear()}年${new Date(realityTime[1].endTime).getMonth() + 1}月${new Date(realityTime[1].endTime).getDate()}日</span>，方案编制过程。</div>
+          <div>3、<span class="styleRed" style="color:red;">${new Date(realityTime[2].startTime).getFullYear()}年${new Date(realityTime[2].startTime).getMonth() + 1}月${new Date(realityTime[2].startTime).getDate()}日~${new Date(realityTime[2].endTime).getFullYear()}年${new Date(realityTime[2].endTime).getMonth() + 1}月${new Date(realityTime[2].endTime).getDate()}日</span>，现场实施过程。</div>
+          <div>4、<span class="styleRed" style="color:red;">${new Date(realityTime[3].startTime).getFullYear()}年${new Date(realityTime[3].startTime).getMonth() + 1}月${new Date(realityTime[3].startTime).getDate()}日~${new Date(realityTime[3].endTime).getFullYear()}年${new Date(realityTime[3].endTime).getMonth() + 1}月${new Date(realityTime[3].endTime).getDate()}日</span>，分析与报告编制过程。</div>
+        `
+      }else{
+        this.sentences = `
+          <div>1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。</div>
+          <div>2、YYYY年MM月DD日~YYYY年MM月DD日，方案编制过程。</div>
+          <div>3、YYYY年MM月DD日~YYYY年MM月DD日，现场实施过程。</div>
+          <div>4、YYYY年MM月DD日~YYYY年MM月DD日，分析与报告编制过程。</div>
+        `
+      }
+
+      
+
 
     },
     // 转换毫秒
-    transferDate(normalTIme){
-      return new Date(normalTIme+'').getTime()
+    transferDate(normalTIme,type=0){
+      // return new Date(normalTIme+'').getTime()
+      if(type) return new Date(normalTIme)
+      return normalTIme * 24 * 3600 * 1000
     },
     calDateFun(startTime,usedTime){
-
+      
     }
   },
 };
@@ -834,6 +922,24 @@ export default {
 .descTItle .tijiaobaoc{
   display:inline-block;
   margin:0;
+}
+
+.el-dialog{
+  div{
+    line-height:180%;
+  }
+  .sentences{
+    margin-bottom:20px;
+    span{
+      color:red;
+    }
+    div{
+      margin-bottom:10px;
+    }
+  }
+}
+.styleRed{
+  color:red;
 }
 </style>
 
