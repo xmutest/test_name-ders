@@ -14,7 +14,12 @@
           ></div>
           <el-input
             :ref="'safeManageCenterName' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                safeManageCenterName: scope.row.safeManageCenterName,
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.safeManageCenterName"
           ></el-input>
@@ -32,7 +37,12 @@
           ></div>
           <el-input
             :ref="'functionDescription' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                functionDescription: scope.row.functionDescription,
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.functionDescription"
           ></el-input>
@@ -45,7 +55,12 @@
       <el-table-column label="系统管理" width="80">
         <template slot-scope="scope">
           <el-checkbox
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                isSysManage: scope.row.isSysManage,
+              })
+            "
             v-model="scope.row.isSysManage"
           ></el-checkbox>
         </template>
@@ -54,7 +69,12 @@
       <el-table-column label="审计管理" width="80">
         <template slot-scope="scope">
           <el-checkbox
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                isAuditManage: scope.row.isAuditManage,
+              })
+            "
             v-model="scope.row.isAuditManage"
           ></el-checkbox>
         </template>
@@ -63,7 +83,12 @@
       <el-table-column label="安全管理" width="80">
         <template slot-scope="scope">
           <el-checkbox
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                isSafeManage: scope.row.isSafeManage,
+              })
+            "
             v-model="scope.row.isSafeManage"
           ></el-checkbox>
         </template>
@@ -72,7 +97,12 @@
       <el-table-column label="集中管理" width="80">
         <template slot-scope="scope">
           <el-checkbox
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                isCentralizedControl: scope.row.isCentralizedControl,
+              })
+            "
             v-model="scope.row.isCentralizedControl"
           ></el-checkbox>
         </template>
@@ -83,7 +113,12 @@
           <el-select
             v-model="scope.row.importantDegree"
             filterable
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                importantDegree: scope.row.importantDegree,
+              })
+            "
             placeholder="请选择"
           >
             <el-option
@@ -207,10 +242,19 @@ export default {
       }
     },
     async schujiaodian(item) {
-      item.isSysManage = item.isSysManage == true ? 1 : 0;
-      item.isAuditManage = item.isAuditManage == true ? 1 : 0;
-      item.isSafeManage = item.isSafeManage == true ? 1 : 0;
-      item.isCentralizedControl = item.isCentralizedControl == true ? 1 : 0;
+      if (typeof item.isSysManage == "boolean") {
+        item.isSysManage = item.isSysManage == true ? 1 : 0;
+      }
+      if (typeof item.isAuditManage == "boolean") {
+        item.isAuditManage = item.isAuditManage == true ? 1 : 0;
+      }
+      if (typeof item.isSafeManage == "boolean") {
+        item.isSafeManage = item.isSafeManage == true ? 1 : 0;
+      }
+      if (typeof item.isCentralizedControl == "boolean") {
+        item.isCentralizedControl = item.isCentralizedControl == true ? 1 : 0;
+      }
+
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {

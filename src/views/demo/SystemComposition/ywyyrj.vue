@@ -14,7 +14,12 @@
           ></div>
           <el-input
             :ref="'softwarePlatformName' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                softwarePlatformName: scope.row.softwarePlatformName,
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.softwarePlatformName"
           ></el-input>
@@ -32,7 +37,12 @@
           ></div>
           <el-input
             :ref="'majorFunction' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                majorFunction: scope.row.majorFunction,
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.majorFunction"
@@ -49,7 +59,12 @@
           ></div>
           <el-input
             :ref="'softwareEdition' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                softwareEdition: scope.row.softwareEdition,
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.softwareEdition"
@@ -66,7 +81,12 @@
           ></div>
           <el-input
             :ref="'developManufacturers' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                developManufacturers: scope.row.developManufacturers,
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.developManufacturers"
@@ -80,7 +100,12 @@
       <el-table-column label="重要程度">
         <template slot-scope="scope">
           <el-select
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                importantDegree: scope.row.importantDegree,
+              })
+            "
             v-model="scope.row.importantDegree"
             filterable
             placeholder="请选择"
@@ -151,7 +176,7 @@ export default {
     return {
       //  		重要程度	测评对象	排序号
       importance_list: [
-         { value: 5, label: "非常重要" },
+        { value: 5, label: "非常重要" },
         { value: 4, label: "重要" },
         { value: 3, label: "一般" },
         { value: 2, label: "不太重要" },
@@ -249,10 +274,12 @@ export default {
       }, 1);
     },
     async schujiaodian(item) {
-      if (item.isEvaluationObj == true) {
-        item.isEvaluationObj = 1;
-      } else {
-        item.isEvaluationObj = 0;
+      if (typeof item.isEvaluationObj == "boolean") {
+        if (item.isEvaluationObj == true) {
+          item.isEvaluationObj = 1;
+        } else {
+          item.isEvaluationObj = 0;
+        }
       }
       let res = "";
       if (item.id && item.id != "undefined") {
@@ -345,7 +372,10 @@ export default {
             res = await this.$api.SYS_FieldSurveyDelete(data);
           }
           if (res.code === 20000) {
-            this.schujiaodian(item);
+            this.schujiaodian({
+              id: item.id,
+              isEvaluationObj: item.isEvaluationObj,
+            });
             //查询列表
           } else {
             this.$message.error("删除错误，请联系管理员" + res.message);

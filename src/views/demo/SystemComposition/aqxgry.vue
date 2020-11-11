@@ -14,7 +14,10 @@
           ></div>
           <el-input
             :ref="'personnelName' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                personnelName: scope.row.personnelName,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.personnelName"
           ></el-input>
@@ -30,7 +33,10 @@
           ></div>
           <el-input
             :ref="'personnelPost' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                personnelPost: scope.row.personnelPost,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.personnelPost"
           ></el-input>
@@ -46,7 +52,10 @@
           ></div>
           <el-input
             :ref="'telephone' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                telephone: scope.row.telephone,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.telephone"
           ></el-input>

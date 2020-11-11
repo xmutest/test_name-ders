@@ -14,7 +14,12 @@
           ></div>
           <el-input
             :ref="'terminalName' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                terminalName: scope.row.terminalName,
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.terminalName"
           ></el-input>
@@ -25,7 +30,12 @@
       <el-table-column label="虚拟设备" width="80">
         <template slot-scope="scope">
           <el-checkbox
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                isFictitiousEquipment: scope.row.isFictitiousEquipment,
+              })
+            "
             v-model="scope.row.isFictitiousEquipment"
           ></el-checkbox>
         </template>
@@ -39,7 +49,12 @@
           ></div>
           <el-input
             :ref="'operatingSystem' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                operatingSystem: scope.row.operatingSystem,
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.operatingSystem"
           ></el-input>
@@ -55,7 +70,12 @@
           ></div>
           <el-input
             :ref="'terminalTypePurpose' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                terminalTypePurpose: scope.row.terminalTypePurpose,
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.terminalTypePurpose"
           ></el-input>
@@ -73,7 +93,12 @@
           ></div>
           <el-input
             :ref="'remarks' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                remarks: scope.row.remarks,
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.remarks"
           ></el-input>
@@ -89,7 +114,12 @@
           ></div>
           <el-input
             :ref="'equipmentNum' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                equipmentNum: scope.row.equipmentNum,
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.equipmentNum"
@@ -102,7 +132,12 @@
           <el-select
             v-model="scope.row.importantDegree"
             filterable
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                importantDegree: scope.row.importantDegree,
+              })
+            "
             placeholder="请选择"
           >
             <el-option
@@ -259,15 +294,19 @@ export default {
       }, 1);
     },
     async schujiaodian(item) {
-      if (item.isEvaluationObj == true) {
-        item.isEvaluationObj = 1;
-      } else {
-        item.isEvaluationObj = 0;
+      if (typeof item.isEvaluationObj == "boolean") {
+        if (item.isEvaluationObj == true) {
+          item.isEvaluationObj = 1;
+        } else {
+          item.isEvaluationObj = 0;
+        }
       }
-      if (item.isFictitiousEquipment == true) {
-        item.isFictitiousEquipment = 1;
-      } else {
-        item.isFictitiousEquipment = 0;
+      if (typeof item.isFictitiousEquipment == "boolean") {
+        if (item.isFictitiousEquipment == true) {
+          item.isFictitiousEquipment = 1;
+        } else {
+          item.isFictitiousEquipment = 0;
+        }
       }
       let res = "";
       if (item.id && item.id != "undefined") {
@@ -361,7 +400,10 @@ export default {
             res = await this.$api.SYS_FieldSurveyDelete(data);
           }
           if (res.code === 20000) {
-            this.schujiaodian(item);
+            this.schujiaodian({
+              id: item.id,
+              isEvaluationObj: item.isEvaluationObj,
+            });
             //查询列表
           } else {
             this.$message.error("删除错误，请联系管理员" + res.message);

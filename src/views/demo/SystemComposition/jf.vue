@@ -14,7 +14,12 @@
           ></div>
           <el-input
             :ref="'computerRoomName' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                computerRoomName: scope.row.computerRoomName,
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.computerRoomName"
           ></el-input>
@@ -30,7 +35,12 @@
           ></div>
           <el-input
             :ref="'physicalPosition' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                physicalPosition: scope.row.physicalPosition,
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.physicalPosition"
@@ -42,7 +52,12 @@
       <el-table-column label="重要程度">
         <template slot-scope="scope">
           <el-select
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                importantDegree: scope.row.importantDegree,
+              })
+            "
             v-model="scope.row.importantDegree"
             filterable
             placeholder="请选择"
@@ -161,7 +176,10 @@ export default {
             res = await this.$api.SYS_FieldSurveyDelete(data);
           }
           if (res.code === 20000) {
-            this.schujiaodian(item);
+            this.schujiaodian({
+              id: item.id,
+              isEvaluationObj: item.isEvaluationObj,
+            });
             //查询列表
           } else {
             this.$message.error("删除错误，请联系管理员" + res.message);
@@ -227,14 +245,16 @@ export default {
       setTimeout(() => {
         this.$refs[itname + index].focus();
       }, 1);
-      console.log(item);
     },
     async schujiaodian(item) {
-      if (item.isEvaluationObj == true) {
-        item.isEvaluationObj = 1;
-      } else {
-        item.isEvaluationObj = 0;
+      if (typeof item.isEvaluationObj == "boolean") {
+        if (item.isEvaluationObj == true) {
+          item.isEvaluationObj = 1;
+        } else {
+          item.isEvaluationObj = 0;
+        }
       }
+
       // item.show = false;
       let res = "";
       if (item.id && item.id != "undefined") {

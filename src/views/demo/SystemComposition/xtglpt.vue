@@ -14,7 +14,12 @@
           ></div>
           <el-input
             :ref="'platformExtendName' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                platformExtendName: scope.row.platformExtendName,
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.platformExtendName"
           ></el-input>
@@ -32,7 +37,12 @@
           ></div>
           <el-input
             :ref="'inEquipmentName' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                inEquipmentName: scope.row.inEquipmentName,
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.inEquipmentName"
@@ -51,7 +61,12 @@
           ></div>
           <el-input
             :ref="'platformExtendEdition' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                platformExtendEdition: scope.row.platformExtendEdition,
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.platformExtendEdition"
@@ -65,17 +80,22 @@
       <el-table-column label="主要功能">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'major_function')"
+            @click="is_compile(scope.row, scope.$index, 'majorFunction')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'major_function' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            :ref="'majorFunction' + scope.$index"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                majorFunction: scope.row.majorFunction,
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
-            v-model="scope.row.major_function"
+            v-model="scope.row.majorFunction"
           ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.major_function }}</span>
+          <span v-show="!scope.row.show">{{ scope.row.majorFunction }}</span>
         </template>
       </el-table-column>
 
@@ -87,7 +107,12 @@
           ></div>
           <el-input
             :ref="'remarks' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                remarks: scope.row.remarks,
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.remarks"
@@ -99,7 +124,12 @@
       <el-table-column label="重要程度">
         <template slot-scope="scope">
           <el-select
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                importantDegree: scope.row.importantDegree,
+              })
+            "
             v-model="scope.row.importantDegree"
             filterable
             placeholder="请选择"
@@ -117,7 +147,12 @@
       <el-table-column label="评测指导书">
         <template slot-scope="scope">
           <el-select
-            @change="schujiaodian(scope.row)"
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                evaluationInstructionBookId: scope.row.evaluationInstructionBookId,
+              })
+            "
             v-model="scope.row.evaluationInstructionBookId"
             filterable
             placeholder="请选择"
@@ -189,7 +224,7 @@ export default {
           platformExtendEdition: "",
           importantDegree: 5,
           remarks: "",
-          evaluationInstructionBookId: "",
+          evaluationInstructionBookId: 24,
           isEvaluationObj: false,
           show: false,
         },
@@ -212,7 +247,7 @@ export default {
   mounted() {
     var that = this;
     document.addEventListener("click", function (e) {
-       if (
+      if (
         e.target.className != "itsz" &&
         e.target.className != "el-input__inner"
       ) {
@@ -246,7 +281,7 @@ export default {
               inEquipmentName: "",
               platformExtendEdition: "",
               importantDegree: 5,
-              evaluationInstructionBookId: "",
+              evaluationInstructionBookId: 24,
               remarks: "",
               sortNum: 1,
               isEvaluationObj: false,
@@ -276,10 +311,12 @@ export default {
       }, 1);
     },
     async schujiaodian(item) {
-      if (item.isEvaluationObj == true) {
-        item.isEvaluationObj = 1;
-      } else {
-        item.isEvaluationObj = 0;
+      if (typeof item.isEvaluationObj == "boolean") {
+        if (item.isEvaluationObj == true) {
+          item.isEvaluationObj = 1;
+        } else {
+          item.isEvaluationObj = 0;
+        }
       }
       let res = "";
       if (item.id && item.id != "undefined") {
@@ -308,7 +345,7 @@ export default {
         inEquipmentName: "",
         platformExtendEdition: "",
         importantDegree: 5,
-        evaluationInstructionBookId: "",
+        evaluationInstructionBookId: 24,
         remarks: "",
         sortNum,
         isEvaluationObj: false,
@@ -371,7 +408,10 @@ export default {
             res = await this.$api.SYS_FieldSurveyDelete(data);
           }
           if (res.code === 20000) {
-            this.schujiaodian(item);
+            this.schujiaodian({
+              id: item.id,
+              isEvaluationObj: item.isEvaluationObj,
+            });
             //查询列表
           } else {
             this.$message.error("删除错误，请联系管理员" + res.message);

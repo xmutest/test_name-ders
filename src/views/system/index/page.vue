@@ -216,6 +216,7 @@
               <el-form-item label="标准体系" :label-width="formLabelWidth">
                 <el-select
                   v-model="xmform.standard"
+                  :disabled="ua_cre == 1 ? true : false"
                   @change="selectTrigger(xmform.standard)"
                 >
                   <el-option
@@ -229,7 +230,7 @@
             </div>
             <div>
               <el-form-item label="标准版本" :label-width="formLabelWidth">
-                <el-select v-model="xmform.standardVersion">
+                <el-select :disabled="ua_cre == 1 ? true : false" v-model="xmform.standardVersion">
                   <!-- <div v-if="">
 
                   </div> -->
@@ -247,6 +248,7 @@
             <el-select
               v-model="xmform.standardExtends"
               multiple
+              :disabled="ua_cre == 1 ? true : false"
               placeholder="请选择"
             >
               <el-option
@@ -263,6 +265,7 @@
               <el-form-item label="等保等级" :label-width="formLabelWidth">
                 <el-select
                   v-model="xmform.level"
+                  :disabled="ua_cre == 1 ? true : false"
                   @change="selectGoodsByGroupId($event)"
                 >
                   <el-option
@@ -276,7 +279,7 @@
             </div>
             <div>
               <el-form-item label="SAG等级" :label-width="formLabelWidth">
-                <el-select v-model="xmform.sag" placeholder="请选择">
+                <el-select :disabled="ua_cre == 1 ? true : false" v-model="xmform.sag" placeholder="请选择">
                   <el-option
                     v-for="item in saglist"
                     :key="item.id"
@@ -394,7 +397,6 @@ export default {
         { label: "第二级", value: 2 },
         { label: "第三级", value: 3 },
         { label: "第四级", value: 4 },
-        { label: "第五级", value: 5 },
       ],
       //sag  1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
       saglist: [

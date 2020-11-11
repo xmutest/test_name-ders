@@ -15,7 +15,12 @@
             ></div>
             <el-input
               :ref="'dataType' + scope.$index"
-              @blur="schujiaodian(scope.row)"
+              @blur="
+                schujiaodian({
+                  id: scope.row.id,
+                  dataType: scope.row.dataType,
+                })
+              "
               v-show="scope.row.show"
               v-model="scope.row.dataType"
             ></el-input>
@@ -31,7 +36,12 @@
             ></div>
             <el-input
               :ref="'belongsBusiness' + scope.$index"
-              @blur="schujiaodian(scope.row)"
+              @blur="
+                schujiaodian({
+                  id: scope.row.id,
+                  belongsBusiness: scope.row.belongsBusiness,
+                })
+              "
               placeholder="请输入内容"
               v-show="scope.row.show"
               v-model="scope.row.belongsBusiness"
@@ -52,7 +62,12 @@
             <el-input
               placeholder="请输入内容"
               :ref="'safetyProtectionDemand' + scope.$index"
-              @blur="schujiaodian(scope.row)"
+              @blur="
+                schujiaodian({
+                  id: scope.row.id,
+                  safetyProtectionDemand: scope.row.safetyProtectionDemand,
+                })
+              "
               v-show="scope.row.show"
               v-model="scope.row.safetyProtectionDemand"
             ></el-input>
@@ -70,7 +85,12 @@
             <el-input
               placeholder="请输入内容"
               :ref="'storageDevice' + scope.$index"
-              @blur="schujiaodian(scope.row)"
+              @blur="
+                schujiaodian({
+                  id: scope.row.id,
+                  storageDevice: scope.row.storageDevice,
+                })
+              "
               v-show="scope.row.show"
               v-model="scope.row.storageDevice"
             ></el-input>
@@ -81,7 +101,12 @@
         <el-table-column label="数据采集" width="70">
           <template slot-scope="scope">
             <el-checkbox
-              @change="schujiaodian(scope.row)"
+              @change="
+                schujiaodian({
+                  id: scope.row.id,
+                  isDataAcquisition: scope.row.isDataAcquisition,
+                })
+              "
               v-model="scope.row.isDataAcquisition"
             ></el-checkbox>
           </template>
@@ -89,7 +114,12 @@
         <el-table-column label="数据储存" width="70">
           <template slot-scope="scope">
             <el-checkbox
-              @change="schujiaodian(scope.row)"
+              @change="
+                schujiaodian({
+                  id: scope.row.id,
+                  isDataStorage: scope.row.isDataStorage,
+                })
+              "
               v-model="scope.row.isDataStorage"
             ></el-checkbox>
           </template>
@@ -97,7 +127,12 @@
         <el-table-column label="数据处理" width="70">
           <template slot-scope="scope">
             <el-checkbox
-              @change="schujiaodian(scope.row)"
+              @change="
+                schujiaodian({
+                  id: scope.row.id,
+                  isDataHandle: scope.row.isDataHandle,
+                })
+              "
               v-model="scope.row.isDataHandle"
             ></el-checkbox>
           </template>
@@ -105,7 +140,12 @@
         <el-table-column label="数据应用" width="70">
           <template slot-scope="scope">
             <el-checkbox
-              @change="schujiaodian(scope.row)"
+              @change="
+                schujiaodian({
+                  id: scope.row.id,
+                  isDataApplication: scope.row.isDataApplication,
+                })
+              "
               v-model="scope.row.isDataApplication"
             ></el-checkbox>
           </template>
@@ -113,7 +153,12 @@
         <el-table-column label="数据流动" width="70">
           <template slot-scope="scope">
             <el-checkbox
-              @change="schujiaodian(scope.row)"
+              @change="
+                schujiaodian({
+                  id: scope.row.id,
+                  isDataFlow: scope.row.isDataFlow,
+                })
+              "
               v-model="scope.row.isDataFlow"
             ></el-checkbox>
           </template>
@@ -121,7 +166,12 @@
         <el-table-column label="数据销毁" width="70">
           <template slot-scope="scope">
             <el-checkbox
-              @change="schujiaodian(scope.row)"
+              @change="
+                schujiaodian({
+                  id: scope.row.id,
+                  isDataDestruction: scope.row.isDataDestruction,
+                })
+              "
               v-model="scope.row.isDataDestruction"
             ></el-checkbox>
           </template>
@@ -131,7 +181,12 @@
             <el-select
               v-model="scope.row.importantDegree"
               filterable
-              @change="schujiaodian(scope.row)"
+              @change="
+                schujiaodian({
+                  id: scope.row.id,
+                  importantDegree: scope.row.importantDegree,
+                })
+              "
               placeholder="请选择"
             >
               <el-option
@@ -199,7 +254,7 @@ export default {
       dialogTableVisible: false,
       dialogFormVisible: false,
       importantDegree_list: [
-         { value: 5, label: "非常重要" },
+        { value: 5, label: "非常重要" },
         { value: 4, label: "重要" },
         { value: 3, label: "一般" },
         { value: 2, label: "不太重要" },
@@ -298,14 +353,31 @@ export default {
       }
     },
     async schujiaodian(item) {
-      item.isEvaluationObj = item.isEvaluationObj == true ? 1 : 0;
-      item.isFictitiousEquipment = item.isFictitiousEquipment == true ? 1 : 0;
-      item.isDataAcquisition = item.isDataAcquisition == true ? 1 : 0;
-      item.isDataStorage = item.isDataStorage == true ? 1 : 0;
-      item.isDataHandle = item.isDataHandle == true ? 1 : 0;
-      item.isDataApplication = item.isDataApplication == true ? 1 : 0;
-      item.isDataFlow = item.isDataFlow == true ? 1 : 0;
-      item.isDataDestruction = item.isDataDestruction == true ? 1 : 0;
+      if (typeof item.isEvaluationObj == "boolean") {
+        item.isEvaluationObj = item.isEvaluationObj == true ? 1 : 0;
+      }
+      if (typeof item.isFictitiousEquipment == "boolean") {
+        item.isFictitiousEquipment = item.isFictitiousEquipment == true ? 1 : 0;
+      }
+      if (typeof item.isDataAcquisition == "boolean") {
+        item.isDataAcquisition = item.isDataAcquisition == true ? 1 : 0;
+      }
+      if (typeof item.isDataStorage == "boolean") {
+        item.isDataStorage = item.isDataStorage == true ? 1 : 0;
+      }
+      if (typeof item.isDataHandle == "boolean") {
+        item.isDataHandle = item.isDataHandle == true ? 1 : 0;
+      }
+      if (typeof item.isDataApplication == "boolean") {
+        item.isDataApplication = item.isDataApplication == true ? 1 : 0;
+      }
+      if (typeof item.isDataFlow == "boolean") {
+        item.isDataFlow = item.isDataFlow == true ? 1 : 0;
+      }
+      if (typeof item.isDataDestruction == "boolean") {
+        item.isDataDestruction = item.isDataDestruction == true ? 1 : 0;
+      }
+
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {
@@ -429,7 +501,10 @@ export default {
             res = await this.$api.SYS_FieldSurveyDelete(data);
           }
           if (res.code === 20000) {
-            this.schujiaodian(item);
+            this.schujiaodian({
+              id: item.id,
+              isEvaluationObj: item.isEvaluationObj,
+            });
             //查询列表
           } else {
             this.$message.error("删除错误，请联系管理员" + res.message);

@@ -14,7 +14,10 @@
           ></div>
           <el-input
             :ref="'productName' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                productName: scope.row.productName,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.productName"
           ></el-input>
@@ -30,7 +33,10 @@
           ></div>
           <el-input
             :ref="'manufacturer' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                manufacturer: scope.row.manufacturer,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.manufacturer"
           ></el-input>
@@ -46,7 +52,10 @@
           ></div>
           <el-input
             :ref="'pwdModel' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                pwdModel: scope.row.pwdModel,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.pwdModel"
           ></el-input>
@@ -62,7 +71,10 @@
           ></div>
           <el-input
             :ref="'pwdAlgorithm' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                pwdAlgorithm: scope.row.pwdAlgorithm,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.pwdAlgorithm"
           ></el-input>
@@ -78,7 +90,10 @@
           ></div>
           <el-input
             :ref="'productPurpose' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                productPurpose: scope.row.productPurpose,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.productPurpose"
           ></el-input>
@@ -94,7 +109,10 @@
           ></div>
           <el-input
             :ref="'productNum' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                productNum: scope.row.productNum,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.productNum"
           ></el-input>

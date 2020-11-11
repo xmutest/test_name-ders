@@ -8,7 +8,7 @@
           <div class="mude_text_item">
             <div class="descTItle">被测评单位(委托单位)</div>
             <div class="demo-input-suffix">
-              <div>
+              <div class="companyName">
                 <span>单位名称：</span>
                 <el-input
                   placeholder="请输入"
@@ -18,61 +18,7 @@
                 >
                 </el-input>
               </div>
-              <div>
-                <span>联系人姓名：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.contacts"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>移动电话：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.mobilePhone"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>所在部门：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.department"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>职务/职称：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.companyPosition"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>邮政编码号：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.postalCode"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>办公电话：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.officesPhone"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
+              <div class="unitAddress">
                 <span>单位地址：</span>
                 <el-input
                   placeholder="请输入"
@@ -81,14 +27,70 @@
                 >
                 </el-input>
               </div>
-              <div>
-                <span>电子邮箱：</span>
+              <div class="postalCode">
+                <span>邮政编码：</span>
                 <el-input
                   placeholder="请输入"
-                  v-model="BeingMeasured.email"
+                  v-model="BeingMeasured.postalCode"
                   size="small"
                 >
                 </el-input>
+              </div>
+              <div class="incorporation">
+                <div>
+                  <span>联系人姓名：</span>
+                  <el-input
+                    placeholder="请输入"
+                    v-model="BeingMeasured.contacts"
+                    size="small"
+                  >
+                  </el-input>
+                </div>
+                <div>
+                  <span>职务/职称：</span>
+                  <el-input
+                    placeholder="请输入"
+                    v-model="BeingMeasured.companyPosition"
+                    size="small"
+                  >
+                  </el-input>
+                </div>
+                <div>
+                  <span>所属部门：</span>
+                  <el-input
+                    placeholder="请输入"
+                    v-model="BeingMeasured.department"
+                    size="small"
+                  >
+                  </el-input>
+                </div>
+                <div>
+                  <span style="">办公电话：</span>
+                  <el-input
+                    placeholder="请输入"
+                    v-model="BeingMeasured.officesPhone"
+                    size="small"
+                  >
+                  </el-input>
+                </div>
+                <div>
+                  <span>移动电话：</span>
+                  <el-input
+                    placeholder="请输入"
+                    v-model="BeingMeasured.mobilePhone"
+                    size="small"
+                  >
+                  </el-input>
+                </div>
+                <div>
+                  <span>电子邮箱：</span>
+                  <el-input
+                    placeholder="请输入"
+                    v-model="BeingMeasured.email"
+                    size="small"
+                  >
+                  </el-input>
+                </div>
               </div>
               <!-- <div>
                 <span>行业类型：</span>
@@ -337,18 +339,23 @@ export default {
   border-bottom: 0px solid #ebeef5;
 }
 .demo-input-suffix {
-  display: flex;
-  align-items: center;
-  flex-flow: wrap;
-  div {
-    margin: 5px;
-    span {
-      font-size: 12px;
-      min-width: 80px;
-    }
+  .companyName {
+    width: 80%;
     .el-input {
-      width: 220px;
+      width: 80%;
     }
+  }
+  .unitAddress {
+    width: 60%;
+    .el-input {
+      width: 85%;
+    }
+  }
+  .incorporation{
+    display: flex;
+    align-items: center;
+    justify-content: instead;
+    flex-flow: wrap;
   }
 }
 </style>

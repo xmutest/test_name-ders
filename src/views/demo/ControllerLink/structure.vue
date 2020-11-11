@@ -137,6 +137,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -159,6 +160,11 @@ export default {
       indexs: null,
     };
   },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
+  },
   created() {
     this.getlistdata();
     this.getlistdataImg();
@@ -172,7 +178,7 @@ export default {
         e.target.className != "el-input__inner"
       ) {
         that.indexs = "";
-        // that.getlistdata(); 
+        // that.getlistdata();
       }
     });
   },
@@ -261,8 +267,15 @@ export default {
     },
     async getEtlist() {
       let List = await this.$api.API_projectOverviewStructureDescribe();
+      let data = "";
       if (List.code === 20000) {
-        this.fromdata = List.data;
+        if (List.data.networkStructureDescribe != null) {
+          data = List.data.networkStructureDescribe;
+        } else {
+          data = `如图2-1 ${this.xmu_info.data.systemName}网络拓扑图所示`;
+        }
+        this.fromdata.networkStructureDescribe = data;
+        this.fromdata.id = List.data.id;
         //查询列表
       } else {
         this.$message.error(List.message + "评测依据选项出差，请联系管理员");

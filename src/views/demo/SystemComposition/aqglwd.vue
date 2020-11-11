@@ -14,7 +14,10 @@
           ></div>
           <el-input
             :ref="'fileName' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                fileName: scope.row.fileName,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.fileName"
           ></el-input>
@@ -30,7 +33,10 @@
           ></div>
           <el-input
             :ref="'fileContent' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                fileContent: scope.row.fileContent,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.fileContent"
           ></el-input>

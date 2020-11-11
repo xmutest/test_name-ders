@@ -54,23 +54,23 @@ function createService() {
               return dataAxios
             case 401:
               // [ 示例 ] code === 0 代表没有错误
-              return  ElementUI.Message({
+              return ElementUI.Message({
                 title: '警告',
-                message: `请求出错: ${dataAxios.message}，请联系管理员`,
+                message: `请求出错: ${dataAxios.message}`,
                 type: 'error'
               });
             case 500:
               // [ 示例 ] code === 0 代表没有错误
-              return  ElementUI.Message({
+              return ElementUI.Message({
                 title: '警告',
-                message: `请求出错: ${dataAxios.message}，请联系管理员`,
+                message: `请求出错: ${dataAxios.message}`,
                 type: 'error'
               });
             case 555:
               // [ 示例 ] code === 0 代表没有错误
-              return  ElementUI.Message({
+              return ElementUI.Message({
                 title: '警告',
-                message: `请求出错: ${dataAxios.message}，请联系管理员`,
+                message: `请求出错: ${dataAxios.message}`,
                 type: 'error'
               });
             case 402:
@@ -88,9 +88,10 @@ function createService() {
               });
             case 403:
               // [ 示例 ] code === 0 代表没有错误
-              return MessageBox.alert('dataAxios.message', '标题名称', {
+              return MessageBox.alert(dataAxios.message, '错误信息', {
                 confirmButtonText: '确定',
-
+                showClose: false,
+                type: 'error',
                 callback: action => {
                   // alert(dataAxios.message)
                   store.dispatch(

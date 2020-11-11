@@ -14,7 +14,10 @@
           ></div>
           <el-input
             :ref="'boundaryName' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                boundaryName: scope.row.boundaryName,
+              })"
             v-show="scope.row.show"
             v-model="scope.row.boundaryName"
           ></el-input>
@@ -30,7 +33,10 @@
           ></div>
           <el-input
             :ref="'accessMode' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                accessMode: scope.row.accessMode,
+              })"
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.accessMode"
@@ -47,7 +53,10 @@
           ></div>
           <el-input
             :ref="'mainBusiness' + scope.$index"
-            @blur="schujiaodian(scope.row)"
+            @blur="schujiaodian({
+                id: scope.row.id,
+                mainBusiness: scope.row.mainBusiness,
+              })"
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.mainBusiness"
@@ -60,7 +69,10 @@
         <template slot-scope="scope">
           <el-select
             v-model="scope.row.importantDegree"
-            @change="schujiaodian(scope.row)"
+            @change="schujiaodian({
+                id: scope.row.id,
+                importantDegree: scope.row.importantDegree,
+              })"
             filterable
             placeholder="请选择"
           >
@@ -233,10 +245,12 @@ export default {
       }, 1);
     },
     async schujiaodian(item) {
-      if (item.isEvaluationObj == true) {
-        item.isEvaluationObj = 1;
-      } else {
-        item.isEvaluationObj = 0;
+      if (typeof item.isEvaluationObj == "boolean") {
+        if (item.isEvaluationObj == true) {
+          item.isEvaluationObj = 1;
+        } else {
+          item.isEvaluationObj = 0;
+        }
       }
       // item.show = false;
       let res = "";
@@ -328,7 +342,10 @@ export default {
             res = await this.$api.SYS_FieldSurveyDelete(data);
           }
           if (res.code === 20000) {
-            this.schujiaodian(item);
+            this.schujiaodian({
+              id: item.id,
+              isEvaluationObj: item.isEvaluationObj,
+            });
             //查询列表
           } else {
             this.$message.error("删除错误，请联系管理员" + res.message);

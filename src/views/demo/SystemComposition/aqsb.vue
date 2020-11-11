@@ -18,7 +18,12 @@
             ></div>
             <el-input
               :ref="'equipmentName' + scope.$index"
-              @blur="schujiaodian(scope.row)"
+              @blur="
+                schujiaodian({
+                  id: scope.row.id,
+                  equipmentName: scope.row.equipmentName,
+                })
+              "
               v-show="scope.row.show"
               v-model="scope.row.equipmentName"
             ></el-input>
@@ -28,7 +33,12 @@
         <el-table-column label="虚拟设备" width="80">
           <template slot-scope="scope">
             <el-checkbox
-              @change="schujiaodian(scope.row)"
+              @change="
+                schujiaodian({
+                  id: scope.row.id,
+                  isFictitiousEquipment: scope.row.isFictitiousEquipment,
+                })
+              "
               v-model="scope.row.isFictitiousEquipment"
             ></el-checkbox>
           </template>
@@ -41,7 +51,12 @@
             ></div>
             <el-input
               :ref="'systemAndEdition' + scope.$index"
-              @blur="schujiaodian(scope.row)"
+              @blur="
+                schujiaodian({
+                  id: scope.row.id,
+                  systemAndEdition: scope.row.systemAndEdition,
+                })
+              "
               placeholder="请输入内容"
               v-show="scope.row.show"
               v-model="scope.row.systemAndEdition"
@@ -60,7 +75,12 @@
             <el-input
               placeholder="请输入内容"
               :ref="'brandAndModel' + scope.$index"
-              @blur="schujiaodian(scope.row)"
+              @blur="
+                schujiaodian({
+                  id: scope.row.id,
+                  brandAndModel: scope.row.brandAndModel,
+                })
+              "
               v-show="scope.row.show"
               v-model="scope.row.brandAndModel"
             ></el-input>
@@ -76,7 +96,12 @@
             <el-input
               placeholder="请输入内容"
               :ref="'purpose' + scope.$index"
-              @blur="schujiaodian(scope.row)"
+              @blur="
+                schujiaodian({
+                  id: scope.row.id,
+                  purpose: scope.row.purpose,
+                })
+              "
               v-show="scope.row.show"
               v-model="scope.row.purpose"
             ></el-input>
@@ -92,7 +117,12 @@
             <el-input
               placeholder="请输入内容"
               :ref="'remarks' + scope.$index"
-              @blur="schujiaodian(scope.row)"
+              @blur="
+                schujiaodian({
+                  id: scope.row.id,
+                  remarks: scope.row.remarks,
+                })
+              "
               v-show="scope.row.show"
               v-model="scope.row.remarks"
             ></el-input>
@@ -108,7 +138,12 @@
             <el-input
               placeholder="请输入内容"
               :ref="'equipmentNum' + scope.$index"
-              @blur="schujiaodian(scope.row)"
+              @blur="
+                schujiaodian({
+                  id: scope.row.id,
+                  equipmentNum: scope.row.equipmentNum,
+                })
+              "
               v-show="scope.row.show"
               v-model="scope.row.equipmentNum"
             ></el-input>
@@ -118,7 +153,12 @@
         <el-table-column label="重要程度" width="150">
           <template slot-scope="scope">
             <el-select
-              @change="schujiaodian(scope.row)"
+              @change="
+                schujiaodian({
+                  id: scope.row.id,
+                  importantDegree: scope.row.importantDegree,
+                })
+              "
               v-model="scope.row.importantDegree"
               filterable
               placeholder="请选择"
@@ -157,6 +197,123 @@
           </template>
         </el-table-column>
       </el-table>
+    </div>
+    <!-- 新增表单 -->
+    <div class="add_from_xmu">
+      <el-dialog
+        style="min-width: 960px"
+        title="新建设备"
+        :visible.sync="dialogFormVisible"
+      >
+        <el-form :model="xmform" :rules="rules" ref="xmform">
+          <el-form-item
+            label="设备名称"
+            :label-width="formLabelWidth"
+            prop="equipmentName"
+          >
+            <el-input
+              v-model="xmform.equipmentName"
+              clearable
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="虚拟设备"
+            :label-width="formLabelWidth"
+            prop="isFictitiousEquipment"
+          >
+            <el-checkbox v-model="xmform.isFictitiousEquipment"></el-checkbox>
+          </el-form-item>
+          <el-form-item
+            label="系统及版本"
+            :label-width="formLabelWidth"
+            prop="systemAndEdition"
+          >
+            <el-input
+              v-model="xmform.systemAndEdition"
+              clearable
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="品牌及型号"
+            :label-width="formLabelWidth"
+            prop="brandAndModel"
+          >
+            <el-input
+              v-model="xmform.brandAndModel"
+              clearable
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="用途" :label-width="formLabelWidth">
+            <el-input v-model="xmform.purpose" autocomplete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="备注"
+            :label-width="formLabelWidth"
+            prop="remarks"
+          >
+            <el-input
+              v-model="xmform.remarks"
+              clearable
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="数量"
+            :label-width="formLabelWidth"
+            prop="equipmentNum"
+          >
+            <el-input
+              v-model="xmform.equipmentNum"
+              clearable
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="重要程度"
+            :label-width="formLabelWidth"
+            prop="importantDegree"
+          >
+            <el-select
+              v-model="xmform.importantDegree"
+              filterable
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in importantDegree_list"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            label="测评对象"
+            :label-width="formLabelWidth"
+            prop="isEvaluationObj"
+          >
+            <el-checkbox v-model="xmform.isEvaluationObj"></el-checkbox>
+          </el-form-item>
+
+          <div class="dia-footer">
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('xmform')"
+                >立即创建</el-button
+              >
+              <el-button type="danger" @click="resetForm('xmform')"
+                >重置</el-button
+              >
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+            </el-form-item>
+          </div>
+        </el-form>
+      </el-dialog>
     </div>
   </d2-container>
 </template>
@@ -235,45 +392,6 @@ export default {
     });
   },
   methods: {
-    async schujiaodianTm(item) {
-      let data = {
-        assetsNum: 4,
-        assetsId: item.id,
-        guideBookId: item.evaluationInstructionBookId,
-        projectId: this.xmu_info.projectId,
-        evaluationGrade: this.xmu_info.data.level,
-      };
-      let lsmin =
-        item.isEvaluationObj == true
-          ? "确定设置为测评对象？"
-          : "确定设置为非测评对象？系统将删除与其相关的测评数据";
-      this.$confirm(lsmin, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(async () => {
-          let res = "";
-          if (item.isEvaluationObj === true) {
-            res = await this.$api.SYS_FieldSurveyActive(data);
-          } else {
-            res = await this.$api.SYS_FieldSurveyDelete(data);
-          }
-          if (res.code === 20000) {
-            this.schujiaodian(item);
-            //查询列表
-          } else {
-            this.$message.error("删除错误，请联系管理员" + res.message);
-          }
-        })
-        .catch(() => {
-          item.isEvaluationObj = !item.isEvaluationObj;
-          this.$message({
-            type: "info",
-            message: "已取消",
-          });
-        });
-    },
     async getlistdata() {
       let res = await this.$api.API_EquipmentFindEquipment(this.formPage);
       if (res.code === 20000) {
@@ -305,11 +423,11 @@ export default {
               brandAndModel: "",
               purpose: "",
               remarks: "",
-              equipmentNum: 5,
+              equipmentNum: 1,
               sortNum: 1,
               importantDegree: 5,
               equipmentType: 2,
-              isEvaluationObj: false,
+              isEvaluationObj: true,
               show: false,
             },
           ];
@@ -322,16 +440,22 @@ export default {
       }
     },
     async schujiaodian(item) {
-      if (item.isEvaluationObj == true) {
-        item.isEvaluationObj = 1;
-      } else {
-        item.isEvaluationObj = 0;
+      if (typeof item.isEvaluationObj == "boolean") {
+        if (item.isEvaluationObj == true) {
+          item.isEvaluationObj = 1;
+        } else {
+          item.isEvaluationObj = 0;
+        }
       }
-      if (item.isFictitiousEquipment == true) {
-        item.isFictitiousEquipment = 1;
-      } else {
-        item.isFictitiousEquipment = 0;
+
+      if (typeof item.isFictitiousEquipment == "boolean") {
+        if (item.isFictitiousEquipment == true) {
+          item.isFictitiousEquipment = 1;
+        } else {
+          item.isFictitiousEquipment = 0;
+        }
       }
+      item.equipmentType = 2;
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {
@@ -389,11 +513,11 @@ export default {
         brandAndModel: "",
         purpose: "",
         remarks: "",
-        equipmentNum: 5,
+        equipmentNum: 1,
         sortNum,
         importantDegree: 5,
         equipmentType: 2,
-        isEvaluationObj: false,
+        isEvaluationObj: true,
         show: false,
       };
       itss.splice(item + 1, 0, list);
@@ -401,7 +525,7 @@ export default {
       this.schujiaodian(this.tabledatas[item + 1]);
     },
     async deleteRow(index, rows) {
-      this.$confirm("确定删除此记录？", "提示", {
+      this.$confirm("确定删除此记录?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -425,6 +549,48 @@ export default {
           this.$message({
             type: "info",
             message: "已取消删除",
+          });
+        });
+    },
+    async schujiaodianTm(item) {
+      let data = {
+        assetsNum: 3,
+        assetsId: item.id,
+        guideBookId: item.evaluationInstructionBookId,
+        projectId: this.xmu_info.projectId,
+        evaluationGrade: this.xmu_info.data.level,
+      };
+      let lsmin =
+        item.isEvaluationObj == true
+          ? "确定设置为测评对象？"
+          : "确定设置为非测评对象？系统将删除与其相关的测评数据";
+      this.$confirm(lsmin, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = "";
+          if (item.isEvaluationObj === true) {
+            res = await this.$api.SYS_FieldSurveyActive(data);
+          } else {
+            res = await this.$api.SYS_FieldSurveyDelete(data);
+          }
+          if (res.code === 20000) {
+            this.schujiaodian({
+              id: item.id,
+              isEvaluationObj: item.isEvaluationObj,
+            });
+            //查询列表
+          } else {
+            this.$message.error("删除错误，请联系管理员" + res.message);
+          }
+        })
+        .catch(() => {
+          item.isEvaluationObj = !item.isEvaluationObj;
+          this.$message({
+            type: "info",
+            message: "已取消",
           });
         });
     },
