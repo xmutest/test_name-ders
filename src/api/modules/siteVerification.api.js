@@ -136,6 +136,16 @@ export default ({
       data
     })
   },
-
+   /**
+   * @description 生成保护措施
+   * @param {Object} data 携带的信息
+   */
+  async SYS_fieldSurveySyncProtective(data = {}) {
+    return request({
+      url: '/fieldSurvey/syncProtective',
+      method: 'get',
+      params: data
+    })
+  },
 
 })

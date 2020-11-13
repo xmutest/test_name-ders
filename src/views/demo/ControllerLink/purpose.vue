@@ -17,11 +17,11 @@
           <div class="mude_text_item">
             <div class="descTItle">评测依据选项</div>
             <div class="to_tims">
-              <el-checkbox-group v-model="fromdata.otherEvaluationBasis">
+              <el-checkbox-group v-model="fromdata.evaluationBasis">
                 <el-checkbox
                   v-for="item in evaluation_list"
                   :label="item.evaluationBasisName"
-                  :key="item.evaluationBasisName"
+                  :key="item.id"
                 ></el-checkbox>
               </el-checkbox-group>
             </div>
@@ -32,7 +32,7 @@
               type="textarea"
               :autosize="{ minRows: 4, maxRows: 8 }"
               placeholder="请以逗号隔开"
-              v-model="fromdata.evaluationBasis"
+              v-model="fromdata.otherEvaluationBasis"
               @text-change="textChangeHandler"
             ></el-input>
             <div
@@ -62,10 +62,10 @@ export default {
         //评测目的
         evaluationObjective: "",
         //其他依据
-        evaluationBasis: "",
+        evaluationBasis: [],
         id: "",
         // 依据选项
-        otherEvaluationBasis: [],
+        otherEvaluationBasis: "",
       },
       evaluation_list: [],
     };
@@ -91,16 +91,16 @@ export default {
          <br>为进一步提高信息系统的保障能力，根据《信息安全等级保护管理办法》（公通字2007【43】号）的精神，${this.xmu_info.data.evaluatedUnit}委托广州华南信息安全测评中心（DJCP2010440126）对${this.xmu_info.data.systemName}实施等级测评，以期发现信息系统和等级保护标准的差距以及存在的安全隐患，为后续的安全整改工作提供参考依据。`;
         }
         if (
-          List.data.otherEvaluationBasis != null
+          List.data.evaluationBasis != null
         ) {
-          this.fromdata.otherEvaluationBasis = List.data.otherEvaluationBasis.split(
+          this.fromdata.evaluationBasis = List.data.evaluationBasis.split(
             ","
           );
         }
-        if (List.data.evaluationBasis == null) {
-          this.fromdata.evaluationBasis = `《${this.xmu_info.data.systemName}定级报告》`;
+        if (List.data.otherEvaluationBasis == null) {
+          this.fromdata.otherEvaluationBasis = `《${this.xmu_info.data.systemName}定级报告》`;
         } else {
-          this.fromdata.evaluationBasis = List.data.evaluationBasis;
+          this.fromdata.otherEvaluationBasis = List.data.otherEvaluationBasis;
         }
 
         this.fromdata.evaluationObjective = data;
@@ -126,7 +126,7 @@ export default {
         });
         Ts.push(...Ls);
         this.evaluation_list = Ts;
-        this.fromdata.otherEvaluationBasis = Tsop;
+        this.fromdata.evaluationBasis = Tsop;
         //查询列表
       } else {
         this.$message.error(res.message + "评测依据选项出差，请联系管理员");
@@ -138,7 +138,8 @@ export default {
       // console.groupEnd()
     },
     async submitReport() {
-      this.fromdata.otherEvaluationBasis = this.fromdata.otherEvaluationBasis.join(
+      console.log(this.fromdata);
+      this.fromdata.evaluationBasis = this.fromdata.evaluationBasis.join(
         ","
       );
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);

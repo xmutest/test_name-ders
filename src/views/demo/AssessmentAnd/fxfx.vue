@@ -79,7 +79,11 @@
       </table>
     </div>
     <div class="updata_dialog">
-      <el-dialog title="系统安全问题风险分析和评价" :visible.sync="dialogVisible" :before-close="handleClose">
+      <el-dialog
+        title="系统安全问题风险分析和评价"
+        :visible.sync="dialogVisible"
+        :before-close="handleClose"
+      >
         <el-dialog
           width="30%"
           title="关联威胁值"
@@ -112,11 +116,15 @@
           </div>
         </div>
         <div class="relevance relevance_tyu">
-          <div>
+          <div
+            class="relevance_tyu_item"
+            v-for="(item, index) in DataListOp"
+            :key="index"
+          >
             <div class="textName">
-              {{ tsAmlist.assets }}({{ tsAmlist.fraction }}分)
+              {{ item.assetsName }}({{ item.fraction }}分)
             </div>
-            <div class="text_fininfo">{{ tsAmlist.recordResults }}</div>
+            <div class="text_fininfo">{{ item.recordResults }}</div>
           </div>
         </div>
         <div class="relevance">
@@ -133,7 +141,7 @@
                 >
               </div>
             </el-tab-pane>
-            <el-tab-pane label="高风险叛列">
+            <el-tab-pane label="高风险叛列" v-if="amendAnalysis.highRiskJudge">
               {{ amendAnalysis.highRiskJudge }}
             </el-tab-pane>
           </el-tabs>
@@ -277,6 +285,7 @@ export default {
         amendId: 1,
         safetyControlId: 136,
       },
+      amendAnalysisVO: {},
       tsAmlist: {},
       amendAnalysis: {
         problemDescription: "",
@@ -289,6 +298,7 @@ export default {
       },
       Ts_radio: "",
       beforeModificationSeverity: "",
+      DataListOp: [],
     };
   },
   created() {
@@ -312,11 +322,10 @@ export default {
       ];
       let amendId = this.amendAnalysis.amendId;
       this.amendAnalysis = item;
-      this.amendAnalysis.problemDescription=`${this.tsAmlist.assets},${item.problemDescription}`;
-      console.log(this.amendAnalysis);
-      this.relevanceWeiList=item.threatId;
+      this.amendAnalysis.problemDescription = `${this.tsAmlist.assets}${item.problemDescription}`;
+      this.relevanceWeiList = item.threatId;
       this.amendAnalysis.amendId = amendId;
-       ls.forEach((it) => {
+      ls.forEach((it) => {
         if (it.id == item.riskGrade) {
           this.amendAnalysis.originalRisk = it.value;
         }
@@ -331,6 +340,8 @@ export default {
       this.beforeModificationSeverity = item3.beforeModificationSeverity;
       this.api_data.amendId = item3.amendId;
       this.api_data.safetyControlId = item3.safetyControlId;
+      this.amendAnalysisVO = cloneDeep(item3);
+      //
       this.dialogVisible = true;
       this.getDaPuList();
       this.getDataListPou();
@@ -341,22 +352,23 @@ export default {
       this.relevanceWeiList.forEach((item) => {
         ls += this.DataListPou[item - 1].threatClassificationName + ",";
       });
-      this.amendAnalysis.relationThreaten = ls;
+      this.amendAnalysis.relationThreaten = ls.slice(0, ls.length - 1);
       this.amendAnalysis.threatId = this.relevanceWeiList;
       let res = await this.$api.API_RiskUpdateAmendAnalysis(this.amendAnalysis);
       if (res.code == 20000) {
         this.dialogVisible = false;
         this.getDataList();
-        this.Ts_radio="";
+        this.Ts_radio = "";
       } else {
         this.$message.error("保存出错");
       }
     },
     async getDaPuList() {
-      let res = await this.$api.API_RiskFindRiskKnowledge(this.api_data);
+      let res = await this.$api.API_RiskFindRiskKnowledge(this.amendAnalysisVO);
       if (res.code == 20000) {
         this.relevanceList = res.data[0];
         this.relevanceWeiList = res.data[1];
+        this.DataListOp = res.data[2];
       } else {
         this.$message.error("信息加载出错");
       }
@@ -369,7 +381,7 @@ export default {
       if (res.code == 20000) {
         this.dataList = res.data.pageData;
         this.Toamount = res.data.count + 5;
-        this.Ts_radio="";
+        this.Ts_radio = "";
       } else {
         this.$message.error("信息加载出错");
       }
@@ -422,9 +434,11 @@ export default {
     }
   }
   table th {
-    color: #909399;
+     color: #909399;
     height: 40px;
     border: 1px solid #cad9ea;
+    font-size: 14px;
+    font-weight: bold;
   }
   table thead th {
     background-color: rgba(238, 238, 238, 1);
@@ -506,10 +520,14 @@ export default {
   }
 }
 .relevance_tyu {
-  width: 300px;
   display: flex;
   overflow: auto;
   flex-wrap: wrap;
+  .relevance_tyu_item {
+    margin: 15px;
+    // display: flex;
+    flex-wrap: wrap;
+  }
   .textName {
     font-size: 16px;
     font-weight: bold;

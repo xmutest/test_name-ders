@@ -51,7 +51,7 @@ export default {
       if (List.code === 20000) {
         if (List.data == null || List.data.overallEvaluation == null) {
           this.fromdata.overallEvaluation = `
-          通过对信息系统基本安全保护状态的分析，${this.xmu_info.data.evaluatedUnit}针对${this.xmu_info.data.systemName}面临的主要安全威胁采取了相应的安全机制，基本达到保护信息系统重要资产的作用。
+          通过对信息系统基本安全保护状态的分析，${this.xmu_info.data.evaluatedUnit}针对${this.xmu_info.data.systemName}面临的主要安全威胁采取了相应的安全机制，基本达到保护信息系统重要资产的作用。其中：
           `;
         } else {
           this.fromdata.overallEvaluation = List.data.overallEvaluation;

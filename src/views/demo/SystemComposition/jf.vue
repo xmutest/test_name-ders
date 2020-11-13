@@ -183,6 +183,7 @@ export default {
             //查询列表
           } else {
             this.$message.error("删除错误，请联系管理员" + res.message);
+            that.indexs = "";
           }
         })
         .catch(() => {
@@ -271,7 +272,11 @@ export default {
         this.Itzm = false;
         //查询列表
       } else {
-        this.$message.error("保存错误，请联系管理员" + res.message);
+        this.indexs = "";
+        this.tabledatas.forEach((items) => {
+          items.show = false;
+        });
+        // this.$message.error("保存错误，请联系管理员" + res.message);
       }
       this.Itzm = false;
     },

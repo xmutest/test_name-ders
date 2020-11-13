@@ -61,11 +61,12 @@ export default ({
    */
   async API_RiskFindRiskKnowledge(data = {}) {
     data.projectId = await this.get_info();
+    console.log(data);
     // 接口请求
     return request({
       url: '/risk/findRiskKnowledge',
-      method: 'get',
-      params: data
+      method: 'post',
+      data
     })
   },
   /**
@@ -91,10 +92,10 @@ export default ({
     return request({
       url: '/risk/updateAmendAnalysis',
       method: 'post',
-      data:JSON.stringify(data)
+      data: JSON.stringify(data)
     })
   },
-    /**
+  /**
    * @description 风险值修正
    * @param {Object} data 携带的信息
    */
@@ -104,10 +105,10 @@ export default ({
     return request({
       url: '/risk/updateRiskCorrection',
       method: 'post',
-      data:JSON.stringify(data)
+      data: JSON.stringify(data)
     })
   },
-   /**
+  /**
    * @description 更新修正后风险值
    * @param {Object} data 携带的信息
    */
@@ -117,7 +118,7 @@ export default ({
     return request({
       url: '/risk/updateAfterAmendRisk',
       method: 'post',
-      data:JSON.stringify(data)
+      data: JSON.stringify(data)
     })
   },
 })

@@ -74,7 +74,7 @@ function createService() {
                 type: 'error'
               });
             case 402:
-              return MessageBox.alert(dataAxios.message, '错误信息', {
+              return MessageBox.alert(dataAxios.message, '警告', {
                 confirmButtonText: '确定',
                 showClose: false,
                 type: 'error',
@@ -88,7 +88,7 @@ function createService() {
               });
             case 403:
               // [ 示例 ] code === 0 代表没有错误
-              return MessageBox.alert(dataAxios.message, '错误信息', {
+              return MessageBox.alert(dataAxios.message, '警告', {
                 confirmButtonText: '确定',
                 showClose: false,
                 type: 'error',
@@ -116,7 +116,11 @@ function createService() {
       },
       error => {
         const status = get(error, 'response.status')
+        console.log(status);
         switch (status) {
+          case undefined:
+            error.message = '网络出错，请检查！！！';
+            break
           case 400:
             error.message = '请求错误';
             break

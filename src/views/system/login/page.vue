@@ -299,7 +299,7 @@ export default {
           });
         } else {
           // 登录表单校验失败
-          this.$message.error("表单校验失败，请检查");
+          // this.$message.error("表单校验失败，请检查");
         }
       });
     },

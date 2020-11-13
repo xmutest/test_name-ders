@@ -42,6 +42,9 @@
               >
               </el-input>
               <div class="tijiaobaoc">
+                <el-button type="primary" @click="submitReporAdd(Its)"
+                  >生成</el-button
+                >
                 <el-button type="primary" @click="submitReport(Its)"
                   >保存</el-button
                 >
@@ -61,7 +64,7 @@
             <table id="partnerTable">
               <thead>
                 <tr>
-                 <th style="width: 100px;" >安全控制点</th>
+                  <th style="width: 100px">安全控制点</th>
                   <th>控制项</th>
                   <th>检查内容</th>
                   <th>检查方法</th>
@@ -326,6 +329,18 @@ export default {
     this.getDataList();
   },
   methods: {
+    async submitReporAdd(item) {
+      let data = {
+        projectId: item.projectId,
+        type: item.type,
+      };
+      let res = await this.$api.SYS_fieldSurveySyncProtective(data);
+      if (res.code === 20000) {
+        item.content = res.data;
+      } else {
+        this.$message.error("错误，请联系管理员" + res.message);
+      }
+    },
     // 获取
     async submitReport(item) {
       let fractionModelList = [];
