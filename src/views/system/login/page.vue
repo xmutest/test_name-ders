@@ -24,7 +24,10 @@
           flex="dir:top main:center cross:center"
         >
           <!-- logo -->
-          <div style="font-size: 2.5em;font-weight: 700;" class="page-login-logo_item">
+          <div
+            style="font-size: 2.5em; font-weight: 700"
+            class="page-login-logo_item"
+          >
             华南评测报告管理系统
           </div>
           <img class="page-login--logo" src="./image/logo.png" />
@@ -63,7 +66,11 @@
                     placeholder="验证码"
                   >
                     <template slot="append">
-                      <img class="login-code" src="./image/login-code.png" />
+                      <div class="login-code" @click="refreshCode">
+                        <!--验证码组件-->
+                        <s-identify :identifyCode="identifyCode"></s-identify>
+                      </div>
+                      <!-- <img class="login-code" src="./image/login-code.png" /> -->
                     </template>
                   </el-input>
                 </el-form-item>
@@ -99,11 +106,7 @@
       </div>
     </div>
     <div class="NO_password">
-      <el-dialog
-        title="忘记密码"
-        :visible.sync="dialogVisible"
-        width="150"
-      >
+      <el-dialog title="忘记密码" :visible.sync="dialogVisible" width="150">
         <el-form
           :model="ruleForm"
           status-icon
@@ -166,7 +169,22 @@ export default {
         callback();
       }
     };
+    // 验证码
+    const validateCode = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入验证码"));
+      } 
+       if (this.identifyCode !== value) {
+        // this.formLogin.code = "";
+        // this.refreshCode();
+        callback(new Error("请输入正确的验证码"));
+      } else {
+        callback();
+      }
+    };
     return {
+      identifyCodes: "1234567890",
+      identifyCode: "",
       timeInterval: null,
       time: dayjs().format("HH:mm:ss"),
       dialogVisible: false,
@@ -179,7 +197,7 @@ export default {
       formLogin: {
         username: "admin",
         password: "admin",
-        code: "v9am",
+        code: "",
       },
       // 表单校验
       rules: {
@@ -197,17 +215,14 @@ export default {
             trigger: "blur",
           },
         ],
-        code: [
-          {
-            required: true,
-            message: "请输入验证码",
-            trigger: "blur",
-          },
-        ],
+        code: [{ validator: validateCode, trigger: "blur" }],
         pass: [{ validator: validatePass, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
       },
     };
+  },
+  created() {
+    this.refreshCode();
   },
   mounted() {
     this.timeInterval = setInterval(() => {
@@ -221,6 +236,20 @@ export default {
     ...mapActions("d2admin/account", ["login"]),
     refreshTime() {
       this.time = dayjs().format("HH:mm:ss");
+    },
+    randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
+    },
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
+      }
     },
     nopassword() {
       this.dialogVisible = true;
@@ -261,10 +290,6 @@ export default {
     submit() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          // 登录
-          // 注意 这里的演示没有传验证码
-          // 具体需要传递的数据请自行修改代码
-
           this.login({
             loginName: this.formLogin.username,
             password: this.formLogin.password,

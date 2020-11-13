@@ -3,15 +3,16 @@
     <div class="page_name" style="padding: 0 20px 20px 20px">
       <div class="search_ls">
         <div>
-          <span class="search_ls_name">项目名称</span>
+          <span class="search_ls_name">项目名称：</span>
           <el-input
             placeholder="请输入内容"
             v-model="projectModel.projectName"
+            size='small'
             clearable
           ></el-input>
         </div>
         <div>
-          <el-button icon="el-icon-search" @click="searchBi" circle></el-button>
+          <el-button icon="el-icon-search" type="primary" size='small' @click="searchBi" circle></el-button>
         </div>
         <div class="die_roift">
           <el-button @click="dialogFormVisibleList" type="primary"
@@ -329,7 +330,7 @@
               <el-button type="primary" @click="submitForm('xmform', ua_cre)"
                 >保存</el-button
               >
-              <el-button type="danger" @click="resetForm('xmform')"
+              <el-button type="danger" v-if="ua_cre != 1 " @click="resetForm('xmform')"
                 >重置</el-button
               >
               <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -818,7 +819,7 @@ export default {
     display: flex;
     align-items: center;
     .search_ls_name {
-      font-size: 12px;
+      font-size: 14px !important;
       font-family: "Courier New", Courier, monospace;
     }
   }

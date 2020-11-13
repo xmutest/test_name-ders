@@ -7,147 +7,162 @@
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">被测评单位(委托单位)</div>
-            <div class="demo-input-suffix">
-              <div class="companyName">
-                <span>单位名称：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.companyName"
-                  size="small"
-                  disabled
+            <div>
+              <el-row :gutter="15">
+                <el-form
+                  ref="BeingMeasured"
+                  :model="BeingMeasured"
+                  :rules="rules"
+                  size="medium"
+                  label-width="100px"
                 >
-                </el-input>
-              </div>
-              <div class="unitAddress">
-                <span>单位地址：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.companyAddress"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div class="postalCode">
-                <span>邮政编码：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.postalCode"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div class="incorporation">
-                <div>
-                  <span>联系人姓名：</span>
-                  <el-input
-                    placeholder="请输入"
-                    v-model="BeingMeasured.contacts"
-                    size="small"
-                  >
-                  </el-input>
-                </div>
-                <div>
-                  <span>职务/职称：</span>
-                  <el-input
-                    placeholder="请输入"
-                    v-model="BeingMeasured.companyPosition"
-                    size="small"
-                  >
-                  </el-input>
-                </div>
-                <div>
-                  <span>所属部门：</span>
-                  <el-input
-                    placeholder="请输入"
-                    v-model="BeingMeasured.department"
-                    size="small"
-                  >
-                  </el-input>
-                </div>
-                <div>
-                  <span style="">办公电话：</span>
-                  <el-input
-                    placeholder="请输入"
-                    v-model="BeingMeasured.officesPhone"
-                    size="small"
-                  >
-                  </el-input>
-                </div>
-                <div>
-                  <span>移动电话：</span>
-                  <el-input
-                    placeholder="请输入"
-                    v-model="BeingMeasured.mobilePhone"
-                    size="small"
-                  >
-                  </el-input>
-                </div>
-                <div>
-                  <span>电子邮箱：</span>
-                  <el-input
-                    placeholder="请输入"
-                    v-model="BeingMeasured.email"
-                    size="small"
-                  >
-                  </el-input>
-                </div>
-              </div>
-              <!-- <div>
-                <span>行业类型：</span>
-                <el-select
-                  size="small"
-                  v-model="BeingMeasured.industryType"
-                  placeholder="请选择"
-                >
-                  <el-option :key="''" :label="'全部'" :value="''"> </el-option>
-                  <el-option
-                    v-for="item in industryTypes"
-                    :key="item.id"
-                    :label="item.value"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-              <div>
-                <span>业务类型：</span>
-                <el-select
-                  size="small"
-                  v-model="BeingMeasured.businessType"
-                  placeholder="请选择"
-                >
-                  <el-option :key="''" :label="'全部'" :value="''"> </el-option>
-                  <el-option
-                    v-for="item in businessTypes"
-                    :key="item.id"
-                    :label="item.value"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </div> -->
-              <!-- <upload-city
-                ref="addFormProvince"
-                :provinceCode='BeingMeasured.provincesCities'
-                :cityCode='BeingMeasured.districtCounty'
-                @selectChange="selectChange"
-              ></upload-city> -->
-            </div>
-            <div class="tijiaobaoc">
-              <el-button
-                type="primary"
-                size="small"
-                icon="el-icon-folder-opened"
-                @click="PassiveCompanyUpdate"
-                >保存委托单位</el-button
-              >
-              <!-- <el-button
+                  <el-col :span="22">
+                    <el-form-item
+                      label-width="110px"
+                      label="单位名称："
+                      prop="companyName"
+                    >
+                      <el-input
+                        v-model="BeingMeasured.companyName"
+                        placeholder="单位名称："
+                        :disabled="true"
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="13">
+                    <el-form-item
+                      label-width="110px"
+                      label="单位地址："
+                      prop="companyAddress"
+                    >
+                      <el-input
+                        v-model="BeingMeasured.companyAddress"
+                        placeholder="请输入单位地址："
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="9">
+                    <el-form-item
+                      label-width="110px"
+                      label="邮政编码："
+                      prop="postalCode"
+                    >
+                      <el-input
+                        v-model="BeingMeasured.postalCode"
+                        placeholder="请输入邮政编码："
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-form-item
+                      label-width="110px"
+                      label="联系人姓名："
+                      prop="contacts"
+                    >
+                      <el-input
+                        v-model="BeingMeasured.contacts"
+                        placeholder="请输入联系人姓名："
+                        clearable
+                        :style="{ width: '100%' }"
+                      >
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-form-item
+                      label-width="110px"
+                      label="职务/职称："
+                      prop="companyPosition"
+                    >
+                      <el-input
+                        v-model="BeingMeasured.companyPosition"
+                        placeholder="请输入职务/职称："
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-form-item
+                      label-width="110px"
+                      label="所属部门："
+                      prop="department"
+                    >
+                      <el-input
+                        v-model="BeingMeasured.department"
+                        placeholder="请输入所属部门："
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-form-item
+                      label-width="110px"
+                      label="办公电话："
+                      prop="officesPhone"
+                    >
+                      <el-input
+                        v-model="BeingMeasured.officesPhone"
+                        placeholder="请输入办公电话："
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-form-item
+                      label-width="110px"
+                      label="移动电话："
+                      prop="mobilePhone"
+                    >
+                      <el-input
+                        v-model="BeingMeasured.mobilePhone"
+                        placeholder="请输入移动电话："
+                        :maxlength="11"
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-form-item
+                      label-width="110px"
+                      label="电子邮箱："
+                      prop="email"
+                    >
+                      <el-input
+                        v-model="BeingMeasured.email"
+                        placeholder="请输入电子邮箱："
+                        clearable
+                        :style="{ width: '100%' }"
+                      >
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                  <div class="tijiaobaoc">
+                    <el-button
+                      type="primary"
+                      size="small"
+                      icon="el-icon-folder-opened"
+                      @click="PassiveCompanyUpdate"
+                      >保存委托单位</el-button
+                    >
+                    <!-- <el-button
                 type="primary"
                 @click="BeingMeasuredble = true"
                 size="small"
                 icon="el-icon-s-order"
                 >现有委托单位库</el-button
               > -->
+                  </div>
+                </el-form>
+              </el-row>
             </div>
           </div>
           <div class="mude_text_item">
@@ -260,6 +275,79 @@ export default {
         { id: 5, value: "公众服务" },
         { id: 6, value: "其他" },
       ],
+      rules: {
+        companyAddress: [
+          {
+            required: true,
+            message: "请输入单位地址：",
+            trigger: "blur",
+          },
+        ],
+        postalCode: [
+          {
+            required: true,
+            message: "请输入邮政编码：",
+            trigger: "blur",
+          },
+          {
+            pattern: /^[1-9][0-9]{5}$/,
+            message: "请输入正确的邮政编码",
+            trigger: "blur",
+          },
+        ],
+        contacts: [
+          {
+            required: true,
+            message: "请输入联系人姓名：",
+            trigger: "blur",
+          },
+        ],
+        companyPosition: [
+          {
+            required: true,
+            message: "请输入职务/职称：",
+            trigger: "blur",
+          },
+        ],
+        department: [
+          {
+            required: true,
+            message: "请输入所属部门：",
+            trigger: "blur",
+          },
+        ],
+        officesPhone: [
+          {
+            required: true,
+            message: "请输入办公电话：",
+            trigger: "blur",
+          },
+        ],
+        mobilePhone: [
+          {
+            required: true,
+            message: "请输入移动电话：",
+            trigger: "blur",
+          },
+          {
+            pattern: /^1(3[0-9]|4[5,7]|5[0,1,2,3,5,6,7,8,9]|6[2,5,6,7]|7[0,1,7,8]|8[0-9]|9[1,8,9])\d{8}$/,
+            message: "请输入正确的移动电话",
+            trigger: "blur",
+          },
+        ],
+        email: [
+          {
+            required: true,
+            message: "请输入电子邮箱：",
+            trigger: "blur",
+          },
+          {
+            pattern: /^[a-zA-Z0-9]+([-.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-.][a-zA-Z0-9]+)*.[a-z]{2,}$/,
+            message: "请输入正确的电子邮箱",
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -279,14 +367,17 @@ export default {
     },
     // 修改测评单位
     async PassiveCompanyUpdate() {
-      let res = await this.$api.API_PassiveCompanyUpdate(this.BeingMeasured);
-      if (res.code === 20000) {
-        this.$message.success("保存成功！！");
-        this.PassiveCompany();
-        //查询列表
-      } else {
-        this.$message.error("错误，请联系管理员" + res.message);
-      }
+      this.$refs["BeingMeasured"].validate(async (valid) => {
+        if (!valid) return;
+        let res = await this.$api.API_PassiveCompanyUpdate(this.BeingMeasured);
+        if (res.code === 20000) {
+          this.$message.success("保存成功！！");
+          this.PassiveCompany();
+          //查询列表
+        } else {
+          this.$message.error("错误，请联系管理员" + res.message);
+        }
+      });
     },
     selectChange(provinceName, cityNmae) {
       this.BeingMeasured.provincesCities = provinceName;
@@ -351,7 +442,7 @@ export default {
       width: 85%;
     }
   }
-  .incorporation{
+  .incorporation {
     display: flex;
     align-items: center;
     justify-content: instead;

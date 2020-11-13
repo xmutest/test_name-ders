@@ -49,7 +49,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="重要程度">
+      <el-table-column label="重要程度" width="130">
         <template slot-scope="scope">
           <el-select
             @change="

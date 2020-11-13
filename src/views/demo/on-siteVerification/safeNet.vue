@@ -29,10 +29,13 @@
       <div class="ToMits">
         <el-tabs v-loading="loading" class="container-tab" type="border-card">
           <el-tab-pane v-for="Its in ToMitList" :key="Its.id" :label="Its.name">
-            <d2-quill
-              style="min-height: 200px; margin-bottom: 20px"
-              v-model="Its.content"
-            />
+            <el-input
+                type="textarea"
+                :autosize="{ minRows: 10, maxRows: 15 }"
+                placeholder="请输入内容"
+                v-model="Its.content"
+              >
+              </el-input>
             <div class="tijiaobaoc">
               <el-button type="primary" @click="submitReport(Its)"
                 >保存</el-button
@@ -60,7 +63,7 @@
                 <th>推荐值</th>
                 <th>判断标准</th>
                 <th>结果记录</th>
-                <th style="width: 130px;" >符合情况</th>
+                <th style="width: 140px">符合情况</th>
                 <th>备注</th>
                 <th style="width: 50px;" >权重</th>
               </tr>
@@ -223,7 +226,7 @@
                   <td>
                     <el-select
                       v-model="item2.accordSituation"
-                      clearable
+              
                       @change="Totisadd(item2)"
                       placeholder="请选择"
                     >

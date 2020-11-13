@@ -312,10 +312,11 @@ export default {
       ];
       let amendId = this.amendAnalysis.amendId;
       this.amendAnalysis = item;
+      this.amendAnalysis.problemDescription=`${this.tsAmlist.assets},${item.problemDescription}`;
+      console.log(this.amendAnalysis);
       this.relevanceWeiList=item.threatId;
       this.amendAnalysis.amendId = amendId;
        ls.forEach((it) => {
-        console.log(item.riskGrade);
         if (it.id == item.riskGrade) {
           this.amendAnalysis.originalRisk = it.value;
         }
@@ -346,6 +347,7 @@ export default {
       if (res.code == 20000) {
         this.dialogVisible = false;
         this.getDataList();
+        this.Ts_radio="";
       } else {
         this.$message.error("保存出错");
       }
@@ -367,6 +369,7 @@ export default {
       if (res.code == 20000) {
         this.dataList = res.data.pageData;
         this.Toamount = res.data.count + 5;
+        this.Ts_radio="";
       } else {
         this.$message.error("信息加载出错");
       }

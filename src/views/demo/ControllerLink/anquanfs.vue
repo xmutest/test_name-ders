@@ -1,7 +1,7 @@
 <!-- 安全服务 -->
 <template>
   <d2-container>
-    <el-table :data="t_security_services" border>
+    <el-table :data="t_security_services" border :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }">
       <el-table-column label="安全服务名称" width="450">
         <template slot-scope="scope">
           <div
@@ -198,13 +198,16 @@ export default {
     text-align: center;
   }
 }
+.el-table {
+  font-size: 12px;
+}
 .itsz {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
-}
+} 
 .el-table td,
 .el-table th.is-leaf {
   text-align: center;
