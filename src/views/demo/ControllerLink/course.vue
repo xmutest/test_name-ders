@@ -844,17 +844,17 @@ export default {
 
       if(realityTime[0].startTime != 0){
         this.sentences = `
-          <div>1、<span class="styleRed" style="color:red;">${new Date(realityTime[0].startTime).getFullYear()}年${new Date(realityTime[0].startTime).getMonth() + 1}月${new Date(realityTime[0].startTime).getDate()}日~${new Date(realityTime[0].endTime).getFullYear()}年${new Date(realityTime[0].endTime).getMonth() + 1}月${new Date(realityTime[0].endTime).getDate()}日</span>，测评准备阶段。</div>
-          <div>2、<span class="styleRed" style="color:red;">${new Date(realityTime[1].startTime).getFullYear()}年${new Date(realityTime[1].startTime).getMonth() + 1}月${new Date(realityTime[1].startTime).getDate()}日~${new Date(realityTime[1].endTime).getFullYear()}年${new Date(realityTime[1].endTime).getMonth() + 1}月${new Date(realityTime[1].endTime).getDate()}日</span>，方案编制过程。</div>
-          <div>3、<span class="styleRed" style="color:red;">${new Date(realityTime[2].startTime).getFullYear()}年${new Date(realityTime[2].startTime).getMonth() + 1}月${new Date(realityTime[2].startTime).getDate()}日~${new Date(realityTime[2].endTime).getFullYear()}年${new Date(realityTime[2].endTime).getMonth() + 1}月${new Date(realityTime[2].endTime).getDate()}日</span>，现场实施过程。</div>
-          <div>4、<span class="styleRed" style="color:red;">${new Date(realityTime[3].startTime).getFullYear()}年${new Date(realityTime[3].startTime).getMonth() + 1}月${new Date(realityTime[3].startTime).getDate()}日~${new Date(realityTime[3].endTime).getFullYear()}年${new Date(realityTime[3].endTime).getMonth() + 1}月${new Date(realityTime[3].endTime).getDate()}日</span>，分析与报告编制过程。</div>
+          <div>1、<span style="color:red;">${new Date(realityTime[0].startTime).getFullYear()}年${new Date(realityTime[0].startTime).getMonth() + 1}月${new Date(realityTime[0].startTime).getDate()}日~${new Date(realityTime[0].endTime).getFullYear()}年${new Date(realityTime[0].endTime).getMonth() + 1}月${new Date(realityTime[0].endTime).getDate()}日</span>，测评准备阶段。</div>
+          <div>2、<span style="color:red;">${new Date(realityTime[1].startTime).getFullYear()}年${new Date(realityTime[1].startTime).getMonth() + 1}月${new Date(realityTime[1].startTime).getDate()}日~${new Date(realityTime[1].endTime).getFullYear()}年${new Date(realityTime[1].endTime).getMonth() + 1}月${new Date(realityTime[1].endTime).getDate()}日</span>，方案编制过程。</div>
+          <div>3、<span style="color:red;">${new Date(realityTime[2].startTime).getFullYear()}年${new Date(realityTime[2].startTime).getMonth() + 1}月${new Date(realityTime[2].startTime).getDate()}日~${new Date(realityTime[2].endTime).getFullYear()}年${new Date(realityTime[2].endTime).getMonth() + 1}月${new Date(realityTime[2].endTime).getDate()}日</span>，现场实施过程。</div>
+          <div>4、<span style="color:red;">${new Date(realityTime[3].startTime).getFullYear()}年${new Date(realityTime[3].startTime).getMonth() + 1}月${new Date(realityTime[3].startTime).getDate()}日~${new Date(realityTime[3].endTime).getFullYear()}年${new Date(realityTime[3].endTime).getMonth() + 1}月${new Date(realityTime[3].endTime).getDate()}日</span>，分析与报告编制过程。</div>
         `
       }else{
         this.sentences = `
-          <div>1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。</div>
-          <div>2、YYYY年MM月DD日~YYYY年MM月DD日，方案编制过程。</div>
-          <div>3、YYYY年MM月DD日~YYYY年MM月DD日，现场实施过程。</div>
-          <div>4、YYYY年MM月DD日~YYYY年MM月DD日，分析与报告编制过程。</div>
+          <div>1、<span style="color:red;">YYYY年MM月DD日~YYYY年MM月DD日</span>，测评准备阶段。</div>
+          <div>2、<span style="color:red;">YYYY年MM月DD日~YYYY年MM月DD日</span>，方案编制过程。</div>
+          <div>3、<span style="color:red;">YYYY年MM月DD日~YYYY年MM月DD日</span>，现场实施过程。</div>
+          <div>4、<span style="color:red;">YYYY年MM月DD日~YYYY年MM月DD日</span>，分析与报告编制过程。</div>
         `
       }
 

@@ -1,6 +1,6 @@
 <!-- 测评工具及接入点说明 -->
 <template>
-  <d2-container>
+  <d2-container >
     <div class="mude_is">
       <!-- 富文本输入框 -->
       <div class="mude_is_left">
@@ -19,9 +19,12 @@
           <div class="mude_text_item">
             <div class="descTItle">接入点图片</div>
             <div class="tijiaobaoc">
-              <el-button type="primary" @click="showCanvas = true"
+              <el-button type="primary" @click="showCanvas = true" 
                 >修改</el-button
               >
+              <!-- <el-button type="primary"  v-drag="flag" 
+                >修改</el-button
+              > -->
             </div>
             <div class="to_tim">
               <canvasToorBarSel
@@ -105,10 +108,11 @@
                       :x="1000 / 2"
                       :y="500 / 2"
                       :align="['center', 'center']"
+                      v-drag="flag"
                     >
                     </easel-bitmap>
 
-                    <easel-bitmap
+                    <!-- <easel-bitmap
                       :image="
                         require(`@/views/demo/ControllerLink/img/palntlsImg/${item}.png`)
                       "
@@ -121,8 +125,8 @@
                       @mouseout="objOut($event)"
                       v-for="(item, key) in bitmapArr"
                       :key="key"
-                    >
-                      <!-- <easel-bitmap
+                    > -->
+                    <easel-bitmap
                       :image="
                         require(`@/views/demo/ControllerLink/img/palntlsImg/${item}.png`)
                       "
@@ -132,7 +136,7 @@
                       @mousedown="objTouch($event)"
                       v-for="(item, key) in bitmapArr"
                       :key="key"
-                    > -->
+                    >
                     </easel-bitmap>
                   </easel-canvas>
                 </div>
@@ -178,7 +182,8 @@ export default {
       // 接入点图片
       imgUrls: "",
       imgUrlsid: "",
-    };
+      flag:true
+    }
   },
   components: {
     canvasToorBarSel,
@@ -341,8 +346,30 @@ export default {
       this.mouseInfo.startLocateX = obj.x;
       this.mouseInfo.startLocateY = obj.y;
 
-      this.mouseInfo.startX = e.stageX;
-      this.mouseInfo.startY = e.stageY;
+      console.log('物体的初始位置',this.mouseInfo.startLocateX,this.mouseInfo.startLocateY)
+
+      let casBasicPoint = {
+        x:this.$refs.canvasArea.offsetLeft + this.$refs.canvaspic.$el.offsetLeft,
+        y:this.$refs.canvasArea.offsetTop + this.$refs.canvaspic.$el.offsetTop,
+      }
+
+      this.mouseInfo.startX = e.stageX
+      this.mouseInfo.startY = e.stageY
+
+      // console.log('鼠标点的位置',this.mouseInfo.startX,this.mouseInfo.startY)
+
+      // console.log(this.mouseInfo.startX,this.mouseInfo.startY)
+
+      // console.log(e)
+      // console.log(this.$refs.canvaspic)
+      // console.log(this.$refs.canvasArea.offsetTop,this.$refs.canvaspic.$el.offsetTop)
+
+      
+
+      // console.log('画布基本点',casBasicPoint)
+
+      // console.log('document',document)
+      
 
       // @pressmove.prevent="objMove($event)"
       // @mouseout="objOut($event)"
@@ -352,7 +379,109 @@ export default {
       // let body = document.body
 
       // console.log(that)
-      this.$el.addEventListener("mousemove", this.objMove(e));
+
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
+
+      function move(evt){
+        // let obj = e.currentTarget;
+        // console.log('对象',that.mouseInfo)
+        // console.log('真对象?',e)
+
+        // 鼠标点击坐标 - 画布原点坐标
+        let mouseX = evt.clientX - casBasicPoint.x,
+            mouseY = evt.clientY - casBasicPoint.y
+
+        // console.log(mouseX,mouseY)
+        // debugger
+        let moveX = mouseX - that.mouseInfo.startLocateX,
+            moveY = mouseY - that.mouseInfo.startLocateY
+
+        
+
+        obj.x = that.mouseInfo.startLocateX + moveX,
+        obj.y = that.mouseInfo.startLocateY + moveY
+
+        
+        let picWidth = obj.image.width,
+            picHeight = obj.image.height,
+            nearDis = 5 //靠近距离
+
+        // console.log(that.$refs.canvaspic.$el.width)
+
+        // 局限
+        if(obj.x < nearDis){
+          obj.x = 0
+        }else if(obj.x + picWidth >  that.$refs.canvaspic.$el.width - nearDis){
+          obj.x = that.$refs.canvaspic.$el.width - picWidth
+        }
+
+        if(obj.y < 5){
+          obj.y = 0
+        }else if(obj.y + picHeight > that.$refs.canvaspic.$el.height - nearDis){
+          obj.y = that.$refs.canvaspic.$el.height - picHeight
+        }
+
+        // console.log('移动的位置',obj.x,obj.y)
+        // console.log(obj)
+
+        
+
+        // if()
+
+        // console.log(moveX,moveY)
+        // console.log(moveY)
+
+        // console.log(moveX,moveY)
+        // console.log(e.clientX,e.pageX)
+
+        // obj.x = judgeX;
+        // obj.y = judgeY;
+
+        // // 获取图片宽高
+        // let imgWidth = obj.image.width;
+        // let imgHeight = obj.image.height;
+
+        // that.mouseInfo.moveX = e.stageX;
+        // that.mouseInfo.moveY = e.stageY;
+        
+        // // debugger;
+        // let diveceX = that.mouseInfo.moveX - that.mouseInfo.startX;
+        // let diveceY = that.mouseInfo.moveY - that.mouseInfo.startY;
+
+        // console.log(that.mouseInfo.startX)
+
+        // let judgeX = that.mouseInfo.startLocateX + diveceX;
+        // let judgeY = that.mouseInfo.startLocateY + diveceY;
+
+        // if (judgeX < 0 || judgeX + imgWidth > 1000) {
+        //   if (judgeX < 0) {
+        //     judgeX = 0;
+        //   } else {
+        //     judgeX = 1000 - imgWidth;
+        //   }
+        //   // this.mouseInfo.moveX = 0
+        //   // this.objOut(e)
+        // }
+
+        // if (judgeY < 0 || judgeY + imgHeight > 500) {
+        //   if (judgeY < 0) {
+        //     judgeY = 0;
+        //   } else {
+        //     judgeY = 500 - imgHeight;
+        //   }
+        //   // this.mouseInfo.moveY = 0
+        //   // this.objOut(e)
+        // }
+        // // console.log(judgeX,judgeY)
+        // obj.x = judgeX;
+        // obj.y = judgeY;
+      }
+      function up(e){
+          document.removeEventListener("mousemove",move);
+          document.removeEventListener("mouseup",up);
+      }
+      
     },
     objMove(e) {
       // 触发事件对象
@@ -449,6 +578,9 @@ export default {
       this.mouseInfo.startLocateX = obj.x;
       this.mouseInfo.startLocateY = obj.y;
     },
+    dragStart(e){
+      console.log('进入了drag事件',e)
+    },
     // 流程工具选择
     showToolsFun(e) {
       let flag = false;
@@ -483,6 +615,8 @@ export default {
     },
   },
 };
+
+
 </script>
 
 <style lang="scss">
