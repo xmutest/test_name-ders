@@ -1,3 +1,4 @@
+let userInfo
 export default ({
   service,
   request,
@@ -29,6 +30,20 @@ export default ({
     // 接口请求
     return request({
       url: '/user/login',
+      method: 'post',
+      data
+    })
+  },
+
+  async SYS_USER_PASSWORD_CHANGE(data = {}) {
+    // 模拟数据
+    // data.password = 'hezhi127'
+    // 接口请求
+
+    console.log('参数',data)
+
+    return request({
+      url: '/user/update',
       method: 'post',
       data
     })

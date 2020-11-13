@@ -108,7 +108,6 @@
                       :x="1000 / 2"
                       :y="500 / 2"
                       :align="['center', 'center']"
-                      v-drag="flag"
                     >
                     </easel-bitmap>
 
@@ -182,7 +181,6 @@ export default {
       // 接入点图片
       imgUrls: "",
       imgUrlsid: "",
-      flag:true
     }
   },
   components: {
@@ -416,7 +414,7 @@ export default {
           obj.x = that.$refs.canvaspic.$el.width - picWidth
         }
 
-        if(obj.y < 5){
+        if(obj.y < nearDis){
           obj.y = 0
         }else if(obj.y + picHeight > that.$refs.canvaspic.$el.height - nearDis){
           obj.y = that.$refs.canvaspic.$el.height - picHeight
@@ -577,9 +575,6 @@ export default {
 
       this.mouseInfo.startLocateX = obj.x;
       this.mouseInfo.startLocateY = obj.y;
-    },
-    dragStart(e){
-      console.log('进入了drag事件',e)
     },
     // 流程工具选择
     showToolsFun(e) {
