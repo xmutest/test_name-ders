@@ -59,7 +59,7 @@ export default {
       component: _import('demo/GlobalAssessment/checkTest'),
       meta: {
         ...meta,
-        title: '验证测试'
+        title: '验证测试和接入点'
       }
     }
   ])('demo-GlobalAssessment-')

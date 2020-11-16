@@ -141,7 +141,7 @@
                 >
               </div>
             </el-tab-pane>
-            <el-tab-pane label="高风险叛列" v-if="amendAnalysis.highRiskJudge">
+            <el-tab-pane label="高风险判例" v-if="amendAnalysis.highRiskJudge">
               {{ amendAnalysis.highRiskJudge }}
             </el-tab-pane>
           </el-tabs>

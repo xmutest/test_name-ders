@@ -23,10 +23,10 @@ export default {
       path: `${pre}structure`,
       title: '网络结构'
     },
-    {
-      path: `${pre}paIntls`,
-      title: '测评工具及接入点说明'
-    },
+    // {
+    //   path: `${pre}paIntls`,
+    //   title: '测评工具及接入点说明'
+    // },
     {
       path: `${pre}anquanfs`,
       title: '安全服务'

@@ -21,7 +21,7 @@
       </div>
       <!-- 安全保护 -->
       <el-dialog
-        title="信息"
+        title="已有安全措施"
         :visible.sync="dialogVisible"
         width="80%"
         :before-close="handleClose"

@@ -145,7 +145,7 @@
               >
             </div>
           </div> -->
-          <div class="mude_text_item">
+          <!-- <div class="mude_text_item">
             <div class="descTItle">测评单位</div>
             <div>
               <el-row :gutter="15">
@@ -291,67 +291,110 @@
                       icon="el-icon-folder-opened"
                       >纳入委托单位库</el-button
                     >
-                    <!-- <el-button
-                type="primary"
-                @click="MeasurementUnitble = true"
-                size="small"
-                icon="el-icon-s-order"
-                >现有测评单位</el-button
-              > -->
+             
                   </div>
                 </el-form>
               </el-row>
             </div>
-          </div>
+          </div> -->
           <div class="mude_text_item">
             <div class="descTItle">制作报告</div>
-            <div class="demo-input-suffix">
-              <div>
-                <span>报告编号：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="assessmentGroup.reportNum"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>备案证明编号：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="assessmentGroup.recordSn"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>报告名称：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="assessmentGroup.reportName"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>报告日期：</span>
-                <el-date-picker
-                  v-model="assessmentGroup.reportTime"
-                  align="right"
-                  type="date"
-                  placeholder="选择日期"
-                  :picker-options="pickerOptions"
-                >
-                </el-date-picker>
-              </div>
-            </div>
+            <el-row :gutter="24">
+              <el-form
+                ref="assessmentGroup"
+                :model="assessmentGroup"
+                :rules="rules"
+                size="medium"
+                label-width="100px"
+              >
+                <el-col :span="8">
+                  <el-form-item
+                    label-width="120px"
+                    label="报告编号："
+                    prop="reportNum"
+                  >
+                    <el-input
+                      v-model="assessmentGroup.reportNum"
+                      placeholder="请输入报告编号："
+                      :style="{ width: '100%' }"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item
+                    label-width="120px"
+                    label="备案证明编号："
+                    prop="recordSn"
+                  >
+                    <el-input
+                      v-model="assessmentGroup.recordSn"
+                      placeholder="请输入备案证明编号："
+                      :style="{ width: '100%' }"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item
+                    label-width="120px"
+                    label="报告名称："
+                    prop="reportName"
+                  >
+                    <el-input
+                      v-model="assessmentGroup.reportName"
+                      placeholder="请输入报告名称："
+                      :style="{ width: '100%' }"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item
+                    label-width="120px"
+                    label="报告日期："
+                    prop="reportTime"
+                  >
+                    <el-date-picker
+                      v-model="assessmentGroup.reportTime"
+                      value-formate="timestamp"
+                      :style="{ width: '100%' }"
+                      placeholder="请选择报告日期："
+                      clearable
+                    ></el-date-picker>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="5">
+                  <el-form-item
+                    label-width="130px"
+                    label="该系统本年度测评"
+                    prop="annualReview"
+                  >
+                    <el-select
+                      v-model="assessmentGroup.annualReview"
+                      placeholder="请选择该系统本年度测评"
+                      @change="textChangeHandler"
+                      :style="{ width: '100%' }"
+                    >
+                      <el-option
+                        v-for="(item, index) in field108Options"
+                        :key="index"
+                        :label="item.label"
+                        :value="item.value"
+                        :disabled="item.disabled"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="24">
+                  <div class="tijiaobaoc">
+                    <!-- <el-button type="primary" size="small">保存配置</el-button> -->
+                    <el-button type="primary" size="small" @click="submitReport"
+                      >制作报告</el-button
+                    >
+                  </div>
+                </el-col>
+              </el-form>
+            </el-row>
           </div>
-          <div class="tijiaobaoc">
-            <el-button type="primary" size="small">保存配置</el-button>
-            <el-button type="primary" size="small" @click="submitReport"
-              >制作报告</el-button
-            >
-          </div>
+
           <div class="mude_text_item">
             <div class="descTItle">现有报告</div>
             <el-table :data="reportGeneratingRecords" style="width: 100%">
@@ -700,38 +743,10 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
-        shortcuts: [
-          {
-            text: "今天",
-            onClick(picker) {
-              picker.$emit("pick", new Date());
-            },
-          },
-          {
-            text: "昨天",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", date);
-            },
-          },
-          {
-            text: "一周前",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
-            },
-          },
-        ],
-      },
       BeingMeasuredble: false,
       // // 被测评单位
       // BeingMeasured: {
@@ -893,6 +908,8 @@ export default {
         reportName: "",
         // 报告日期()
         reportTime: "",
+        //年度测评
+        annualReview: 1,
       },
       // 现有报告
       reportGeneratingRecords: [
@@ -908,83 +925,61 @@ export default {
         },
       ],
       rules: {
-        companyName: [],
-        companyAddress: [
+        recordSn: [
           {
             required: true,
-            message: "请输入单位地址：",
+            message: "请输入备案证明编号",
             trigger: "blur",
           },
         ],
-        postalCode: [
+        reportNum: [ {
+            required: true,
+            message: "请输入报告编号",
+            trigger: "blur",
+          },],
+        reportName: [
           {
             required: true,
-            message: "请输入邮政编码：",
-            trigger: "blur",
-          },
-          {
-            pattern: /^[1-9][0-9]{5}$/,
-            message: "请输入正确的邮政编码",
+            message: "请输入报告名称",
             trigger: "blur",
           },
         ],
-        contacts: [
+        reportTime: [
           {
             required: true,
-            message: "请输入联系人姓名：",
-            trigger: "blur",
+            message: "请选择报告日期",
+            trigger: "change",
           },
         ],
-        companyPosition: [
+        field108: [
           {
             required: true,
-            message: "请输入职务/职称：",
-            trigger: "blur",
-          },
-        ],
-        department: [
-          {
-            required: true,
-            message: "请输入所属部门：",
-            trigger: "blur",
-          },
-        ],
-        officesPhone: [
-          {
-            required: true,
-            message: "请输入办公电话：",
-            trigger: "blur",
-          },
-        ],
-        mobilePhone: [
-          {
-            required: true,
-            message: "请输入移动电话：",
-            trigger: "blur",
-          },
-          {
-            pattern: /^1(3[0-9]|4[5,7]|5[0,1,2,3,5,6,7,8,9]|6[2,5,6,7]|7[0,1,7,8]|8[0-9]|9[1,8,9])\d{8}$/,
-            message: "移动电话有误，请重填",
-            trigger: "blur",
-          },
-        ],
-        email: [
-          {
-            required: true,
-            message: "请输入电子邮箱：",
-            trigger: "blur",
-          },
-          {
-            pattern: /^[a-zA-Z0-9]+([-.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-.][a-zA-Z0-9]+)*.[a-z]{2,}$/,
-            message: "请输入正确的电子邮箱",
-            trigger: "blur",
+            message: "请选择该系统本年度测评",
+            trigger: "change",
           },
         ],
       },
+      field108Options: [
+        {
+          label: "第一次",
+          value: 1,
+        },
+        {
+          label: "第二次",
+          value: 2,
+        },
+      ],
     };
   },
   created() {
     this.getEtlist();
+    this.textChangeHandler();
+  },
+  computed: {
+    ...mapState("d2admin", {
+      info: (state) => state.user.info,
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   methods: {
     submitForm() {
@@ -993,15 +988,41 @@ export default {
         // TODO 提交表单
       });
     },
-    textChangeHandler(delta, oldDelta, source) {
-      // console.log(delta,oldDelta,source)
+    // 生成默认值
+    textChangeHandler() {
+      console.log(this.info);
+      console.log(this.xmu_info);
+      var date = new Date();
+      let dataTs = date.getFullYear() + "";
+      if (this.info.user_info.companyCode != null) {
+        let lst = `${this.xmu_info.data.recordSn}-${dataTs.substring(
+          0,
+          2
+        )}-${this.info.user_info.companyCode.substring(
+          this.info.user_info.companyCode.length - 6
+        )}-0${this.assessmentGroup.annualReview}`;
+        let Nmas = `${this.xmu_info.data.evaluatedUnit}_${this.xmu_info.data.systemName}_测评报告_0${this.assessmentGroup.annualReview}`;
+        this.assessmentGroup.reportNum = lst;
+        this.assessmentGroup.recordSn = this.xmu_info.data.recordSn;
+        this.assessmentGroup.reportName = Nmas;
+      } else {
+        this.$message.error('当前账号无测评机构代码，请联系管理员添加');
+      }
+
+      // console.log(date.getTime());
+      this.assessmentGroup.reportTime = date.getTime();
     },
     selectChange(provinceName, cityNmae) {
       this.provincesCities = provinceName;
       this.districtCounty = cityNmae;
     },
     async getEtlist() {},
-    async submitReport() {},
+    async submitReport() {
+      this.$refs["assessmentGroup"].validate((valid) => {
+        if (!valid) return;
+        // TODO 提交表单
+      });
+    },
     // 被测评
     BeingMeasuredEdit(index, row) {
       console.log(index, row);

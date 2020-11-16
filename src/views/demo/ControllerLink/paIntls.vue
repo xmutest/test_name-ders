@@ -284,6 +284,7 @@ export default {
         this.$message.error("错误，请联系管理员" + res.message);
       }
     },
+    
     getStyle(obj, attr) {
       if (obj.currentStyle) {
         return obj.currentStyle[attr];

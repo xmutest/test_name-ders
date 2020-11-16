@@ -22,7 +22,7 @@ export default {
     },
     {
       path: `${pre}checkTest`,
-      title: '验证测试'
+      title: '验证测试和接入点'
     }
   ])('/demo/GlobalAssessment/')
 
