@@ -113,7 +113,8 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // alert("submit!");
-          this.changePass()
+          console.log()
+          this.changePass(valid)
         } else {
           console.log("error submit!!");
           return false;
@@ -123,10 +124,13 @@ export default {
     async changePass(){
       
       console.log(this.info);
+      // console.log(this.ruleForm.pass)
       let data = {
         loginName:this.info.user_info.loginName,
         userName:this.info.user_info.userName,
-        userType:this.info.user_info.userType
+        userType:this.info.user_info.userType,
+        userId:this.info.user_info.userId,
+        password:this.ruleForm.pass
       }
       let res = await this.$api.SYS_USER_PASSWORD_CHANGE(data)
 
@@ -135,9 +139,9 @@ export default {
       //   method:'post',
       //   password:'hezhi127'
       // })
-
-      console.log(res)
-
+      this.logout({
+        
+      })
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
