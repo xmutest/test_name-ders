@@ -139,9 +139,9 @@ export default {
       //   method:'post',
       //   password:'hezhi127'
       // })
-      this.logout({
-        
-      })
+
+      if(res.errcode == 20000) return this.logout()
+      
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
