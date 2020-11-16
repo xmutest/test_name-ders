@@ -96,6 +96,22 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="page_name" style="padding: 0 20px 20px 20px;margin: 15px 0;">
+      <div class="search_ls">
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="formPage.pageNum"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="formPage.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          >
+          </el-pagination>
+        </div>
+      </div>
+    </div>
   </d2-container>
 </template>
 
@@ -127,6 +143,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
+      total: 0,
       indexs: null,
     };
   },
@@ -200,6 +217,7 @@ export default {
       );
       if (res.code === 20000) {
         let List = res.data.list;
+        this.total=res.data.total;
         if (res.data.list.length > 0) {
           List.forEach((element) => {
             if (element.isEvaluationObj == 1) {
@@ -231,6 +249,15 @@ export default {
       } else {
         this.$message.error("错误，数据查询失败" + res.message);
       }
+    },
+    // 分页
+    handleSizeChange(val) {
+      this.formPage.pageSize = val;
+      this.getlistdata();
+    },
+    handleCurrentChange(val) {
+      this.formPage.pageNum = val;
+      this.getlistdata();
     },
     is_compile(item, index, itname) {
       // console.log(item,index,itname)
@@ -337,5 +364,6 @@ export default {
   height: 100%;
   top: 0;
   left: 0;
+  
 }
 </style>

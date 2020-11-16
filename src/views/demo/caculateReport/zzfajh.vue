@@ -5,7 +5,7 @@
       <!-- 富文本输入框 -->
       <div class="mude_is_left">
         <el-card class="box-card">
-          <div class="mude_text_item">
+          <!-- <div class="mude_text_item">
             <div class="descTItle">被测评单位(委托单位)</div>
             <div class="demo-input-suffix">
               <div>
@@ -236,7 +236,7 @@
                 >现有测评单位</el-button
               >
             </div>
-          </div>
+          </div> -->
           <div class="mude_text_item">
             <div class="descTItle">测评组(多姓名以顿号;分割)</div>
              <div class="demo-input-suffix">
@@ -272,6 +272,15 @@
                 <el-input
                   placeholder="请输入"
                   v-model="assessmentGroup.qualitySupervisor"
+                  size="small"
+                >
+                </el-input>
+              </div>
+              <div>
+                <span>项目组长：</span>
+                <el-input
+                  placeholder="请输入"
+                  v-model="assessmentGroup.ahshg"
                   size="small"
                 >
                 </el-input>
@@ -714,7 +723,9 @@ export default {
         // 渗透测试组()
         penetrationTestTeam:'',
         // 质量监督人()
-        qualitySupervisor:''
+        qualitySupervisor:'',
+        // 项目组长
+        ahshg:''
       }
     };
   },

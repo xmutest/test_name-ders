@@ -72,23 +72,24 @@ export default {
       this.Quill = new Quill(editor, this.options);
       const quill = this.Quill;
       quill.enable(false);
+      setTimeout(() => {
+        quill.enable(true); //2秒之后可以点击（聚焦）
+      }, 500);
       // 默认值
       this.Quill.pasteHTML(this.currentValue);
       // 绑定事件
+
       this.Quill.on("text-change", (delta, oldDelta, source) => {
         const html = this.$refs.editor.children[0].innerHTML;
         const text = this.Quill.getText();
         // 更新内部的值
         this.currentValue = html;
-        this.$nextTick(function () {
-          quill.enable(true);
-          // quill.blur();
-        });
         // 发出事件 v-model
         this.$emit("input", html);
         // 发出事件
         this.$emit("change", { html, text, quill });
       });
+
       // 将一些 quill 自带的事件传递出去
       this.Quill.on("text-change", (delta, oldDelta, source) => {
         this.$emit("text-change", delta, oldDelta, source);

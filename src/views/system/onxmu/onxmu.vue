@@ -7,12 +7,18 @@
           <el-input
             placeholder="请输入内容"
             v-model="projectModel.projectName"
-            size='small'
+            size="small"
             clearable
           ></el-input>
         </div>
         <div>
-          <el-button icon="el-icon-search" type="primary" size='small' @click="searchBi" circle></el-button>
+          <el-button
+            icon="el-icon-search"
+            type="primary"
+            size="small"
+            @click="searchBi"
+            circle
+          ></el-button>
         </div>
         <div class="die_roift">
           <el-button @click="dialogFormVisibleList" type="primary"
@@ -231,7 +237,10 @@
             </div>
             <div>
               <el-form-item label="标准版本" :label-width="formLabelWidth">
-                <el-select :disabled="ua_cre == 1 ? true : false" v-model="xmform.standardVersion">
+                <el-select
+                  :disabled="ua_cre == 1 ? true : false"
+                  v-model="xmform.standardVersion"
+                >
                   <!-- <div v-if="">
 
                   </div> -->
@@ -280,7 +289,11 @@
             </div>
             <div>
               <el-form-item label="SAG等级" :label-width="formLabelWidth">
-                <el-select :disabled="ua_cre == 1 ? true : false" v-model="xmform.sag" placeholder="请选择">
+                <el-select
+                  :disabled="ua_cre == 1 ? true : false"
+                  v-model="xmform.sag"
+                  placeholder="请选择"
+                >
                   <el-option
                     v-for="item in saglist"
                     :key="item.id"
@@ -330,9 +343,9 @@
               <el-button type="primary" @click="submitForm('xmform', ua_cre)"
                 >保存</el-button
               >
-              <el-button type="danger" v-if="ua_cre != 1 " @click="resetForm('xmform')"
+              <!-- <el-button type="danger" v-if="ua_cre != 1 " @click="resetForm('xmform')"
                 >重置</el-button
-              >
+              > -->
               <el-button @click="dialogFormVisible = false">取 消</el-button>
             </el-form-item>
           </div>
@@ -571,11 +584,15 @@ export default {
         });
     },
     // 等级联动
-    async selectGoodsByGroupId(enent) {
+    async selectGoodsByGroupId(enent, sag) {
       let res = await this.$api.API_SagFindSagByLevel({ sagLevel: enent });
       if (res.code === 20000) {
         this.saglist = res.data;
-        this.xmform.sag = res.data[0].id;
+        if (sag) {
+          this.xmform.sag = sag;
+        } else {
+          this.xmform.sag = res.data[0].id;
+        }
       }
     },
     // 提交
@@ -675,7 +692,7 @@ export default {
       this.datalog_list_rom(row.creator);
 
       let res = await this.Project_detail(row.projectId);
-      this.selectGoodsByGroupId(res.level);
+      this.selectGoodsByGroupId(res.level, res.sag);
       this.xmform.projectId = row.projectId;
       this.xmform.status = res.status;
       Object.keys(this.xmform).forEach((key) => {

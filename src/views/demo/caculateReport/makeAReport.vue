@@ -355,7 +355,7 @@
           <div class="mude_text_item">
             <div class="descTItle">现有报告</div>
             <el-table :data="reportGeneratingRecords" style="width: 100%">
-              <el-table-column label="报告编号" width="200">
+              <!-- <el-table-column label="报告编号" width="200">
                 <template slot-scope="scope">
                   <span style="margin-left: 10px">{{
                     scope.row.reportNum
@@ -366,13 +366,13 @@
                 <template slot-scope="scope">
                   {{ scope.row.recordSn }}
                 </template>
-              </el-table-column>
-              <el-table-column label="报告名称" width="150">
+              </el-table-column> -->
+              <el-table-column label="报告名称">
                 <template slot-scope="scope">
                   {{ scope.row.reportName }}
                 </template>
               </el-table-column>
-              <el-table-column label="报告日期" width="150">
+              <el-table-column label="日期" width="120">
                 <template slot-scope="scope">
                   {{ scope.row.reportTime }}
                 </template>
@@ -382,7 +382,7 @@
                   <el-button
                     size="mini"
                     @click="reportGeneratingEdit(scope.$index, scope.row)"
-                    >生成</el-button
+                    >下载</el-button
                   >
                   <el-button
                     size="mini"

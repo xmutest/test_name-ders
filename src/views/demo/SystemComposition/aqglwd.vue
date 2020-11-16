@@ -63,6 +63,22 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="page_name" style="padding: 0 20px 20px 20px;margin: 15px 0;">
+      <div class="search_ls">
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="formPage.pageNum"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="formPage.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          >
+          </el-pagination>
+        </div>
+      </div>
+    </div>
   </d2-container>
 </template>
 
@@ -83,6 +99,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
+      total: 0,
       indexs: null,
     };
   },
@@ -102,11 +119,21 @@ export default {
     });
   },
   methods: {
+     // 分页
+    handleSizeChange(val) {
+      this.formPage.pageSize = val;
+      this.getlistdata();
+    },
+    handleCurrentChange(val) {
+      this.formPage.pageNum = val;
+      this.getlistdata();
+    },
     async getlistdata() {
       let res = await this.$api.APISecurityManageFileFindSecurityManageFile(
         this.formPage
       );
       if (res.code === 20000) {
+        this.total=res.data.total;
         let List = res.data.list;
         if (res.data.list.length > 0) {
           List.forEach((element) => {

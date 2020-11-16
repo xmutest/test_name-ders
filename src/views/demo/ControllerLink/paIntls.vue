@@ -1,6 +1,6 @@
 <!-- 测评工具及接入点说明 -->
 <template>
-  <d2-container >
+  <d2-container>
     <div class="mude_is">
       <!-- 富文本输入框 -->
       <div class="mude_is_left">
@@ -19,7 +19,7 @@
           <div class="mude_text_item">
             <div class="descTItle">接入点图片</div>
             <div class="tijiaobaoc">
-              <el-button type="primary" @click="showCanvas = true" 
+              <el-button type="primary" @click="showCanvas = true"
                 >修改</el-button
               >
               <!-- <el-button type="primary"  v-drag="flag" 
@@ -181,7 +181,7 @@ export default {
       // 接入点图片
       imgUrls: "",
       imgUrlsid: "",
-    }
+    };
   },
   components: {
     canvasToorBarSel,
@@ -261,6 +261,14 @@ export default {
       let List = await this.$api.API_projectOverviewfindAccessPointDescribe();
       if (List.code === 20000) {
         this.fromdata = List.data;
+        if (!List.data.accessPointDescribe) {
+          this.fromdata.accessPointDescribe = `
+          通过使用绿盟远程安全评估系统V6.0R03F00SP05对网络设备、安全设备、应用服务器、数据库服务器、应用系统等进行了漏洞扫描。
+针对被测系统的网络边界和抽查设备、主机和业务应用系统的情况，需要在被测系统及其互联网络中设置各测试工具接入点，如图3.1所示。
+接入点JA：在<span style="color: rgb(230, 0, 0);">XXXXXX</span>接入，主要目的是：模拟内部恶意用户发现操作系统、数据库、应用系统等安全漏洞的过程。
+          
+          `;
+        }
         //查询列表
       } else {
         this.$message.error(List.message + "评测依据选项出差，请联系管理员");
@@ -344,15 +352,21 @@ export default {
       this.mouseInfo.startLocateX = obj.x;
       this.mouseInfo.startLocateY = obj.y;
 
-      console.log('物体的初始位置',this.mouseInfo.startLocateX,this.mouseInfo.startLocateY)
+      console.log(
+        "物体的初始位置",
+        this.mouseInfo.startLocateX,
+        this.mouseInfo.startLocateY
+      );
 
       let casBasicPoint = {
-        x:this.$refs.canvasArea.offsetLeft + this.$refs.canvaspic.$el.offsetLeft,
-        y:this.$refs.canvasArea.offsetTop + this.$refs.canvaspic.$el.offsetTop,
-      }
+        x:
+          this.$refs.canvasArea.offsetLeft +
+          this.$refs.canvaspic.$el.offsetLeft,
+        y: this.$refs.canvasArea.offsetTop + this.$refs.canvaspic.$el.offsetTop,
+      };
 
-      this.mouseInfo.startX = e.stageX
-      this.mouseInfo.startY = e.stageY
+      this.mouseInfo.startX = e.stageX;
+      this.mouseInfo.startY = e.stageY;
 
       // console.log('鼠标点的位置',this.mouseInfo.startX,this.mouseInfo.startY)
 
@@ -362,12 +376,9 @@ export default {
       // console.log(this.$refs.canvaspic)
       // console.log(this.$refs.canvasArea.offsetTop,this.$refs.canvaspic.$el.offsetTop)
 
-      
-
       // console.log('画布基本点',casBasicPoint)
 
       // console.log('document',document)
-      
 
       // @pressmove.prevent="objMove($event)"
       // @mouseout="objOut($event)"
@@ -381,49 +392,50 @@ export default {
       document.addEventListener("mousemove", move);
       document.addEventListener("mouseup", up);
 
-      function move(evt){
+      function move(evt) {
         // let obj = e.currentTarget;
         // console.log('对象',that.mouseInfo)
         // console.log('真对象?',e)
 
         // 鼠标点击坐标 - 画布原点坐标
         let mouseX = evt.clientX - casBasicPoint.x,
-            mouseY = evt.clientY - casBasicPoint.y
+          mouseY = evt.clientY - casBasicPoint.y;
 
         // console.log(mouseX,mouseY)
         // debugger
         let moveX = mouseX - that.mouseInfo.startLocateX,
-            moveY = mouseY - that.mouseInfo.startLocateY
+          moveY = mouseY - that.mouseInfo.startLocateY;
 
-        
+        (obj.x = that.mouseInfo.startLocateX + moveX),
+          (obj.y = that.mouseInfo.startLocateY + moveY);
 
-        obj.x = that.mouseInfo.startLocateX + moveX,
-        obj.y = that.mouseInfo.startLocateY + moveY
-
-        
         let picWidth = obj.image.width,
-            picHeight = obj.image.height,
-            nearDis = 5 //靠近距离
+          picHeight = obj.image.height,
+          nearDis = 5; //靠近距离
 
         // console.log(that.$refs.canvaspic.$el.width)
 
         // 局限
-        if(obj.x < nearDis){
-          obj.x = 0
-        }else if(obj.x + picWidth >  that.$refs.canvaspic.$el.width - nearDis){
-          obj.x = that.$refs.canvaspic.$el.width - picWidth
+        if (obj.x < nearDis) {
+          obj.x = 0;
+        } else if (
+          obj.x + picWidth >
+          that.$refs.canvaspic.$el.width - nearDis
+        ) {
+          obj.x = that.$refs.canvaspic.$el.width - picWidth;
         }
 
-        if(obj.y < nearDis){
-          obj.y = 0
-        }else if(obj.y + picHeight > that.$refs.canvaspic.$el.height - nearDis){
-          obj.y = that.$refs.canvaspic.$el.height - picHeight
+        if (obj.y < nearDis) {
+          obj.y = 0;
+        } else if (
+          obj.y + picHeight >
+          that.$refs.canvaspic.$el.height - nearDis
+        ) {
+          obj.y = that.$refs.canvaspic.$el.height - picHeight;
         }
 
         // console.log('移动的位置',obj.x,obj.y)
         // console.log(obj)
-
-        
 
         // if()
 
@@ -442,7 +454,7 @@ export default {
 
         // that.mouseInfo.moveX = e.stageX;
         // that.mouseInfo.moveY = e.stageY;
-        
+
         // // debugger;
         // let diveceX = that.mouseInfo.moveX - that.mouseInfo.startX;
         // let diveceY = that.mouseInfo.moveY - that.mouseInfo.startY;
@@ -475,11 +487,10 @@ export default {
         // obj.x = judgeX;
         // obj.y = judgeY;
       }
-      function up(e){
-          document.removeEventListener("mousemove",move);
-          document.removeEventListener("mouseup",up);
+      function up(e) {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
       }
-      
     },
     objMove(e) {
       // 触发事件对象
@@ -610,8 +621,6 @@ export default {
     },
   },
 };
-
-
 </script>
 
 <style lang="scss">

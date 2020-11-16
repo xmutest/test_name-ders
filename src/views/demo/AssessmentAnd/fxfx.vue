@@ -36,12 +36,12 @@
                   {{ item2.safetyControlSpot }}
                 </td>
 
-                <td @dblclick="shishiClick(item3)">
+                <td >
                   <div slot="reference" class="name-wrapper">
                     {{ item3.assets }}
                   </div>
                 </td>
-                <td>
+                <td @click="shishiClick(item3)">
                   <div slot="reference" class="name-wrapper">
                     {{ item3.controlEntries }}
                   </div>
