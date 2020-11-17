@@ -408,4 +408,16 @@ export default ({
       data
     })
   },
+  /**
+   * @description 查询项目概述的详细过程时间预览
+   */
+  async API_ProjectOverviewFindDetailTimePreview(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/projectOverview/findDetailTimePreview',
+      method: 'get',
+      params:data
+    })
+  },
 })

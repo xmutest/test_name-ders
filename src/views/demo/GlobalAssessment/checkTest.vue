@@ -25,7 +25,7 @@
           <div class="mude_text_item">
             <div class="descTItle">接入点图片</div>
             <div class="tijiaobaoc">
-              <el-button type="primary" @click="showCanvas = true"
+              <el-button type="primary" @click="openCanvasArea"
                 >修改图片</el-button
               >
               <!-- <el-button type="primary"  v-drag="flag" 
@@ -312,7 +312,6 @@ export default {
         });
         if (res.code === 20000) {
           this.$message.success("保存图片成功！！");
-          this.bitmapArr = []
           this.getimgUrls();
           //查询列表
         } else {
@@ -325,7 +324,6 @@ export default {
         });
         if (res.code === 20000) {
           this.$message.success("更新图片成功！！");
-          this.bitmapArr = []
           this.getimgUrls();
           //查询列表
         } else {
@@ -676,6 +674,10 @@ export default {
         this.$message.error("错误，请联系管理员" + res.message);
       }
     },
+    openCanvasArea(){
+      this.bitmapArr = []
+      this.showCanvas = true
+    }
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <el-dropdown size="small" class="d2-mr">
-    <span class="btn-text">{{info.name ? `你好 ${info.name}` : '未登录'}}</span>
+    <span class="btn-text infoArea">{{info.name ? `你好 ${info.name}` : '未登录'}}</span>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item @click.native="logOff">
         <d2-icon name="power-off" class="d2-mr-5"/>
@@ -22,6 +22,13 @@
           label-width="100px"
           class="demo-ruleForm"
         >
+          <el-form-item label="原密码" prop="initPass">
+            <el-input
+              type="password"
+              v-model="ruleForm.initPass"
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
           <el-form-item label="密码" prop="pass">
             <el-input
               type="password"
@@ -29,7 +36,7 @@
               autocomplete="off"
             ></el-input>
           </el-form-item>
-          <el-form-item label="确认密码" prop="checkPass">
+          <el-form-item label="确认新密码" prop="checkPass">
             <el-input
               type="password"
               v-model="ruleForm.checkPass"
@@ -80,17 +87,19 @@ export default {
     return {
       dialogVisible: false,
       ruleForm: {
+        initPass:"",
         pass: "",
         checkPass: "",
       },
       rules: {
+        initPass:[ {validator: validatePass, trigger: "blur" }],
         pass: [{ validator: validatePass, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
       }
     }
   },
   created() {
-
+    console.log('用户信息',this.info)
   },
   computed: {
     ...mapState('d2admin/user', [
@@ -123,14 +132,14 @@ export default {
     },
     async changePass(){
       
-      console.log(this.info);
       // console.log(this.ruleForm.pass)
       let data = {
         loginName:this.info.user_info.loginName,
         userName:this.info.user_info.userName,
         userType:this.info.user_info.userType,
         userId:this.info.user_info.userId,
-        password:this.ruleForm.pass
+        password:this.ruleForm.pass,
+        initPass:this.ruleForm.initPass
       }
       let res = await this.$api.SYS_USER_PASSWORD_CHANGE(data)
 
@@ -140,7 +149,7 @@ export default {
       //   password:'hezhi127'
       // })
 
-      if(res.errcode == 20000) return this.logout()
+      if(res.code == 20000) return this.logout()
       
     },
     resetForm(formName) {
@@ -149,3 +158,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .theme-d2 .d2-theme-header .d2-header-right .infoArea{
+    background:#2D3A4B;
+    color:#fff!important;
+    font-weight:bold; 
+  }
+</style>

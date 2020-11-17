@@ -173,38 +173,37 @@
     </div>
 
     <el-dialog
-      title="提示"
+      title="测评时间表"
       :visible.sync="dialogVisible"
       width="50%">
+      <div class="mude_text_item">
+        <div class="descTItle">评测对象选择方法</div>
+        <d2-quill
+          style="min-height: 200px; margin-bottom: 20px"
+          v-model="timeInfoInsert"
+        />
+      </div>
       <div class="sentences">
-        &nbsp;&nbsp;本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
-      </div>
-      <div class="sentences" v-html="sentences">
-      </div>
-      <!-- // fromData: {
-      //   id: "",
-      //   briefIntroduction: "",
-      //   projectStartTime: "", //项目启动
-      //   startMeetingTime: "", //启动会议
-      //   lastMeetingTime: "",  //末次会议
-      //   confirmTime: "",  //复核确认
-      //   input_number: "",
-      // }, -->
-      <div class="sentences">
-        &nbsp;&nbsp;其中，
-        <span>{{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getFullYear() : 'YYYY'}}年
-        {{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getMonth() + 1: 'MM'}}月
-        {{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getDate(): 'DD'}}</span>日召开了项目启动会议，
-        确定了工作方案及项目人员名单；
-        <span>{{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getFullYear() : 'YYYY'}}年
-        {{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getMonth() + 1: 'MM'}}月
-        {{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getDate(): 'DD'}}</span>日召开了项目末次会议，确认了测评发现的问题；
-        <span>{{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getFullYear() : 'YYYY'}}年
-        {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getMonth() + 1: 'MM'}}月
-        {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getDate(): 'DD'}}</span>日对系统的整改情况进行了复核确认。
-      </div>
+          &nbsp;&nbsp;本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
+        </div>
+        <div class="sentences" v-html="sentences">${this.sentences}
+        </div>
+        <div class="sentences">
+          &nbsp;&nbsp;其中，
+          <span>{{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getFullYear() : 'YYYY'}}年
+          {{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getMonth() + 1: 'MM'}}月
+          {{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getDate(): 'DD'}}</span>日召开了项目启动会议，
+          确定了工作方案及项目人员名单；
+          <span>{{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getFullYear() : 'YYYY'}}年
+          {{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getMonth() + 1: 'MM'}}月
+          {{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getDate(): 'DD'}}</span>日召开了项目末次会议，确认了测评发现的问题；
+          <span>{{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getFullYear() : 'YYYY'}}年
+          {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getMonth() + 1: 'MM'}}月
+          {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getDate(): 'DD'}}</span>日对系统的整改情况进行了复核确认。
+        </div>
+      
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="dialogVisible = false">保存并退出</el-button>
       </span>
     </el-dialog>
 
@@ -618,7 +617,8 @@ export default {
           isfor: true,
         },
       ],
-      dialogVisible:false
+      dialogVisible:false,
+      timeInfoInsert:"11233",  //测评时间表
     };
   },
   created() {
@@ -791,6 +791,20 @@ export default {
       
       this.dialogVisible = true
       console.log(this.tableData)
+      
+      // 初次进入
+      this.func_getProjectTimeInfo()
+      
+
+
+    },
+    // 转换毫秒
+    transferDate(normalTIme,type=0){
+      // return new Date(normalTIme+'').getTime()
+      if(type) return new Date(normalTIme)
+      return normalTIme * 24 * 3600 * 1000
+    },
+    func_calDateFun(){
       let allTime = []
       this.tableData.map((res)=>{
         allTime.push(res.evaluationCycle)
@@ -835,11 +849,6 @@ export default {
 
       })
 
-      // <div>1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。</div>
-      // <div>2、YYYY年MM月DD日~YYYY年MM月DD日，方案编制过程。</div>
-      // <div>3、YYYY年MM月DD日~YYYY年MM月DD日，现场实施过程。</div>
-      // <div>4、YYYY年MM月DD日~YYYY年MM月DD日，分析与报告编制过程。</div>
-
       console.log(realityTime)
 
       if(realityTime[0].startTime != 0){
@@ -858,18 +867,51 @@ export default {
         `
       }
 
-      
+      this.timeInfoInsert = `
+        <pre>
+          <div class="sentences">
+            &nbsp;&nbsp;本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
+          </div>
+          <div class="sentences">
+           ${this.sentences}
+          </div>
+          <div class="sentences">
 
-
-    },
-    // 转换毫秒
-    transferDate(normalTIme,type=0){
-      // return new Date(normalTIme+'').getTime()
-      if(type) return new Date(normalTIme)
-      return normalTIme * 24 * 3600 * 1000
-    },
-    calDateFun(startTime,usedTime){
+          </div>
+        </pre>
+      `
       
+      `<div class="sentences">
+          &nbsp;&nbsp;本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
+        </div>
+        <div class="sentences" v-html="sentences">${this.sentences}
+        </div>
+        <div class="sentences">
+          &nbsp;&nbsp;其中，
+          <span>{{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getFullYear() : 'YYYY'}}年
+          {{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getMonth() + 1: 'MM'}}月
+          {{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getDate(): 'DD'}}</span>日召开了项目启动会议，
+          确定了工作方案及项目人员名单；
+          <span>{{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getFullYear() : 'YYYY'}}年
+          {{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getMonth() + 1: 'MM'}}月
+          {{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getDate(): 'DD'}}</span>日召开了项目末次会议，确认了测评发现的问题；
+          <span>{{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getFullYear() : 'YYYY'}}年
+          {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getMonth() + 1: 'MM'}}月
+          {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getDate(): 'DD'}}</span>日对系统的整改情况进行了复核确认。
+        </div>
+      `
+    },
+    async func_getProjectTimeInfo(){
+      let res = await this.$api.API_ProjectOverviewFindDetailTimePreview()
+      console.log('describe info',res)
+      let {data} = res
+      if(res.code !== 20000) return alert(res.message)
+      console.log(!data.detailTimePreview)
+      
+      if(!data.detailTimePreview){
+        console.log('进入')
+        this.func_calDateFun()
+      }
     }
   },
 };
