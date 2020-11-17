@@ -312,6 +312,7 @@ export default {
         });
         if (res.code === 20000) {
           this.$message.success("保存图片成功！！");
+          this.bitmapArr = []
           this.getimgUrls();
           //查询列表
         } else {
@@ -324,6 +325,7 @@ export default {
         });
         if (res.code === 20000) {
           this.$message.success("更新图片成功！！");
+          this.bitmapArr = []
           this.getimgUrls();
           //查询列表
         } else {
@@ -393,8 +395,8 @@ export default {
         let moveX = mouseX - that.mouseInfo.startLocateX,
           moveY = mouseY - that.mouseInfo.startLocateY;
 
-        (obj.x = that.mouseInfo.startLocateX + moveX),
-          (obj.y = that.mouseInfo.startLocateY + moveY);
+        obj.x = that.mouseInfo.startLocateX + moveX,
+        obj.y = that.mouseInfo.startLocateY + moveY;
 
         let picWidth = obj.image.width,
           picHeight = obj.image.height,
