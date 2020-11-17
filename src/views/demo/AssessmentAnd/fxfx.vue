@@ -36,41 +36,127 @@
                   {{ item2.safetyControlSpot }}
                 </td>
 
-                <td >
-                  <div slot="reference" class="name-wrapper">
-                    {{ item3.assets }}
-                  </div>
+                <td>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.assets }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.assets == null
+                          ? item3.assets
+                          : item3.assets.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
                 </td>
                 <td @click="shishiClick(item3)">
                   <div slot="reference" class="name-wrapper">
-                    {{ item3.controlEntries }}
+                    {{
+                      item3.controlEntries == null
+                        ? item3.controlEntries
+                        : item3.controlEntries.substr(0, 35)
+                    }}
                   </div>
                 </td>
                 <td>
-                  <div slot="reference" class="name-wrapper">
-                    {{ item3.problemDescription }}
-                  </div>
-                </td>
-                <td>{{ item3.problemAnalysis }}</td>
-                <td>
-                  <div>
-                    {{ item3.relationThreaten }}
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    {{ item3.originalRisk }}
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    {{ item3.hazardAnalysis }}
-                  </div>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.problemDescription }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.problemDescription == null
+                          ? item3.problemDescription
+                          : item3.problemDescription.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
                 </td>
                 <td>
-                  <div>
-                    {{ item3.rectificationSuggestions }}
-                  </div>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.problemAnalysis }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.problemAnalysis == null
+                          ? item3.problemAnalysis
+                          : item3.problemAnalysis.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
+                </td>
+                <td>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.relationThreaten }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.relationThreaten == null
+                          ? item3.relationThreaten
+                          : item3.relationThreaten.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
+                </td>
+                <td>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.originalRisk }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.originalRisk == null
+                          ? item3.originalRisk
+                          : item3.originalRisk.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
+                </td>
+                
+                <td>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.hazardAnalysis }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.hazardAnalysis == null
+                          ? item3.hazardAnalysis
+                          : item3.hazardAnalysis.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
+                </td>
+                <td>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.rectificationSuggestions }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.rectificationSuggestions == null
+                          ? item3.rectificationSuggestions
+                          : item3.rectificationSuggestions.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
                 </td>
               </tr>
             </template>
@@ -306,6 +392,7 @@ export default {
   },
   methods: {
     Listdatamis(item) {
+      // this.getDaPuList();
       let ls = [
         {
           id: 1,
@@ -322,6 +409,8 @@ export default {
       ];
       let amendId = this.amendAnalysis.amendId;
       this.amendAnalysis = item;
+      console.log("problemDescription:" + item.problemDescription);
+      console.log("assets:" + this.tsAmlist.assets);
       this.amendAnalysis.problemDescription = `${this.tsAmlist.assets}${item.problemDescription}`;
       this.relevanceWeiList = item.threatId;
       this.amendAnalysis.amendId = amendId;
@@ -434,7 +523,7 @@ export default {
     }
   }
   table th {
-     color: #909399;
+    color: #909399;
     height: 40px;
     border: 1px solid #cad9ea;
     font-size: 14px;
@@ -534,6 +623,15 @@ export default {
   }
   .text_fininfo {
     font-size: 12px;
+  }
+}
+::v-deep .el-dialog__header {
+  background-color: rgba(3, 169, 244, 0.5);
+  .el-dialog__title {
+    color: #ffffff;
+  }
+  .el-dialog__headerbtn .el-dialog__close {
+    color: #ffffff;
   }
 }
 </style>

@@ -33,7 +33,7 @@
                   {{ item2.safetyControlSpot }}
                 </td>
                 <td v-if="item3.assets">
-                  <el-popover trigger="click" width="200" placement="top">
+                  <el-popover trigger="click"  placement="top">
                     <div>
                       <p>
                         {{ item3.assets }}
@@ -56,7 +56,7 @@
                 </td>
 
                 <td>
-                  <el-popover trigger="click" width="200" placement="top">
+                  <el-popover trigger="click"  placement="top">
                     <div>
                       <p>
                         {{ item3.controlEntries }}
@@ -72,7 +72,7 @@
                   </el-popover>
                 </td>
                 <td>
-                  <el-popover trigger="click" width="200" placement="top">
+                  <el-popover trigger="click"  placement="top">
                     <div>
                       <p>
                         {{ item3.results }}

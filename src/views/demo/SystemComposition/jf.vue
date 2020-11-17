@@ -14,8 +14,8 @@
           ></div>
           <el-input
             :ref="'computerRoomName' + scope.$index"
-            @blur="
-              schujiaodian({
+            @input="
+              changeInput({
                 id: scope.row.id,
                 computerRoomName: scope.row.computerRoomName,
               })
@@ -96,7 +96,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page_name" style="padding: 0 20px 20px 20px;margin: 15px 0;">
+    <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
       <div class="search_ls">
         <div class="block">
           <el-pagination
@@ -157,7 +157,15 @@ export default {
         e.target.className != "itsz" &&
         e.target.className != "el-input__inner"
       ) {
-        that.indexs = "";
+        clearTimeout(that.timeout);
+        that.timeout = setTimeout(() => {
+          // console.log(item.computerRoomName);
+          that.indexs = "";
+          that.tabledatas.forEach((items) => {
+            items.show = false;
+          });
+        }, 200);
+
         // that.getlistdata();
       }
     });
@@ -168,6 +176,14 @@ export default {
     }),
   },
   methods: {
+    changeInput(item) {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        // console.log(item.computerRoomName);
+        this.schujiaodian(item);
+      }, 500);
+      // console.log(item.computerRoomName);
+    },
     async schujiaodianTm(item) {
       let data = {
         assetsNum: 1,
@@ -217,7 +233,7 @@ export default {
       );
       if (res.code === 20000) {
         let List = res.data.list;
-        this.total=res.data.total;
+        this.total = res.data.total;
         if (res.data.list.length > 0) {
           List.forEach((element) => {
             if (element.isEvaluationObj == 1) {
@@ -364,6 +380,5 @@ export default {
   height: 100%;
   top: 0;
   left: 0;
-  
 }
 </style>

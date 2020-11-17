@@ -442,7 +442,7 @@
     </div>
 
     <!-- 被测单位信息库 -->
-    <div class="baseofUnits">
+    <!-- <div class="baseofUnits">
       <el-dialog
         title="被测单位信息库"
         :visible.sync="BeingMeasuredble"
@@ -591,9 +591,9 @@
           </el-table>
         </div>
       </el-dialog>
-    </div>
+    </div> -->
     <!-- 测单位信息库 -->
-    <div class="baseofUnits">
+    <!-- <div class="baseofUnits">
       <el-dialog
         title="测单位信息库"
         :visible.sync="MeasurementUnitble"
@@ -738,7 +738,7 @@
           </el-table>
         </div>
       </el-dialog>
-    </div>
+    </div> -->
   </d2-container>
 </template>
 
@@ -932,11 +932,13 @@ export default {
             trigger: "blur",
           },
         ],
-        reportNum: [ {
+        reportNum: [
+          {
             required: true,
             message: "请输入报告编号",
             trigger: "blur",
-          },],
+          },
+        ],
         reportName: [
           {
             required: true,
@@ -1006,7 +1008,7 @@ export default {
         this.assessmentGroup.recordSn = this.xmu_info.data.recordSn;
         this.assessmentGroup.reportName = Nmas;
       } else {
-        this.$message.error('当前账号无测评机构代码，请联系管理员添加');
+        this.$message.error("当前账号无测评机构代码，请联系管理员添加");
       }
 
       // console.log(date.getTime());
@@ -1016,11 +1018,20 @@ export default {
       this.provincesCities = provinceName;
       this.districtCounty = cityNmae;
     },
-    async getEtlist() {},
+    async getEtlist() {
+      // 获取列表
+      let res = await this.$api.API_wordFindList();
+      // console.log(res);
+      if (res.code === 20000) {
+        this.TheMeasurementUnitList = res.data;
+      }
+    },
     async submitReport() {
-      this.$refs["assessmentGroup"].validate((valid) => {
+      this.$refs["assessmentGroup"].validate(async (valid) => {
         if (!valid) return;
         // TODO 提交表单
+        let res=await this.$api.API_wordGenerGate(this.assessmentGroup);
+        console.log(this.assessmentGroup);
       });
     },
     // 被测评

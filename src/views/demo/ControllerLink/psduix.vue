@@ -22,7 +22,7 @@
             />
           </div>
           <div class="mude_text_item">
-            <div class="descTItle">评测工具</div>
+            <div class="descTItle">测评工具</div>
             <div class="pc_gonjv">
               <el-tree
                 :data="setFindAll"

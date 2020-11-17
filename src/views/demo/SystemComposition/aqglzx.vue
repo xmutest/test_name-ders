@@ -14,8 +14,8 @@
           ></div>
           <el-input
             :ref="'safeManageCenterName' + scope.$index"
-            @blur="
-              schujiaodian({
+            @input="
+              changeInput({
                 id: scope.row.id,
                 safeManageCenterName: scope.row.safeManageCenterName,
               })
@@ -211,12 +211,26 @@ export default {
         e.target.className != "itsz" &&
         e.target.className != "el-input__inner"
       ) {
-        that.indexs = "";
-        // that.getlistdata();
+        clearTimeout(that.timeout);
+        that.timeout = setTimeout(() => {
+          // console.log(item.computerRoomName);
+          that.indexs = "";
+          that.tabledatas.forEach((items) => {
+            items.show = false;
+          });
+        }, 200);
       }
     });
   },
   methods: {
+     changeInput(item) {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        // console.log(item.computerRoomName);
+        this.schujiaodian(item);
+      }, 500);
+      // console.log(item.computerRoomName);
+    },
      // 分页
     handleSizeChange(val) {
       this.formPage.pageSize = val;

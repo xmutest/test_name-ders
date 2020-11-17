@@ -18,8 +18,8 @@
             ></div>
             <el-input
               :ref="'equipmentName' + scope.$index"
-              @blur="
-                schujiaodian({
+              @input="
+                changeInput({
                   id: scope.row.id,
                   equipmentName: scope.row.equipmentName,
                 })
@@ -198,7 +198,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="page_name" style="padding: 0 20px 20px 20px;margin: 15px 0;">
+    <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
       <div class="search_ls">
         <div class="block">
           <el-pagination
@@ -403,13 +403,27 @@ export default {
         e.target.className != "itsz" &&
         e.target.className != "el-input__inner"
       ) {
-        that.indexs = "";
-        // that.getlistdata();
+        clearTimeout(that.timeout);
+        that.timeout = setTimeout(() => {
+          // console.log(item.computerRoomName);
+          that.indexs = "";
+          that.tabledatas.forEach((items) => {
+            items.show = false;
+          });
+        }, 200);
       }
     });
   },
   methods: {
-     // 分页
+    changeInput(item) {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        // console.log(item.computerRoomName);
+        this.schujiaodian(item);
+      }, 500);
+      // console.log(item.computerRoomName);
+    },
+    // 分页
     handleSizeChange(val) {
       this.formPage.pageSize = val;
       this.getlistdata();
@@ -422,7 +436,7 @@ export default {
       let res = await this.$api.API_EquipmentFindEquipment(this.formPage);
       if (res.code === 20000) {
         let List = res.data.list;
-        this.total=res.data.total;
+        this.total = res.data.total;
         if (res.data.list.length > 0) {
           List.forEach((element) => {
             if (element.isEvaluationObj == 1) {

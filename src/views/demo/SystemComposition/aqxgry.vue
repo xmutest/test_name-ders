@@ -14,10 +14,12 @@
           ></div>
           <el-input
             :ref="'personnelName' + scope.$index"
-            @blur="schujiaodian({
+            @input="
+              changeInput({
                 id: scope.row.id,
                 personnelName: scope.row.personnelName,
-              })"
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.personnelName"
           ></el-input>
@@ -33,10 +35,12 @@
           ></div>
           <el-input
             :ref="'personnelPost' + scope.$index"
-            @blur="schujiaodian({
+            @blur="
+              schujiaodian({
                 id: scope.row.id,
                 personnelPost: scope.row.personnelPost,
-              })"
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.personnelPost"
           ></el-input>
@@ -52,10 +56,12 @@
           ></div>
           <el-input
             :ref="'telephone' + scope.$index"
-            @blur="schujiaodian({
+            @blur="
+              schujiaodian({
                 id: scope.row.id,
                 telephone: scope.row.telephone,
-              })"
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.telephone"
           ></el-input>
@@ -82,7 +88,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page_name" style="padding: 0 20px 20px 20px;margin: 15px 0;">
+    <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
       <div class="search_ls">
         <div class="block">
           <el-pagination
@@ -133,13 +139,27 @@ export default {
         e.target.className != "itsz" &&
         e.target.className != "el-input__inner"
       ) {
-        that.indexs = "";
-        // that.getlistdata();
+        clearTimeout(that.timeout);
+        that.timeout = setTimeout(() => {
+          // console.log(item.computerRoomName);
+          that.indexs = "";
+          that.tabledatas.forEach((items) => {
+            items.show = false;
+          });
+        }, 200);
       }
     });
   },
   methods: {
-     // 分页
+    changeInput(item) {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        // console.log(item.computerRoomName);
+        this.schujiaodian(item);
+      }, 500);
+      // console.log(item.computerRoomName);
+    },
+    // 分页
     handleSizeChange(val) {
       this.formPage.pageSize = val;
       this.getlistdata();
@@ -153,7 +173,7 @@ export default {
         this.formPage
       );
       if (res.code === 20000) {
-        this.total=res.data.total;
+        this.total = res.data.total;
         let List = res.data.list;
         if (res.data.list.length > 0) {
           List.forEach((element) => {

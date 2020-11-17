@@ -38,30 +38,102 @@
                   {{ item2.safetyControlSpot }}
                 </td>
 
-                <td>
-                  <div slot="reference" class="name-wrapper">
-                    {{ item3.assets }}
-                  </div>
+               <td>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.assets }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.assets == null
+                          ? item3.assets
+                          : item3.assets.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
+                </td>
+                 <td>
+                    <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.controlEntries }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.controlEntries == null
+                          ? item3.controlEntries
+                          : item3.controlEntries.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
                 </td>
                 <td>
-                  <div slot="reference" class="name-wrapper">
-                    {{ item3.controlEntries }}
-                  </div>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.problemDescription }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.problemDescription == null
+                          ? item3.problemDescription
+                          : item3.problemDescription.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
                 </td>
                 <td>
-                  <div slot="reference" class="name-wrapper">
-                    {{ item3.problemDescription }}
-                  </div>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.problemAnalysis }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.problemAnalysis == null
+                          ? item3.problemAnalysis
+                          : item3.problemAnalysis.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
                 </td>
-                <td>{{ item3.problemAnalysis }}</td>
-                <!-- 关联威胁 -->
                 <td>
-                  <div>
-                    {{ item3.relationThreaten }}
-                  </div>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.relationThreaten }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.relationThreaten == null
+                          ? item3.relationThreaten
+                          : item3.relationThreaten.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
                 </td>
-                <!-- 原始风险值 -->
-                <td>{{ item3.originalRisk }}</td>
+                <td>
+                  <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.originalRisk }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.originalRisk == null
+                          ? item3.originalRisk
+                          : item3.originalRisk.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
+                </td>
                 <!-- 修正后风险值 -->
                 <td>
                   <div>
@@ -135,9 +207,11 @@ export default {
     }
   }
   table th {
-    color: #909399;
+     color: #909399;
     height: 40px;
     border: 1px solid #cad9ea;
+    font-size: 14px;
+    font-weight: bold;
   }
   table thead th {
     background-color: rgba(238, 238, 238, 1);

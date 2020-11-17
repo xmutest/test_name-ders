@@ -19,8 +19,8 @@
             <th>权重</th>
           </tr>
         </thead>
-        <template tbody v-for="(item,ins) in dataList">
-           <tr class="List_b" :key="ins">
+        <template tbody v-for="(item, ins) in dataList">
+          <tr class="List_b" :key="ins">
             <td colspan="12">{{ item.extendedStandard }}</td>
           </tr>
           <tbody v-for="(item1, index1) in item.resultData" :key="index1">
@@ -39,19 +39,52 @@
                 </td>
 
                 <td>
-                  <div slot="reference" class="name-wrapper">
-                    {{ item3.assets }}
-                  </div>
+                    <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.assets }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.assets == null
+                          ? item3.assets
+                          : item3.assets.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
                 </td>
                 <td>
-                  <div slot="reference" class="name-wrapper">
-                    {{ item3.controlEntries }}
-                  </div>
+                    <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.controlEntries }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.controlEntries == null
+                          ? item3.controlEntries
+                          : item3.controlEntries.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
                 </td>
                 <td>
-                  <div slot="reference" class="name-wrapper">
-                    {{ item3.problemDescription }}
-                  </div>
+                    <el-popover trigger="click" placement="top">
+                    <div>
+                      <p>
+                        {{ item3.problemDescription }}
+                      </p>
+                    </div>
+                    <div slot="reference" class="name-wrapper">
+                      {{
+                        item3.problemDescription == null
+                          ? item3.problemDescription
+                          : item3.problemDescription.substr(0, 35)
+                      }}
+                    </div>
+                  </el-popover>
                 </td>
                 <td>{{ item3.originalRisk }}</td>
                 <!-- 修正前严重程度 -->
@@ -92,9 +125,14 @@
                       </el-input>
                     </div>
                     <div slot="reference" class="name-wrapper">
-                      <span style="opacity: 0">.</span
-                      >
-                      <span v-if="item3.correctReason!=null">{{ item3.correctReason }}</span>
+                      <span style="opacity: 0">.</span>
+                      <span v-if="item3.correctReason != null">
+                        {{
+                          item3.correctReason == ""
+                            ? item3.correctReason
+                            : item3.correctReason.substr(0, 35)
+                        }}
+                      </span>
                     </div>
                   </el-popover>
                   <!-- <div>
@@ -225,6 +263,8 @@ export default {
     color: #909399;
     height: 40px;
     border: 1px solid #cad9ea;
+    font-size: 14px;
+    font-weight: bold;
   }
   table thead th {
     background-color: rgba(238, 238, 238, 1);

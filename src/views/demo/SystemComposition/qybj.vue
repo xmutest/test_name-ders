@@ -14,10 +14,12 @@
           ></div>
           <el-input
             :ref="'boundaryName' + scope.$index"
-            @blur="schujiaodian({
+            @input="
+              changeInput({
                 id: scope.row.id,
                 boundaryName: scope.row.boundaryName,
-              })"
+              })
+            "
             v-show="scope.row.show"
             v-model="scope.row.boundaryName"
           ></el-input>
@@ -33,10 +35,12 @@
           ></div>
           <el-input
             :ref="'accessMode' + scope.$index"
-            @blur="schujiaodian({
+            @blur="
+              schujiaodian({
                 id: scope.row.id,
                 accessMode: scope.row.accessMode,
-              })"
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.accessMode"
@@ -53,10 +57,12 @@
           ></div>
           <el-input
             :ref="'mainBusiness' + scope.$index"
-            @blur="schujiaodian({
+            @blur="
+              schujiaodian({
                 id: scope.row.id,
                 mainBusiness: scope.row.mainBusiness,
-              })"
+              })
+            "
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.mainBusiness"
@@ -69,10 +75,12 @@
         <template slot-scope="scope">
           <el-select
             v-model="scope.row.importantDegree"
-            @change="schujiaodian({
+            @change="
+              schujiaodian({
                 id: scope.row.id,
                 importantDegree: scope.row.importantDegree,
-              })"
+              })
+            "
             filterable
             placeholder="请选择"
           >
@@ -132,7 +140,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page_name" style="padding: 0 20px 20px 20px;margin: 15px 0;">
+    <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
       <div class="search_ls">
         <div class="block">
           <el-pagination
@@ -195,8 +203,14 @@ export default {
         e.target.className != "itsz" &&
         e.target.className != "el-input__inner"
       ) {
-        that.indexs = "";
-        // that.getlistdata();
+        clearTimeout(that.timeout);
+        that.timeout = setTimeout(() => {
+          // console.log(item.computerRoomName);
+          that.indexs = "";
+          that.tabledatas.forEach((items) => {
+            items.show = false;
+          });
+        }, 200);
       }
     });
   },
@@ -206,7 +220,15 @@ export default {
     }),
   },
   methods: {
-     // 分页
+    changeInput(item) {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        // console.log(item.computerRoomName);
+        this.schujiaodian(item);
+      }, 500);
+      // console.log(item.computerRoomName);
+    },
+    // 分页
     handleSizeChange(val) {
       this.formPage.pageSize = val;
       this.getlistdata();
@@ -222,7 +244,7 @@ export default {
 
       if (res.code === 20000) {
         let List = res.data.list;
-        this.total=res.data.total;
+        this.total = res.data.total;
         if (res.data.list.length > 0) {
           List.forEach((element) => {
             if (element.isEvaluationObj == 1) {

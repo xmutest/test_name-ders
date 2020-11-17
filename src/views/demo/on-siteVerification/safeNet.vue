@@ -434,7 +434,9 @@ export default {
 .el-popover {
   background-color: #ddd;
   color: black;
-  width: 400px;
+  max-width: 600px;
+  max-height: 400px;
+  overflow: auto;
   .el-popover__title {
     color: red;
     // font-size: 20px;
