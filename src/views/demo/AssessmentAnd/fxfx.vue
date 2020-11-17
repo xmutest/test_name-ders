@@ -53,13 +53,17 @@
                   </el-popover>
                 </td>
                 <td @click="shishiClick(item3)">
-                  <div slot="reference" class="name-wrapper">
-                    {{
-                      item3.controlEntries == null
-                        ? item3.controlEntries
-                        : item3.controlEntries.substr(0, 35)
-                    }}
-                  </div>
+                  
+                    <div slot="reference" class="name-wrapper">
+                      <el-link >
+                      {{
+                        item3.controlEntries == null
+                          ? item3.controlEntries
+                          : item3.controlEntries.substr(0, 35)
+                      }}
+                      </el-link>
+                    </div>
+                  
                 </td>
                 <td>
                   <el-popover trigger="click" placement="top">
@@ -125,7 +129,7 @@
                     </div>
                   </el-popover>
                 </td>
-                
+
                 <td>
                   <el-popover trigger="click" placement="top">
                     <div>
@@ -194,13 +198,7 @@
             >
           </span>
         </el-dialog>
-        <div class="name_ts">
-          <div></div>
-          <div class="name_ro">
-            <div>修改后测评符合程度：0</div>
-            <div>严重程度值：{{ beforeModificationSeverity }}</div>
-          </div>
-        </div>
+       
         <div class="relevance relevance_tyu">
           <div
             class="relevance_tyu_item"
@@ -228,7 +226,9 @@
               </div>
             </el-tab-pane>
             <el-tab-pane label="高风险判例" v-if="amendAnalysis.highRiskJudge">
+              <div class="xuna">
               {{ amendAnalysis.highRiskJudge }}
+              </div>
             </el-tab-pane>
           </el-tabs>
         </div>
@@ -327,6 +327,10 @@
             >
           </div>
         </div>
+         <div class="name_ro">
+            <div>修改后测评符合程度：0</div>
+            <div>严重程度值：{{ beforeModificationSeverity }}</div>
+          </div> 
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="Tolist()">确 定</el-button>
           <el-button @click="(dialogVisible = false), getDataList()"
@@ -392,7 +396,7 @@ export default {
   },
   methods: {
     Listdatamis(item) {
-      // this.getDaPuList();
+      this.getDaPuList();
       let ls = [
         {
           id: 1,
@@ -409,8 +413,6 @@ export default {
       ];
       let amendId = this.amendAnalysis.amendId;
       this.amendAnalysis = item;
-      console.log("problemDescription:" + item.problemDescription);
-      console.log("assets:" + this.tsAmlist.assets);
       this.amendAnalysis.problemDescription = `${this.tsAmlist.assets}${item.problemDescription}`;
       this.relevanceWeiList = item.threatId;
       this.amendAnalysis.amendId = amendId;
@@ -555,6 +557,12 @@ export default {
 }
 ::v-deep .el-dialog {
   width: 900px;
+  .el-dialog__body{
+    padding: 0 20px;
+  }
+  .el-button:active{
+      color: #fff;
+  }
 }
 .updata_dialog {
   .name_ts {
@@ -562,19 +570,18 @@ export default {
     margin-bottom: 5px;
     position: relative;
     color: blue;
-    .name_ro {
+    
+  }
+  .name_ro {
       position: absolute;
-      right: 0;
       display: flex;
       color: black;
       div {
         margin: 0 15px;
       }
     }
-  }
   .relevance {
     max-height: 200px;
-    margin: 15px 0;
     .xuna {
       overflow: auto;
       height: 135px;
@@ -626,9 +633,11 @@ export default {
   }
 }
 ::v-deep .el-dialog__header {
+  padding: 10px  20px 10px 20px;
   background-color: rgba(3, 169, 244, 0.5);
   .el-dialog__title {
     color: #ffffff;
+    font-size: 16px;
   }
   .el-dialog__headerbtn .el-dialog__close {
     color: #ffffff;

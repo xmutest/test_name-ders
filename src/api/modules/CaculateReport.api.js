@@ -96,7 +96,7 @@ export default ({
       data
     })
   },
-   /**
+  /**
    * @description 测评报告记录列表
    * @param {Object} data 携带的信息
    */
@@ -107,7 +107,7 @@ export default ({
     return request({
       url: '/word/findList',
       method: 'get',
-      params:data
+      params: data
     })
   },
   /**
@@ -121,7 +121,7 @@ export default ({
     return request({
       url: '/word/delete',
       method: 'get',
-      params:data
+      params: data
     })
   },
   /**
@@ -135,7 +135,21 @@ export default ({
     return request({
       url: '/word/findModel',
       method: 'get',
-      params:data
+      params: data
+    })
+  },
+  /**
+   * @description 模板下载
+   * @param {Object} data 
+   */
+  SYS_reportWord_DownLoadDoc(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: data.url,
+      method: 'get',
+      data,
+      responseType: 'blob',
     })
   },
 })

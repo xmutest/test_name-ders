@@ -412,19 +412,26 @@
               </el-table-column> -->
               <el-table-column label="报告名称">
                 <template slot-scope="scope">
-                  {{ scope.row.reportName }}
+                  {{ scope.row.reportName }}.docx
+                </template>
+              </el-table-column>
+              <el-table-column label="报告生成状态" width="120">
+                <template slot-scope="scope">
+                  <div v-if="scope.row.status == 0">生成中</div>
+                  <div v-else-if="scope.row.status == 1">已生成</div>
+                  <div v-else>生成失败</div>
                 </template>
               </el-table-column>
               <el-table-column label="日期" width="120">
                 <template slot-scope="scope">
-                  {{ scope.row.reportTime }}
+                  {{ scope.row.reportDate }}
                 </template>
               </el-table-column>
               <el-table-column label="操作" width="150">
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
-                    @click="reportGeneratingEdit(scope.$index, scope.row)"
+                    @click="reportGeneratingEdit(scope.row)"
                     >下载</el-button
                   >
                   <el-button
@@ -992,8 +999,6 @@ export default {
     },
     // 生成默认值
     textChangeHandler() {
-      console.log(this.info);
-      console.log(this.xmu_info);
       var date = new Date();
       let dataTs = date.getFullYear() + "";
       if (this.info.user_info.companyCode != null) {
@@ -1022,16 +1027,35 @@ export default {
       // 获取列表
       let res = await this.$api.API_wordFindList();
       // console.log(res);
+      let timeout = "";
+      clearTimeout(timeout);
       if (res.code === 20000) {
-        this.TheMeasurementUnitList = res.data;
+        this.reportGeneratingRecords = res.data;
+        res.data.forEach((item) => {
+          if (item.status !== 1) {
+            timeout = setTimeout(() => {
+              // console.log(item.computerRoomName);
+              this.getEtlist();
+            }, 2000);
+          }
+        });
+        // setInterval(() => {
+        //   this.getEtlist();
+        // }, 2000);
       }
     },
     async submitReport() {
       this.$refs["assessmentGroup"].validate(async (valid) => {
         if (!valid) return;
         // TODO 提交表单
-        let res=await this.$api.API_wordGenerGate(this.assessmentGroup);
-        console.log(this.assessmentGroup);
+        let res = await this.$api.API_wordGenerGate(this.assessmentGroup);
+
+        let url = "/evaluation/reportWord/" + "";
+        if (res.code === 20000) {
+          this.getEtlist();
+        } else {
+          this.$message.error("制作失败");
+        }
       });
     },
     // 被测评
@@ -1056,11 +1080,62 @@ export default {
       console.log(val);
     },
     //删除报告
-    reportGeneratingDelete(val) {
-      console.log(val);
+    reportGeneratingDelete(val, row) {
+      this.$confirm("确定删除此记录", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.API_wordDelete({ id: row.id });
+          if (res.code === 20000) {
+            this.$message.success("删除成功！！");
+            this.getEtlist();
+            //查询列表
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     //生成报告
-    reportGeneratingEdit() {},
+    async reportGeneratingEdit(val) {
+      if (val.status == 1) {
+        let url = `/reportWord/${val.fileName}`;
+        let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
+        if (res.code == 500) {
+          alert(res.message);
+        } else {
+          let blob = new Blob([res], {
+            type: "application/msword;charset=utf-8",
+          });
+
+          //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+          if (window.navigator && window.navigator.msSaveBlob) {
+            //IE浏览器、微软浏览器
+            /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+              IE可不重命名，以防万一，所以都写上比较好 */
+            window.navigator.msSaveBlob(blob, val.fileName);
+          } else {
+            //其他浏览器
+            let link = document.createElement("a"); // 创建a标签
+            link.style.display = "none";
+            let objectUrl = URL.createObjectURL(blob);
+            link.download = `${val.reportName}.docx`;
+            link.href = objectUrl;
+            link.click();
+            URL.revokeObjectURL(objectUrl);
+          }
+        }
+      } else {
+        this.$message.error("当前状态不支持下载");
+      }
+    },
   },
 };
 </script>

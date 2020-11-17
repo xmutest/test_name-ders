@@ -121,4 +121,18 @@ export default ({
       data: JSON.stringify(data)
     })
   },
+  // 获取
+  /**
+   * @description 获取风险值
+   * @param {Object} data 携带的信息
+   */
+  async API_RiskFindKnowledge(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/risk/findKnowledge',
+      method: 'post',
+      data
+    })
+  },
 })

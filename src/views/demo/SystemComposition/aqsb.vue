@@ -420,7 +420,7 @@ export default {
       this.timeout = setTimeout(() => {
         // console.log(item.computerRoomName);
         this.schujiaodian(item);
-      }, 500);
+      }, 1000);
       // console.log(item.computerRoomName);
     },
     // 分页
