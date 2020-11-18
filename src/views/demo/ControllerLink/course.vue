@@ -175,15 +175,14 @@
     <el-dialog
       title="测评时间表"
       :visible.sync="dialogVisible"
-      width="50%">
+      width="70%">
       <div class="mude_text_item">
-        <div class="descTItle">评测对象选择方法</div>
         <d2-quill
           style="min-height: 200px; margin-bottom: 20px"
           v-model="timeInfoInsert"
         />
       </div>
-      <div class="sentences">
+      <!-- <div class="sentences">
           &nbsp;&nbsp;本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
         </div>
         <div class="sentences" v-html="sentences">${this.sentences}
@@ -200,10 +199,10 @@
           <span>{{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getFullYear() : 'YYYY'}}年
           {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getMonth() + 1: 'MM'}}月
           {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getDate(): 'DD'}}</span>日对系统的整改情况进行了复核确认。
-        </div>
+        </div> -->
       
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">保存并退出</el-button>
+        <el-button type="primary" @click="saveInfoAndExit">保存并退出</el-button>
       </span>
     </el-dialog>
 
@@ -618,7 +617,8 @@ export default {
         },
       ],
       dialogVisible:false,
-      timeInfoInsert:"11233",  //测评时间表
+      timeInfoInsert:"",  //测评时间表
+      saveData:{},
     };
   },
   created() {
@@ -792,11 +792,7 @@ export default {
       this.dialogVisible = true
       console.log(this.tableData)
       
-      // 初次进入
       this.func_getProjectTimeInfo()
-      
-
-
     },
     // 转换毫秒
     transferDate(normalTIme,type=0){
@@ -868,19 +864,19 @@ export default {
       }
 
       this.timeInfoInsert = `
-        <pre>
+        
           <div class="sentences">
-            &nbsp;&nbsp;本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
+            本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
           </div>
+          <br/>
           <div class="sentences">
            ${this.sentences}
           </div>
-          <div class="sentences">
-
+          <br/>
+          <div class="sentences">其中，<span style="color:red;">${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getFullYear() : 'YYYY'}年${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getMonth() + 1: 'MM'}月${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getDate(): 'DD'}</span>日召开了项目启动会议，确定了工作方案及项目人员名单；<span style="color:red;">${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getFullYear() : 'YYYY'}年${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getMonth() + 1: 'MM'}月${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getDate(): 'DD'}</span>日召开了项目末次会议，确认了测评发现的问题；<span style="color:red;">${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getFullYear() : 'YYYY'}年${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getMonth() + 1: 'MM'}月${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getDate(): 'DD'}</span>日召开了项目末次会议，确认了测评发现的问题；<span style="color:red;">${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getFullYear() : 'YYYY'}年${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getMonth() + 1: 'MM'}月${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getDate(): 'DD'}</span>日对系统的整改情况进行了复核确认。
           </div>
-        </pre>
       `
-      
+      let a = 
       `<div class="sentences">
           &nbsp;&nbsp;本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
         </div>
@@ -908,10 +904,22 @@ export default {
       if(res.code !== 20000) return alert(res.message)
       console.log(!data.detailTimePreview)
       
+      this.saveData.id = data.id
+
       if(!data.detailTimePreview){
-        console.log('进入')
+        
         this.func_calDateFun()
+      }else{
+        this.timeInfoInsert = data.detailTimePreview
       }
+    },
+    async saveInfoAndExit(){
+
+      this.saveData.detailTimePreview = this.timeInfoInsert
+
+      let res = await this.$api.API_ProjectOverviewUpdateDetailTimePreview(this.saveData)
+      console.log('save',res)
+      this.dialogVisible = false
     }
   },
 };
@@ -982,6 +990,9 @@ export default {
 }
 .styleRed{
   color:red;
+}
+.ql-snow .ql-editor pre.ql-syntax{
+  background: #fff;
 }
 </style>
 

@@ -1,10 +1,10 @@
 <template>
   <el-dropdown size="small" class="d2-mr">
-    <span class="btn-text infoArea">{{info.name ? `你好 ${info.name}` : '未登录'}}</span>
+    <div class="btn-text infoArea">{{info.name ? `你好` : '未登录'}} <span class="myAccountName">{{info.name ? info.name : ''}} </span></div>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item @click.native="logOff">
         <d2-icon name="power-off" class="d2-mr-5"/>
-        注销
+        登出
       </el-dropdown-item>
       <el-dropdown-item @click.native="dialogVisible = true">
         <d2-icon name="power-off" class="d2-mr-5"/>
@@ -161,8 +161,12 @@ export default {
 
 <style lang="scss">
   .theme-d2 .d2-theme-header .d2-header-right .infoArea{
-    background:#2D3A4B;
-    color:#fff!important;
+    // background:#2D3A4B;
+    // color:#2D3A4B!important;
+    // font-weight:bold; 
+  }
+  .myAccountName{
+    color:#2D3A4B!important;
     font-weight:bold; 
   }
 </style>

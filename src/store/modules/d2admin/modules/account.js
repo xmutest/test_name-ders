@@ -83,7 +83,7 @@ export default {
         commit('d2admin/gray/set', true, {
           root: true
         })
-        MessageBox.confirm('确定要注销当前用户吗', '注销用户', {
+        MessageBox.confirm('确定要登出当前用户吗', '登出用户', {
             type: 'warning'
           })
           .then(() => {
@@ -97,7 +97,7 @@ export default {
               root: true
             })
             Message({
-              message: '取消注销操作'
+              message: '取消登出操作'
             })
           })
       } else {

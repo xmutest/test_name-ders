@@ -420,4 +420,16 @@ export default ({
       params:data
     })
   },
+  /**
+  * @description 查询项目概述的详细过程时间预览
+  */
+  async API_ProjectOverviewUpdateDetailTimePreview(data = {}) {
+    
+    // 接口请求
+    return request({
+      url: '/projectOverview/updateDetailTimePreview',
+      method: 'post',
+      params:data
+    })
+  },
 })
