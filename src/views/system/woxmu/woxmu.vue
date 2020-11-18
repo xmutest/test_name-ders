@@ -754,7 +754,6 @@ export default {
     }
   }
   .page_ts {
-    margin-top: 20px;
     ::v-deep .el-card__body {
       padding: 0;
     }

@@ -7,11 +7,14 @@
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">总体评价</div>
-            <d2-quill
+            <el-input
               style="min-height: 200px; margin-bottom: 20px"
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
               v-model="fromdata.overallEvaluation"
-              @text-change="textChangeHandler"
-            />
+            >
+            </el-input>
           </div>
           <div class="tijiaobaoc">
             <el-button type="primary" @click="submitReport">保存</el-button>
@@ -42,6 +45,7 @@ export default {
     }),
   },
   methods: {
+  
     textChangeHandler(delta, oldDelta, source) {
       // console.log(delta,oldDelta,source)
     },

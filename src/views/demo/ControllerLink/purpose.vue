@@ -7,11 +7,14 @@
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">评测目的</div>
-            <d2-quill
+            <el-input
               style="min-height: 200px; margin-bottom: 20px"
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
               v-model="fromdata.evaluationObjective"
-              @text-change="textChangeHandler"
-            />
+            >
+            </el-input>
           </div>
 
           <div class="mude_text_item">
@@ -90,12 +93,8 @@ export default {
           data = `安全等级测评的目的是通过对目标系统在安全技术及管理方面的测评，对目标系统的安全技术状态及安全管理状况做出初步判断，给出目标系统在安全技术及安全管理方面与其相应安全等级保护要求之间的差距。测评结论作为委托方进一步完善系统安全策略及安全技术防护措施依据。
          <br>为进一步提高信息系统的保障能力，根据《信息安全等级保护管理办法》（公通字2007【43】号）的精神，${this.xmu_info.data.evaluatedUnit}委托广州华南信息安全测评中心（DJCP2010440126）对${this.xmu_info.data.systemName}实施等级测评，以期发现信息系统和等级保护标准的差距以及存在的安全隐患，为后续的安全整改工作提供参考依据。`;
         }
-        if (
-          List.data.evaluationBasis != null
-        ) {
-          this.fromdata.evaluationBasis = List.data.evaluationBasis.split(
-            ","
-          );
+        if (List.data.evaluationBasis != null) {
+          this.fromdata.evaluationBasis = List.data.evaluationBasis.split(",");
         }
         if (List.data.otherEvaluationBasis == null) {
           this.fromdata.otherEvaluationBasis = `《${this.xmu_info.data.systemName}定级报告》`;
@@ -139,9 +138,7 @@ export default {
     },
     async submitReport() {
       console.log(this.fromdata);
-      this.fromdata.evaluationBasis = this.fromdata.evaluationBasis.join(
-        ","
-      );
+      this.fromdata.evaluationBasis = this.fromdata.evaluationBasis.join(",");
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         this.$message.success("修改成功！！");

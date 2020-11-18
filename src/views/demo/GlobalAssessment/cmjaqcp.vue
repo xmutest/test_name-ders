@@ -7,11 +7,14 @@
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">层面间安全测评</div>
-            <d2-quill
+            <el-input
               style="min-height: 200px; margin-bottom: 20px"
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
               v-model="fromdata.betweenLayers"
-              @text-change="textChangeHandler"
-            />
+            >
+            </el-input>
           </div>
 
           <div class="tijiaobaoc">

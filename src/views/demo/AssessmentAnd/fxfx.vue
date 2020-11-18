@@ -12,7 +12,7 @@
             <th>问题描述</th>
             <th>问题分析</th>
             <th>关联威胁</th>
-            <th>原始风险值</th>
+            <th style="width: 100px">原始风险值</th>
             <th>危害分析</th>
             <th>整改建议</th>
           </tr>
@@ -223,9 +223,14 @@
                 >
               </div>
             </el-tab-pane>
-            <el-tab-pane label="高风险判例" v-if="amendAnalysis.highRiskJudge">
+            <el-tab-pane label="高风险判例" v-if="fenxianList">
               <div class="xuna">
-                {{ amendAnalysis.highRiskJudge }}
+                <p
+                  v-for="(item3, index3) in fenxianList.split('。')"
+                  :key="index3"
+                >
+                  {{ item3 }}
+                </p>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -274,8 +279,7 @@
         </div>
         <div class="Threats">
           <div>
-            <el-popover width="600" trigger="hover">
-              <el-button
+            <el-button
                 @click="FmeListo('高')"
                 :style="
                   amendAnalysis.originalRisk == '高' ||
@@ -287,11 +291,9 @@
               >
                 高风险
               </el-button>
-            </el-popover>
           </div>
           <div>
-            <el-popover width="600" trigger="hover">
-              <el-button
+            <el-button
                 @click="FmeListo('中')"
                 :style="
                   amendAnalysis.originalRisk == '中' ||
@@ -302,11 +304,9 @@
                 slot="reference"
                 >中风险</el-button
               >
-            </el-popover>
           </div>
           <div>
-            <el-popover width="600" trigger="hover">
-              <el-button
+            <el-button
                 slot="reference"
                 @click="FmeListo('低')"
                 :style="
@@ -317,7 +317,6 @@
                 "
                 >低风险</el-button
               >
-            </el-popover>
           </div>
           <div>
             <el-button type="info" @click="innerVisible = true"
@@ -373,6 +372,7 @@ export default {
         amendId: 1,
         safetyControlId: 136,
       },
+      fenxianList: null,
       amendAnalysisVO: {},
       tsAmlist: {},
       amendAnalysis: {
@@ -458,6 +458,7 @@ export default {
         this.relevanceList = res.data[0];
         this.relevanceWeiList = res.data[1];
         this.DataListOp = res.data[2];
+        this.fenxianList = res.data[3];
       } else {
         this.$message.error("信息加载出错");
       }
@@ -574,7 +575,7 @@ export default {
     display: flex;
     color: black;
     div {
-      margin: 0 15px;
+      margin: 25px 15px;
     }
   }
   .relevance {
@@ -645,7 +646,7 @@ export default {
   text-decoration: none;
   color: #08c;
 }
-.text_click:hover{
+.text_click:hover {
   cursor: pointer;
   color: black;
 }

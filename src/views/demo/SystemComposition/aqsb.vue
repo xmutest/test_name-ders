@@ -595,7 +595,7 @@ export default {
     },
     async schujiaodianTm(item) {
       let data = {
-        assetsNum: 3,
+        assetsNum: 4,
         assetsId: item.id,
         guideBookId: item.evaluationInstructionBookId,
         projectId: this.xmu_info.projectId,

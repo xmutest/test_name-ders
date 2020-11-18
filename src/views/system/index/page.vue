@@ -439,7 +439,7 @@ export default {
         standard: 3, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
         standardVersion: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
         standardExtends: "", //拓展标准
-        level: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
+        level: 2, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
         sag: "", //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         membersIdList: [], //项目参与人
         status: 1,
@@ -585,13 +585,14 @@ export default {
     },
     // 等级联动
     async selectGoodsByGroupId(enent, sag) {
+      let is = enent - 1;
       let res = await this.$api.API_SagFindSagByLevel({ sagLevel: enent });
       if (res.code === 20000) {
         this.saglist = res.data;
         if (sag) {
           this.xmform.sag = sag;
         } else {
-          this.xmform.sag = res.data[0].id;
+          this.xmform.sag = res.data[is].id;
         }
       }
     },
@@ -717,7 +718,7 @@ export default {
         standard: 3, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
         standardVersion: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
         standardExtends: "", //拓展标准
-        level: 1, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
+        level: 2, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
         sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         membersIdList: [], //项目参与人
         status: 1,
@@ -754,7 +755,6 @@ export default {
     }
   }
   .page_ts {
-    margin-top: 20px;
     ::v-deep .el-card__body {
       padding: 0;
     }

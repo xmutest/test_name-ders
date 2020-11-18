@@ -7,28 +7,37 @@
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">对被测系统的基本判断</div>
-            <d2-quill
+            <el-input
+              type="textarea"
               style="min-height: 200px; margin-bottom: 20px"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
               v-model="fromdata.basicJudgment"
-              @text-change="textChangeHandler"
-            />
+            >
+            </el-input>
           </div>
           <div class="mude_text_item">
             <div class="descTItle">对方案中应关注的测评重点建议</div>
-            <d2-quill
+            <el-input
+              type="textarea"
               style="min-height: 200px; margin-bottom: 20px"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
               v-model="fromdata.keySuggestions"
-              @text-change="textChangeHandler"
-            />
+            >
+            </el-input>
           </div>
           <div class="mude_text_item">
             <div class="descTItle">对系统实施渗透测试的初步考虑</div>
             <div class="pc_gonjv">
-              <d2-quill
+              <el-input
+                type="textarea"
                 style="min-height: 200px; margin-bottom: 20px"
+                :autosize="{ minRows: 10, maxRows: 15 }"
+                placeholder="请输入内容"
                 v-model="fromdata.infiltrationTestSuggestions"
-                @text-change="textChangeHandler"
-              />
+              >
+              </el-input>
             </div>
           </div>
           <div class="tijiaobaoc">

@@ -10,13 +10,13 @@
             <th>关联资产</th>
             <th>控制项</th>
             <th>问题描述</th>
-            <th>原始风险值</th>
-            <th>修正前严重程度</th>
-            <th>修正因子</th>
+            <th style="width: 100px">原始风险值</th>
+            <th style="width: 100px">修正前严重程度</th>
+            <th style="width: 100px">修正因子</th>
             <th>修正理由</th>
-            <th>修正后风险值</th>
-            <th>修正后严重程度</th>
-            <th>权重</th>
+            <th style="width: 120px">修正后风险值</th>
+            <th style="width: 120px">修正后严重程度</th>
+            <th style="width: 50px">权重</th>
           </tr>
         </thead>
         <template tbody v-for="(item, ins) in dataList">

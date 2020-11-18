@@ -7,11 +7,14 @@
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">网络结构描述</div>
-            <d2-quill
+            <el-input
               style="min-height: 200px; margin-bottom: 20px"
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
               v-model="fromdata.networkStructureDescribe"
-              @text-change="textChangeHandler"
-            />
+            >
+            </el-input>
           </div>
           <div class="tijiaobaoc">
             <el-button type="primary" @click="submitReport">保存</el-button>
@@ -391,7 +394,6 @@ export default {
     align-items: center;
     .wangruo_img {
       max-width: 600px;
-      max-height: 400px;
       margin-right: 10px;
       img {
         width: 100%;

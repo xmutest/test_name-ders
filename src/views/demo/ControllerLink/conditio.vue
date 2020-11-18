@@ -177,11 +177,14 @@
           <div class="mude_text_item">
             <div class="descTItle">前次测评情况</div>
             <div class="to_tim">
-              <d2-quill
+              <el-input
+                type="textarea"
                 style="min-height: 200px; margin-bottom: 20px"
+                :autosize="{ minRows: 10, maxRows: 15 }"
+                placeholder="请输入内容"
                 v-model="fromdata.lastEvaluationSituation"
-                @text-change="textChangeHandler"
-              />
+              >
+              </el-input>
             </div>
           </div>
           <div class="tijiaobaoc">
@@ -399,7 +402,6 @@ export default {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       this.PassiveCompanyUpdate();
       if (res.code === 20000) {
-        this.$message.success("修改成功！！");
         this.getEtlist();
         //查询列表
       } else {

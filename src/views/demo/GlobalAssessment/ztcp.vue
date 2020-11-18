@@ -5,13 +5,13 @@
       <table v-loading="loading">
         <thead>
           <tr>
-            <th>安全层面</th>
-            <th>控制点</th>
-            <th>关联资产</th>
+            <th style="width: 100px">安全层面</th>
+            <th style="width: 100px">控制点</th>
+            <th style="width: 100px">关联资产</th>
             <th>控制项</th>
             <th>结果记录</th>
-            <th>测评项权重</th>
-            <th>修正前</th>
+            <th style="width: 50px">测评项权重</th>
+            <th style="width: 50px">修正前</th>
           </tr>
         </thead>
         <template tbody v-for="(item,ins) in dataList">
@@ -43,7 +43,7 @@
                       {{
                         item3.assets == ""
                           ? item3.assets
-                          : item3.assets.substr(0, 35)
+                          : item3.assets.substr(0, 60)
                       }}
                     </div>
                   </el-popover>
@@ -66,7 +66,7 @@
                       {{
                         item3.controlEntries == ""
                           ? item3.controlEntries
-                          : item3.controlEntries.substr(0, 35)
+                          : item3.controlEntries.substr(0, 60)
                       }}
                     </div>
                   </el-popover>
@@ -82,7 +82,7 @@
                       {{
                         item3.results == ""
                           ? item3.results
-                          : item3.results.substr(0, 35)
+                          : item3.results.substr(0, 50)
                       }}
                     </div>
                   </el-popover>

@@ -12,11 +12,11 @@
             <th>问题描述</th>
             <th>问题分析</th>
             <th>关联威胁</th>
-            <th>原始风险值</th>
-            <th>修正或整改后</th>
+            <th style="width: 100px">原始风险值</th>
+            <th style="width: 100px">修正或整改后</th>
             <th>危害分析</th>
             <th>整改建议</th>
-            <th>权重</th>
+            <th style="width: 50px">权重</th>
           </tr>
         </thead>
         <template tbody v-for="(item,ins) in dataList">
