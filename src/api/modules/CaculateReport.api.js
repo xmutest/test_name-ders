@@ -2,6 +2,7 @@ import store from '@/store/index'
 export default ({
   service,
   request,
+  requestword,
   serviceForMock,
   requestForMock,
   mock,
@@ -145,7 +146,7 @@ export default ({
   SYS_reportWord_DownLoadDoc(data = {}) {
     // 模拟数据
     // 接口请求
-    return request({
+    return requestword({
       url: data.url,
       method: 'get',
       data,

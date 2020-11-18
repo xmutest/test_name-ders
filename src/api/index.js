@@ -1,6 +1,6 @@
 import { assign, map } from 'lodash'
 import faker from 'faker/locale/zh_CN'
-import { service, request, serviceForMock, requestForMock, mock } from './service'
+import { service, request, serviceForMock, requestForMock, mock,requestword } from './service'
 import * as tools from './tools'
 
 const files = require.context('./modules', true, /\.api\.js$/)
@@ -11,6 +11,7 @@ export default assign({}, ...map(generators, generator => generator({
   request,
   serviceForMock,
   requestForMock,
+  requestword,
   mock,
   faker,
   tools

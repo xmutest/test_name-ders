@@ -53,17 +53,15 @@
                   </el-popover>
                 </td>
                 <td @click="shishiClick(item3)">
-                  
-                    <div slot="reference" class="name-wrapper">
-                      <el-link >
+                  <div slot="reference" class="name-wrapper">
+                    <a class="text_click">
                       {{
                         item3.controlEntries == null
                           ? item3.controlEntries
                           : item3.controlEntries.substr(0, 35)
                       }}
-                      </el-link>
-                    </div>
-                  
+                    </a>
+                  </div>
                 </td>
                 <td>
                   <el-popover trigger="click" placement="top">
@@ -198,7 +196,7 @@
             >
           </span>
         </el-dialog>
-       
+
         <div class="relevance relevance_tyu">
           <div
             class="relevance_tyu_item"
@@ -227,7 +225,7 @@
             </el-tab-pane>
             <el-tab-pane label="高风险判例" v-if="amendAnalysis.highRiskJudge">
               <div class="xuna">
-              {{ amendAnalysis.highRiskJudge }}
+                {{ amendAnalysis.highRiskJudge }}
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -327,10 +325,10 @@
             >
           </div>
         </div>
-         <div class="name_ro">
-            <div>修改后测评符合程度：0</div>
-            <div>严重程度值：{{ beforeModificationSeverity }}</div>
-          </div> 
+        <div class="name_ro">
+          <div>修改后测评符合程度：0</div>
+          <div>严重程度值：{{ beforeModificationSeverity }}</div>
+        </div>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="Tolist()">确 定</el-button>
           <el-button @click="(dialogVisible = false), getDataList()"
@@ -557,11 +555,11 @@ export default {
 }
 ::v-deep .el-dialog {
   width: 900px;
-  .el-dialog__body{
+  .el-dialog__body {
     padding: 0 20px;
   }
-  .el-button:active{
-      color: #fff;
+  .el-button:active {
+    color: #fff;
   }
 }
 .updata_dialog {
@@ -570,16 +568,15 @@ export default {
     margin-bottom: 5px;
     position: relative;
     color: blue;
-    
   }
   .name_ro {
-      position: absolute;
-      display: flex;
-      color: black;
-      div {
-        margin: 0 15px;
-      }
+    position: absolute;
+    display: flex;
+    color: black;
+    div {
+      margin: 0 15px;
     }
+  }
   .relevance {
     max-height: 200px;
     .xuna {
@@ -633,7 +630,7 @@ export default {
   }
 }
 ::v-deep .el-dialog__header {
-  padding: 10px  20px 10px 20px;
+  padding: 10px 20px 10px 20px;
   background-color: rgba(3, 169, 244, 0.5);
   .el-dialog__title {
     color: #ffffff;
@@ -642,6 +639,15 @@ export default {
   .el-dialog__headerbtn .el-dialog__close {
     color: #ffffff;
   }
+}
+.text_click {
+  background: transparent;
+  text-decoration: none;
+  color: #08c;
+}
+.text_click:hover{
+  cursor: pointer;
+  color: black;
 }
 </style>
 

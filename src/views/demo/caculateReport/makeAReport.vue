@@ -299,100 +299,96 @@
           </div> -->
           <div class="mude_text_item">
             <div class="descTItle">制作报告</div>
-            <el-row :gutter="24">
-              <el-form
-                ref="assessmentGroup"
-                :model="assessmentGroup"
-                :rules="rules"
-                size="medium"
-                label-width="100px"
+
+            <el-form
+              ref="assessmentGroup"
+              :model="assessmentGroup"
+              :rules="rules"
+              size="medium"
+            >
+              <el-form-item
+                label-width="130px"
+                label="该系统本年度测评"
+                prop="annualReview"
+                class="lisT1"
               >
-                <el-col :span="8">
-                  <el-form-item
-                    label-width="120px"
-                    label="报告编号："
-                    prop="reportNum"
-                  >
-                    <el-input
-                      v-model="assessmentGroup.reportNum"
-                      placeholder="请输入报告编号："
-                      :style="{ width: '100%' }"
-                    ></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item
-                    label-width="120px"
-                    label="备案证明编号："
-                    prop="recordSn"
-                  >
-                    <el-input
-                      v-model="assessmentGroup.recordSn"
-                      placeholder="请输入备案证明编号："
-                      :style="{ width: '100%' }"
-                    ></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item
-                    label-width="120px"
-                    label="报告名称："
-                    prop="reportName"
-                  >
-                    <el-input
-                      v-model="assessmentGroup.reportName"
-                      placeholder="请输入报告名称："
-                      :style="{ width: '100%' }"
-                    ></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item
-                    label-width="120px"
-                    label="报告日期："
-                    prop="reportTime"
-                  >
-                    <el-date-picker
-                      v-model="assessmentGroup.reportTime"
-                      value-formate="timestamp"
-                      :style="{ width: '100%' }"
-                      placeholder="请选择报告日期："
-                      clearable
-                    ></el-date-picker>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="5">
-                  <el-form-item
-                    label-width="130px"
-                    label="该系统本年度测评"
-                    prop="annualReview"
-                  >
-                    <el-select
-                      v-model="assessmentGroup.annualReview"
-                      placeholder="请选择该系统本年度测评"
-                      @change="textChangeHandler"
-                      :style="{ width: '100%' }"
-                    >
-                      <el-option
-                        v-for="(item, index) in field108Options"
-                        :key="index"
-                        :label="item.label"
-                        :value="item.value"
-                        :disabled="item.disabled"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                  <div class="tijiaobaoc">
-                    <!-- <el-button type="primary" size="small">保存配置</el-button> -->
-                    <el-button type="primary" size="small" @click="submitReport"
-                      >制作报告</el-button
-                    >
-                  </div>
-                </el-col>
-              </el-form>
-            </el-row>
+                <el-select
+                  v-model="assessmentGroup.annualReview"
+                  placeholder="请选择该系统本年度测评"
+                  @change="textChangeHandler"
+                  :style="{ width: '100px' }"
+                >
+                  <el-option
+                    v-for="(item, index) in field108Options"
+                    :key="index"
+                    :label="item.label"
+                    :value="item.value"
+                    :disabled="item.disabled"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                label-width="120px"
+                label="备案证明编号："
+                prop="recordSn"
+                class="lisT2"
+              >
+                <el-input
+                  v-model="assessmentGroup.recordSn"
+                  placeholder="请输入备案证明编号："
+                  disabled
+                  :style="{ width: '170px' }"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item
+                label-width="120px"
+                label="报告日期："
+                prop="reportTime"
+                class="lisT3"
+              >
+                <el-date-picker
+                  v-model="assessmentGroup.reportTime"
+                  type="date"
+                  format="yyyy - MM - dd"
+                  value-format="timestamp"
+                  :style="{ width: '150px' }"
+                  placeholder="请选择日期"
+                ></el-date-picker>
+              </el-form-item>
+
+              <el-form-item
+                label-width="100px"
+                label="报告名称："
+                prop="reportName"
+                class="lst3"
+              >
+                <el-input
+                  v-model="assessmentGroup.reportName"
+                  placeholder="请输入报告名称："
+                  :style="{ width: '100%' }"
+                ></el-input>
+              </el-form-item>
+              <el-form-item
+                label-width="100px"
+                label="报告编号："
+                prop="reportNum"
+                class="lst3"
+              >
+                <el-input
+                  v-model="assessmentGroup.reportNum"
+                  placeholder="请输入报告编号："
+                  :style="{ width: '100%' }"
+                ></el-input>
+              </el-form-item>
+
+              <div class="tijiaobaoc">
+                <!-- <el-button type="primary" size="small">保存配置</el-button> -->
+                <el-button type="primary" size="small" @click="submitReport"
+                  >制作报告</el-button
+                >
+              </div>
+            </el-form>
           </div>
 
           <div class="mude_text_item">
@@ -422,17 +418,24 @@
                   <div v-else>生成失败</div>
                 </template>
               </el-table-column>
-              <el-table-column label="日期" width="120">
+              <el-table-column label="日期" width="150">
                 <template slot-scope="scope">
-                  {{ scope.row.reportDate }}
+                  {{ formattime(scope.row.createdTime) }}
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="150">
+              <el-table-column label="操作" width="250">
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
                     @click="reportGeneratingEdit(scope.row)"
                     >下载</el-button
+                  >
+                  <el-button
+                    size="mini"
+                    type="info"
+                    v-show="scope.row.status == 2"
+                    @click="reportGeneratingsbai(scope.row)"
+                    >失败原因</el-button
                   >
                   <el-button
                     size="mini"
@@ -991,6 +994,27 @@ export default {
     }),
   },
   methods: {
+    formattime(item) {
+      let date = new Date(parseInt(item));
+      let Y = date.getFullYear() + "-";
+      let M =
+        date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1) + "-"
+          : date.getMonth() + 1 + "-";
+      let D =
+        date.getDate() < 10 ? "0" + date.getDate() + " " : date.getDate() + " ";
+      let h =
+        date.getHours() < 10
+          ? "0" + date.getHours() + ":"
+          : date.getHours() + ":";
+      let m =
+        date.getMinutes() < 10
+          ? "0" + date.getMinutes() + ":"
+          : date.getMinutes() + ":";
+      let s =
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      return Y + M + D + h + m + s;
+    },
     submitForm() {
       this.$refs["TheMeasurementUnit"].validate((valid) => {
         if (!valid) return;
@@ -1008,7 +1032,7 @@ export default {
         )}-${this.info.user_info.companyCode.substring(
           this.info.user_info.companyCode.length - 6
         )}-0${this.assessmentGroup.annualReview}`;
-        let Nmas = `${this.xmu_info.data.evaluatedUnit}_${this.xmu_info.data.systemName}_测评报告_0${this.assessmentGroup.annualReview}`;
+        let Nmas = `${this.xmu_info.data.evaluatedUnit}_${this.xmu_info.data.systemName}_测评报告`;
         this.assessmentGroup.reportNum = lst;
         this.assessmentGroup.recordSn = this.xmu_info.data.recordSn;
         this.assessmentGroup.reportName = Nmas;
@@ -1032,11 +1056,13 @@ export default {
       if (res.code === 20000) {
         this.reportGeneratingRecords = res.data;
         res.data.forEach((item) => {
-          if (item.status !== 1) {
-            timeout = setTimeout(() => {
-              // console.log(item.computerRoomName);
-              this.getEtlist();
-            }, 2000);
+          if (item.status !== 1 && item.status !== 2) {
+            if (!timeout) {
+              timeout = setTimeout(() => {
+                // console.log(item.computerRoomName);
+                this.getEtlist();
+              }, 2000);
+            }
           }
         });
         // setInterval(() => {
@@ -1049,8 +1075,6 @@ export default {
         if (!valid) return;
         // TODO 提交表单
         let res = await this.$api.API_wordGenerGate(this.assessmentGroup);
-
-        let url = "/evaluation/reportWord/" + "";
         if (res.code === 20000) {
           this.getEtlist();
         } else {
@@ -1136,6 +1160,14 @@ export default {
         this.$message.error("当前状态不支持下载");
       }
     },
+    // 失败原因
+    reportGeneratingsbai(item) {
+      this.$alert(item.failedReason, "失败原因", {
+        confirmButtonText: "确定",
+        type: "warning",
+        callback: (action) => {},
+      });
+    },
   },
 };
 </script>
@@ -1182,6 +1214,23 @@ export default {
   .descTItle {
     @extend %unable-border-left;
   }
+}
+
+.lisT1 {
+  min-width: 250px;
+  display: inline-block;
+}
+.lisT2 {
+  min-width: 250px;
+  display: inline-block;
+}
+.lisT3 {
+  width: 285px;
+  display: inline-block;
+}
+.lst3 {
+  width: 50%;
+  display: inline-block;
 }
 </style>
 

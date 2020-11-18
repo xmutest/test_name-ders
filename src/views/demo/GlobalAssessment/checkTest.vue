@@ -19,7 +19,7 @@
               v-model="fromdata.accessPointDescribe"
             />
           </div>
-           <div class="tijiaobaoc">
+          <div class="tijiaobaoc">
             <el-button type="primary" @click="submitReport">保存</el-button>
           </div>
           <div class="mude_text_item">
@@ -150,7 +150,6 @@
               <img :src="imgUrls" alt="" class="resPic" />
             </div>
           </div>
-         
         </el-card>
       </div>
       <!-- 图片 -->
@@ -393,8 +392,8 @@ export default {
         let moveX = mouseX - that.mouseInfo.startLocateX,
           moveY = mouseY - that.mouseInfo.startLocateY;
 
-        obj.x = that.mouseInfo.startLocateX + moveX,
-        obj.y = that.mouseInfo.startLocateY + moveY;
+        (obj.x = that.mouseInfo.startLocateX + moveX),
+          (obj.y = that.mouseInfo.startLocateY + moveY);
 
         let picWidth = obj.image.width,
           picHeight = obj.image.height,
@@ -674,15 +673,15 @@ export default {
         this.$message.error("错误，请联系管理员" + res.message);
       }
     },
-    openCanvasArea(){
-      this.bitmapArr = []
-      this.showCanvas = true
-    }
+    openCanvasArea() {
+      this.bitmapArr = [];
+      this.showCanvas = true;
+    },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .mude_is {
   margin: 20px 0;
   .mude_is_left {
@@ -700,5 +699,68 @@ export default {
 }
 .el-card__header {
   border-bottom: 0px solid #ebeef5;
+}
+.canvasArea {
+  width: 1000px;
+  height: 700px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+.resPic {
+  border: 1px solid #ccc;
+}
+
+.casWindow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+}
+
+.canvasObj {
+  border: 2px solid black;
+  box-sizing: border-box;
+  // margin:0 auto;
+}
+
+.openChangeMode {
+  width: 100%;
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
+.toorBar {
+  width: 100%;
+  padding: 20px 20px 0;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+.casClose {
+  width: 30px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  cursor: pointer;
+}
+.resPic {
+  max-width: 900px;
+  max-height: 600px;
+}
+.resPics {
+  max-width: 900px;
+  max-height: 600px;
+}
+.avatar-uploader {
+  display: inline-block;
+  margin: 0 5px;
 }
 </style>

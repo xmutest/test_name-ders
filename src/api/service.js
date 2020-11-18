@@ -184,10 +184,24 @@ function createRequestFunction(service) {
   }
 }
 
+function createRequestFunctionword(service) {
+  return function (config) {
+    const token = util.cookies.get('token')
+    const configDefault = {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': get(config, 'headers.Content-Type', 'application/json')
+      },
+      timeout: 8000,
+      data: {}
+    }
+    return service(Object.assign(configDefault, config))
+  }
+}
 // 用于真实网络请求的实例和请求方法
 export const service = createService()
 export const request = createRequestFunction(service)
-
+export const requestword = createRequestFunctionword(service)
 // 用于模拟网络请求的实例和请求方法
 export const serviceForMock = createService()
 export const requestForMock = createRequestFunction(serviceForMock)
