@@ -7,17 +7,25 @@
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">验证测试</div>
-            <d2-quill
-              style="min-height: 200px; margin-bottom: 20px"
-              v-model="fromdatas.verificationTest"
-            />
+            <el-input
+              style="min-height: 200px; margin-bottom: 20px"
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
+              v-model="fromdatas.verificationTest"
+            >
+            </el-input>
           </div>
           <div class="mude_text_item">
             <div class="descTItle">接入点描述</div>
-            <d2-quill
-              style="min-height: 200px; margin-bottom: 20px"
-              v-model="fromdata.accessPointDescribe"
-            />
+            <el-input
+              style="min-height: 200px; margin-bottom: 20px"
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
+              v-model="fromdata.accessPointDescribe"
+            >
+            </el-input>
           </div>
           <div class="tijiaobaoc">
             <el-button type="primary" @click="submitReport">保存</el-button>
@@ -33,6 +41,12 @@
               > -->
             </div>
             <div class="to_tim">
+              <!-- <canvasToorBarSel
+                :showControl="showTools"
+                :selIndex="inputIndex"
+                @close="closeControl"
+                @addPic="casAdd"
+              ></canvasToorBarSel> -->
               <canvasToorBarSel
                 :showControl="showTools"
                 :selIndex="inputIndex"
@@ -94,6 +108,9 @@
                     <el-button type="primary" @click="saveCanvas"
                       >保存</el-button
                     >
+                    <el-button type="primary" @click="saveNewCanvas"
+                      >测试保存</el-button
+                    >
                     <img
                       :src="
                         require('@/views/demo/ControllerLink/img/close.png')
@@ -102,13 +119,13 @@
                       class="casClose"
                     />
                   </div>
-                  <easel-canvas
+                  <canvas id="canvas" width="1000" height="500" class="canvasObj"></canvas>
+                  <!-- <easel-canvas
                     :width="1000"
                     :height="500"
                     ref="canvaspic"
                     class="canvasObj"
                   >
-                    <!-- 使用图片要用require获取 -->
                     <easel-bitmap
                       :image="imgUrls"
                       :x="1000 / 2"
@@ -116,21 +133,6 @@
                       :align="['center', 'center']"
                     >
                     </easel-bitmap>
-
-                    <!-- <easel-bitmap
-                      :image="
-                        require(`@/views/demo/ControllerLink/img/palntlsImg/${item}.png`)
-                      "
-                      class="resPics"
-                      :x="0"
-                      :y="0"
-                      :align="['left', 'top']"
-                      @mousedown="objTouch($event)"
-                      @pressmove.prevent="objMove($event)"
-                      @mouseout="objOut($event)"
-                      v-for="(item, key) in bitmapArr"
-                      :key="key"
-                    > -->
                     <easel-bitmap
                       :image="
                         require(`@/views/demo/ControllerLink/img/palntlsImg/${item}.png`)
@@ -143,7 +145,8 @@
                       :key="key"
                     >
                     </easel-bitmap>
-                  </easel-canvas>
+                  </easel-canvas> -->
+
                 </div>
               </div>
 
@@ -207,6 +210,10 @@ export default {
     let that = this;
     this.casSize();
     this.getimgUrls();
+
+    // fabric
+    this.initCanvas()
+
     // setTimeout(function(){
     //   that.outputPic()
     // },1000)
@@ -298,9 +305,8 @@ export default {
     },
 
     // 保存接入点图片
-    async saveCanvas() {
-      let parper = this.$refs.canvaspic.$el;
-      var result = parper.toDataURL("image/png");
+    async saveCanvas(result) {
+     
       // 获取获取图片
       let resPic = document.querySelector(".resPic");
       let file = this.dataURLtoBlob(result);
@@ -329,6 +335,8 @@ export default {
           this.$message.error("错误，请联系管理员" + res.message);
         }
       }
+this.canvas.clear()
+      this.showCanvas = false
       resPic.src = result;
     },
     // 移动元素
@@ -575,6 +583,22 @@ export default {
     },
     // 流程工具选择
     showToolsFun(e) {
+      // let flag = false;
+      // for (let i = 0; i < this.bitmapArr.length; i++) {
+      //   if (this.bitmapArr[i].indexOf(e.currentTarget.dataset.index) != -1)
+      //     flag = true;
+      // }
+
+      // if (flag) {
+      //   return this.$message({
+      //     message: `已经选过 j${e.currentTarget.dataset.index} 了`,
+      //     type: "warning",
+      //   });
+      // }
+
+      // this.showTools = true;
+      // this.inputIndex = e.currentTarget.dataset.index;
+
       let flag = false;
       for (let i = 0; i < this.bitmapArr.length; i++) {
         if (this.bitmapArr[i].indexOf(e.currentTarget.dataset.index) != -1)
@@ -590,6 +614,7 @@ export default {
 
       this.showTools = true;
       this.inputIndex = e.currentTarget.dataset.index;
+
     },
     closeControl(e) {
       this.showTools = e;
@@ -604,6 +629,8 @@ export default {
 
       // }
       this.bitmapArr.push(e);
+      // 填入画布
+      this.createPic(pic)
     },
     async getEtlist() {
       let List = await this.$api.API_WholeEvaluationFindWholeEvaluation();
@@ -611,7 +638,7 @@ export default {
         if (List.data == null || List.data.verificationTest == null) {
           this.fromdatas.verificationTest = `
           
-           对${this.xmu_info.data.systemName}进行测评，涉及到漏洞扫描工具、渗透性测试工具集等多种测试工具。为了发挥测评工具的作用，达到测评的目的，各种测评工具需要接入到被测系统网络中，并配置合法的网络IP地址。
+            对${this.xmu_info.data.systemName}进行测评，涉及到漏洞扫描工具、渗透性测试工具集等多种测试工具。为了发挥测评工具的作用，达到测评的目的，各种测评工具需要接入到被测系统网络中，并配置合法的网络IP地址。
            
           `;
         } else {
@@ -676,7 +703,140 @@ export default {
     openCanvasArea() {
       this.bitmapArr = [];
       this.showCanvas = true;
+      console.log('this.imgUrls',this.imgUrls)
+      this.setBg(this.imgUrls)
     },
+    initCanvas() {
+      console.log('run canvas')
+      let that = this
+      that.canvas = new fabric.Canvas("canvas");
+      let casWidth = that.canvas.width,
+          casHeight = that.canvas.height
+      console.log('fab',that.canvas)
+      
+      // let bg = new Image()
+      // // bg.crossOrigin = "Anonymous";  //跨域
+      // bg.src = require("@/views/demo/GlobalAssessment/img/structure01.jpg")
+      // bg.onload = function(){
+      //   console.log('bg onload')
+      //   that.canvas.setBackgroundImage(
+      //     require("@/views/demo/GlobalAssessment/img/structure01.jpg"),
+      //     that.canvas.renderAll.bind(that.canvas),
+      //     {
+      //       scaleX: that.canvas.width / bg.width,
+      //       scaleY: that.canvas.height / bg.height
+      //     }
+      //   );
+      // }
+
+      // let obj,obj2
+      // let man = new Image()
+      // man.src = require("@/views/demo/GlobalAssessment/img/man.jpeg")
+      // man.onload = function(){
+      //   obj = new fabric.Image(man,{
+      //     width:200,
+      //     height:200,
+      //     left: 100,
+      //     top: 100,
+      //   })
+        
+      //   obj2 = new fabric.Image(man,{
+      //     width:200,
+      //     height:200,
+      //     left:300,
+      //     top: 200,
+      //   })
+
+      //   that.canvas.add(obj,obj2);
+      // }
+
+      // let manSrc = require("@/views/demo/GlobalAssessment/img/palntlsImg/ja1.png")
+
+      // fabric.Image.fromURL(manSrc,function(obj1){
+      //   that.canvas.add(obj1)
+      // })
+
+      // 洛丹伦
+      
+
+        //鼠标按下事件
+        // canvas.on("mouse:down", function(e) {
+        //   this.panning = true;
+        //   canvas.selection = false; 
+        // });
+        // //鼠标抬起事件
+        // canvas.on("mouse:up", function(e) {
+        //   this.panning = false;
+        //   canvas.selection = true;
+        // });
+        // // 移动画布事件
+        // canvas.on("mouse:move", function(e) {
+        //   if (this.panning && e && e.e) {
+        //     var delta = new fabric.Point(e.e.movementX, e.e.movementY);
+        //     canvas.relativePan(delta);
+        //   }
+        // });
+        // // 鼠标滚动画布放大缩小
+        // canvas.on("mouse:wheel", function(e) {
+        //   var zoom = (event.deltaY > 0 ? -0.1 : 0.1) + canvas.getZoom();
+        //   zoom = Math.max(0.1, zoom); //最小为原来的1/10
+        //   zoom = Math.min(3, zoom); //最大是原来的3倍
+        //   var zoomPoint = new fabric.Point(event.pageX, event.pageY);
+        //   canvas.zoomToPoint(zoomPoint, zoom);
+        // });
+      
+    },
+    setBg(src){
+      if(!src) return this.$message.error('暂无图片,请上传图片')
+      let that = this
+      let bg = new Image()
+      // bg.crossOrigin = "Anonymous";  //跨域
+      bg.src = src
+      bg.onload = function(){
+        console.log('bg onload')
+        that.canvas.setBackgroundImage(
+          src,
+          that.canvas.renderAll.bind(that.canvas),
+          {
+            scaleX: that.canvas.width / bg.width,
+            scaleY: that.canvas.height / bg.height
+          }
+        )
+      }
+      // let that = this
+      // var bg_url = require("@/views/demo/GlobalAssessment/img/structure01.jpg")          
+      // fabric.Image.fromURL( bg_url , function(oImg) {
+      //     oImg.set({
+      //     originX: 'left', 
+      //     originY: 'top',
+      //     scaleX: that.canvas.width / bg.width,
+      //     scaleY: that.canvas.height / bg.height
+      //     });
+      //     that.canvas.setBackgroundImage(oImg, that.canvas.renderAll.bind(that.canvas));
+      // });
+    },
+    createPic(src){
+      let that = this
+      let manSrc = src
+
+      fabric.Image.fromURL(manSrc,function(obj){
+        that.canvas.add(obj)
+      })
+
+    },
+    saveNewCanvas(){
+      // var canvas = new fabric.Canvas("canvas");
+      var result = this.canvas.toDataURL({
+        width: this.canvas.width,
+        height: this.canvas.height,
+        left: 0,
+        top: 0,
+        format: 'png',
+      });
+      this.saveCanvas(result);
+      
+
+    }
   },
 };
 </script>

@@ -13,10 +13,13 @@ Vue.prototype.$http = axios
 import router from './router'
 import { menuHeader, menuAside } from '@/menu'
 import { frameInRoutes } from '@/router/routes'
+import { fabric } from 'fabric'
+
 
 
 // 画布插件
 Vue.use(require('vue-easeljs'))
+Vue.use(fabric);
 // Vue.use(require('echarts'))
 
 // 核心插件

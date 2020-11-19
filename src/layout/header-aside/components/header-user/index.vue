@@ -166,7 +166,10 @@ export default {
     // font-weight:bold; 
   }
   .myAccountName{
-    color:#2D3A4B!important;
+    color:#08c!important;
     font-weight:bold; 
+  }
+  .myAccountName:hover{
+    color:#2D3A4B!important;
   }
 </style>
