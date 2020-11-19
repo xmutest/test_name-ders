@@ -8,24 +8,26 @@
           <div class="mude_text_item">
             <div class="descTItle">验证测试</div>
             <el-input
-              style="min-height: 200px; margin-bottom: 20px"
-              type="textarea"
-              :autosize="{ minRows: 10, maxRows: 15 }"
-              placeholder="请输入内容"
-              v-model="fromdatas.verificationTest"
-            >
-            </el-input>
+              style="min-height: 200px;  margin-bottom: 20px"
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
+              v-model="fromdatas.verificationTest"
+            >
+                          </el-input
+            >
           </div>
           <div class="mude_text_item">
             <div class="descTItle">接入点描述</div>
             <el-input
-              style="min-height: 200px; margin-bottom: 20px"
-              type="textarea"
-              :autosize="{ minRows: 10, maxRows: 15 }"
-              placeholder="请输入内容"
-              v-model="fromdata.accessPointDescribe"
-            >
-            </el-input>
+              style="min-height: 200px;  margin-bottom: 20px"
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
+              v-model="fromdata.accessPointDescribe"
+            >
+                          </el-input
+            >
           </div>
           <div class="tijiaobaoc">
             <el-button type="primary" @click="submitReport">保存</el-button>
@@ -105,11 +107,8 @@
                     >
                       <el-button type="primary">使用其他图片</el-button>
                     </el-upload>
-                    <el-button type="primary" @click="saveCanvas"
-                      >保存</el-button
-                    >
                     <el-button type="primary" @click="saveNewCanvas"
-                      >测试保存</el-button
+                      >保存</el-button
                     >
                     <img
                       :src="
@@ -119,7 +118,12 @@
                       class="casClose"
                     />
                   </div>
-                  <canvas id="canvas" width="1000" height="500" class="canvasObj"></canvas>
+                  <canvas
+                    id="canvas"
+                    width="1000"
+                    height="500"
+                    class="canvasObj"
+                  ></canvas>
                   <!-- <easel-canvas
                     :width="1000"
                     :height="500"
@@ -146,7 +150,6 @@
                     >
                     </easel-bitmap>
                   </easel-canvas> -->
-
                 </div>
               </div>
 
@@ -212,7 +215,7 @@ export default {
     this.getimgUrls();
 
     // fabric
-    this.initCanvas()
+    this.initCanvas();
 
     // setTimeout(function(){
     //   that.outputPic()
@@ -256,6 +259,7 @@ export default {
         if (res.data !== null) {
           this.imgUrls = res.data.imgUrl + res.data.imgName;
           this.imgUrlsid = res.data.id;
+          this.setBg(this.imgUrls);
         } else {
           this.getlistdataImg();
         }
@@ -271,6 +275,7 @@ export default {
         if (res.data !== null) {
           this.imgUrl = res.data.imgUrl + res.data.imgName;
           this.imgUrls = this.imgUrl;
+          this.setBg(this.imgUrls);
         }
       }
       if (res.code !== 20000) {
@@ -306,7 +311,6 @@ export default {
 
     // 保存接入点图片
     async saveCanvas(result) {
-     
       // 获取获取图片
       let resPic = document.querySelector(".resPic");
       let file = this.dataURLtoBlob(result);
@@ -335,8 +339,8 @@ export default {
           this.$message.error("错误，请联系管理员" + res.message);
         }
       }
-this.canvas.clear()
-      this.showCanvas = false
+      this.canvas.clear();
+      this.showCanvas = false;
       resPic.src = result;
     },
     // 移动元素
@@ -614,7 +618,6 @@ this.canvas.clear()
 
       this.showTools = true;
       this.inputIndex = e.currentTarget.dataset.index;
-
     },
     closeControl(e) {
       this.showTools = e;
@@ -630,7 +633,7 @@ this.canvas.clear()
       // }
       this.bitmapArr.push(e);
       // 填入画布
-      this.createPic(pic)
+      this.createPic(pic);
     },
     async getEtlist() {
       let List = await this.$api.API_WholeEvaluationFindWholeEvaluation();
@@ -698,17 +701,17 @@ this.canvas.clear()
     openCanvasArea() {
       this.bitmapArr = [];
       this.showCanvas = true;
-      console.log('this.imgUrls',this.imgUrls)
-      this.setBg(this.imgUrls)
+      console.log("this.imgUrls", this.imgUrls);
+      this.setBg(this.imgUrls);
     },
     initCanvas() {
-      console.log('run canvas')
-      let that = this
+      console.log("run canvas");
+      let that = this;
       that.canvas = new fabric.Canvas("canvas");
       let casWidth = that.canvas.width,
-          casHeight = that.canvas.height
-      console.log('fab',that.canvas)
-      
+        casHeight = that.canvas.height;
+      console.log("fab", that.canvas);
+
       // let bg = new Image()
       // // bg.crossOrigin = "Anonymous";  //跨域
       // bg.src = require("@/views/demo/GlobalAssessment/img/structure01.jpg")
@@ -734,7 +737,7 @@ this.canvas.clear()
       //     left: 100,
       //     top: 100,
       //   })
-        
+
       //   obj2 = new fabric.Image(man,{
       //     width:200,
       //     height:200,
@@ -752,57 +755,55 @@ this.canvas.clear()
       // })
 
       // 洛丹伦
-      
 
-        //鼠标按下事件
-        // canvas.on("mouse:down", function(e) {
-        //   this.panning = true;
-        //   canvas.selection = false; 
-        // });
-        // //鼠标抬起事件
-        // canvas.on("mouse:up", function(e) {
-        //   this.panning = false;
-        //   canvas.selection = true;
-        // });
-        // // 移动画布事件
-        // canvas.on("mouse:move", function(e) {
-        //   if (this.panning && e && e.e) {
-        //     var delta = new fabric.Point(e.e.movementX, e.e.movementY);
-        //     canvas.relativePan(delta);
-        //   }
-        // });
-        // // 鼠标滚动画布放大缩小
-        // canvas.on("mouse:wheel", function(e) {
-        //   var zoom = (event.deltaY > 0 ? -0.1 : 0.1) + canvas.getZoom();
-        //   zoom = Math.max(0.1, zoom); //最小为原来的1/10
-        //   zoom = Math.min(3, zoom); //最大是原来的3倍
-        //   var zoomPoint = new fabric.Point(event.pageX, event.pageY);
-        //   canvas.zoomToPoint(zoomPoint, zoom);
-        // });
-      
+      //鼠标按下事件
+      // canvas.on("mouse:down", function(e) {
+      //   this.panning = true;
+      //   canvas.selection = false;
+      // });
+      // //鼠标抬起事件
+      // canvas.on("mouse:up", function(e) {
+      //   this.panning = false;
+      //   canvas.selection = true;
+      // });
+      // // 移动画布事件
+      // canvas.on("mouse:move", function(e) {
+      //   if (this.panning && e && e.e) {
+      //     var delta = new fabric.Point(e.e.movementX, e.e.movementY);
+      //     canvas.relativePan(delta);
+      //   }
+      // });
+      // // 鼠标滚动画布放大缩小
+      // canvas.on("mouse:wheel", function(e) {
+      //   var zoom = (event.deltaY > 0 ? -0.1 : 0.1) + canvas.getZoom();
+      //   zoom = Math.max(0.1, zoom); //最小为原来的1/10
+      //   zoom = Math.min(3, zoom); //最大是原来的3倍
+      //   var zoomPoint = new fabric.Point(event.pageX, event.pageY);
+      //   canvas.zoomToPoint(zoomPoint, zoom);
+      // });
     },
-    setBg(src){
-      if(!src) return this.$message.error('暂无图片,请上传图片')
-      let that = this
-      let bg = new Image()
+    setBg(src) {
+      if (!src) return this.$message.error("暂无图片,请上传图片");
+      let that = this;
+      let bg = new Image();
       // bg.crossOrigin = "Anonymous";  //跨域
-      bg.src = src
-      bg.onload = function(){
-        console.log('bg onload')
+      bg.src = src;
+      bg.onload = function () {
+        console.log("bg onload");
         that.canvas.setBackgroundImage(
           src,
           that.canvas.renderAll.bind(that.canvas),
           {
             scaleX: that.canvas.width / bg.width,
-            scaleY: that.canvas.height / bg.height
+            scaleY: that.canvas.height / bg.height,
           }
-        )
-      }
+        );
+      };
       // let that = this
-      // var bg_url = require("@/views/demo/GlobalAssessment/img/structure01.jpg")          
+      // var bg_url = require("@/views/demo/GlobalAssessment/img/structure01.jpg")
       // fabric.Image.fromURL( bg_url , function(oImg) {
       //     oImg.set({
-      //     originX: 'left', 
+      //     originX: 'left',
       //     originY: 'top',
       //     scaleX: that.canvas.width / bg.width,
       //     scaleY: that.canvas.height / bg.height
@@ -810,28 +811,25 @@ this.canvas.clear()
       //     that.canvas.setBackgroundImage(oImg, that.canvas.renderAll.bind(that.canvas));
       // });
     },
-    createPic(src){
-      let that = this
-      let manSrc = src
+    createPic(src) {
+      let that = this;
+      let manSrc = src;
 
-      fabric.Image.fromURL(manSrc,function(obj){
-        that.canvas.add(obj)
-      })
-
+      fabric.Image.fromURL(manSrc, function (obj) {
+        that.canvas.add(obj);
+      });
     },
-    saveNewCanvas(){
+    saveNewCanvas() {
       // var canvas = new fabric.Canvas("canvas");
       var result = this.canvas.toDataURL({
         width: this.canvas.width,
         height: this.canvas.height,
         left: 0,
         top: 0,
-        format: 'png',
+        format: "png",
       });
       this.saveCanvas(result);
-      
-
-    }
+    },
   },
 };
 </script>
