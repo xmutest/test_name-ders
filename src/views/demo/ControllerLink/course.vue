@@ -843,23 +843,22 @@ export default {
 
       if(realityTime[0].startTime != 0){
         this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：   
-            1、${new Date(realityTime[0].startTime).getFullYear()}年${new Date(realityTime[0].startTime).getMonth() + 1}月${new Date(realityTime[0].startTime).getDate()}日~${new Date(realityTime[0].endTime).getFullYear()}年${new Date(realityTime[0].endTime).getMonth() + 1}月${new Date(realityTime[0].endTime).getDate()}日，测评准备阶段。
-            2、${new Date(realityTime[1].startTime).getFullYear()}年${new Date(realityTime[1].startTime).getMonth() + 1}月${new Date(realityTime[1].startTime).getDate()}日~${new Date(realityTime[1].endTime).getFullYear()}年${new Date(realityTime[1].endTime).getMonth() + 1}月${new Date(realityTime[1].endTime).getDate()}日，方案编制过程。
-            3、${new Date(realityTime[2].startTime).getFullYear()}年${new Date(realityTime[2].startTime).getMonth() + 1}月${new Date(realityTime[2].startTime).getDate()}日~${new Date(realityTime[2].endTime).getFullYear()}年${new Date(realityTime[2].endTime).getMonth() + 1}月${new Date(realityTime[2].endTime).getDate()}日，现场实施过程。
-            4、${new Date(realityTime[3].startTime).getFullYear()}年${new Date(realityTime[3].startTime).getMonth() + 1}月${new Date(realityTime[3].startTime).getDate()}日~${new Date(realityTime[3].endTime).getFullYear()}年${new Date(realityTime[3].endTime).getMonth() + 1}月${new Date(realityTime[3].endTime).getDate()}日，分析与报告编制过程。
+    1、${new Date(realityTime[0].startTime).getFullYear()}年${new Date(realityTime[0].startTime).getMonth() + 1}月${new Date(realityTime[0].startTime).getDate()}日~${new Date(realityTime[0].endTime).getFullYear()}年${new Date(realityTime[0].endTime).getMonth() + 1}月${new Date(realityTime[0].endTime).getDate()}日，测评准备阶段。
+    2、${new Date(realityTime[1].startTime).getFullYear()}年${new Date(realityTime[1].startTime).getMonth() + 1}月${new Date(realityTime[1].startTime).getDate()}日~${new Date(realityTime[1].endTime).getFullYear()}年${new Date(realityTime[1].endTime).getMonth() + 1}月${new Date(realityTime[1].endTime).getDate()}日，方案编制过程。
+    3、${new Date(realityTime[2].startTime).getFullYear()}年${new Date(realityTime[2].startTime).getMonth() + 1}月${new Date(realityTime[2].startTime).getDate()}日~${new Date(realityTime[2].endTime).getFullYear()}年${new Date(realityTime[2].endTime).getMonth() + 1}月${new Date(realityTime[2].endTime).getDate()}日，现场实施过程。
+    4、${new Date(realityTime[3].startTime).getFullYear()}年${new Date(realityTime[3].startTime).getMonth() + 1}月${new Date(realityTime[3].startTime).getDate()}日~${new Date(realityTime[3].endTime).getFullYear()}年${new Date(realityTime[3].endTime).getMonth() + 1}月${new Date(realityTime[3].endTime).getDate()}日，分析与报告编制过程。
         `
       }else{
         this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
-          1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。
-          2、YYYY年MM月DD日~YYYY年MM月DD日，方案编制过程。
-          3、YYYY年MM月DD日~YYYY年MM月DD日，现场实施过程。
-          4、YYYY年MM月DD日~YYYY年MM月DD日，分析与报告编制过程。
+    1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。
+    2、YYYY年MM月DD日~YYYY年MM月DD日，方案编制过程。
+    3、YYYY年MM月DD日~YYYY年MM月DD日，现场实施过程。
+    4、YYYY年MM月DD日~YYYY年MM月DD日，分析与报告编制过程。
         `
       }
       console.log('fromData',this.fromData.startMeetingTime)
-      this.timeInfoInsert = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：   
-          ${this.sentences}
-其中，${this.fromData.projectStartTime != 0 ? new Date(this.fromData.projectStartTime).getFullYear() : 'YYYY'}年${this.fromData.projectStartTime != 0 ? new Date(this.fromData.projectStartTime).getMonth() + 1: 'MM'}月${this.fromData.projectStartTime != 0 ? new Date(this.fromData.projectStartTime).getDate(): 'DD'}日召开了项目启动会议，确定了工作方案及项目人员名单；${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getFullYear() : 'YYYY'}年${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getMonth() + 1: 'MM'}月${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getDate(): 'DD'}日召开了项目末次会议，确认了测评发现的问题；${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getFullYear() : 'YYYY'}年${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getMonth() + 1: 'MM'}月${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getDate(): 'DD'}日召开了项目末次会议，确认了测评发现的问题；${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getFullYear() : 'YYYY'}年${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getMonth() + 1: 'MM'}月${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getDate(): 'DD'}日对系统的整改情况进行了复核确认。
+      this.timeInfoInsert = `    ${this.sentences}
+    其中，${this.fromData.projectStartTime != 0 ? new Date(this.fromData.projectStartTime).getFullYear() : 'YYYY'}年${this.fromData.projectStartTime != 0 ? new Date(this.fromData.projectStartTime).getMonth() + 1: 'MM'}月${this.fromData.projectStartTime != 0 ? new Date(this.fromData.projectStartTime).getDate(): 'DD'}日召开了项目启动会议，确定了工作方案及项目人员名单；${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getFullYear() : 'YYYY'}年${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getMonth() + 1: 'MM'}月${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getDate(): 'DD'}日召开了项目末次会议，确认了测评发现的问题；${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getFullYear() : 'YYYY'}年${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getMonth() + 1: 'MM'}月${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getDate(): 'DD'}日召开了项目末次会议，确认了测评发现的问题；${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getFullYear() : 'YYYY'}年${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getMonth() + 1: 'MM'}月${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getDate(): 'DD'}日对系统的整改情况进行了复核确认。
       `
     },
     async func_getProjectTimeInfo(){
