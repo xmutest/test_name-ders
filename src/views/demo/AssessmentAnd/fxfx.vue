@@ -541,7 +541,7 @@ export default {
   }
 }
 .relevanceWeiList {
-  height: 150px;
+  height: 300px;
   overflow: auto;
   .el-checkbox-group {
     .el-checkbox {

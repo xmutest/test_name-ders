@@ -34,7 +34,7 @@
               :key="Its.id"
               :label="Its.name"
             >
-             <el-input
+              <el-input
                 type="textarea"
                 :autosize="{ minRows: 10, maxRows: 15 }"
                 placeholder="请输入内容"
@@ -46,7 +46,7 @@
                   >生成</el-button
                 >
                 <el-button type="primary" @click="submitReport(Its)"
-                  >保存</el-button
+                  >保存并退出</el-button
                 >
               </div>
             </el-tab-pane>
@@ -70,7 +70,7 @@
               <table id="partnerTable">
                 <thead>
                   <tr>
-                    <th style="width: 100px;" >安全控制点</th>
+                    <th style="width: 100px">安全控制点</th>
                     <th>控制项</th>
                     <th>检查内容</th>
                     <th>检查方法</th>
@@ -339,17 +339,17 @@ export default {
     this.getDataList();
   },
   methods: {
-  async  submitReporAdd(item){
-      let data={
-        projectId:item.projectId,
-        type:item.type
+    async submitReporAdd(item) {
+      let data = {
+        projectId: item.projectId,
+        type: item.type,
+      };
+      let res = await this.$api.SYS_fieldSurveySyncProtective(data);
+      if (res.code === 20000) {
+        item.content = res.data;
+      } else {
+        this.$message.error("错误，请联系管理员" + res.message);
       }
-     let res=await this.$api.SYS_fieldSurveySyncProtective(data);
-     if(res.code===20000){
-       item.content=res.data
-     }else{
-       this.$message.error("错误，请联系管理员" + res.message);
-     }
     },
     // 获取
     async submitReport(item) {
@@ -357,6 +357,7 @@ export default {
       fractionModelList.push(item);
       let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
       if (res.code === 20000) {
+        this.dialogVisible = false;
         this.getDataList();
       }
     },
@@ -386,7 +387,7 @@ export default {
       if (res.code === 20000) {
         if (res.data.assetsList.length == 0) {
           this.loading = false;
-          return 
+          return;
         }
         var listTs = cloneDeep(res.data.assetsList);
         this.ToMitList = cloneDeep(res.data.protectiveList);
@@ -447,6 +448,12 @@ export default {
   td {
     color: #fff !important;
   }
+}
+::v-deep .el-tabs--border-card > .el-tabs__header {
+  position: sticky;
+  top: -21px;
+  z-index: 1;
+  padding: 5px 0px;
 }
 </style>
 

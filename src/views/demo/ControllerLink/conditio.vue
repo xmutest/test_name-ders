@@ -167,11 +167,14 @@
           </div>
           <div class="mude_text_item">
             <div class="descTItle">被测信息系统情况</div>
-            <d2-quill
-              style="min-height: 200px; margin-bottom: 20px"
-              v-model="fromdata.systemSituation"
-              @text-change="textChangeHandler"
-            />
+             <el-input
+                type="textarea"
+                style="min-height: 200px; margin-bottom: 20px"
+                :autosize="{ minRows: 10, maxRows: 15 }"
+                placeholder="请输入内容"
+                v-model="fromdata.systemSituation"
+              >
+              </el-input>
           </div>
 
           <div class="mude_text_item">

@@ -46,7 +46,7 @@
                   >生成</el-button
                 >
                 <el-button type="primary" @click="submitReport(Its)"
-                  >保存</el-button
+                  >保存并退出</el-button
                 >
               </div>
             </el-tab-pane>
@@ -359,6 +359,7 @@ export default {
       let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
       if (res.code === 20000) {
         this.$message.success("保存成功");
+        this.dialogVisible = false;
         this.getDataList();
       }
     },
@@ -450,5 +451,11 @@ export default {
   td {
     color: #fff !important;
   }
+}
+::v-deep .el-tabs--border-card > .el-tabs__header {
+  position: sticky;
+  top: -21px;
+  z-index: 1;
+  padding: 5px 0px;
 }
 </style>
