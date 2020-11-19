@@ -176,6 +176,7 @@
     <el-dialog
       title="测评时间表"
       :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
       width="70%">
       <div class="mude_text_item">
         <!-- <d2-quill

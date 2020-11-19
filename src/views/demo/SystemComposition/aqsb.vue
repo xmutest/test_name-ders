@@ -219,6 +219,7 @@
       <el-dialog
         style="min-width: 960px"
         title="新建设备"
+        :close-on-click-modal="false"
         :visible.sync="dialogFormVisible"
       >
         <el-form :model="xmform" :rules="rules" ref="xmform">

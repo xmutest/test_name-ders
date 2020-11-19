@@ -168,6 +168,7 @@
       <el-dialog
         style="min-width: 960px"
         :title="table_name_el"
+        :close-on-click-modal="false"
         :visible.sync="dialogFormVisible"
       >
         <el-form :model="xmform" :rules="rules" ref="xmform">

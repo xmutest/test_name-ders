@@ -13,7 +13,7 @@
     </el-dropdown-menu>
 
     <div class="NO_password">
-      <el-dialog title="修改密码" :visible.sync="dialogVisible" width="150">
+      <el-dialog title="修改密码" :visible.sync="dialogVisible" :close-on-click-modal="false" width="150">
         <el-form
           :model="ruleForm"
           status-icon

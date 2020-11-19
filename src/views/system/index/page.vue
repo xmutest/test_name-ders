@@ -167,6 +167,7 @@
     <div class="add_from_xmu">
       <el-dialog
         style="min-width: 960px"
+        :close-on-click-modal="false"
         :title="table_name_el"
         :visible.sync="dialogFormVisible"
       >

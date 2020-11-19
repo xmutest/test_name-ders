@@ -170,12 +170,14 @@
       <el-dialog
         title="系统安全问题风险分析和评价"
         :visible.sync="dialogVisible"
+        :close-on-click-modal="false"
         :before-close="handleClose"
       >
         <el-dialog
           width="30%"
           title="关联威胁值"
           :visible.sync="innerVisible"
+          :close-on-click-modal="false"
           append-to-body
           :before-close="handleClose"
         >

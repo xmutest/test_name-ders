@@ -106,7 +106,7 @@
       </div>
     </div>
     <div class="NO_password">
-      <el-dialog title="忘记密码" :visible.sync="dialogVisible" width="150">
+      <el-dialog title="忘记密码" :close-on-click-modal="false" :visible.sync="dialogVisible" width="150">
         <el-form
           :model="ruleForm"
           status-icon

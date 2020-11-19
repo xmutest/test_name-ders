@@ -24,6 +24,7 @@
         title="已有安全措施"
         :visible.sync="dialogVisible"
         width="80%"
+        :close-on-click-modal="false"
         :before-close="handleClose"
       >
         <div class="table_To1"></div>

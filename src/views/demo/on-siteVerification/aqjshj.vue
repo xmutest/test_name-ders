@@ -23,6 +23,7 @@
       <el-dialog
         title="已有安全措施"
         :visible.sync="dialogVisible"
+        :close-on-click-modal="false"
         width="80%"
         :before-close="handleClose"
       >
