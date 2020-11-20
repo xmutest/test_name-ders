@@ -400,6 +400,11 @@ export default {
         }
         this.loading = false;
         this.dataList = listTs;
+        this.ToMitList.forEach((element) => {
+          if (element.content == null) {
+            this.submitReporAdd(element);
+          }
+        });
       }
       //  const res= await this.$http.get('/api/safetyControl/findSpotByBookId',{params:this.api_data});
       //  this.dataList=res.data.data;

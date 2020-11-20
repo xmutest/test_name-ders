@@ -34,7 +34,7 @@
               :key="Its.id"
               :label="Its.name"
             >
-             <el-input
+              <el-input
                 type="textarea"
                 :autosize="{ minRows: 10, maxRows: 15 }"
                 placeholder="请输入内容"
@@ -64,7 +64,7 @@
             <table id="partnerTable">
               <thead>
                 <tr>
-                  <th style="width: 100px;" >安全控制点</th>
+                  <th style="width: 100px">安全控制点</th>
                   <th>控制项</th>
                   <th>检查内容</th>
                   <th>检查方法</th>
@@ -329,17 +329,17 @@ export default {
     this.getDataList();
   },
   methods: {
-    async  submitReporAdd(item){
-      let data={
-        projectId:item.projectId,
-        type:item.type
+    async submitReporAdd(item) {
+      let data = {
+        projectId: item.projectId,
+        type: item.type,
+      };
+      let res = await this.$api.SYS_fieldSurveySyncProtective(data);
+      if (res.code === 20000) {
+        item.content = res.data;
+      } else {
+        this.$message.error("错误，请联系管理员" + res.message);
       }
-     let res=await this.$api.SYS_fieldSurveySyncProtective(data);
-     if(res.code===20000){
-       item.content=res.data
-     }else{
-       this.$message.error("错误，请联系管理员" + res.message);
-     }
     },
     // 获取
     async submitReport(item) {
@@ -388,6 +388,11 @@ export default {
         }
         this.loading = false;
         this.dataList = listTs;
+        this.ToMitList.forEach((element) => {
+          if (element.content == null) {
+            this.submitReporAdd(element);
+          }
+        });
       }
       //  const res= await this.$http.get('/api/safetyControl/findSpotByBookId',{params:this.api_data});
       //  this.dataList=res.data.data;

@@ -64,7 +64,7 @@
           <el-tab-pane
             v-for="Its in dataList"
             :name="Its.name + Its.id"
-            :key="Its.id"
+            :key="Its.name"
             :label="Its.name"
           >
             <div v-if="activeNameTabs == Its.name + Its.id">
@@ -397,6 +397,11 @@ export default {
         }
         this.loading = false;
         this.dataList = listTs;
+        this.ToMitList.forEach((element) => {
+          if (element.content == null) {
+            this.submitReporAdd(element);
+          }
+        });
       }
       //  const res= await this.$http.get('/api/safetyControl/findSpotByBookId',{params:this.api_data});
       //  this.dataList=res.data.data;

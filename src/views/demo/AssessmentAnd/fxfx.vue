@@ -282,43 +282,43 @@
         <div class="Threats">
           <div>
             <el-button
-                @click="FmeListo('高')"
-                :style="
-                  amendAnalysis.originalRisk == '高' ||
-                  amendAnalysis.riskGrade == 1
-                    ? 'background-color: red'
-                    : ''
-                "
-                slot="reference"
-              >
-                高风险
-              </el-button>
+              @click="FmeListo('高')"
+              :style="
+                amendAnalysis.originalRisk == '高' ||
+                amendAnalysis.riskGrade == 1
+                  ? 'background-color: red'
+                  : ''
+              "
+              slot="reference"
+            >
+              高风险
+            </el-button>
           </div>
           <div>
             <el-button
-                @click="FmeListo('中')"
-                :style="
-                  amendAnalysis.originalRisk == '中' ||
-                  amendAnalysis.riskGrade == 2
-                    ? 'background-color: #FFEB3B'
-                    : ''
-                "
-                slot="reference"
-                >中风险</el-button
-              >
+              @click="FmeListo('中')"
+              :style="
+                amendAnalysis.originalRisk == '中' ||
+                amendAnalysis.riskGrade == 2
+                  ? 'background-color: #FFEB3B'
+                  : ''
+              "
+              slot="reference"
+              >中风险</el-button
+            >
           </div>
           <div>
             <el-button
-                slot="reference"
-                @click="FmeListo('低')"
-                :style="
-                  amendAnalysis.originalRisk == '低' ||
-                  amendAnalysis.riskGrade == 3
-                    ? 'background-color: #4CAF50'
-                    : ''
-                "
-                >低风险</el-button
-              >
+              slot="reference"
+              @click="FmeListo('低')"
+              :style="
+                amendAnalysis.originalRisk == '低' ||
+                amendAnalysis.riskGrade == 3
+                  ? 'background-color: #4CAF50'
+                  : ''
+              "
+              >低风险</el-button
+            >
           </div>
           <div>
             <el-button type="info" @click="innerVisible = true"
@@ -389,6 +389,7 @@ export default {
       Ts_radio: "",
       beforeModificationSeverity: "",
       DataListOp: [],
+      lust: {},
     };
   },
   created() {
@@ -396,7 +397,7 @@ export default {
   },
   methods: {
     Listdatamis(item) {
-      this.getDaPuList();
+      this.getDaPuList(item.threatId);
       let ls = [
         {
           id: 1,
@@ -414,7 +415,6 @@ export default {
       let amendId = this.amendAnalysis.amendId;
       this.amendAnalysis = item;
       this.amendAnalysis.problemDescription = `${this.tsAmlist.assets}${item.problemDescription}`;
-      this.relevanceWeiList = item.threatId;
       this.amendAnalysis.amendId = amendId;
       ls.forEach((it) => {
         if (it.id == item.riskGrade) {
@@ -423,11 +423,16 @@ export default {
       });
     },
     Totisadd() {
-      console.log(5);
     },
     shishiClick(item3) {
       this.tsAmlist = item3;
       this.amendAnalysis = item3;
+      this.lust = {
+        server: item3.server,
+        software: item3.software,
+        equipment: item3.equipment,
+        assets:item3.assets
+      };
       this.beforeModificationSeverity = item3.beforeModificationSeverity;
       this.api_data.amendId = item3.amendId;
       this.api_data.safetyControlId = item3.safetyControlId;
@@ -445,6 +450,7 @@ export default {
       });
       this.amendAnalysis.relationThreaten = ls.slice(0, ls.length - 1);
       this.amendAnalysis.threatId = this.relevanceWeiList;
+      Object.assign(this.amendAnalysis,this.lust);
       let res = await this.$api.API_RiskUpdateAmendAnalysis(this.amendAnalysis);
       if (res.code == 20000) {
         this.dialogVisible = false;
@@ -454,11 +460,16 @@ export default {
         this.$message.error("保存出错");
       }
     },
-    async getDaPuList() {
+    async getDaPuList(its) {
       let res = await this.$api.API_RiskFindRiskKnowledge(this.amendAnalysisVO);
       if (res.code == 20000) {
         this.relevanceList = res.data[0];
-        this.relevanceWeiList = res.data[1];
+        if (its) {
+          this.relevanceWeiList = its;
+        } else {
+          this.relevanceWeiList = res.data[1];
+        }
+
         this.DataListOp = res.data[2];
         this.fenxianList = res.data[3];
       } else {

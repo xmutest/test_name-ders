@@ -99,7 +99,6 @@ export default {
     }
   },
   created() {
-    console.log('用户信息',this.info)
   },
   computed: {
     ...mapState('d2admin/user', [

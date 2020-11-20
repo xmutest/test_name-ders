@@ -31,16 +31,16 @@
         <el-tabs v-loading="loading" class="container-tab" type="border-card">
           <el-tab-pane v-for="Its in ToMitList" :key="Its.id" :label="Its.name">
             <el-input
-                type="textarea"
-                :autosize="{ minRows: 10, maxRows: 15 }"
-                placeholder="请输入内容"
-                v-model="Its.content"
-              >
-              </el-input>
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
+              v-model="Its.content"
+            >
+            </el-input>
             <div class="tijiaobaoc">
               <el-button type="primary" @click="submitReporAdd(Its)"
-                  >生成</el-button
-                >
+                >生成</el-button
+              >
               <el-button type="primary" @click="submitReport(Its)"
                 >保存并退出</el-button
               >
@@ -60,7 +60,7 @@
           <table id="partnerTable">
             <thead>
               <tr>
-                <th style="width: 100px;" >安全控制点</th>
+                <th style="width: 100px">安全控制点</th>
                 <th>控制项</th>
                 <th>检查内容</th>
                 <th>检查方法</th>
@@ -69,7 +69,7 @@
                 <th>结果记录</th>
                 <th style="width: 140px">符合情况</th>
                 <th>备注</th>
-                <th style="width: 50px;" >权重</th>
+                <th style="width: 50px">权重</th>
               </tr>
             </thead>
             <template v-for="(ite, ins) in Its.safetyControls">
@@ -230,7 +230,6 @@
                   <td>
                     <el-select
                       v-model="item2.accordSituation"
-              
                       @change="Totisadd(item2)"
                       placeholder="请选择"
                     >
@@ -319,17 +318,17 @@ export default {
     this.getDataList();
   },
   methods: {
-    async  submitReporAdd(item){
-      let data={
-        projectId:item.projectId,
-        type:item.type
+    async submitReporAdd(item) {
+      let data = {
+        projectId: item.projectId,
+        type: item.type,
+      };
+      let res = await this.$api.SYS_fieldSurveySyncProtective(data);
+      if (res.code === 20000) {
+        item.content = res.data;
+      } else {
+        this.$message.error("错误，请联系管理员" + res.message);
       }
-     let res=await this.$api.SYS_fieldSurveySyncProtective(data);
-     if(res.code===20000){
-       item.content=res.data
-     }else{
-       this.$message.error("错误，请联系管理员" + res.message);
-     }
     },
     // 获取
     async submitReport(item) {
@@ -379,6 +378,11 @@ export default {
         this.loading = false;
         this.dataList = listTs;
       }
+      this.ToMitList.forEach((element) => {
+        if (element.content == null) {
+          this.submitReporAdd(element);
+        }
+      });
       //  const res= await this.$http.get('/api/safetyControl/findSpotByBookId',{params:this.api_data});
       //  this.dataList=res.data.data;
     },
@@ -449,5 +453,4 @@ export default {
 .el-popper[x-placement^="top"] .popper__arrow::after {
   border-top-color: #ddd !important;
 }
-
 </style> 

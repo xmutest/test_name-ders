@@ -202,7 +202,6 @@ export default {
   },
   created() {
     this.getEtlist();
-    this.getEtlists();
   },
   computed: {
     ...mapState("d2admin", {
@@ -638,6 +637,7 @@ export default {
     async getEtlist() {
       let List = await this.$api.API_WholeEvaluationFindWholeEvaluation();
       if (List.code === 20000) {
+        this.getEtlists();
         if (List.data == null || List.data.verificationTest == null) {
           this.fromdatas.verificationTest = `
           
@@ -788,7 +788,7 @@ export default {
       let bg = new Image();
       // bg.crossOrigin = "Anonymous";  //跨域
       bg.src = src;
-      console.log('宽高',bg.width,bg.height)
+      console.log("宽高", bg.width, bg.height);
       bg.onload = function () {
         console.log("bg onload");
         that.canvas.setBackgroundImage(
@@ -797,10 +797,10 @@ export default {
           {
             // scaleX: that.canvas.width / bg.width,
             // scaleY: that.canvas.height / bg.height,
-            width:bg.width,
-            height:bg.height,
-            originX: 'center',
-            originY: 'center' 
+            width: bg.width,
+            height: bg.height,
+            originX: "center",
+            originY: "center",
           }
         );
       };

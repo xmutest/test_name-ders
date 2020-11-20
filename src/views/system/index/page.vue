@@ -43,7 +43,7 @@
                 >
                   <el-table-column label="选择" width="80">
                     <template slot-scope="scope">
-                      <p>
+                      <p style="text-align: center">
                         <el-radio
                           size="medium"
                           v-model="radio_projectId"
@@ -587,6 +587,7 @@ export default {
     // 等级联动
     async selectGoodsByGroupId(enent, sag) {
       let is = enent - 1;
+      console.log(enent);
       let res = await this.$api.API_SagFindSagByLevel({ sagLevel: enent });
       if (res.code === 20000) {
         this.saglist = res.data;
@@ -595,6 +596,7 @@ export default {
         } else {
           this.xmform.sag = res.data[is].id;
         }
+        this.xmform.level = 2;
       }
     },
     // 提交

@@ -80,7 +80,8 @@
                   placement="right-end"
                 >
                   <el-button v-if="xmu_info.name" size="mini">
-                    {{ xmu_info.name.substring(0, 15) }}....
+                    <span v-if="xmu_info.name.length>50">{{ xmu_info.name.substring(0, 50) }}....</span>
+                    <span v-else>{{xmu_info.name}}</span>
                   </el-button>
                   <el-button v-else size="mini"> 当前无项目选择 </el-button>
                 </el-tooltip>

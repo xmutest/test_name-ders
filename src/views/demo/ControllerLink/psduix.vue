@@ -77,7 +77,7 @@ export default {
   },
   created() {
     this.getEtlist();
-    this.getFindAll();
+    
   },
   computed: {
     ...mapState("d2admin", {
@@ -102,6 +102,7 @@ export default {
     async getEtlist() {
       let List = await this.$api.API_projectOverviewdObjSelectionMethod();
       if (List.code === 20000) {
+        this.getFindAll();
         this.fromdata = List.data;
         if (List.data.objSelectionMethod == null) {
           this.fromdata.objSelectionMethod = `${this.xmu_info.data.systemName}等级测评的测评对象种类上基本覆盖、数量进行抽样，重点抽查主要的设备、设施、人员和文档等。结合${this.xmu_info.data.systemName}的网络拓扑结构和业务情况，本次等级测评的测评对象在抽样时主要考虑以下几个方面：

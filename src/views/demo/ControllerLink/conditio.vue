@@ -167,14 +167,14 @@
           </div>
           <div class="mude_text_item">
             <div class="descTItle">被测信息系统情况</div>
-             <el-input
-                type="textarea"
-                style="min-height: 200px; margin-bottom: 20px"
-                :autosize="{ minRows: 10, maxRows: 15 }"
-                placeholder="请输入内容"
-                v-model="fromdata.systemSituation"
-              >
-              </el-input>
+            <el-input
+              type="textarea"
+              style="min-height: 200px; margin-bottom: 20px"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
+              v-model="fromdata.systemSituation"
+            >
+            </el-input>
           </div>
 
           <div class="mude_text_item">
@@ -358,7 +358,6 @@ export default {
   },
   created() {
     this.getEtlist();
-    this.PassiveCompany();
   },
   methods: {
     // 获取测评单位
@@ -392,6 +391,7 @@ export default {
     async getEtlist() {
       let List = await this.$api.API_projectOverviewdObjfindSystemSituation();
       if (List.code === 20000) {
+        this.PassiveCompany();
         this.fromdata = List.data;
         //查询列表
       } else {

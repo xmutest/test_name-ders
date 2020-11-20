@@ -985,7 +985,6 @@ export default {
   },
   created() {
     this.getEtlist();
-    this.textChangeHandler();
   },
   computed: {
     ...mapState("d2admin", {
@@ -1054,6 +1053,7 @@ export default {
       let timeout = "";
       clearTimeout(timeout);
       if (res.code === 20000) {
+        this.textChangeHandler();
         this.reportGeneratingRecords = res.data;
         res.data.forEach((item) => {
           if (item.status !== 1 && item.status !== 2) {

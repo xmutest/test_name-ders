@@ -74,7 +74,6 @@ export default {
     };
   },
   created() {
-    this.getevaluationBasisFindAll();
     this.getEtlist();
   },
   computed: {
@@ -87,6 +86,7 @@ export default {
       let List = await this.$api.API_projectOverviewObjective();
       let data = "";
       if (List.code === 20000) {
+        this.getevaluationBasisFindAll();
         if (List.data.evaluationObjective != null) {
           data = List.data.evaluationObjective;
         } else {

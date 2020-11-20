@@ -4,13 +4,10 @@
     <div class="reviewProcess">
       <div class="rev_jianjie">
         <el-card class="box-card">
-          
           <div class="clearfix descTItle">
             <span>简介</span>
             <div class="tijiaobaoc">
-              <el-button type="primary" @click="submitReport"
-                >保存</el-button
-              >
+              <el-button type="primary" @click="submitReport">保存</el-button>
             </div>
           </div>
           <div>
@@ -23,13 +20,10 @@
           </div>
           <div class="detailedPro">
             <div class="detailedtablo">
-              
               <div class="clearfix descTItle">
                 <span>详细过程</span>
                 <div class="tijiaobaoc">
-                  <el-button type="primary" @click="preview"
-                    >预览</el-button
-                  >
+                  <el-button type="primary" @click="preview">预览</el-button>
                 </div>
               </div>
               <div class="detailedTime">
@@ -81,7 +75,6 @@
                         value-format="timestamp"
                       ></el-date-picker>
                     </div>
-                    
                   </el-col>
                 </el-row>
               </div>
@@ -91,7 +84,7 @@
                   :span-method="arraySpanMethod"
                   border
                   style="width: 100%"
-                  :row-style="{height: '20px'}"
+                  :row-style="{ height: '20px' }"
                 >
                   <el-table-column label="实施项目" prop="name" width="180">
                     <template slot-scope="scope">
@@ -115,8 +108,8 @@
                   <el-table-column prop="evaluationCycle" label="测评周期(天)">
                     <template slot-scope="scope">
                       <span v-if="scope.row.highlight"></span>
-                      <span v-else-if="scope.row.name=='总计'">
-                        {{scope.row.evaluationCycle}}
+                      <span v-else-if="scope.row.name == '总计'">
+                        {{ scope.row.evaluationCycle }}
                       </span>
                       <el-input-number
                         v-else
@@ -168,7 +161,6 @@
               </div>
             </div>
           </div>
-          
         </el-card>
       </div>
     </div>
@@ -177,20 +169,22 @@
       title="测评时间表"
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
-      width="70%">
+      width="70%"
+    >
       <div class="mude_text_item">
         <!-- <d2-quill
           style="min-height: 200px; margin-bottom: 20px"
           v-model="timeInfoInsert"
         /> -->
         <el-input
-           style="min-height: 200px; margin-bottom: 20px"
-           type="textarea"
-           :autosize="{ minRows: 10, maxRows: 15 }"
-           placeholder="请输入内容"
-           v-model="timeInfoInsert"
-         >
-         </el-input>
+          style="min-height: 200px;  margin-bottom: 20px"
+          type="textarea"
+          :autosize="{ minRows: 10, maxRows: 15 }"
+          placeholder="请输入内容"
+          v-model="timeInfoInsert"
+        >
+                   </el-input
+        >
       </div>
       <!-- <div class="sentences">
           &nbsp;&nbsp;本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
@@ -210,13 +204,16 @@
           {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getMonth() + 1: 'MM'}}月
           {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getDate(): 'DD'}}</span>日对系统的整改情况进行了复核确认。
         </div> -->
-      
+
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="func_calDateFun">重置为计划表内容</el-button>
-        <el-button type="primary" @click="saveInfoAndExit">保存并退出</el-button>
+        <el-button type="primary" @click="func_calDateFun"
+          >重置为计划表内容</el-button
+        >
+        <el-button type="primary" @click="saveInfoAndExit"
+          >保存并退出</el-button
+        >
       </span>
     </el-dialog>
-
   </d2-container>
 </template>
 
@@ -230,11 +227,11 @@ export default {
         briefIntroduction: "",
         projectStartTime: "", //项目启动
         startMeetingTime: "", //启动会议
-        lastMeetingTime: "",  //末次会议
-        confirmTime: "",  //复核确认
+        lastMeetingTime: "", //末次会议
+        confirmTime: "", //复核确认
         input_number: "",
       },
-      sentences:'',
+      sentences: "",
       tableData: [
         {
           name: "一、测评准备过程",
@@ -627,20 +624,19 @@ export default {
           isfor: true,
         },
       ],
-      dialogVisible:false,
-      timeInfoInsert:"",  //测评时间表
-      saveData:{},
+      dialogVisible: false,
+      timeInfoInsert: "", //测评时间表
+      saveData: {},
     };
   },
   created() {
     this.getEtlist();
-    this.RecordFindTimeRecord();
   },
   computed: {
     ...mapState("d2admin", {
       xmu_info: (state) => state.xmu.xmu_info,
       user_info: (state) => state.user.info.user_info,
-    })
+    }),
   },
   methods: {
     Itsclik() {
@@ -686,6 +682,7 @@ export default {
     async getEtlist() {
       let List = await this.$api.API_projectOverviewfindBriefIntroduction();
       if (List.code === 20000) {
+        this.RecordFindTimeRecord();
         this.fromData = List.data;
         if (this.fromData.briefIntroduction == null) {
           this.fromData.briefIntroduction = `受${this.xmu_info.data.evaluatedUnit}委托，${this.user_info.companyName}于YYYY年MM月DD日至YYYY年MM月DD日对${this.xmu_info.data.systemName}进行了系统安全等级测评工作。本次安全测评的范围主要包括${this.xmu_info.data.systemName}的物理环境、主机、网络、业务应用系统、安全管理制度和人员等。安全测评通过静态评估、现场测试、综合评估等相关环节和阶段，从安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设管理、安全运维管理等十个方面，对${this.xmu_info.data.systemName}进行综合测评。`;
@@ -796,94 +793,179 @@ export default {
         }
       }
     },
-    preview(){
+    preview() {
       // 集成各阶段所需时间
       // 转成毫秒运算后再转成正常时间
-      
-      this.dialogVisible = true
-      console.log(this.tableData)
-      
-      this.func_getProjectTimeInfo()
+
+      this.dialogVisible = true;
+      console.log(this.tableData);
+
+      this.func_getProjectTimeInfo();
     },
     // 转换毫秒
-    transferDate(normalTIme,type=0){
+    transferDate(normalTIme, type = 0) {
       // return new Date(normalTIme+'').getTime()
-      if(type) return new Date(normalTIme)
-      return normalTIme * 24 * 3600 * 1000
+      if (type) return new Date(normalTIme);
+      return normalTIme * 24 * 3600 * 1000;
     },
-    func_calDateFun(){
-      let allTime = []
-      this.tableData.map((res)=>{
-        allTime.push(res.evaluationCycle)
-      })
+    func_calDateFun() {
+      let allTime = [];
+      this.tableData.map((res) => {
+        allTime.push(res.evaluationCycle);
+      });
 
       this.timeArr = [
-        this.transferDate(allTime[1]+allTime[2]),  //第一阶段
+        this.transferDate(allTime[1] + allTime[2]), //第一阶段
         this.transferDate(allTime[5]), //第二阶段
-        this.transferDate(allTime[8] + allTime[9] + allTime[10] + allTime[11] + allTime[12] + allTime[20] + allTime[21] + allTime[26]
-        + allTime[28] + allTime[29] + allTime[30]),  //第三阶段
-        this.transferDate(allTime[33] + allTime[34])  //第四阶段
-      ]
-      console.log(this.timeArr)
-      let startTime = this.fromData.projectStartTime
-      let that = this
-      let realityTime = []
-      this.timeArr.map(res=>{
-        let endTime = startTime + res
-        let transferEndTime = that.transferDate(endTime,1)
-        let transferStartTime = that.transferDate(startTime,1)
+        this.transferDate(
+          allTime[8] +
+            allTime[9] +
+            allTime[10] +
+            allTime[11] +
+            allTime[12] +
+            allTime[20] +
+            allTime[21] +
+            allTime[26] +
+            allTime[28] +
+            allTime[29] +
+            allTime[30]
+        ), //第三阶段
+        this.transferDate(allTime[33] + allTime[34]), //第四阶段
+      ];
+      console.log(this.timeArr);
+      let startTime = this.fromData.projectStartTime;
+      let that = this;
+      let realityTime = [];
+      this.timeArr.map((res) => {
+        let endTime = startTime + res;
+        let transferEndTime = that.transferDate(endTime, 1);
+        let transferStartTime = that.transferDate(startTime, 1);
         let preRealityTime = {
-          startTime : startTime,
-          endTime : endTime
-        }
-        realityTime.push(preRealityTime)
+          startTime: startTime,
+          endTime: endTime,
+        };
+        realityTime.push(preRealityTime);
 
-        startTime = endTime
-      })
+        startTime = endTime;
+      });
 
-      if(realityTime[0].startTime != 0){
+      if (realityTime[0].startTime != 0) {
         this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：   
-    1、${new Date(realityTime[0].startTime).getFullYear()}年${new Date(realityTime[0].startTime).getMonth() + 1}月${new Date(realityTime[0].startTime).getDate()}日~${new Date(realityTime[0].endTime).getFullYear()}年${new Date(realityTime[0].endTime).getMonth() + 1}月${new Date(realityTime[0].endTime).getDate()}日，测评准备阶段。
-    2、${new Date(realityTime[1].startTime).getFullYear()}年${new Date(realityTime[1].startTime).getMonth() + 1}月${new Date(realityTime[1].startTime).getDate()}日~${new Date(realityTime[1].endTime).getFullYear()}年${new Date(realityTime[1].endTime).getMonth() + 1}月${new Date(realityTime[1].endTime).getDate()}日，方案编制过程。
-    3、${new Date(realityTime[2].startTime).getFullYear()}年${new Date(realityTime[2].startTime).getMonth() + 1}月${new Date(realityTime[2].startTime).getDate()}日~${new Date(realityTime[2].endTime).getFullYear()}年${new Date(realityTime[2].endTime).getMonth() + 1}月${new Date(realityTime[2].endTime).getDate()}日，现场实施过程。
-    4、${new Date(realityTime[3].startTime).getFullYear()}年${new Date(realityTime[3].startTime).getMonth() + 1}月${new Date(realityTime[3].startTime).getDate()}日~${new Date(realityTime[3].endTime).getFullYear()}年${new Date(realityTime[3].endTime).getMonth() + 1}月${new Date(realityTime[3].endTime).getDate()}日，分析与报告编制过程。`
-      }else{
+    1、${new Date(realityTime[0].startTime).getFullYear()}年${
+          new Date(realityTime[0].startTime).getMonth() + 1
+        }月${new Date(realityTime[0].startTime).getDate()}日~${new Date(
+          realityTime[0].endTime
+        ).getFullYear()}年${
+          new Date(realityTime[0].endTime).getMonth() + 1
+        }月${new Date(realityTime[0].endTime).getDate()}日，测评准备阶段。
+    2、${new Date(realityTime[1].startTime).getFullYear()}年${
+          new Date(realityTime[1].startTime).getMonth() + 1
+        }月${new Date(realityTime[1].startTime).getDate()}日~${new Date(
+          realityTime[1].endTime
+        ).getFullYear()}年${
+          new Date(realityTime[1].endTime).getMonth() + 1
+        }月${new Date(realityTime[1].endTime).getDate()}日，方案编制过程。
+    3、${new Date(realityTime[2].startTime).getFullYear()}年${
+          new Date(realityTime[2].startTime).getMonth() + 1
+        }月${new Date(realityTime[2].startTime).getDate()}日~${new Date(
+          realityTime[2].endTime
+        ).getFullYear()}年${
+          new Date(realityTime[2].endTime).getMonth() + 1
+        }月${new Date(realityTime[2].endTime).getDate()}日，现场实施过程。
+    4、${new Date(realityTime[3].startTime).getFullYear()}年${
+          new Date(realityTime[3].startTime).getMonth() + 1
+        }月${new Date(realityTime[3].startTime).getDate()}日~${new Date(
+          realityTime[3].endTime
+        ).getFullYear()}年${
+          new Date(realityTime[3].endTime).getMonth() + 1
+        }月${new Date(
+          realityTime[3].endTime
+        ).getDate()}日，分析与报告编制过程。`;
+      } else {
         this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
     1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。
     2、YYYY年MM月DD日~YYYY年MM月DD日，方案编制过程。
     3、YYYY年MM月DD日~YYYY年MM月DD日，现场实施过程。
     4、YYYY年MM月DD日~YYYY年MM月DD日，分析与报告编制过程。
-        `
+        `;
       }
-      console.log('fromData',this.fromData.startMeetingTime)
+      console.log("fromData", this.fromData.startMeetingTime);
       this.timeInfoInsert = `    ${this.sentences}
-    其中，${this.fromData.projectStartTime != 0 ? new Date(this.fromData.projectStartTime).getFullYear() : 'YYYY'}年${this.fromData.projectStartTime != 0 ? new Date(this.fromData.projectStartTime).getMonth() + 1: 'MM'}月${this.fromData.projectStartTime != 0 ? new Date(this.fromData.projectStartTime).getDate(): 'DD'}日召开了项目启动会议，确定了工作方案及项目人员名单；${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getFullYear() : 'YYYY'}年${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getMonth() + 1: 'MM'}月${this.fromData.startMeetingTime != 0 ? new Date(this.fromData.startMeetingTime).getDate(): 'DD'}日召开了项目末次会议，确认了测评发现的问题；${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getFullYear() : 'YYYY'}年${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getMonth() + 1: 'MM'}月${this.fromData.lastMeetingTime != 0 ? new Date(this.fromData.lastMeetingTime).getDate(): 'DD'}日召开了项目末次会议，确认了测评发现的问题；${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getFullYear() : 'YYYY'}年${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getMonth() + 1: 'MM'}月${this.fromData.confirmTime != 0 ? new Date(this.fromData.confirmTime).getDate(): 'DD'}日对系统的整改情况进行了复核确认。
-      `
+    其中，${
+      this.fromData.projectStartTime != 0
+        ? new Date(this.fromData.projectStartTime).getFullYear()
+        : "YYYY"
+    }年${
+        this.fromData.projectStartTime != 0
+          ? new Date(this.fromData.projectStartTime).getMonth() + 1
+          : "MM"
+      }月${
+        this.fromData.projectStartTime != 0
+          ? new Date(this.fromData.projectStartTime).getDate()
+          : "DD"
+      }日召开了项目启动会议，确定了工作方案及项目人员名单；${
+        this.fromData.startMeetingTime != 0
+          ? new Date(this.fromData.startMeetingTime).getFullYear()
+          : "YYYY"
+      }年${
+        this.fromData.startMeetingTime != 0
+          ? new Date(this.fromData.startMeetingTime).getMonth() + 1
+          : "MM"
+      }月${
+        this.fromData.startMeetingTime != 0
+          ? new Date(this.fromData.startMeetingTime).getDate()
+          : "DD"
+      }日召开了项目末次会议，确认了测评发现的问题；${
+        this.fromData.lastMeetingTime != 0
+          ? new Date(this.fromData.lastMeetingTime).getFullYear()
+          : "YYYY"
+      }年${
+        this.fromData.lastMeetingTime != 0
+          ? new Date(this.fromData.lastMeetingTime).getMonth() + 1
+          : "MM"
+      }月${
+        this.fromData.lastMeetingTime != 0
+          ? new Date(this.fromData.lastMeetingTime).getDate()
+          : "DD"
+      }日召开了项目末次会议，确认了测评发现的问题；${
+        this.fromData.confirmTime != 0
+          ? new Date(this.fromData.confirmTime).getFullYear()
+          : "YYYY"
+      }年${
+        this.fromData.confirmTime != 0
+          ? new Date(this.fromData.confirmTime).getMonth() + 1
+          : "MM"
+      }月${
+        this.fromData.confirmTime != 0
+          ? new Date(this.fromData.confirmTime).getDate()
+          : "DD"
+      }日对系统的整改情况进行了复核确认。
+      `;
     },
-    async func_getProjectTimeInfo(){
-      let res = await this.$api.API_ProjectOverviewFindDetailTimePreview()
-      console.log('describe info',res)
-      let {data} = res
-      if(res.code !== 20000) return alert(res.message)
-      console.log(!data.detailTimePreview)
-      
-      this.saveData.id = data.id
+    async func_getProjectTimeInfo() {
+      let res = await this.$api.API_ProjectOverviewFindDetailTimePreview();
+      console.log("describe info", res);
+      let { data } = res;
+      if (res.code !== 20000) return alert(res.message);
+      console.log(!data.detailTimePreview);
 
-      if(!data.detailTimePreview){
-        
-        this.func_calDateFun()
-      }else{
-        this.timeInfoInsert = data.detailTimePreview
+      this.saveData.id = data.id;
+
+      if (!data.detailTimePreview) {
+        this.func_calDateFun();
+      } else {
+        this.timeInfoInsert = data.detailTimePreview;
       }
     },
-    async saveInfoAndExit(){
-      let that = this
-      this.saveData.detailTimePreview = this.timeInfoInsert
-      let res = await this.$api.API_ProjectOverviewUpdateDetailTimePreview(this.saveData)
+    async saveInfoAndExit() {
+      let that = this;
+      this.saveData.detailTimePreview = this.timeInfoInsert;
+      let res = await this.$api.API_ProjectOverviewUpdateDetailTimePreview(
+        this.saveData
+      );
 
-      if(res.code != 20000) return alert('保存失败')
-      this.dialogVisible = false
-      
+      if (res.code != 20000) return alert("保存失败");
+      this.dialogVisible = false;
     },
   },
 };
@@ -933,29 +1015,29 @@ export default {
   -webkit-align-items: center;
   align-items: center;
 }
-.descTItle .tijiaobaoc{
-  display:inline-block;
-  margin:0;
+.descTItle .tijiaobaoc {
+  display: inline-block;
+  margin: 0;
 }
 
-.el-dialog{
-  div{
-    line-height:180%;
+.el-dialog {
+  div {
+    line-height: 180%;
   }
-  .sentences{
-    margin-bottom:20px;
-    span{
-      color:red;
+  .sentences {
+    margin-bottom: 20px;
+    span {
+      color: red;
     }
-    div{
-      margin-bottom:10px;
+    div {
+      margin-bottom: 10px;
     }
   }
 }
-.styleRed{
-  color:red;
+.styleRed {
+  color: red;
 }
-.ql-snow .ql-editor pre.ql-syntax{
+.ql-snow .ql-editor pre.ql-syntax {
   background: #fff;
 }
 </style>

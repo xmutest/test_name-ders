@@ -48,7 +48,6 @@ export default {
   methods: {
     async getEtlist() {
       let List = await this.$api.API_projectOThreatClassificationFindAll();
-      console.log(List);
      if (List.code === 20000) {
         this.tabledatas = List.data;
         //查询列表

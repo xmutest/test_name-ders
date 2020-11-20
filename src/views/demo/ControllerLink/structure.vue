@@ -169,8 +169,6 @@ export default {
     }),
   },
   created() {
-    this.getlistdata();
-    this.getlistdataImg();
     this.getEtlist();
   },
   mounted() {
@@ -272,6 +270,8 @@ export default {
       let List = await this.$api.API_projectOverviewStructureDescribe();
       let data = "";
       if (List.code === 20000) {
+        this.getlistdata();
+        this.getlistdataImg();
         if (List.data.networkStructureDescribe != null) {
           data = List.data.networkStructureDescribe;
         } else {
