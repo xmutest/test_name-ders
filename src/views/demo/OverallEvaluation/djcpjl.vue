@@ -7,12 +7,12 @@
           <div class="leftSide">
             <!-- <img src="@/views/demo/ControllerLink/img/structure01.jpg" class="gradeLogo" alt=""> -->
             <div class="gradeInfo">
-              <div>指标符合率:{{markData.accord}}</div>
-              <div>指标部分符合率:{{markData.sectionAccord}}</div>
-              <div>指标不符合率:{{markData.notAccord}}</div>
-              <div>指标不适用数:{{markData.notBeApplicable}}</div>
-              <div>测评结论:{{markData.fractionResult}}</div>
-              <div>综合得分:{{markData.totalFraction}}分</div>
+              <div class="accord">指标符合率:{{markData.accord}}</div>
+              <div class="sectionAccord">指标部分符合率:{{markData.sectionAccord}}</div>
+              <div class="notAccord">指标不符合率:{{markData.notAccord}}</div>
+              <div class="notBeApplicable">指标不适用数:{{markData.notBeApplicable}}</div>
+              <div class="fractionResult">测评结论:{{markData.fractionResult}}</div>
+              <div class="totalFraction">综合得分:{{markData.totalFraction}}分</div>
             </div>
           </div>
           <div class="rightSide">
@@ -134,6 +134,19 @@ export default {
 
         // echarts
         let option = {
+            tooltip: {
+              trigger: "axis",
+              axisPointer: {
+                type: "shadow"
+              },
+              formatter: '{b} : {c} '
+            },
+            label: {
+              fontWeight: "bold",
+              show: true,
+              position: "top",
+              formatter: '{c}'
+            },
             xAxis: {
                 type: 'category',
                 data: paramsData.key,
@@ -188,6 +201,18 @@ export default {
         -webkit-justify-content: space-around;
         justify-content: space-around;
       }
+      //  <div class="accord">指标符合率:{{markData.accord}}</div>
+              // <div class="sectionAccord">指标部分符合率:{{markData.sectionAccord}}</div>
+              // <div class="notAccord">指标不符合率:{{markData.notAccord}}</div>
+              // <div class="notBeApplicable">指标不适用数:{{markData.notBeApplicable}}</div>
+              // <div class="fractionResult">测评结论:{{markData.fractionResult}}</div>
+              // <div class="totalFraction">综合得分:{{markData.totalFraction}}分</div>
+      .accord{
+        color:#47A269;
+      }
+      .sectionAccord{color:#DFA962;}
+      .notAccord{color:#DF7862;}
+      .notBeApplicable{color:gray;text-decoration:line-through;}
     }
     .gradeLogo{
       width: 90px;

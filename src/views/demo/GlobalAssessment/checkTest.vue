@@ -788,6 +788,7 @@ export default {
       let bg = new Image();
       // bg.crossOrigin = "Anonymous";  //跨域
       bg.src = src;
+      console.log('宽高',bg.width,bg.height)
       bg.onload = function () {
         console.log("bg onload");
         that.canvas.setBackgroundImage(
@@ -798,7 +799,7 @@ export default {
             // scaleY: that.canvas.height / bg.height,
             width:bg.width,
             height:bg.height,
-            originX: 'center', 
+            originX: 'center',
             originY: 'center' 
           }
         );
