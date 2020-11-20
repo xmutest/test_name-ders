@@ -213,7 +213,7 @@
       
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="func_calDateFun">重置为计划表内容</el-button>
-        <el-button type="primary" @click="saveAction">保存并退出</el-button>
+        <el-button type="primary" @click="saveInfoAndExit">保存并退出</el-button>
       </span>
     </el-dialog>
 
@@ -846,8 +846,7 @@ export default {
     1、${new Date(realityTime[0].startTime).getFullYear()}年${new Date(realityTime[0].startTime).getMonth() + 1}月${new Date(realityTime[0].startTime).getDate()}日~${new Date(realityTime[0].endTime).getFullYear()}年${new Date(realityTime[0].endTime).getMonth() + 1}月${new Date(realityTime[0].endTime).getDate()}日，测评准备阶段。
     2、${new Date(realityTime[1].startTime).getFullYear()}年${new Date(realityTime[1].startTime).getMonth() + 1}月${new Date(realityTime[1].startTime).getDate()}日~${new Date(realityTime[1].endTime).getFullYear()}年${new Date(realityTime[1].endTime).getMonth() + 1}月${new Date(realityTime[1].endTime).getDate()}日，方案编制过程。
     3、${new Date(realityTime[2].startTime).getFullYear()}年${new Date(realityTime[2].startTime).getMonth() + 1}月${new Date(realityTime[2].startTime).getDate()}日~${new Date(realityTime[2].endTime).getFullYear()}年${new Date(realityTime[2].endTime).getMonth() + 1}月${new Date(realityTime[2].endTime).getDate()}日，现场实施过程。
-    4、${new Date(realityTime[3].startTime).getFullYear()}年${new Date(realityTime[3].startTime).getMonth() + 1}月${new Date(realityTime[3].startTime).getDate()}日~${new Date(realityTime[3].endTime).getFullYear()}年${new Date(realityTime[3].endTime).getMonth() + 1}月${new Date(realityTime[3].endTime).getDate()}日，分析与报告编制过程。
-        `
+    4、${new Date(realityTime[3].startTime).getFullYear()}年${new Date(realityTime[3].startTime).getMonth() + 1}月${new Date(realityTime[3].startTime).getDate()}日~${new Date(realityTime[3].endTime).getFullYear()}年${new Date(realityTime[3].endTime).getMonth() + 1}月${new Date(realityTime[3].endTime).getDate()}日，分析与报告编制过程。`
       }else{
         this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
     1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。
@@ -883,27 +882,9 @@ export default {
       let res = await this.$api.API_ProjectOverviewUpdateDetailTimePreview(this.saveData)
 
       if(res.code != 20000) return alert('保存失败')
+      this.dialogVisible = false
       
     },
-    saveAction(){
-      this.$confirm('此操作将保存计划表信息, 是否继续?', '操作提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.saveInfoAndExit()
-        this.dialogVisible = false
-        this.$message({
-          type: 'success',
-          message: '保存成功!'
-        });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消保存'
-        });          
-      });
-    }
   },
 };
 </script>

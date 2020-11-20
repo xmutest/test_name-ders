@@ -794,8 +794,12 @@ export default {
           src,
           that.canvas.renderAll.bind(that.canvas),
           {
-            scaleX: that.canvas.width / bg.width,
-            scaleY: that.canvas.height / bg.height,
+            // scaleX: that.canvas.width / bg.width,
+            // scaleY: that.canvas.height / bg.height,
+            width:bg.width,
+            height:bg.height,
+            originX: 'center', 
+            originY: 'center' 
           }
         );
       };
