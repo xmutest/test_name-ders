@@ -52,7 +52,7 @@
                     </div>
                   </el-popover>
                 </td>
-                <td @click="shishiClick(item3)">
+                <td @click="shishiClick(item3, item1.sceneCheckName)">
                   <div slot="reference" class="name-wrapper">
                     <a class="text_click">
                       {{
@@ -116,10 +116,10 @@
                     <span style="color: red">{{ item3.originalRisk }}</span>
                   </p>
                   <p v-else-if="item3.originalRisk == '中'">
-                    <span style="color: #FFCC33">{{ item3.originalRisk }}</span>
+                    <span style="color: #ffcc33">{{ item3.originalRisk }}</span>
                   </p>
                   <p v-else-if="item3.originalRisk == '低'">
-                    <span style="color: #66CC00">{{ item3.originalRisk }}</span>
+                    <span style="color: #66cc00">{{ item3.originalRisk }}</span>
                   </p>
                 </td>
 
@@ -385,6 +385,8 @@ export default {
       beforeModificationSeverity: "",
       DataListOp: [],
       lust: {},
+      // 判断名称
+      itemName: "",
     };
   },
   created() {
@@ -409,7 +411,10 @@ export default {
       ];
       let amendId = this.amendAnalysis.amendId;
       this.amendAnalysis = item;
-      this.amendAnalysis.problemDescription = `${this.tsAmlist.assets}${item.problemDescription}`;
+      if (this.itemName == "安全物理环境" || this.itemName == "安全计算环境") {
+        this.amendAnalysis.problemDescription = `${this.tsAmlist.assets}${item.problemDescription}`;
+      }
+
       this.amendAnalysis.amendId = amendId;
       ls.forEach((it) => {
         if (it.id == item.riskGrade) {
@@ -418,7 +423,10 @@ export default {
       });
     },
     Totisadd() {},
-    shishiClick(item3) {
+    shishiClick(item3, itemName) {
+      if (itemName != "") {
+        this.itemName = itemName;
+      }
       this.tsAmlist = item3;
       this.amendAnalysis = item3;
       this.lust = {
