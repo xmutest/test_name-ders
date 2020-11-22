@@ -685,7 +685,7 @@ export default {
         this.RecordFindTimeRecord();
         this.fromData = List.data;
         if (this.fromData.briefIntroduction == null) {
-          this.fromData.briefIntroduction = `受${this.xmu_info.data.evaluatedUnit}委托，${this.user_info.companyName}于YYYY年MM月DD日至YYYY年MM月DD日对${this.xmu_info.data.systemName}进行了系统安全等级测评工作。本次安全测评的范围主要包括${this.xmu_info.data.systemName}的物理环境、主机、网络、业务应用系统、安全管理制度和人员等。安全测评通过静态评估、现场测试、综合评估等相关环节和阶段，从安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设管理、安全运维管理等十个方面，对${this.xmu_info.data.systemName}进行综合测评。`;
+          this.fromData.briefIntroduction = `    受${this.xmu_info.data.evaluatedUnit}委托，${this.user_info.companyName}于YYYY年MM月DD日至YYYY年MM月DD日对${this.xmu_info.data.systemName}进行了系统安全等级测评工作。本次安全测评的范围主要包括${this.xmu_info.data.systemName}的物理环境、主机、网络、业务应用系统、安全管理制度和人员等。安全测评通过静态评估、现场测试、综合评估等相关环节和阶段，从安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设管理、安全运维管理等十个方面，对${this.xmu_info.data.systemName}进行综合测评。`;
         }
         //查询列表
       } else {

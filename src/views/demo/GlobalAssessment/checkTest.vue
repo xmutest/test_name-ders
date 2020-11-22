@@ -639,11 +639,7 @@ export default {
       if (List.code === 20000) {
         this.getEtlists();
         if (List.data == null || List.data.verificationTest == null) {
-          this.fromdatas.verificationTest = `
-          
-            对${this.xmu_info.data.systemName}进行测评，涉及到漏洞扫描工具、渗透性测试工具集等多种测试工具。为了发挥测评工具的作用，达到测评的目的，各种测评工具需要接入到被测系统网络中，并配置合法的网络IP地址。
-           
-          `;
+          this.fromdatas.verificationTest = `    对${this.xmu_info.data.systemName}进行测评，涉及到漏洞扫描工具、渗透性测试工具集等多种测试工具。为了发挥测评工具的作用，达到测评的目的，各种测评工具需要接入到被测系统网络中，并配置合法的网络IP地址。 `;
         } else {
           this.fromdatas.verificationTest = List.data.verificationTest;
 

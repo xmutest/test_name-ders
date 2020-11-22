@@ -112,20 +112,15 @@
                   </el-popover>
                 </td>
                 <td>
-                  <el-popover trigger="click" placement="top">
-                    <div>
-                      <p>
-                        {{ item3.originalRisk }}
-                      </p>
-                    </div>
-                    <div slot="reference" class="name-wrapper">
-                      {{
-                        item3.originalRisk == null
-                          ? item3.originalRisk
-                          : item3.originalRisk.substr(0, 35)
-                      }}
-                    </div>
-                  </el-popover>
+                  <p v-if="item3.originalRisk == '高'">
+                    <span style="color: red">{{ item3.originalRisk }}</span>
+                  </p>
+                  <p v-else-if="item3.originalRisk == '中'">
+                    <span style="color: #FFCC33">{{ item3.originalRisk }}</span>
+                  </p>
+                  <p v-else-if="item3.originalRisk == '低'">
+                    <span style="color: #66CC00">{{ item3.originalRisk }}</span>
+                  </p>
                 </td>
 
                 <td>
@@ -422,8 +417,7 @@ export default {
         }
       });
     },
-    Totisadd() {
-    },
+    Totisadd() {},
     shishiClick(item3) {
       this.tsAmlist = item3;
       this.amendAnalysis = item3;
@@ -431,7 +425,7 @@ export default {
         server: item3.server,
         software: item3.software,
         equipment: item3.equipment,
-        assets:item3.assets
+        assets: item3.assets,
       };
       this.beforeModificationSeverity = item3.beforeModificationSeverity;
       this.api_data.amendId = item3.amendId;
@@ -450,7 +444,7 @@ export default {
       });
       this.amendAnalysis.relationThreaten = ls.slice(0, ls.length - 1);
       this.amendAnalysis.threatId = this.relevanceWeiList;
-      Object.assign(this.amendAnalysis,this.lust);
+      Object.assign(this.amendAnalysis, this.lust);
       let res = await this.$api.API_RiskUpdateAmendAnalysis(this.amendAnalysis);
       if (res.code == 20000) {
         this.dialogVisible = false;

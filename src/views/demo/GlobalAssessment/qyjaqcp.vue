@@ -47,10 +47,7 @@ export default {
       let List = await this.$api.API_WholeEvaluationFindWholeEvaluation();
       if (List.code === 20000) {
         if (List.data == null || List.data.interregional == null) {
-          this.fromdata.interregional = `
-         区域间的安全测评主要考虑互连互通（包括物理上和逻辑上的互连互通等）的不同区域之间存在的安全功能增强、补充和削弱等关联作用，特别是有数据交换的两个不同区域。
-         
-          `;
+          this.fromdata.interregional = `    区域间的安全测评主要考虑互连互通（包括物理上和逻辑上的互连互通等）的不同区域之间存在的安全功能增强、补充和削弱等关联作用，特别是有数据交换的两个不同区域。`;
         } else {
           this.fromdata.interregional = List.data.interregional;
 
