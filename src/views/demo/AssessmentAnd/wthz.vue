@@ -19,8 +19,8 @@
             <th style="width: 50px">权重</th>
           </tr>
         </thead>
-        <template tbody v-for="(item,ins) in dataList">
-           <tr class="List_b" :key="ins">
+        <template tbody v-for="(item, ins) in dataList">
+          <tr class="List_b" :key="ins">
             <td colspan="12">{{ item.extendedStandard }}</td>
           </tr>
           <tbody v-for="(item1, index1) in item.resultData" :key="index1">
@@ -38,7 +38,7 @@
                   {{ item2.safetyControlSpot }}
                 </td>
 
-               <td>
+                <td>
                   <el-popover trigger="click" placement="top">
                     <div>
                       <p>
@@ -54,8 +54,8 @@
                     </div>
                   </el-popover>
                 </td>
-                 <td>
-                    <el-popover trigger="click" placement="top">
+                <td>
+                  <el-popover trigger="click" placement="top">
                     <div>
                       <p>
                         {{ item3.controlEntries }}
@@ -119,26 +119,31 @@
                   </el-popover>
                 </td>
                 <td>
-                  <el-popover trigger="click" placement="top">
-                    <div>
-                      <p>
-                        {{ item3.originalRisk }}
-                      </p>
-                    </div>
-                    <div slot="reference" class="name-wrapper">
-                      {{
-                        item3.originalRisk == null
-                          ? item3.originalRisk
-                          : item3.originalRisk.substr(0, 35)
-                      }}
-                    </div>
-                  </el-popover>
+                  <p v-if="item3.originalRisk == '高'">
+                    <span style="color: red">{{ item3.originalRisk }}</span>
+                  </p>
+                  <p v-else-if="item3.originalRisk == '中'">
+                    <span style="color: #ffcc33">{{ item3.originalRisk }}</span>
+                  </p>
+                  <p v-else-if="item3.originalRisk == '低'">
+                    <span style="color: #66cc00">{{ item3.originalRisk }}</span>
+                  </p>
                 </td>
                 <!-- 修正后风险值 -->
                 <td>
-                  <div>
-                    {{ item3.afterAmendRisk }}
-                  </div>
+                  <p v-if="item3.afterAmendRisk == '高'">
+                    <span style="color: red">{{ item3.afterAmendRisk }}</span>
+                  </p>
+                  <p v-else-if="item3.afterAmendRisk == '中'">
+                    <span style="color: #ffcc33">{{
+                      item3.afterAmendRisk
+                    }}</span>
+                  </p>
+                  <p v-else-if="item3.afterAmendRisk == '低'">
+                    <span style="color: #66cc00">{{
+                      item3.afterAmendRisk
+                    }}</span>
+                  </p>
                 </td>
                 <td>
                   <div>
@@ -207,7 +212,7 @@ export default {
     }
   }
   table th {
-     color: #909399;
+    color: #909399;
     height: 40px;
     border: 1px solid #cad9ea;
     font-size: 14px;

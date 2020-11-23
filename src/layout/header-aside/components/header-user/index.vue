@@ -7,7 +7,7 @@
         登出
       </el-dropdown-item>
       <el-dropdown-item @click.native="dialogVisible = true">
-        <d2-icon name="power-off" class="d2-mr-5"/>
+        <d2-icon name="edit"/>
         修改密码
       </el-dropdown-item>
     </el-dropdown-menu>

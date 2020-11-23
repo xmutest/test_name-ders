@@ -84,9 +84,9 @@
               </el-form>
             </el-card>
             <p class="page-login--options" flex="main:justify cross:center">
-              <span @click="nopassword">
+              <!-- <span @click="nopassword">
                 <d2-icon name="question-circle" />忘记密码
-              </span>
+              </span> -->
               <!-- <span @click="register_add">注册用户</span> -->
             </p>
             <!-- quick login -->
@@ -195,8 +195,8 @@ export default {
       },
       // 表单
       formLogin: {
-        username: "admin",
-        password: "admin",
+        username: "",
+        password: "",
         code: "",
       },
       // 表单校验

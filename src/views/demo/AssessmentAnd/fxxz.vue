@@ -86,7 +86,15 @@
                     </div>
                   </el-popover>
                 </td>
-                <td>{{ item3.originalRisk }}</td>
+                <td> <p v-if="item3.originalRisk == '高'">
+                    <span style="color: red">{{ item3.originalRisk }}</span>
+                  </p>
+                  <p v-else-if="item3.originalRisk == '中'">
+                    <span style="color: #ffcc33">{{ item3.originalRisk }}</span>
+                  </p>
+                  <p v-else-if="item3.originalRisk == '低'">
+                    <span style="color: #66cc00">{{ item3.originalRisk }}</span>
+                  </p></td>
                 <!-- 修正前严重程度 -->
                 <td>
                   <div>

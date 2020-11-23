@@ -342,7 +342,7 @@
               </el-form-item>
 
               <el-form-item
-                label-width="120px"
+                label-width="140px"
                 label="报告日期："
                 prop="reportTime"
                 class="lisT3"
