@@ -258,6 +258,7 @@ export default {
         if (res.data !== null) {
           this.imgUrls = res.data.imgUrl + res.data.imgName;
           this.imgUrlsid = res.data.id;
+          
           this.setBg(this.imgUrls);
         } else {
           this.getlistdataImg();
@@ -274,6 +275,7 @@ export default {
         if (res.data !== null) {
           this.imgUrl = res.data.imgUrl + res.data.imgName;
           this.imgUrls = this.imgUrl;
+          
           this.setBg(this.imgUrls);
         }
       }
@@ -697,7 +699,8 @@ export default {
     openCanvasArea() {
       this.bitmapArr = [];
       this.showCanvas = true;
-      console.log("this.imgUrls", this.imgUrls);
+      // console.log("this.imgUrls", this.imgUrls);
+      
       this.setBg(this.imgUrls);
     },
     initCanvas() {
@@ -783,30 +786,45 @@ export default {
       let that = this;
       let bg = new Image();
       // bg.crossOrigin = "Anonymous";  //跨域
+
       bg.src = src;
+      // 测试
+      // bg.src = require("@/views/demo/GlobalAssessment/img/t1.png")
       console.log("宽高", bg.width, bg.height);
       let bili
+      
+
       if(bg.width > bg.height){
-        bili = that.canvas.height / bg.height
-      }else{
         bili = that.canvas.width / bg.width
+      }else{
+        bili = that.canvas.height / bg.height
       }
 
+      this.bgPic = {
+        width:bg.width,
+        height:bg.height,
+        bili:bili
+      }
+
+      console.log('图片比例',bili)
+
+      console.log('背景图片',bg.src)
+
       bg.onload = function () {
-        console.log("bg onload");
         that.canvas.setBackgroundImage(
-          src,
+          bg.src,
           that.canvas.renderAll.bind(that.canvas),
           {
             scaleX: bili,
             scaleY: bili,
             // width: bg.width,
             // height: bg.height,
-            originX: "center",
-            originY: "center",
+            originX: "left",
+            originY: "top",
           }
-        );
-      };
+        )
+      }
+
       // let that = this
       // var bg_url = require("@/views/demo/GlobalAssessment/img/structure01.jpg")
       // fabric.Image.fromURL( bg_url , function(oImg) {
@@ -817,7 +835,7 @@ export default {
       //     scaleY: that.canvas.height / bg.height
       //     });
       //     that.canvas.setBackgroundImage(oImg, that.canvas.renderAll.bind(that.canvas));
-      // });
+      // })
     },
     createPic(src) {
       let that = this;
@@ -828,14 +846,21 @@ export default {
       });
     },
     saveNewCanvas() {
+      // this.bgPic = {
+      //   width:bg.width,
+      //   height:bg.height
+      // }
       // var canvas = new fabric.Canvas("canvas");
       var result = this.canvas.toDataURL({
-        width: this.canvas.width,
+        // width: this.bgPic.width * this.bgPic.bili,
+        width:this.canvas.width,
+        // height: this.bgPic.height * this.bgPic.bili,
         height: this.canvas.height,
         left: 0,
         top: 0,
         format: "png",
       });
+      console.log(result)
       this.saveCanvas(result);
     },
   },
@@ -890,7 +915,6 @@ export default {
 .canvasObj {
   border: 2px solid black;
   box-sizing: border-box;
-  // margin:0 auto;
 }
 
 .openChangeMode {
