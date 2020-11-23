@@ -179,7 +179,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .mude_is {
   margin: 20px 0;
 }
