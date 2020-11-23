@@ -8,7 +8,7 @@
         border
         show-summary
         sum-text="总计"
-        style="width: 100%; margin-top: 20px"
+        style="width: 100%;"
         :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
         :cell-style="tableStyle"
       >
@@ -181,7 +181,7 @@ export default {
 
 <style lang="scss" scoped>
 .mude_is {
-  margin: 20px 0;
+  // margin: 20px 0;
 }
 
 table th {

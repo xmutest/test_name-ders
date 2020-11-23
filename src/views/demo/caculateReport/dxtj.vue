@@ -6,21 +6,21 @@
                 :data="tableImitateDate"
                 :span-method="objectSpanMethod"
                 border
-                style="width: 100%; margin-top: 20px"
+                style="width: 100%;"
                 :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
                 :cell-style="tableStyle"
               >
                 <el-table-column
                   prop="firstName"
                   label="安全类"
-                  width="150"
+                  width="140"
                   max-height="100"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="secondName"
                   label="安全控制点"
-                  width="150"  
+                  width="140"  
                 >
                 </el-table-column>
                 <el-table-column
@@ -32,7 +32,7 @@
                 <el-table-column
                   prop="objCount"
                   label="测评对象数"
-                  width="80"
+                  width="100"
                 >
                 </el-table-column>
                 <el-table-column
@@ -436,6 +436,10 @@ export default {
 
 <style lang="scss" scoped>
   .mude_is {
-    margin:20px 0;
+    // margin:20px 0;
+  }
+
+ .d2-container-full__body{
+    padding:0 20px !important;
   }
 </style>

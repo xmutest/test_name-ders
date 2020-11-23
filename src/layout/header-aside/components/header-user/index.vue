@@ -65,10 +65,25 @@ import axios from 'axios'
 
 export default {
   data(){
+    var validatePassInit = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.ruleForm.checkPass !== "") {
+          this.$refs.ruleForm.validateField("checkPass");
+        }
+        callback();
+      }
+    };
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
       } else {
+        var pwdRegex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z]).{8,30}')
+        if (!pwdRegex.test(value)) {
+          callback(new Error("密码至少8位且需要字母和数字"));
+        }
+
         if (this.ruleForm.checkPass !== "") {
           this.$refs.ruleForm.validateField("checkPass");
         }
@@ -92,7 +107,7 @@ export default {
         checkPass: "",
       },
       rules: {
-        initPass:[ {validator: validatePass, trigger: "blur" }],
+        initPass:[ {validator: validatePassInit, trigger: "blur" }],
         pass: [{ validator: validatePass, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
       }
@@ -159,11 +174,6 @@ export default {
 </script>
 
 <style lang="scss">
-  .theme-d2 .d2-theme-header .d2-header-right .infoArea{
-    // background:#2D3A4B;
-    // color:#2D3A4B!important;
-    // font-weight:bold; 
-  }
   .myAccountName{
     color:#08c!important;
     font-weight:bold; 

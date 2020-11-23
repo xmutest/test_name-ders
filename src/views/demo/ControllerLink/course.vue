@@ -927,8 +927,7 @@ export default {
         this.fromData.confirmTime != 0
           ? new Date(this.fromData.confirmTime).getDate()
           : "DD"
-      }日对系统的整改情况进行了复核确认。
-      `;
+      }日对系统的整改情况进行了复核确认。`;
     },
     async func_getProjectTimeInfo() {
       let res = await this.$api.API_ProjectOverviewFindDetailTimePreview();

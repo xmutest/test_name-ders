@@ -6,7 +6,7 @@
                 :data="tableImitateDate"
                 :span-method="objectSpanMethod"
                 border
-                style="width: 100%; margin-top: 20px"
+                style="width: 100%; margin-top: 0px"
                 :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
                 :cell-style="tableStyle"
               >
@@ -448,8 +448,11 @@ export default {
     },
     tableStyle({ row, column, rowIndex, columnIndex }){
       if(row.colspan >= 1){
-        return{
-          background:'#A4D38A'
+        if(columnIndex != 3){
+          
+          return{
+            background:'#A4D38A'
+          }
         }
       }
 
@@ -483,6 +486,6 @@ export default {
 
 <style lang="scss">
   .mude_is {
-    margin:20px 0;
+    // margin:20px 0;
   }
 </style>
