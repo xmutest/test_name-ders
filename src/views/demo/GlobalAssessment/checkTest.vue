@@ -656,7 +656,7 @@ export default {
       if (List.code === 20000) {
         this.fromdata = List.data;
         if (!List.data.accessPointDescribe) {
-          this.fromdata.accessPointDescribe = `     通过使用绿盟远程安全评估系统V6.0R03F00SP05对网络设备、安全设备、应用服务器、数据库服务器、应用系统等进行了漏洞扫描。针对被测系统的网络边界和抽查设备、主机和业务应用系统的情况，需要在被测系统及其互联网络中设置各测试工具接入点，如图3.1所示。接入点JA：在接入，主要目的是：模拟内部恶意用户发现操作系统、数据库、应用系统等安全漏洞的过程。↵          ↵          `;
+          this.fromdata.accessPointDescribe = `     通过使用绿盟远程安全评估系统V6.0R03F00SP05对网络设备、安全设备、应用服务器、数据库服务器、应用系统等进行了漏洞扫描。针对被测系统的网络边界和抽查设备、主机和业务应用系统的情况，需要在被测系统及其互联网络中设置各测试工具接入点，如图3.1所示。接入点JA：在接入，主要目的是：模拟内部恶意用户发现操作系统、数据库、应用系统等安全漏洞的过程。`;
         }
         //查询列表
       } else {
@@ -785,16 +785,23 @@ export default {
       // bg.crossOrigin = "Anonymous";  //跨域
       bg.src = src;
       console.log("宽高", bg.width, bg.height);
+      let bili
+      if(bg.width > bg.height){
+        bili = that.canvas.height / bg.height
+      }else{
+        bili = that.canvas.width / bg.width
+      }
+
       bg.onload = function () {
         console.log("bg onload");
         that.canvas.setBackgroundImage(
           src,
           that.canvas.renderAll.bind(that.canvas),
           {
-            // scaleX: that.canvas.width / bg.width,
-            // scaleY: that.canvas.height / bg.height,
-            width: bg.width,
-            height: bg.height,
+            scaleX: bili,
+            scaleY: bili,
+            // width: bg.width,
+            // height: bg.height,
             originX: "center",
             originY: "center",
           }

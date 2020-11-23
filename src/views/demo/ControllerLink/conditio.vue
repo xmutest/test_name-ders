@@ -176,7 +176,17 @@
             >
             </el-input>
           </div>
-
+          <div class="mude_text_item">
+            <div class="descTItle">承载的业务情况</div>
+            <el-input
+              style="min-height: 200px; margin-bottom: 20px"
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
+              v-model="fromdataation.businessSituation"
+            >
+            </el-input>
+          </div>
           <div class="mude_text_item">
             <div class="descTItle">前次测评情况</div>
             <div class="to_tim">
@@ -203,6 +213,10 @@
 export default {
   data() {
     return {
+      fromdataation: {
+        businessSituation: "",
+        id: "",
+      },
       fromdata: {
         systemSituation: "",
         lastEvaluationSituation: "",
@@ -391,6 +405,7 @@ export default {
     async getEtlist() {
       let List = await this.$api.API_projectOverviewdObjfindSystemSituation();
       if (List.code === 20000) {
+        this.getEtlistation();
         this.PassiveCompany();
         this.fromdata = List.data;
         //查询列表
@@ -398,12 +413,28 @@ export default {
         this.$message.error(List.message + "评测依据选项出差，请联系管理员");
       }
     },
-    textChangeHandler(delta, oldDelta, source) {
-      // console.log(delta,oldDelta,source)
+    async getEtlistation() {
+      let List = await this.$api.API_projectOverviewfindBusinessSituation();
+      if (List.code === 20000) {
+        this.fromdataation = List.data;
+        //查询列表
+      } else {
+        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+      }
+    },
+    async submitReportation() {
+      let res = await this.$api.API_evaluationBasis_updata(this.fromdataation);
+      if (res.code === 20000) {
+        this.getEtlistation();
+        //查询列表
+      } else {
+        this.$message.error("错误，请联系管理员" + res.message);
+      }
     },
     async submitReport() {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       this.PassiveCompanyUpdate();
+      this.submitReportation();
       if (res.code === 20000) {
         this.getEtlist();
         //查询列表

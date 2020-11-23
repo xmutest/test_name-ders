@@ -147,6 +147,7 @@
       <el-table-column label="评测指导书">
         <template slot-scope="scope">
           <el-select
+            disabled
             @change="
               schujiaodian({
                 id: scope.row.id,

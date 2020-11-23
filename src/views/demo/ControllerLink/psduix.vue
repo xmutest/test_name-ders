@@ -16,7 +16,7 @@
             >
             </el-input>
           </div>
-          <div class="mude_text_item">
+          <!-- <div class="mude_text_item">
             <div class="descTItle">评测方法</div>
             <el-input
               type="textarea"
@@ -42,7 +42,7 @@
               >
               </el-tree>
             </div>
-          </div>
+          </div> -->
           <div class="tijiaobaoc">
             <el-button type="primary" @click="submitReport">保存</el-button>
           </div>

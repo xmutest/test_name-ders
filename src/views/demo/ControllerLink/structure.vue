@@ -39,7 +39,7 @@
               </el-upload>
             </div>
           </div>
-          <div class="mude_text_item">
+          <!-- <div class="mude_text_item">
             <div class="descTItle">系统边界表(仅方案)</div>
             <div class="wangruo_table">
               <el-table
@@ -113,7 +113,6 @@
 
                 <el-table-column fixed="right" label="操作" width="200">
                   <template slot-scope="scope">
-                    <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
                     <el-button
                       size="mini"
                       @click="
@@ -131,7 +130,7 @@
                 </el-table-column>
               </el-table>
             </div>
-          </div>
+          </div> -->
         </el-card>
       </div>
       <!-- 图片 -->
@@ -270,12 +269,12 @@ export default {
       let List = await this.$api.API_projectOverviewStructureDescribe();
       let data = "";
       if (List.code === 20000) {
-        this.getlistdata();
+        // this.getlistdata();
         this.getlistdataImg();
         if (List.data.networkStructureDescribe != null) {
           data = List.data.networkStructureDescribe;
         } else {
-          data = `如图2-1 ${this.xmu_info.data.systemName}网络拓扑图所示`;
+          data = `    如图2-1 ${this.xmu_info.data.systemName}网络拓扑图所示`;
         }
         this.fromdata.networkStructureDescribe = data;
         this.fromdata.id = List.data.id;
@@ -320,7 +319,7 @@ export default {
         res = await this.$api.API_sysBoundarySave(item);
       }
       if (res.code === 20000) {
-        this.getlistdata();
+        // this.getlistdata();
         this.Itzm = false;
         //查询列表
       } else {
@@ -353,7 +352,7 @@ export default {
             id: rows.id,
           });
           if (res.code === 20000) {
-            this.getlistdata();
+            // this.getlistdata();
             this.$message({
               type: "success",
               message: "删除成功!",
