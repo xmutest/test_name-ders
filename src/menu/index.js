@@ -25,8 +25,8 @@ function supplementPath(menu) {
   }))
 }
 
-export const menuAside = supplementPath([
-  {
+
+export const menuAside = supplementPath([{
     path: '/index',
     title: '首页',
     icon: 'home'

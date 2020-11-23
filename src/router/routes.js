@@ -55,6 +55,15 @@ const frameIn = [
         },
         component: _import('system/woxmu/woxmu')
       },
+      {
+        path: 'usercontrol',
+        name: 'usercontrol',
+        meta: {
+          auth: true,
+          title: '用户管理'
+        },
+        component: _import('system/userControl/index')
+      },
       // 演示页面
       // 系统 前端日志
       {

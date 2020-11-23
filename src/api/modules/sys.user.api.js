@@ -67,10 +67,10 @@ export default ({
     return request({
       url: '/project/findList',
       method: 'post',
-      data:JSON.stringify(data),
-      params:{
-        page:data.page,
-        pageSize:data.pageSize
+      data: JSON.stringify(data),
+      params: {
+        page: data.page,
+        pageSize: data.pageSize
       }
     })
   },
@@ -83,10 +83,10 @@ export default ({
     return request({
       url: '/department/findList',
       method: 'get',
-      params:data
+      params: data
     })
   },
-   /**
+  /**
    * @description 项目删除
    * @param {Object} data 项目删除
    */
@@ -96,7 +96,7 @@ export default ({
     return request({
       url: '/project/delete',
       method: 'get',
-      params:data
+      params: data
     })
   },
   /**
@@ -111,7 +111,7 @@ export default ({
       data: JSON.stringify(data)
     })
   },
-    /**
+  /**
    * @description 项目详细
    * @param {Object} data 
    */
@@ -120,10 +120,10 @@ export default ({
     return request({
       url: '/project/detail',
       method: 'get',
-      params:data
+      params: data
     })
   },
-   /**
+  /**
    * @description 获取sag等级
    * @param {Object} data 
    */
@@ -132,7 +132,32 @@ export default ({
     return request({
       url: '/sag/findSagByLevel',
       method: 'get',
-      params:data
+      params: data
+    })
+  },
+   /**
+   * @description 用户列表获取
+   * @param {Object} data 
+   */
+  API_DepartmentFindListe(data = {}) {
+    // 接口请求
+    return request({
+      url: '/user/findList',
+      method: 'post',
+      data
+    })
+  },
+  /**
+   * @description 用户添加
+   * @param {Object} data 
+   */
+  API_UserSave(data = {}) {
+    // 接口请求
+    return request({
+      url: '/user/save',
+      method: 'post',
+      data
     })
   }
+
 })

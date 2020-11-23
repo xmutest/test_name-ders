@@ -8,7 +8,7 @@
             <th>安全层面</th>
             <th>控制点</th>
             <th>关联资产</th>
-            <th>控制项</th>
+            <th style="width: 400px">控制项</th>
             <th>问题描述</th>
             <th style="width: 100px">原始风险值</th>
             <th style="width: 100px">修正前严重程度</th>
@@ -39,7 +39,7 @@
                 </td>
 
                 <td>
-                    <el-popover trigger="click" placement="top">
+                  <el-popover trigger="click" placement="top">
                     <div>
                       <p>
                         {{ item3.assets }}
@@ -55,7 +55,7 @@
                   </el-popover>
                 </td>
                 <td>
-                    <el-popover trigger="click" placement="top">
+                  <el-popover trigger="click" placement="top">
                     <div>
                       <p>
                         {{ item3.controlEntries }}
@@ -71,7 +71,7 @@
                   </el-popover>
                 </td>
                 <td>
-                    <el-popover trigger="click" placement="top">
+                  <el-popover trigger="click" placement="top">
                     <div>
                       <p>
                         {{ item3.problemDescription }}
@@ -86,7 +86,8 @@
                     </div>
                   </el-popover>
                 </td>
-                <td> <p v-if="item3.originalRisk == '高'">
+                <td>
+                  <p v-if="item3.originalRisk == '高'">
                     <span style="color: red">{{ item3.originalRisk }}</span>
                   </p>
                   <p v-else-if="item3.originalRisk == '中'">
@@ -94,7 +95,8 @@
                   </p>
                   <p v-else-if="item3.originalRisk == '低'">
                     <span style="color: #66cc00">{{ item3.originalRisk }}</span>
-                  </p></td>
+                  </p>
+                </td>
                 <!-- 修正前严重程度 -->
                 <td>
                   <div>

@@ -393,7 +393,7 @@
 
           <div class="mude_text_item">
             <div class="descTItle">现有报告</div>
-            <el-table :data="reportGeneratingRecords" style="width: 100%">
+            <el-table :header-cell-style="{'text-align':'center'}" :data="reportGeneratingRecords" style="width: 100%">
               <!-- <el-table-column label="报告编号" width="200">
                 <template slot-scope="scope">
                   <span style="margin-left: 10px">{{

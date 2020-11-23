@@ -31,7 +31,13 @@ export default {
                </li>   
                <el-menu-item index="/Jinxm"><d2-icon name="calendar-times-o items"/>进行中的项目</el-menu-item>    
                <el-menu-item index="/woxmu"><d2-icon name="hourglass-o items1"/>我创建的项目</el-menu-item>
-               <el-menu-item index="/onxmu"><d2-icon name="power-off items2"/>已完成的项目</el-menu-item>
+                 <el-menu-item index="/onxmu"><d2-icon name="power-off items2"/>已完成的项目</el-menu-item>
+                 {
+                   this.info.user_info?
+                   this.info.user_info.userType===1?<el-menu-item index="/usercontrol"><d2-icon name="address-book-o item2"/>用户管理</el-menu-item>:null
+                   :null
+                 }
+                 
              </ul>
           
           </el-menu>
@@ -52,7 +58,11 @@ export default {
       'aside',
       'asideCollapse',
       'asideTransition'
-    ])
+    ]),
+    ...mapState("d2admin", {
+      info: (state) => state.user.info,
+    })
+    
   },
   watch: {
     // '$route':'getPath',

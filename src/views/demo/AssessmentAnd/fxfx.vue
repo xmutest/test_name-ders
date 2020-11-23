@@ -9,7 +9,7 @@
             <th>控制点</th>
             <th >关联资产</th>
             <th style="width: 400px">控制项</th>
-            <th >问题描述</th>
+            <th>问题描述</th>
             <th>问题分析</th>
             <th>关联威胁</th>
             <th style="width: 100px">原始风险值</th>
