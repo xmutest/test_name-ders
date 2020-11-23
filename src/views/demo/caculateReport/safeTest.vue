@@ -2,7 +2,6 @@
 <template>
   <d2-container>
     <div class="mude_is">
-        <el-card class="box-card">
               <el-table
                 :data="tableImitateDate"
                 :span-method="objectSpanMethod"
@@ -42,7 +41,6 @@
                 >
                 </el-table-column>
               </el-table>
-        </el-card>
     </div>
   </d2-container>
 </template>
