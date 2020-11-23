@@ -2,35 +2,34 @@
 <template>
   <d2-container>
     <div class="mude_is">
-      <el-card class="box-card">
-        <el-table
-          :data="tableImitateDate"
-          :span-method="objectSpanMethod"
-          border
-          show-summary
-          sum-text="总计"
-          style="width: 100%; margin-top: 20px"
-          :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
+      <el-table
+        :data="tableImitateDate"
+        :span-method="objectSpanMethod"
+        border
+        show-summary
+        sum-text="总计"
+        style="width: 100%; margin-top: 20px"
+        :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
+        :cell-style="tableStyle"
+      >
+        <el-table-column
+          prop="firstName"
+          label="安全类"
+          width="180"
+          max-height="100"
         >
-          <el-table-column
-            prop="firstName"
-            label="安全类"
-            width="180"
-            max-height="100"
-          >
-            <template slot-scope="scope">
-              <!-- <div :style="scope.row.objNum==438?'background:red':''"> -->
-                {{ scope.row.firstName }}
-              <!-- </div> -->
-            
-            </template>
-          </el-table-column>
-          <el-table-column prop="name" label="安全控制点"> </el-table-column>
-          <el-table-column prop="itemSize" label="测评项数"> </el-table-column>
-          <el-table-column prop="itemTotalSize" label="测评对象数"> </el-table-column>
-          <el-table-column prop="objSize" label="测评项总数"></el-table-column>
-        </el-table>
-      </el-card>
+          <template slot-scope="scope">
+            <!-- <div :style="scope.row.objNum==438?'background:red':''"> -->
+              {{ scope.row.firstName }}
+            <!-- </div> -->
+          
+          </template>
+        </el-table-column>
+        <el-table-column prop="name" label="安全控制点"> </el-table-column>
+        <el-table-column prop="itemSize" label="测评项数"> </el-table-column>
+        <el-table-column prop="itemTotalSize" label="测评对象数"> </el-table-column>
+        <el-table-column prop="objSize" label="测评项总数"></el-table-column>
+      </el-table>
     </div>
   </d2-container>
 </template>
@@ -139,7 +138,6 @@ export default {
               colspan: 0,
             }
           }
-          
         }
         // 仅限第一行
         if (columnIndex === 0) {
@@ -170,6 +168,13 @@ export default {
       // this.xmu_info.level  等保等级
     // standardExtends
     },
+    tableStyle({ row, column, rowIndex, columnIndex }){
+        if(row.colspan >= 1){
+          return{
+            background:'#A4D38A'
+          }
+        }
+    }
   },
 };
 </script>
@@ -178,4 +183,12 @@ export default {
 .mude_is {
   margin: 20px 0;
 }
+
+table th {
+    color: #909399;
+    height: 40px;
+    border: 1px solid #cad9ea;
+    font-size: 14px;
+    font-weight: bold;
+  }
 </style>

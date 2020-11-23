@@ -2,7 +2,6 @@
 <template>
   <d2-container>
     <div class="mude_is">
-      <el-card class="box-card">
         <el-table
           :data="tableImitateDate"
           :span-method="objectSpanMethod"
@@ -55,7 +54,6 @@
             </template>
           </el-table-column>
         </el-table>
-      </el-card>
     </div>
   </d2-container>
 </template>
@@ -264,6 +262,12 @@ export default {
         }
     },
     tableStyle({ row, column, rowIndex, columnIndex }){
+      if(row.colspan >= 1){
+        return{
+          background:'#A4D38A'
+        }
+      }
+
       if(columnIndex == 1){
         if(row.controlFraction == 'N/A' || row.controlFraction == '-'){
           return{

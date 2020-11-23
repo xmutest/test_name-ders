@@ -2,51 +2,64 @@
 <template>
   <d2-container>
     <div class="mude_is">
-        <el-card class="box-card">
               <el-table
                 :data="tableImitateDate"
                 :span-method="objectSpanMethod"
                 border
                 style="width: 100%; margin-top: 20px"
                 :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
+                :cell-style="tableStyle"
               >
                 <el-table-column
                   prop="firstName"
                   label="安全类"
-                  width="180"
+                  width="150"
                   max-height="100"
                 >
                 </el-table-column>
                 <el-table-column
                   prop="secondName"
-                  label="安全控制点">
+                  label="安全控制点"
+                  width="150"  
+                >
                 </el-table-column>
                 <el-table-column
                   prop="name"
-                  label="测评项">
+                  label="测评项"
+                  width="400"
+                >
                 </el-table-column>
                 <el-table-column
                   prop="objCount"
-                  label="测评对象数">
+                  label="测评对象数"
+                  width="80"
+                >
                 </el-table-column>
                 <el-table-column
                   prop="accord"
-                  label="符合率">
+                  label="符合率"
+                  width="80"
+                >
                 </el-table-column>
                 <el-table-column
                   prop="sectionAccord"
-                  label="部分符合">
+                  label="部分符合"
+                  width="80"
+                >
                 </el-table-column>
                 <el-table-column
                   prop="notAccord"
-                  label="不符合率">
+                  label="不符合率"
+                  width="80"
+                >
                 </el-table-column>
                 <el-table-column
                   prop="notBeApplicable"
-                  label="不适用数">
+                  label="不适用数"
+                  width="80"
+                >
                 </el-table-column>
               </el-table>
-        </el-card>
     </div>
   </d2-container>
 </template>
@@ -332,9 +345,9 @@ export default {
                 secondName:secondName,
                 name:pre.controlEntries,
                 objCount:pre.objCount,
-                accord:pre.accord,
-                sectionAccord:pre.sectionAccord,
-                notAccord:pre.notAccord,
+                accord:pre.accord + '%',
+                sectionAccord:pre.sectionAccord + '%',
+                notAccord:pre.notAccord + '%',
                 notBeApplicable:pre.notBeApplicable,
               }
               
@@ -408,7 +421,15 @@ export default {
       if(res.code != 20000) return console.log(res.message)
       let {dataInfo} = res.data
       this.arrengeData(dataInfo)
-    } 
+    } ,
+    
+    tableStyle({ row, column, rowIndex, columnIndex }){
+        if(row.colspan >= 1){
+          return{
+            background:'#A4D38A'
+          }
+        }
+    }
   },
 }
 </script>

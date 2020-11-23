@@ -450,10 +450,8 @@ export default {
     },
     tableStyle({ row, column, rowIndex, columnIndex }){
       if(row.colspan >= 1){
-        if(columnIndex == 0){
-          return{
-            background:'#A4D38A'
-          }
+        return{
+          background:'#A4D38A'
         }
       }
 

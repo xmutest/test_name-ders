@@ -916,18 +916,6 @@ export default {
           ? new Date(this.fromData.startMeetingTime).getDate()
           : "DD"
       }日召开了项目末次会议，确认了测评发现的问题；${
-        this.fromData.lastMeetingTime != 0
-          ? new Date(this.fromData.lastMeetingTime).getFullYear()
-          : "YYYY"
-      }年${
-        this.fromData.lastMeetingTime != 0
-          ? new Date(this.fromData.lastMeetingTime).getMonth() + 1
-          : "MM"
-      }月${
-        this.fromData.lastMeetingTime != 0
-          ? new Date(this.fromData.lastMeetingTime).getDate()
-          : "DD"
-      }日召开了项目末次会议，确认了测评发现的问题；${
         this.fromData.confirmTime != 0
           ? new Date(this.fromData.confirmTime).getFullYear()
           : "YYYY"
