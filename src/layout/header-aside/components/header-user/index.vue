@@ -81,7 +81,7 @@ export default {
       } else {
         var pwdRegex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z]).{8,30}')
         if (!pwdRegex.test(value)) {
-          callback(new Error("密码至少8位且需要字母和数字"));
+          callback(new Error("密码至少8位且包含字母和数字"));
         }
 
         if (this.ruleForm.checkPass !== "") {

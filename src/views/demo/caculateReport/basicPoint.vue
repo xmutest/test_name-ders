@@ -6,8 +6,6 @@
         :data="tableImitateDate"
         :span-method="objectSpanMethod"
         border
-        show-summary
-        sum-text="总计"
         style="width: 100%;"
         :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
         :cell-style="tableStyle"
@@ -59,7 +57,7 @@ export default {
   },
   methods: {
     arrengeData(res) {
-      let imitateData = res
+      let imitateData = res.dataList
       let groupIndex = 0;
 
       for(let a=0;a<imitateData.length;a++){
@@ -92,6 +90,17 @@ export default {
 
         
       }
+      // res
+      let totalParams = {
+        firstName:'总计',
+        name:'',
+        itemSize:res.itemSizeSUM,
+        itemTotalSize:res.itemTotalSizeSUM,
+        objSize:res.objSizeSUM,
+        colspan:2
+      }
+
+      this.tableImitateDate.push(totalParams)
 
       console.log('result',this.tableImitateDate)
 
@@ -153,17 +162,16 @@ export default {
             };
           }
         }
-
-        
       // }
     },
     async func_get_config() {
 
       let res = await this.$api.API_CalculateFractionControlStatistics();
       
-      let {dataList} = res.data
-      console.log(dataList)
-      this.arrengeData(dataList)
+      // let {dataList} = res.data
+      let {data} = res
+      // console.log(dataList)
+      this.arrengeData(data)
 
       // this.xmu_info.level  等保等级
     // standardExtends

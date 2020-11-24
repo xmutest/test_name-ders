@@ -34,6 +34,8 @@
             border
             style="width: 100%"
             :cell-class-name="headerStyle"
+            :cell-mouse-enter="hoverEvent"
+            :cell-click="hoverEvent"
           >
             <el-table-column prop="name" label="风险/结论/得分" width="180">
             </el-table-column>
@@ -96,17 +98,14 @@ export default {
     this.func_getChartsData();
   },
   mounted() {
+    // 清除table默认hover样式
     setTimeout(() => {
       const el = document.getElementsByClassName(
         "el-table--enable-row-hover"
       )[0];
-      // console.log(el)
       let newName = el.getAttribute("class");
-      // console.log( newName)
       newName = newName.replace("el-table--enable-row-hover", "");
-      // console.log( newName)
       el.setAttribute("class", newName);
-      // console.log(el)
     }, 800);
   },
   methods: {
@@ -161,7 +160,10 @@ export default {
                 color: function (params) {
                   if (params.value <= 70) {
                     return "#DF7862";
-                  } else if (params.value > 70 && params.value < 90) {
+                  }else if(params.value > 70 && params.value <= 80){
+                    return "#dfa962"
+                  }
+                   else if (params.value > 80 && params.value <= 90) {
                     return "#447A8F";
                   }
                   return "#47A269";
@@ -174,7 +176,7 @@ export default {
 
       setTimeout(function () {
         echarts.init(that.$refs.echartsArea).setOption(option);
-      }, 500);
+      }, 500)
     },
     async func_getMark() {
       let res = await this.$api.API_CalculateFractionInConclusionFraction();
@@ -182,6 +184,10 @@ export default {
 
       this.markData = data;
     },
+    hoverEvent(row, column, cell, event){
+      // console.log(row)
+      console.log(11111)
+    }
   },
 };
 </script>
@@ -210,12 +216,6 @@ export default {
       -webkit-justify-content: space-around;
       justify-content: space-around;
     }
-    //  <div class="accord">指标符合率:{{markData.accord}}</div>
-    // <div class="sectionAccord">指标部分符合率:{{markData.sectionAccord}}</div>
-    // <div class="notAccord">指标不符合率:{{markData.notAccord}}</div>
-    // <div class="notBeApplicable">指标不适用数:{{markData.notBeApplicable}}</div>
-    // <div class="fractionResult">测评结论:{{markData.fractionResult}}</div>
-    // <div class="totalFraction">综合得分:{{markData.totalFraction}}分</div>
     .accord {
       color: #47a269;
     }

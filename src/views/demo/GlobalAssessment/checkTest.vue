@@ -276,7 +276,7 @@ export default {
           this.imgUrl = res.data.imgUrl + res.data.imgName;
           this.imgUrls = this.imgUrl;
           
-          this.setBg(this.imgUrls);
+          this.setBg(this.imgUrl);
         }
       }
       if (res.code !== 20000) {
@@ -367,34 +367,10 @@ export default {
       this.mouseInfo.startX = e.stageX;
       this.mouseInfo.startY = e.stageY;
 
-      // console.log('鼠标点的位置',this.mouseInfo.startX,this.mouseInfo.startY)
-
-      // console.log(this.mouseInfo.startX,this.mouseInfo.startY)
-
-      // console.log(e)
-      // console.log(this.$refs.canvaspic)
-      // console.log(this.$refs.canvasArea.offsetTop,this.$refs.canvaspic.$el.offsetTop)
-
-      // console.log('画布基本点',casBasicPoint)
-
-      // console.log('document',document)
-
-      // @pressmove.prevent="objMove($event)"
-      // @mouseout="objOut($event)"
-
-      // console.log(document.body)
-      // console.log(this.objMove)
-      // let body = document.body
-
-      // console.log(that)
-
       document.addEventListener("mousemove", move);
       document.addEventListener("mouseup", up);
 
       function move(evt) {
-        // let obj = e.currentTarget;
-        // console.log('对象',that.mouseInfo)
-        // console.log('真对象?',e)
 
         // 鼠标点击坐标 - 画布原点坐标
         let mouseX = evt.clientX - casBasicPoint.x,
@@ -411,8 +387,6 @@ export default {
         let picWidth = obj.image.width,
           picHeight = obj.image.height,
           nearDis = 5; //靠近距离
-
-        // console.log(that.$refs.canvaspic.$el.width)
 
         // 局限
         if (obj.x < nearDis) {
@@ -432,59 +406,6 @@ export default {
         ) {
           obj.y = that.$refs.canvaspic.$el.height - picHeight;
         }
-
-        // console.log('移动的位置',obj.x,obj.y)
-        // console.log(obj)
-
-        // if()
-
-        // console.log(moveX,moveY)
-        // console.log(moveY)
-
-        // console.log(moveX,moveY)
-        // console.log(e.clientX,e.pageX)
-
-        // obj.x = judgeX;
-        // obj.y = judgeY;
-
-        // // 获取图片宽高
-        // let imgWidth = obj.image.width;
-        // let imgHeight = obj.image.height;
-
-        // that.mouseInfo.moveX = e.stageX;
-        // that.mouseInfo.moveY = e.stageY;
-
-        // // debugger;
-        // let diveceX = that.mouseInfo.moveX - that.mouseInfo.startX;
-        // let diveceY = that.mouseInfo.moveY - that.mouseInfo.startY;
-
-        // console.log(that.mouseInfo.startX)
-
-        // let judgeX = that.mouseInfo.startLocateX + diveceX;
-        // let judgeY = that.mouseInfo.startLocateY + diveceY;
-
-        // if (judgeX < 0 || judgeX + imgWidth > 1000) {
-        //   if (judgeX < 0) {
-        //     judgeX = 0;
-        //   } else {
-        //     judgeX = 1000 - imgWidth;
-        //   }
-        //   // this.mouseInfo.moveX = 0
-        //   // this.objOut(e)
-        // }
-
-        // if (judgeY < 0 || judgeY + imgHeight > 500) {
-        //   if (judgeY < 0) {
-        //     judgeY = 0;
-        //   } else {
-        //     judgeY = 500 - imgHeight;
-        //   }
-        //   // this.mouseInfo.moveY = 0
-        //   // this.objOut(e)
-        // }
-        // // console.log(judgeX,judgeY)
-        // obj.x = judgeX;
-        // obj.y = judgeY;
       }
       function up(e) {
         document.removeEventListener("mousemove", move);
@@ -514,8 +435,6 @@ export default {
         } else {
           judgeX = 1000 - imgWidth;
         }
-        // this.mouseInfo.moveX = 0
-        // this.objOut(e)
       }
 
       if (judgeY < 0 || judgeY + imgHeight > 500) {
@@ -524,60 +443,12 @@ export default {
         } else {
           judgeY = 500 - imgHeight;
         }
-        // this.mouseInfo.moveY = 0
-        // this.objOut(e)
       }
 
       obj.x = judgeX;
       obj.y = judgeY;
 
-      //超出做限制
-      // if (obj.x < 0 || obj.x + imgWidth > 1000) {
-      //   if (obj.x < 0) {
-      //     obj.x = 0;
-      //   } else {
-      //     obj.x = 1000 - imgWidth;
-      //   }
-      //   // this.mouseInfo.moveX = 0
-      //   // this.objOut(e)
-      // }else{
-
-      // }
-
-      // if (obj.y < 0 || obj.y + imgHeight > 500) {
-      //   if (obj.y < 0) {
-      //     obj.y = 0;
-      //   } else {
-      //     obj.y = 500 - imgHeight;
-      //   }
-      //   // this.mouseInfo.moveY = 0
-      //   // this.objOut(e)
-      // }else{
-
-      // }
-
-      // console.log('移动',parseInt(obj.x),parseInt(obj.y),parseInt(this.mouseInfo.moveX),parseInt(this.mouseInfo.moveY))
-
-      // if (obj.x < 0 || obj.x + imgWidth > 1000){
-      //   // 左右顶边
-
-      // }
-
-      // if(obj.x <= 0 && obj.y <= 0){
-      //   obj.x = 0,obj.y = 0
-      // }else if(obj.x <= 0 && obj.y + imgHeight > 500){
-      //   obj.x = 0,obj.y = 500 - imgHeight;
-      // }else if(obj.x <= 0 && obj.y > 0 && obj.y + imgHeight <= 500){
-      //   obj.x = 0
-      // }
-
-      // if(obj.x + imgWidth > 1000 && obj.y <= 0){
-      //   obj.x = 1000 - imgWidth,obj.y = 0
-      // }else if(obj.x + imgWidth > 1000 && obj.y + imgHeight > 500){
-      //   obj.x = 1000 - imgWidth,obj.y = 500 - imgHeight;
-      // }else if(obj.x + imgWidth > 1000 && obj.y > 0 && obj.y + imgHeight <= 500){
-      //   obj.x = 1000 - imgWidth
-      // }
+      
     },
     objOut(e) {
       // 触发事件对象
@@ -588,21 +459,6 @@ export default {
     },
     // 流程工具选择
     showToolsFun(e) {
-      // let flag = false;
-      // for (let i = 0; i < this.bitmapArr.length; i++) {
-      //   if (this.bitmapArr[i].indexOf(e.currentTarget.dataset.index) != -1)
-      //     flag = true;
-      // }
-
-      // if (flag) {
-      //   return this.$message({
-      //     message: `已经选过 j${e.currentTarget.dataset.index} 了`,
-      //     type: "warning",
-      //   });
-      // }
-
-      // this.showTools = true;
-      // this.inputIndex = e.currentTarget.dataset.index;
 
       let flag = false;
       for (let i = 0; i < this.bitmapArr.length; i++) {
@@ -702,6 +558,7 @@ export default {
       // console.log("this.imgUrls", this.imgUrls);
       
       this.setBg(this.imgUrls);
+      // this.setBg();
     },
     initCanvas() {
       console.log("run canvas");
@@ -711,75 +568,6 @@ export default {
         casHeight = that.canvas.height;
       console.log("fab", that.canvas);
 
-      // let bg = new Image()
-      // // bg.crossOrigin = "Anonymous";  //跨域
-      // bg.src = require("@/views/demo/GlobalAssessment/img/structure01.jpg")
-      // bg.onload = function(){
-      //   console.log('bg onload')
-      //   that.canvas.setBackgroundImage(
-      //     require("@/views/demo/GlobalAssessment/img/structure01.jpg"),
-      //     that.canvas.renderAll.bind(that.canvas),
-      //     {
-      //       scaleX: that.canvas.width / bg.width,
-      //       scaleY: that.canvas.height / bg.height
-      //     }
-      //   );
-      // }
-
-      // let obj,obj2
-      // let man = new Image()
-      // man.src = require("@/views/demo/GlobalAssessment/img/man.jpeg")
-      // man.onload = function(){
-      //   obj = new fabric.Image(man,{
-      //     width:200,
-      //     height:200,
-      //     left: 100,
-      //     top: 100,
-      //   })
-
-      //   obj2 = new fabric.Image(man,{
-      //     width:200,
-      //     height:200,
-      //     left:300,
-      //     top: 200,
-      //   })
-
-      //   that.canvas.add(obj,obj2);
-      // }
-
-      // let manSrc = require("@/views/demo/GlobalAssessment/img/palntlsImg/ja1.png")
-
-      // fabric.Image.fromURL(manSrc,function(obj1){
-      //   that.canvas.add(obj1)
-      // })
-
-      // 洛丹伦
-
-      //鼠标按下事件
-      // canvas.on("mouse:down", function(e) {
-      //   this.panning = true;
-      //   canvas.selection = false;
-      // });
-      // //鼠标抬起事件
-      // canvas.on("mouse:up", function(e) {
-      //   this.panning = false;
-      //   canvas.selection = true;
-      // });
-      // // 移动画布事件
-      // canvas.on("mouse:move", function(e) {
-      //   if (this.panning && e && e.e) {
-      //     var delta = new fabric.Point(e.e.movementX, e.e.movementY);
-      //     canvas.relativePan(delta);
-      //   }
-      // });
-      // // 鼠标滚动画布放大缩小
-      // canvas.on("mouse:wheel", function(e) {
-      //   var zoom = (event.deltaY > 0 ? -0.1 : 0.1) + canvas.getZoom();
-      //   zoom = Math.max(0.1, zoom); //最小为原来的1/10
-      //   zoom = Math.min(3, zoom); //最大是原来的3倍
-      //   var zoomPoint = new fabric.Point(event.pageX, event.pageY);
-      //   canvas.zoomToPoint(zoomPoint, zoom);
-      // });
     },
     setBg(src) {
       if (!src) return this.$message.error("暂无图片,请上传图片");
@@ -809,21 +597,41 @@ export default {
       console.log('图片比例',bili)
 
       console.log('背景图片',bg.src)
+      let Shape
+      // Shape = new fabric.Image(image, {
+      //               // 通过scale来设置图片大小，这里设置和画布一样大
+      //               scaleX: imageEffectCanvas.width / image.width,
+      //               scaleY: imageEffectCanvas.height / image.height,
+      //           });
 
       bg.onload = function () {
-        that.canvas.setBackgroundImage(
-          bg.src,
-          that.canvas.renderAll.bind(that.canvas),
-          {
+        Shape = new fabric.Image(bg, {
             scaleX: bili,
             scaleY: bili,
             // width: bg.width,
             // height: bg.height,
             originX: "left",
             originY: "top",
-          }
-        )
+        })
+        that.canvas.setBackgroundImage(Shape,that.canvas.renderAll.bind(that.canvas))
+        that.canvas.renderAll()
+        // 之前的背景设置
+        // that.canvas.setBackgroundImage(
+        //   bg.src,
+        //   that.canvas.renderAll.bind(that.canvas),
+        //   {
+        //     scaleX: bili,
+        //     scaleY: bili,
+        //     // width: bg.width,
+        //     // height: bg.height,
+        //     originX: "left",
+        //     originY: "top",
+        //   }
+        // )
+        // that.canvas.renderAll()
       }
+
+      
 
       // let that = this
       // var bg_url = require("@/views/demo/GlobalAssessment/img/structure01.jpg")
