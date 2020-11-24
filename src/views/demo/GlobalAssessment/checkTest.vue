@@ -258,7 +258,7 @@ export default {
         if (res.data !== null) {
           this.imgUrls = res.data.imgUrl + res.data.imgName;
           this.imgUrlsid = res.data.id;
-          
+
           this.setBg(this.imgUrls);
         } else {
           this.getlistdataImg();
@@ -275,7 +275,7 @@ export default {
         if (res.data !== null) {
           this.imgUrl = res.data.imgUrl + res.data.imgName;
           this.imgUrls = this.imgUrl;
-          
+
           this.setBg(this.imgUrl);
         }
       }
@@ -371,7 +371,6 @@ export default {
       document.addEventListener("mouseup", up);
 
       function move(evt) {
-
         // 鼠标点击坐标 - 画布原点坐标
         let mouseX = evt.clientX - casBasicPoint.x,
           mouseY = evt.clientY - casBasicPoint.y;
@@ -447,8 +446,6 @@ export default {
 
       obj.x = judgeX;
       obj.y = judgeY;
-
-      
     },
     objOut(e) {
       // 触发事件对象
@@ -459,7 +456,6 @@ export default {
     },
     // 流程工具选择
     showToolsFun(e) {
-
       let flag = false;
       for (let i = 0; i < this.bitmapArr.length; i++) {
         if (this.bitmapArr[i].indexOf(e.currentTarget.dataset.index) != -1)
@@ -514,7 +510,7 @@ export default {
       if (List.code === 20000) {
         this.fromdata = List.data;
         if (!List.data.accessPointDescribe) {
-          this.fromdata.accessPointDescribe = `     通过使用绿盟远程安全评估系统V6.0R03F00SP05对网络设备、安全设备、应用服务器、数据库服务器、应用系统等进行了漏洞扫描。针对被测系统的网络边界和抽查设备、主机和业务应用系统的情况，需要在被测系统及其互联网络中设置各测试工具接入点，如图3.1所示。接入点JA：在接入，主要目的是：模拟内部恶意用户发现操作系统、数据库、应用系统等安全漏洞的过程。`;
+          this.fromdata.accessPointDescribe = `   通过使用绿盟远程安全评估系统V6.0R03F00SP05对网络设备、安全设备、应用服务器、数据库服务器、应用系统等进行了漏洞扫描。针对被测系统的网络边界和抽查设备、主机和业务应用系统的情况，需要在被测系统及其互联网络中设置各测试工具接入点，如图3.1所示。接入点JA：在xxxx接入，主要目的是：模拟内部恶意用户发现操作系统、数据库、应用系统等安全漏洞的过程。`;
         }
         //查询列表
       } else {
@@ -556,7 +552,7 @@ export default {
       this.bitmapArr = [];
       this.showCanvas = true;
       // console.log("this.imgUrls", this.imgUrls);
-      
+
       this.setBg(this.imgUrls);
       // this.setBg();
     },
@@ -567,7 +563,6 @@ export default {
       let casWidth = that.canvas.width,
         casHeight = that.canvas.height;
       console.log("fab", that.canvas);
-
     },
     setBg(src) {
       if (!src) return this.$message.error("暂无图片,请上传图片");
@@ -579,25 +574,24 @@ export default {
       // 测试
       // bg.src = require("@/views/demo/GlobalAssessment/img/t1.png")
       console.log("宽高", bg.width, bg.height);
-      let bili
-      
+      let bili;
 
-      if(bg.width > bg.height){
-        bili = that.canvas.width / bg.width
-      }else{
-        bili = that.canvas.height / bg.height
+      if (bg.width > bg.height) {
+        bili = that.canvas.width / bg.width;
+      } else {
+        bili = that.canvas.height / bg.height;
       }
 
       this.bgPic = {
-        width:bg.width,
-        height:bg.height,
-        bili:bili
-      }
+        width: bg.width,
+        height: bg.height,
+        bili: bili,
+      };
 
-      console.log('图片比例',bili)
+      console.log("图片比例", bili);
 
-      console.log('背景图片',bg.src)
-      let Shape
+      console.log("背景图片", bg.src);
+      let Shape;
       // Shape = new fabric.Image(image, {
       //               // 通过scale来设置图片大小，这里设置和画布一样大
       //               scaleX: imageEffectCanvas.width / image.width,
@@ -606,15 +600,18 @@ export default {
 
       bg.onload = function () {
         Shape = new fabric.Image(bg, {
-            scaleX: bili,
-            scaleY: bili,
-            // width: bg.width,
-            // height: bg.height,
-            originX: "left",
-            originY: "top",
-        })
-        that.canvas.setBackgroundImage(Shape,that.canvas.renderAll.bind(that.canvas))
-        that.canvas.renderAll()
+          scaleX: bili,
+          scaleY: bili,
+          // width: bg.width,
+          // height: bg.height,
+          originX: "left",
+          originY: "top",
+        });
+        that.canvas.setBackgroundImage(
+          Shape,
+          that.canvas.renderAll.bind(that.canvas)
+        );
+        that.canvas.renderAll();
         // 之前的背景设置
         // that.canvas.setBackgroundImage(
         //   bg.src,
@@ -629,9 +626,7 @@ export default {
         //   }
         // )
         // that.canvas.renderAll()
-      }
-
-      
+      };
 
       // let that = this
       // var bg_url = require("@/views/demo/GlobalAssessment/img/structure01.jpg")
@@ -661,14 +656,14 @@ export default {
       // var canvas = new fabric.Canvas("canvas");
       var result = this.canvas.toDataURL({
         // width: this.bgPic.width * this.bgPic.bili,
-        width:this.canvas.width,
+        width: this.canvas.width,
         // height: this.bgPic.height * this.bgPic.bili,
         height: this.canvas.height,
         left: 0,
         top: 0,
         format: "png",
       });
-      console.log(result)
+      console.log(result);
       this.saveCanvas(result);
     },
   },

@@ -130,18 +130,18 @@ export default {
       }
     },
     async submitReport() {
-      let tolist = this.$refs.tree.getCheckedKeys().filter((item) => {
-        if (item != "undefined") {
-          return item;
-        }
-      });
-      let isT = [];
-      tolist.forEach((element) => {
-        let em = {};
-        em.evaluationToolId = element;
-        isT.push(em);
-      });
-      this.fromdata.tools = isT;
+      // let tolist = this.$refs.tree.getCheckedKeys().filter((item) => {
+      //   if (item != "undefined") {
+      //     return item;
+      //   }
+      // });
+      // let isT = [];
+      // tolist.forEach((element) => {
+      //   let em = {};
+      //   em.evaluationToolId = element;
+      //   isT.push(em);
+      // });
+      // this.fromdata.tools = isT;
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         this.$message.success("修改成功！！");

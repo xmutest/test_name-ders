@@ -158,6 +158,30 @@ export default ({
       method: 'post',
       data
     })
+  },
+ /**
+   * @description 用户删除
+   * @param {Object} data 
+   */
+  API_Userdelete(data = {}) {
+    // 接口请求
+    return request({
+      url: '/user/delete',
+      method: 'get',
+      params:data
+    })
+  },
+  
+ /**
+   * @description 用户编辑
+   * @param {Object} data 
+   */
+  API_Userupdate(data = {}) {
+    // 接口请求
+    return request({
+      url: '/user/update',
+      method: 'post',
+      data
+    })
   }
-
 })

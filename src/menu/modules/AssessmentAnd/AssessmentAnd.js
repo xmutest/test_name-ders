@@ -6,15 +6,18 @@ export default {
   children: (pre => [
     {
       path: `${pre}fxfx`,
-      title: '风险分析和评价'
+      title: '风险分析和评价',
+      icon: '  iconfont icon-fengxiantishi'
     },
     {
       path: `${pre}fxxz`,
-      title: '风险值修正'
+      title: '风险值修正',
+      icon: '  iconfont icon-fengxianzhi'
     },
     {
       path: `${pre}wthz`,
-      title: '安全问题汇总'
+      title: '安全问题汇总',
+      icon: '  iconfont icon-anquanwenti'
     },
   ])('/demo/AssessmentAnd/')
 

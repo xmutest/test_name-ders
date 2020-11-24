@@ -5,15 +5,18 @@ export default {
   children: (pre => [
     {
       path: `${pre}purpose`,
-      title: '评测目的和依据'
+      title: '评测目的和依据',
+      icon: '  iconfont icon-mudedi'
     },
     {
       path: `${pre}course`,
-      title: '评测过程'
+      title: '评测过程',
+      icon: '  iconfont icon-guocheng'
     },
     {
       path: `${pre}conditio`,
-      title: '被测单位信息'
+      title: '被测单位信息',
+      icon: '  iconfont icon-danweixinxi'
     },
     // {
     //   path: `${pre}situationBeing`,
@@ -21,7 +24,8 @@ export default {
     // },
     {
       path: `${pre}structure`,
-      title: '网络结构'
+      title: '网络结构',
+      icon: '  iconfont icon-wangluojiegou'
     },
     // {
     //   path: `${pre}paIntls`,
@@ -37,7 +41,8 @@ export default {
     // },
     {
       path: `${pre}psduix`,
-      title: '测评对象选择方法'
+      title: '测评对象选择方法',
+      icon: '  iconfont icon-zujianku-duixiangxuanze'
     }
     // ,
     // {

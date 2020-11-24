@@ -86,7 +86,6 @@ export default {
       let List = await this.$api.API_projectOverviewObjective();
       let data = "";
       if (List.code === 20000) {
-        this.getevaluationBasisFindAll();
         if (List.data.evaluationObjective != null) {
           data = List.data.evaluationObjective;
         } else {
@@ -104,6 +103,7 @@ export default {
 
         this.fromdata.evaluationObjective = data;
         this.fromdata.id = List.data.id;
+        this.getevaluationBasisFindAll();
         //查询列表
       } else {
         this.$message.error(List.message + "评测依据选项出差，请联系管理员");
@@ -125,7 +125,10 @@ export default {
         });
         Ts.push(...Ls);
         this.evaluation_list = Ts;
-        this.fromdata.evaluationBasis = Tsop;
+        if (this.fromdata.evaluationBasis.length === 0) {
+          this.fromdata.evaluationBasis = Tsop;
+        }
+
         //查询列表
       } else {
         this.$message.error(res.message + "评测依据选项出差，请联系管理员");

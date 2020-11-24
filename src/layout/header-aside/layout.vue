@@ -85,7 +85,7 @@
                   </el-button>
                   <el-button v-else size="mini"> 当前无项目选择 </el-button>
                 </el-tooltip>
-                <span style="margin: 15px; font-size: 14px">总分数：<span v-if="totalscore">{{totalscore.totalFraction}} 评级：{{totalscore.fractionResult}}</span>
+                <span style="margin: 15px; font-size: 14px">综合得分：<span v-if="totalscore">{{totalscore.totalFraction}}   评级：{{totalscore.fractionResult}}</span>
                 <span v-else>无</span>
                 </span>
               </div>

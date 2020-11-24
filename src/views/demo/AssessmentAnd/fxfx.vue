@@ -5,11 +5,11 @@
       <table>
         <thead>
           <tr>
-            <th>安全层面</th>
-            <th>控制点</th>
-            <th >关联资产</th>
-            <th style="width: 400px">控制项</th>
-            <th>问题描述</th>
+            <th style="width: 120px">安全层面</th>
+            <th style="width: 120px">控制点</th>
+            <th style="width: 120px">关联资产</th>
+            <th style="width: 300px">控制项</th>
+            <th style="width: 120px">问题描述</th>
             <th>问题分析</th>
             <th>关联威胁</th>
             <th style="width: 100px">原始风险值</th>
@@ -37,13 +37,13 @@
                 </td>
 
                 <td >
-                  <el-popover trigger="click" placement="top">
+                    <el-popover trigger="click" placement="top">
                     <div>
                       <p>
-                        {{ item3.assets }}
+                        {{ item3.assets }}  
                       </p>
                     </div>
-                    <div slot="reference" class="name-wrapper">
+                    <div slot="reference" class="name-wrapper tsList">
                       {{
                         item3.assets == null
                           ? item3.assets
@@ -70,7 +70,7 @@
                         {{ item3.problemDescription }}
                       </p>
                     </div>
-                    <div slot="reference" class="name-wrapper">
+                    <div slot="reference" class="name-wrapper tsList">
                       {{
                         item3.problemDescription == null
                           ? item3.problemDescription
@@ -664,6 +664,10 @@ export default {
 .text_click:hover {
   cursor: pointer;
   color: black;
+}
+.tsList{
+  max-width: 120px;
+  overflow: hidden;
 }
 </style>
 

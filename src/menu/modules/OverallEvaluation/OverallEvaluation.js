@@ -6,11 +6,13 @@ export default {
   children: (pre => [
     {
       path: `${pre}ztpj`,
-      title: '总体评价'
+      title: '总体评价',
+      icon: '  iconfont icon-Overall-evaluation'
     },
     {
       path: `${pre}djcpjl`,
-      title: '等级测评结论'
+      title: '等级测评结论',
+      icon: '  iconfont icon-jielun-copy'
     }
   ])('/demo/OverallEvaluation/')
 

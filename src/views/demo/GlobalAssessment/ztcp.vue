@@ -3,18 +3,29 @@
   <d2-container>
     <div class="ts_table">
       <table v-loading="loading">
-        <thead>
+        <thead v-if="dataList.length === 0">
+          <tr>
+            <th>安全层面</th>
+            <th>控制点</th>
+            <th>关联资产</th>
+            <th>控制项</th>
+            <th>结果记录</th>
+            <th>测评项权重</th>
+            <th>修正前</th>
+          </tr>
+        </thead>
+        <thead v-else>
           <tr>
             <th style="width: 100px">安全层面</th>
             <th style="width: 100px">控制点</th>
-            <th style="width: 100px">关联资产</th>
+            <th style="width: 200px">关联资产</th>
             <th>控制项</th>
             <th>结果记录</th>
             <th style="width: 50px">测评项权重</th>
             <th style="width: 50px">修正前</th>
           </tr>
         </thead>
-        <template tbody v-for="(item,ins) in dataList">
+        <template tbody v-for="(item, ins) in dataList">
           <tr class="List_b" :key="ins">
             <td colspan="10">{{ item.extendedStandard }}</td>
           </tr>
@@ -33,7 +44,7 @@
                   {{ item2.safetyControlSpot }}
                 </td>
                 <td v-if="item3.assets">
-                  <el-popover trigger="click"  placement="top">
+                  <el-popover trigger="click" placement="top">
                     <div>
                       <p>
                         {{ item3.assets }}
@@ -56,7 +67,7 @@
                 </td>
 
                 <td>
-                  <el-popover trigger="click"  placement="top">
+                  <el-popover trigger="click" placement="top">
                     <div>
                       <p>
                         {{ item3.controlEntries }}
@@ -72,7 +83,7 @@
                   </el-popover>
                 </td>
                 <td>
-                  <el-popover trigger="click"  placement="top">
+                  <el-popover trigger="click" placement="top">
                     <div>
                       <p>
                         {{ item3.results }}

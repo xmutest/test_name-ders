@@ -9,60 +9,74 @@ export default {
     },
     {
       path: `${pre}jf`,
-      title: '机房'
+      title: '机房',
+      icon: '  iconfont icon-jifang'
     },
     {
       path: `${pre}qybj`,
-      title: '区域边界'
+      title: '区域边界',
+      icon: '  iconfont icon-quyubianjiechakan'
     },
     {
       path: `${pre}wlsb`,
-      title: '网络设备'
+      title: '网络设备',
+      icon: '  iconfont icon-wangluoshebei'
     },
     {
       path: `${pre}aqsb`,
-      title: '安全设备'
+      title: '安全设备',
+      icon: '  iconfont icon-anquanshebei'
     },
     {
       path: `${pre}ywyyrj`,
-      title: '业务应用软件/平台'
+      title: '业务应用软件/平台',
+      icon: '  iconfont icon-Drgspingtairuanjianxitong'
     },
     {
       path: `${pre}xtglpt`,
-      title: '系统管理平台/全局扩展'
+      title: '系统管理平台/全局扩展',
+      icon: '  iconfont icon-layui-myicon-guanli'
     },
     {
       path: `${pre}dataStytem`,
-      title: '数据库管理系统'
+      title: '数据库管理系统',
+      icon: '  iconfont icon-shujuku'
     },
     {
       path: `${pre}fwq`,
-      title: '服务器/存储设备'
+      title: '服务器/存储设备',
+      icon: '  iconfont icon-fuwuqi'
     },
     {
       path: `${pre}zd`,
-      title: '终端/ 感知设备/现场设备'
+      title: '终端/ 感知设备/现场设备',
+      icon: '  iconfont icon-xianchangshebei'
     },
 
     {
       path: `${pre}keySort`,
-      title: '关键数据类别'
+      title: '关键数据类别',
+      icon: '  iconfont icon-guanjianshuju-shuzi'
     },
     {
       path: `${pre}aqglzx`,
-      title: '安全管理中心'
+      title: '安全管理中心',
+      icon: '  iconfont icon-anquanguanli'
     },
     {
       path: `${pre}passProduct`,
-      title: '密码产品'
+      title: '密码产品',
+      icon: '  iconfont icon-mima1'
     },
     {
       path: `${pre}aqxgry`,
-      title: '安全相关人员'
+      title: '安全相关人员',
+      icon: '  iconfont icon-anquanguanlirenyuan'
     },
     {
       path: `${pre}aqglwd`,
-      title: '安全管理文档'
+      title: '安全管理文档',
+      icon: '  iconfont icon-anquanwendangkux'
     }
   ])('/demo/SystemComposition/')
 }
