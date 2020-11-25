@@ -80,13 +80,19 @@
                   placement="right-end"
                 >
                   <el-button v-if="xmu_info.name" size="mini">
-                    <span v-if="xmu_info.name.length>50">{{ xmu_info.name.substring(0, 50) }}....</span>
-                    <span v-else>{{xmu_info.name}}</span>
+                    <span v-if="xmu_info.name.length > 50"
+                      >{{ xmu_info.name.substring(0, 50) }}....</span
+                    >
+                    <span v-else>{{ xmu_info.name }}</span>
                   </el-button>
                   <el-button v-else size="mini"> 当前无项目选择 </el-button>
                 </el-tooltip>
-                <span style="margin: 15px; font-size: 14px">综合得分：<span v-if="totalscore">{{totalscore.totalFraction}}   评级：{{totalscore.fractionResult}}</span>
-                <span v-else>无</span>
+                <span style="margin: 15px; font-size: 14px"
+                  >综合得分：<span v-if="totalscore"
+                    >{{ totalscore.totalFraction }}
+                    <span style="margin-left: 15px">评级：差</span></span
+                  >
+                  <span v-else>无</span>
                 </span>
               </div>
               <div class="d2-theme-container-main-header" flex-box="0">
@@ -138,8 +144,7 @@ export default {
       asideWidthCollapse: "65px",
     };
   },
-  created() {
-  },
+  created() {},
   computed: {
     ...mapState("d2admin", {
       keepAlive: (state) => state.page.keepAlive,

@@ -274,7 +274,7 @@ export default {
         if (List.data.networkStructureDescribe != null) {
           data = List.data.networkStructureDescribe;
         } else {
-          data = `    如图2-1 ${this.xmu_info.data.systemName}网络拓扑图所示`;
+          data = `    如图2-1${this.xmu_info.data.systemName}网络拓扑图所示`;
         }
         this.fromdata.networkStructureDescribe = data;
         this.fromdata.id = List.data.id;

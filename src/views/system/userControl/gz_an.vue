@@ -16,7 +16,6 @@
               >
             </div>
             <el-table
-              :header-cell-style="{ 'text-align': 'center' }"
               :data="tableData"
               style="width: 100%"
             >

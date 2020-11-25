@@ -633,7 +633,7 @@ export default {
   overflow: auto;
   flex-wrap: wrap;
   .relevance_tyu_item {
-    margin: 15px;
+    margin: 5px 15px;
     // display: flex;
     flex-wrap: wrap;
   }
