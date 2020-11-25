@@ -256,10 +256,14 @@ export default {
       let res = await this.$api.API_ImgFindAccessPointImg();
       if (res.code === 20000) {
         if (res.data !== null) {
+          let that = this
           this.imgUrls = res.data.imgUrl + res.data.imgName;
           this.imgUrlsid = res.data.id;
 
-          this.setBg(this.imgUrls);
+          setTimeout(function(){
+            that.setBg(that.imgUrls)
+          },500)
+          // this.setBg(this.imgUrls);
         } else {
           this.getlistdataImg();
         }
@@ -567,6 +571,9 @@ export default {
     setBg(src) {
       if (!src) return this.$message.error("暂无图片,请上传图片");
       let that = this;
+      // 清空画布
+      that.canvas.clear()
+
       let bg = new Image();
       // bg.crossOrigin = "Anonymous";  //跨域
 
@@ -577,9 +584,17 @@ export default {
       let bili;
 
       if (bg.width > bg.height) {
-        bili = that.canvas.width / bg.width;
+        if(that.canvas.width <= bg.width){
+          bili = that.canvas.width / bg.width;
+        }else{
+          bili = bg.width / that.canvas.width ;
+        }
       } else {
-        bili = that.canvas.height / bg.height;
+        if(that.canvas.height <= bg.height){
+          bili = that.canvas.height / bg.height;
+        }else{
+          bili = bg.height / that.canvas.height
+        }
       }
 
       this.bgPic = {
@@ -590,22 +605,16 @@ export default {
 
       console.log("图片比例", bili);
 
-      console.log("背景图片", bg.src);
+      // console.log("背景图片", bg.src);
       let Shape;
-      // Shape = new fabric.Image(image, {
-      //               // 通过scale来设置图片大小，这里设置和画布一样大
-      //               scaleX: imageEffectCanvas.width / image.width,
-      //               scaleY: imageEffectCanvas.height / image.height,
-      //           });
 
       bg.onload = function () {
         Shape = new fabric.Image(bg, {
           scaleX: bili,
           scaleY: bili,
-          // width: bg.width,
-          // height: bg.height,
           originX: "left",
           originY: "top",
+          crossOrigin: 'anonymous'
         });
         that.canvas.setBackgroundImage(
           Shape,

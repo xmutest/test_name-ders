@@ -29,7 +29,7 @@
               autocomplete="off"
             ></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="pass">
+          <el-form-item label="新密码" prop="pass">
             <el-input
               type="password"
               v-model="ruleForm.pass"
@@ -163,7 +163,9 @@ export default {
       //   password:'hezhi127'
       // })
 
-      if(res.code == 20000) return this.logout()
+      if(res.code == 20000) {
+        return this.logout()
+      }
       
     },
     resetForm(formName) {

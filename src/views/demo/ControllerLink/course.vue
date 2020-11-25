@@ -186,24 +186,6 @@
                    </el-input
         >
       </div>
-      <!-- <div class="sentences">
-          &nbsp;&nbsp;本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
-        </div>
-        <div class="sentences" v-html="sentences">${this.sentences}
-        </div>
-        <div class="sentences">
-          &nbsp;&nbsp;其中，
-          <span>{{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getFullYear() : 'YYYY'}}年
-          {{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getMonth() + 1: 'MM'}}月
-          {{fromData.startMeetingTime != 0 ? new Date(fromData.startMeetingTime).getDate(): 'DD'}}</span>日召开了项目启动会议，
-          确定了工作方案及项目人员名单；
-          <span>{{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getFullYear() : 'YYYY'}}年
-          {{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getMonth() + 1: 'MM'}}月
-          {{fromData.lastMeetingTime != 0 ? new Date(fromData.lastMeetingTime).getDate(): 'DD'}}</span>日召开了项目末次会议，确认了测评发现的问题；
-          <span>{{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getFullYear() : 'YYYY'}}年
-          {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getMonth() + 1: 'MM'}}月
-          {{fromData.confirmTime != 0 ? new Date(fromData.confirmTime).getDate(): 'DD'}}</span>日对系统的整改情况进行了复核确认。
-        </div> -->
 
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="func_calDateFun"
@@ -655,7 +637,7 @@ export default {
       });
     },
     Totisadd() {
-      console.log(5);
+      
     },
     // 查询表格
     async RecordFindTimeRecord() {
@@ -684,6 +666,9 @@ export default {
       if (List.code === 20000) {
         this.RecordFindTimeRecord();
         this.fromData = List.data;
+        
+        if(this.fromData.projectStartTime == 0)  this.fromData.projectStartTime = new Date().getTime()
+        
         if (this.fromData.briefIntroduction == null) {
           this.fromData.briefIntroduction = `    受${this.xmu_info.data.evaluatedUnit}委托，${this.user_info.companyName}于YYYY年MM月DD日至YYYY年MM月DD日对${this.xmu_info.data.systemName}进行了系统安全等级测评工作。本次安全测评的范围主要包括${this.xmu_info.data.systemName}的物理环境、主机、网络、业务应用系统、安全管理制度和人员等。安全测评通过静态评估、现场测试、综合评估等相关环节和阶段，从安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设管理、安全运维管理等十个方面，对${this.xmu_info.data.systemName}进行综合测评。`;
         }
@@ -722,7 +707,7 @@ export default {
     },
     // 修改或者保存
     async apiCreupdata(timeRecords) {
-      console.log(timeRecords);
+      
       let res = "";
       if (timeRecords[timeRecords.length - 1].id) {
         res = await this.$api.API_TimeRecordUpdateTimeRecord({ timeRecords });
@@ -798,7 +783,7 @@ export default {
       // 转成毫秒运算后再转成正常时间
 
       this.dialogVisible = true;
-      console.log(this.tableData);
+      
 
       this.func_getProjectTimeInfo();
     },
@@ -832,7 +817,7 @@ export default {
         ), //第三阶段
         this.transferDate(allTime[33] + allTime[34]), //第四阶段
       ];
-      console.log(this.timeArr);
+      
       let startTime = this.fromData.projectStartTime;
       let that = this;
       let realityTime = [];
@@ -850,7 +835,7 @@ export default {
       });
 
       if (realityTime[0].startTime != 0) {
-        this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：   
+        this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图1.1所示。其中，各阶段的时间安排如下：
     1、${new Date(realityTime[0].startTime).getFullYear()}年${
           new Date(realityTime[0].startTime).getMonth() + 1
         }月${new Date(realityTime[0].startTime).getDate()}日~${new Date(
@@ -882,38 +867,38 @@ export default {
           realityTime[3].endTime
         ).getDate()}日，分析与报告编制过程。`;
       } else {
-        this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图 1.1所示。其中，各阶段的时间安排如下：
+        this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图1.1所示。其中，各阶段的时间安排如下：
     1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。
     2、YYYY年MM月DD日~YYYY年MM月DD日，方案编制过程。
     3、YYYY年MM月DD日~YYYY年MM月DD日，现场实施过程。
     4、YYYY年MM月DD日~YYYY年MM月DD日，分析与报告编制过程。
         `;
       }
-      console.log("fromData", this.fromData.startMeetingTime);
+      
       this.timeInfoInsert = `    ${this.sentences}
     其中，${
-      this.fromData.projectStartTime != 0
-        ? new Date(this.fromData.projectStartTime).getFullYear()
+      this.fromData.startMeetingTime != 0
+        ? new Date(this.fromData.startMeetingTime).getFullYear()
         : "YYYY"
     }年${
-        this.fromData.projectStartTime != 0
-          ? new Date(this.fromData.projectStartTime).getMonth() + 1
-          : "MM"
-      }月${
-        this.fromData.projectStartTime != 0
-          ? new Date(this.fromData.projectStartTime).getDate()
-          : "DD"
-      }日召开了项目启动会议，确定了工作方案及项目人员名单；${
-        this.fromData.startMeetingTime != 0
-          ? new Date(this.fromData.startMeetingTime).getFullYear()
-          : "YYYY"
-      }年${
         this.fromData.startMeetingTime != 0
           ? new Date(this.fromData.startMeetingTime).getMonth() + 1
           : "MM"
       }月${
         this.fromData.startMeetingTime != 0
           ? new Date(this.fromData.startMeetingTime).getDate()
+          : "DD"
+      }日召开了项目启动会议，确定了工作方案及项目人员名单；${
+        this.fromData.lastMeetingTime != 0
+          ? new Date(this.fromData.lastMeetingTime).getFullYear()
+          : "YYYY"
+      }年${
+        this.fromData.lastMeetingTime != 0
+          ? new Date(this.fromData.lastMeetingTime).getMonth() + 1
+          : "MM"
+      }月${
+        this.fromData.lastMeetingTime != 0
+          ? new Date(this.fromData.lastMeetingTime).getDate()
           : "DD"
       }日召开了项目末次会议，确认了测评发现的问题；${
         this.fromData.confirmTime != 0
@@ -931,10 +916,10 @@ export default {
     },
     async func_getProjectTimeInfo() {
       let res = await this.$api.API_ProjectOverviewFindDetailTimePreview();
-      console.log("describe info", res);
+      
       let { data } = res;
       if (res.code !== 20000) return alert(res.message);
-      console.log(!data.detailTimePreview);
+      
 
       this.saveData.id = data.id;
 
