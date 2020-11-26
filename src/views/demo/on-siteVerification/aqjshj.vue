@@ -354,9 +354,9 @@ export default {
     },
     // 获取
     async submitReport(item) {
-      let fractionModelList = [];
-      fractionModelList.push(item);
-      let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
+      // let fractionModelList = [];
+      // fractionModelList.push(item);
+      let res = await this.$api.SYSFieldSurveyUpdateList(this.ToMitList);
       if (res.code === 20000) {
         this.dialogVisible = false;
         this.getDataList();

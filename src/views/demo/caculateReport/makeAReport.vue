@@ -418,7 +418,7 @@
                   <div v-else>生成失败</div>
                 </template>
               </el-table-column>
-              <el-table-column label="日期" width="150">
+              <el-table-column label="日期" width="220">
                 <template slot-scope="scope">
                   {{ formattime(scope.row.createdTime) }}
                 </template>

@@ -90,7 +90,7 @@
                 <span style="margin: 15px; font-size: 14px"
                   >综合得分：<span v-if="totalscore"
                     >{{ totalscore.totalFraction }}
-                    <span style="margin-left: 15px">评级：差</span></span
+                    <span style="margin-left: 15px">评级：{{ totalscore.fractionResult }}</span></span
                   >
                   <span v-else>无</span>
                 </span>

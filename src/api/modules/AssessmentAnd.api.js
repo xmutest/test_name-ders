@@ -11,7 +11,7 @@ export default ({
   mock,
   faker,
   tools
-}) => ({
+}) => ({ 
   // 获取信息
   async get_info() {
     const xmu_info = await store.dispatch('d2admin/db/get', {
@@ -29,12 +29,40 @@ export default ({
       return xmu_info.projectId;
     }
   },
+    /**
+   * @description 获取项目总分数
+   * @param {Object} data 携带的信息
+   */
+  async CalculateFractionTotalFraction(data = {}) {
+    data.projectId = await this.get_info();
+    let res = await request({
+      url: '/calculateFraction/totalFraction',
+      method: 'get',
+      params: data
+    });
+    if (res.code === 20000) {
+      await store.dispatch(
+        "d2admin/totalscore/set", {
+          data: res.data,
+        }, {
+          root: true,
+        }
+      );
+    } else {
+      ElementUI.Message({
+        title: '警告',
+        message: `请求总分数出错，请联系管理员`,
+        type: 'error'
+      });
+    }
+  },
   /**
    * @description 查询查看风险分析和评价
    * @param {Object} data 携带的信息
    */
   async API_RiskFindAmendAnalysis(data = {}) {
     data.projectId = await this.get_info();
+    this.CalculateFractionTotalFraction();
     // 接口请求
     return request({
       url: '/risk/findAmendAnalysis',
@@ -48,6 +76,7 @@ export default ({
    */
   async API_RiskFindRiskCorrections(data = {}) {
     data.projectId = await this.get_info();
+    this.CalculateFractionTotalFraction();
     // 接口请求
     return request({
       url: '/risk/findRiskCorrection',

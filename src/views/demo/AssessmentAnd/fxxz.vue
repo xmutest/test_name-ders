@@ -23,7 +23,7 @@
           <tr class="List_b" :key="ins">
             <td colspan="12">{{ item.extendedStandard }}</td>
           </tr>
-          <tbody v-for="(item1, index1) in item.resultData" :key="index1">
+          <tbody v-for="item1 in item.resultData" :key="item1.id">
             <tr>
               <td :rowspan="item1.sceneCheckData.length * Toamount">
                 {{ item1.sceneCheckName }}

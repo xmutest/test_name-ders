@@ -262,7 +262,7 @@
       </el-row>
       <div slot="footer">
         <el-button @click="dialogVisibleupdata = false">取消</el-button>
-        <el-button type="primary" @click="updatahandelConfirm">确定</el-button>
+        <el-button type="primary" @click="updatahandelConfirm" v-throttle>确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -294,7 +294,12 @@ export default {
         departmentId: null,
       },
       rules: {
-        pawss: [{ validator: validatePass2, trigger: "blur" }],
+        pawss: [ {
+            required: true,
+            message: "请输入确认密码",
+            trigger: "blur",
+          },
+          { validator: validatePass2, trigger: "blur" }],
         loginName: [
           {
             required: true,

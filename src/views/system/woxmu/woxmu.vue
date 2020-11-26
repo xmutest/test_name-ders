@@ -342,6 +342,7 @@
           <div class="dia-footer">
             <el-form-item>
               <el-button type="primary" @click="submitForm('xmform', ua_cre)"
+              v-throttle
                 >保存</el-button
               >
               <!-- <el-button type="danger" v-if="ua_cre != 1 " @click="resetForm('xmform')"

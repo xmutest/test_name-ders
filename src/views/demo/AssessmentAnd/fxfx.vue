@@ -326,7 +326,7 @@
           <div>严重程度值：{{ beforeModificationSeverity }}</div>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="Tolist()">确 定</el-button>
+          <el-button type="primary" @click="Tolist()" v-throttle>确 定</el-button>
           <el-button @click="(dialogVisible = false), getDataList()"
             >取 消</el-button
           >

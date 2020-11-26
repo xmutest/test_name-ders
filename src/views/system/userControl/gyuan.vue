@@ -15,10 +15,7 @@
                 >添加用户</el-button
               >
             </div>
-            <el-table
-              :data="tableData"
-              style="width: 100%"
-            >
+            <el-table :data="tableData" style="width: 100%">
               <!-- <el-table-column label="报告编号" width="200">
                 <template slot-scope="scope">
                   <span style="margin-left: 10px">{{
@@ -262,7 +259,7 @@
       </el-row>
       <div slot="footer">
         <el-button @click="dialogVisibleupdata = false">取消</el-button>
-        <el-button type="primary" @click="updatahandelConfirm">确定</el-button>
+        <el-button type="primary" @click="updatahandelConfirm" v-throttle>确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -294,7 +291,14 @@ export default {
         departmentId: null,
       },
       rules: {
-        pawss: [{ validator: validatePass2, trigger: "blur" }],
+        pawss: [
+          {
+            required: true,
+            message: "请输入确认密码",
+            trigger: "blur",
+          },
+          { validator: validatePass2, trigger: "blur" },
+        ],
         loginName: [
           {
             required: true,
@@ -355,31 +359,11 @@ export default {
         },
         {
           label: "技术一部",
-          value: 3,
+          value: 7,
         },
         {
           label: "北京国源安全信息测评中心",
           value: 6,
-        },
-        {
-          label: "技术一部",
-          value: 3,
-        },
-        {
-          label: "技术二部",
-          value: 4,
-        },
-        {
-          label: "技术三部",
-          value: 5,
-        },
-        {
-          label: "技术四部",
-          value: 8,
-        },
-        {
-          label: "技术五部",
-          value: 9,
         },
       ],
       apiList: {
