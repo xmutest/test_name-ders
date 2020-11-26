@@ -164,7 +164,15 @@ export default {
       // })
 
       if(res.code == 20000) {
-        return this.logout()
+        let that = this
+
+        this.$message({
+          showClose: true,
+          message: '密码修改成功',
+          type: 'success'
+        });
+
+        setTimeout(function(){ return that.logout() },500)
       }
       
     },

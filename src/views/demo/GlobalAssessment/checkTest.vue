@@ -107,6 +107,9 @@
                     >
                       <el-button type="primary">使用其他图片</el-button>
                     </el-upload>
+                    <el-button type="primary" @click="delectObj"
+                      >移除</el-button
+                    >
                     <el-button type="primary" @click="saveNewCanvas"
                       >保存</el-button
                     >
@@ -279,7 +282,7 @@ export default {
         if (res.data !== null) {
           this.imgUrl = res.data.imgUrl + res.data.imgName;
           this.imgUrls = this.imgUrl;
-
+          
           this.setBg(this.imgUrl);
         }
       }
@@ -482,22 +485,17 @@ export default {
     // 动态往画布添加元素
     casAdd(e) {
       let pic = require(`@/views/demo/ControllerLink/img/palntlsImg/${e}.png`);
-      // let picData = {
-      //   src:pic,
-      //   locateX:0,
-      //   locateY:0,
 
-      // }
       this.bitmapArr.push(e);
       // 填入画布
-      this.createPic(pic);
+      this.createPic(pic,e);
     },
     async getEtlist() {
       let List = await this.$api.API_WholeEvaluationFindWholeEvaluation();
       if (List.code === 20000) {
         this.getEtlists();
         if (List.data == null || List.data.verificationTest == null) {
-          this.fromdatas.verificationTest = `    对${this.xmu_info.data.systemName}进行测评，涉及到漏洞扫描工具、渗透性测试工具集等多种测试工具。为了发挥测评工具的作用，达到测评的目的，各种测评工具需要接入到被测系统网络中，并配置合法的网络IP地址。 `;
+          this.fromdatas.verificationTest = `    对${this.xmu_info.data.systemName}进行测评，涉及到漏洞扫描工具、渗透性测试工具集等多种测试工具。为了发挥测评工具的作用，达到测评的目的，各种测评工具需要接入到被测系统网络中，并配置合法的网络IP地址。`;
         } else {
           this.fromdatas.verificationTest = List.data.verificationTest;
 
@@ -555,9 +553,7 @@ export default {
       }
     },
     openCanvasArea() {
-      this.bitmapArr = [];
       this.showCanvas = true;
-      // console.log("this.imgUrls", this.imgUrls);
 
       this.setBg(this.imgUrls);
       // this.setBg();
@@ -575,6 +571,7 @@ export default {
       let that = this;
       // 清空画布
       that.canvas.clear()
+      this.bitmapArr = []
 
       let bg = new Image();
       // bg.crossOrigin = "Anonymous";  //跨域
@@ -605,9 +602,6 @@ export default {
         bili: bili,
       };
 
-      console.log("图片比例", bili);
-
-      // console.log("背景图片", bg.src);
       let Shape;
 
       bg.onload = function () {
@@ -623,40 +617,30 @@ export default {
           that.canvas.renderAll.bind(that.canvas)
         );
         that.canvas.renderAll();
-        // 之前的背景设置
-        // that.canvas.setBackgroundImage(
-        //   bg.src,
-        //   that.canvas.renderAll.bind(that.canvas),
-        //   {
-        //     scaleX: bili,
-        //     scaleY: bili,
-        //     // width: bg.width,
-        //     // height: bg.height,
-        //     originX: "left",
-        //     originY: "top",
-        //   }
-        // )
-        // that.canvas.renderAll()
+
+        let lineWidth = bg.width * bili
+        var line = new fabric.Line([lineWidth + 1, 0, lineWidth + 1, that.canvas.height], {
+          fill: 'green',
+          stroke: 'green'
+        });
+        that.canvas.add(line);
       };
 
-      // let that = this
-      // var bg_url = require("@/views/demo/GlobalAssessment/img/structure01.jpg")
-      // fabric.Image.fromURL( bg_url , function(oImg) {
-      //     oImg.set({
-      //     originX: 'left',
-      //     originY: 'top',
-      //     scaleX: that.canvas.width / bg.width,
-      //     scaleY: that.canvas.height / bg.height
-      //     });
-      //     that.canvas.setBackgroundImage(oImg, that.canvas.renderAll.bind(that.canvas));
-      // })
+      // var line = new fabric.Line([100, 0, 100,that.canvas.height], {
+      //     fill: 'green',
+      //     stroke: 'green'
+      //   });
+      //   that.canvas.add(line);
     },
-    createPic(src) {
+    createPic(src,name) {
       let that = this;
       let manSrc = src;
 
       fabric.Image.fromURL(manSrc, function (obj) {
+        obj.objectName = name
         that.canvas.add(obj);
+        // let items = that.canvas.getObjects()
+        // console.log('活动对象',items)
       });
     },
     saveNewCanvas() {
@@ -664,19 +648,46 @@ export default {
       //   width:bg.width,
       //   height:bg.height
       // }
+
       // var canvas = new fabric.Canvas("canvas");
       var result = this.canvas.toDataURL({
-        // width: this.bgPic.width * this.bgPic.bili,
-        width: this.canvas.width,
-        // height: this.bgPic.height * this.bgPic.bili,
-        height: this.canvas.height,
+        width: this.bgPic.width * this.bgPic.bili,
+        height: this.bgPic.height * this.bgPic.bili,
         left: 0,
         top: 0,
         format: "png",
-      });
-      console.log(result);
-      this.saveCanvas(result);
+      })
+      
+      this.saveCanvas(result)
     },
+    delectObj(){
+      
+      let item = this.canvas.getActiveObject()
+      
+
+      
+      // item存在则删除,且删除数组元素
+      if(item != null){
+        this.canvas.remove(item)
+        let delectName = item.objectName,
+            delectIndex = 0
+        // 找到数组内需要删除的元素下标
+        for(let i = 0;i < this.bitmapArr.length;i++){
+          if(this.bitmapArr[i].indexOf(delectName) != -1){
+            delectIndex = i
+          }
+        }
+
+        this.bitmapArr.splice(delectIndex,1)
+      }else{
+        this.$message({
+          showClose: true,
+          message: '未选中要移除的图片',
+          type: 'warning'
+        });
+      }
+
+    }
   },
 };
 </script>
