@@ -106,7 +106,12 @@
       </div>
     </div>
     <div class="NO_password">
-      <el-dialog title="忘记密码" :close-on-click-modal="false" :visible.sync="dialogVisible" width="150">
+      <el-dialog
+        title="忘记密码"
+        :close-on-click-modal="false"
+        :visible.sync="dialogVisible"
+        width="150"
+      >
         <el-form
           :model="ruleForm"
           status-icon
@@ -173,8 +178,8 @@ export default {
     const validateCode = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入验证码"));
-      } 
-       if (this.identifyCode !== value) {
+      }
+      if (this.identifyCode !== value) {
         // this.formLogin.code = "";
         // this.refreshCode();
         callback(new Error("请输入正确的验证码"));
@@ -228,11 +233,18 @@ export default {
     this.timeInterval = setInterval(() => {
       this.refreshTime();
     }, 1000);
+    window.addEventListener("keydown", this.keyDown);
   },
   beforeDestroy() {
     clearInterval(this.timeInterval);
   },
   methods: {
+    keyDown(e) {
+      //如果是回车则执行登录方法
+      if (e.keyCode == 13) {
+        this.submit();
+      }
+    },
     ...mapActions("d2admin/account", ["login"]),
     refreshTime() {
       this.time = dayjs().format("HH:mm:ss");
@@ -294,6 +306,7 @@ export default {
             loginName: this.formLogin.username,
             password: this.formLogin.password,
           }).then(() => {
+            window.removeEventListener("keydown", this.keyDown, false);
             // 重定向对象不存在则返回顶层路径
             this.$router.replace(this.$route.query.redirect || "/");
           });
