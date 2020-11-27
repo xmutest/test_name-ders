@@ -28,6 +28,11 @@ export default {
       path: `${pre}checkTest`,
       title: '验证测试和接入点',
       icon: '  iconfont icon-jierudian'
+    },
+    {
+      path: `${pre}leakList`,
+      title: '漏洞扫描结果统计',
+      icon: '  iconfont icon-jierudian'
     }
   ])('/demo/GlobalAssessment/')
 

@@ -105,7 +105,7 @@ export default {
         this.getFindAll();
         this.fromdata = List.data;
         if (List.data.objSelectionMethod == null) {
-          this.fromdata.objSelectionMethod = `    ${this.xmu_info.data.systemName}等级测评的测评对象种类上基本覆盖、数量进行抽样，重点抽查主要的设备、设施、人员和文档等。结合广东省投资项目在线审批监管平台的网络拓扑结构和业务情况，本次等级测评的测评对象在抽样时主要考虑以下几个方面：
+          this.fromdata.objSelectionMethod = `    ${this.xmu_info.data.systemName}等级测评的测评对象种类上基本覆盖、数量进行抽样，重点抽查主要的设备、设施、人员和文档等。结合${this.xmu_info.data.systemName}的网络拓扑结构和业务情况，本次等级测评的测评对象在抽样时主要考虑以下几个方面：
     1) 主机房（包括其环境、设备和设施等）；
     2) 存储被测系统重要数据的介质的存放环境；
     3) 办公场地；

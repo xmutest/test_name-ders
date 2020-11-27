@@ -61,6 +61,15 @@ export default {
         ...meta,
         title: '验证测试和接入点'
       }
+    },
+    {
+      path: 'leakList',
+      name: `${pre}leakList`,
+      component: _import('demo/GlobalAssessment/leakList'),
+      meta: {
+        ...meta,
+        title: '漏洞扫描结果统计'
+      }
     }
   ])('demo-GlobalAssessment-')
 }

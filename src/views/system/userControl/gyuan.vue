@@ -148,6 +148,7 @@
                 v-model="xmform.userType"
                 placeholder="请选择职位"
                 :style="{ width: '100%' }"
+                @change="tsList(xmform.userType)"
               >
                 <el-option
                   v-for="(item, index) in userTypeOptions"
@@ -259,7 +260,9 @@
       </el-row>
       <div slot="footer">
         <el-button @click="dialogVisibleupdata = false">取消</el-button>
-        <el-button type="primary" @click="updatahandelConfirm" v-throttle>确定</el-button>
+        <el-button type="primary" @click="updatahandelConfirm" v-throttle
+          >确定</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -354,16 +357,8 @@ export default {
       ],
       departmentIdOptions: [
         {
-          label: "无",
-          value: 0,
-        },
-        {
           label: "技术一部",
           value: 7,
-        },
-        {
-          label: "北京国源安全信息测评中心",
-          value: 6,
         },
       ],
       apiList: {
@@ -380,6 +375,24 @@ export default {
   },
   mounted() {},
   methods: {
+    tsList(val) {
+      if (val === 2) {
+        this.departmentIdOptions = [
+          {
+            label: "北京国源安全信息测评中心",
+            value: 6,
+          },
+        ];
+      } else {
+        this.departmentIdOptions = [
+          {
+            label: "技术一部",
+            value: 7,
+          },
+        ];
+      }
+      this.xmform.departmentId = null;
+    },
     // 分页
     handleSizeChange(val) {
       this.apiList.pageSize = val;
@@ -418,7 +431,17 @@ export default {
     },
     departmentIdOp(depar) {
       let ls = "";
-      this.departmentIdOptions.forEach((item) => {
+      let departmentIdOptions = [
+        {
+          label: "技术一部",
+          value: 7,
+        },
+        {
+          label: "北京国源安全信息测评中心",
+          value: 6,
+        },
+      ];
+      departmentIdOptions.forEach((item) => {
         if (item.value === depar) {
           ls = item.label;
         }
@@ -465,6 +488,16 @@ export default {
     reportGeneratingEdit(row) {
       this.dialogVisibleupdata = true;
       this.xmform = row;
+      this.departmentIdOptions = [
+        {
+          label: "技术一部",
+          value: 7,
+        },
+        {
+          label: "北京国源安全信息测评中心",
+          value: 6,
+        },
+      ];
     },
     // 删除
     reportGeneratingDelete(row) {

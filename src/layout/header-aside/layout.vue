@@ -23,11 +23,11 @@
         >
           <img
             v-if="asideCollapse"
-            :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all1.png`"
+            src="http://survey.iscn.org.cn/system/evaluate/img/logo.49822291.png"
           />
           <img
             v-else
-            :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all1.png`"
+            src="http://survey.iscn.org.cn/system/evaluate/img/logo.49822291.png"
           />
         </router-link>
         <div class="toggle-aside-btn" @click="handleToggleAside" flex-box="0">

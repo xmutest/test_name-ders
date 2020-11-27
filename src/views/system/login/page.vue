@@ -30,7 +30,7 @@
           >
             华南评测报告管理系统
           </div>
-          <img class="page-login--logo" src="./image/logo.png" />
+          <img class="page-login--logo" src="http://survey.iscn.org.cn/system/evaluate/img/logo.49822291.png" />
           <!-- form -->
           <div class="page-login--form">
             <el-card shadow="never">

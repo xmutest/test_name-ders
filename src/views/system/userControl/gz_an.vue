@@ -15,10 +15,7 @@
                 >添加用户</el-button
               >
             </div>
-            <el-table
-              :data="tableData"
-              style="width: 100%"
-            >
+            <el-table :data="tableData" style="width: 100%">
               <!-- <el-table-column label="报告编号" width="200">
                 <template slot-scope="scope">
                   <span style="margin-left: 10px">{{
@@ -151,6 +148,7 @@
                 v-model="xmform.userType"
                 placeholder="请选择职位"
                 :style="{ width: '100%' }"
+                @change="gzanu(xmform.userType)"
               >
                 <el-option
                   v-for="(item, index) in userTypeOptions"
@@ -262,7 +260,9 @@
       </el-row>
       <div slot="footer">
         <el-button @click="dialogVisibleupdata = false">取消</el-button>
-        <el-button type="primary" @click="updatahandelConfirm" v-throttle>确定</el-button>
+        <el-button type="primary" @click="updatahandelConfirm" v-throttle
+          >确定</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -294,12 +294,14 @@ export default {
         departmentId: null,
       },
       rules: {
-        pawss: [ {
+        pawss: [
+          {
             required: true,
             message: "请输入确认密码",
             trigger: "blur",
           },
-          { validator: validatePass2, trigger: "blur" }],
+          { validator: validatePass2, trigger: "blur" },
+        ],
         loginName: [
           {
             required: true,
@@ -355,14 +357,6 @@ export default {
       ],
       departmentIdOptions: [
         {
-          label: "无",
-          value: 0,
-        },
-         {
-          label: "广州华南信息安全测评中心",
-          value: 2,
-        },
-        {
           label: "技术一部",
           value: 3,
         },
@@ -397,11 +391,46 @@ export default {
   },
   mounted() {},
   methods: {
+    gzanu(val) {
+      if (val === 2) {
+        this.departmentIdOptions = [
+          {
+            label: "广州华南信息安全测评中心",
+            value: 2,
+          },
+        ];
+      } else {
+        this.departmentIdOptions = [
+          {
+            label: "技术一部",
+            value: 3,
+          },
+          {
+            label: "技术二部",
+            value: 4,
+          },
+          {
+            label: "技术三部",
+            value: 5,
+          },
+          {
+            label: "技术四部",
+            value: 8,
+          },
+          {
+            label: "技术五部",
+            value: 9,
+          },
+        ];
+      }
+      this.xmform.departmentId = null;
+    },
     // 分页
     handleSizeChange(val) {
       this.apiList.pageSize = val;
       this.gettableData();
     },
+
     handleCurrentChange(val) {
       this.apiList.page = val;
       this.gettableData();
@@ -435,7 +464,33 @@ export default {
     },
     departmentIdOp(depar) {
       let ls = "";
-      this.departmentIdOptions.forEach((item) => {
+      let departmentIdOptions = [
+        {
+          label: "广州华南信息安全测评中心",
+          value: 2,
+        },
+        {
+          label: "技术一部",
+          value: 3,
+        },
+        {
+          label: "技术二部",
+          value: 4,
+        },
+        {
+          label: "技术三部",
+          value: 5,
+        },
+        {
+          label: "技术四部",
+          value: 8,
+        },
+        {
+          label: "技术五部",
+          value: 9,
+        },
+      ];
+      departmentIdOptions.forEach((item) => {
         if (item.value === depar) {
           ls = item.label;
         }
@@ -482,6 +537,32 @@ export default {
     reportGeneratingEdit(row) {
       this.dialogVisibleupdata = true;
       this.xmform = row;
+      this.departmentIdOptions = [
+        {
+          label: "广州华南信息安全测评中心",
+          value: 2,
+        },
+        {
+          label: "技术一部",
+          value: 3,
+        },
+        {
+          label: "技术二部",
+          value: 4,
+        },
+        {
+          label: "技术三部",
+          value: 5,
+        },
+        {
+          label: "技术四部",
+          value: 8,
+        },
+        {
+          label: "技术五部",
+          value: 9,
+        },
+      ];
     },
     // 删除
     reportGeneratingDelete(row) {

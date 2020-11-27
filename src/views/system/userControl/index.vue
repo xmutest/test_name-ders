@@ -5,7 +5,7 @@
       <el-tab-pane label="广州华南信息安全测评中心" name="first"
         ><gzHu></gzHu></el-tab-pane
       >
-      <el-tab-pane label="北京国源安全信息测评中心" name="second"
+      <el-tab-pane label="国源天顺安全服务有限公司" name="second"
         ><gouyuan></gouyuan></el-tab-pane
       >
     </el-tabs>
