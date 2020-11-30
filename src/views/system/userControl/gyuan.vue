@@ -379,7 +379,7 @@ export default {
       if (val === 2) {
         this.departmentIdOptions = [
           {
-            label: "北京国源安全信息测评中心",
+            label: "国源天顺安全服务有限公司",
             value: 6,
           },
         ];
@@ -437,7 +437,7 @@ export default {
           value: 7,
         },
         {
-          label: "北京国源安全信息测评中心",
+          label: "国源天顺安全服务有限公司",
           value: 6,
         },
       ];
@@ -494,7 +494,7 @@ export default {
           value: 7,
         },
         {
-          label: "北京国源安全信息测评中心",
+          label: "国源天顺安全服务有限公司",
           value: 6,
         },
       ];

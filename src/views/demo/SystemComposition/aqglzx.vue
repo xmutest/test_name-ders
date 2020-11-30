@@ -150,7 +150,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page_name" style="padding: 0 20px 20px 20px;margin: 15px 0;">
+    <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
       <div class="search_ls">
         <div class="block">
           <el-pagination
@@ -223,7 +223,7 @@ export default {
     });
   },
   methods: {
-     changeInput(item) {
+    changeInput(item) {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         // console.log(item.computerRoomName);
@@ -231,7 +231,7 @@ export default {
       }, 1000);
       // console.log(item.computerRoomName);
     },
-     // 分页
+    // 分页
     handleSizeChange(val) {
       this.formPage.pageSize = val;
       this.getlistdata();
@@ -246,7 +246,7 @@ export default {
       );
       if (res.code === 20000) {
         let List = res.data.list;
-        this.total=res.data.total;
+        this.total = res.data.total;
         if (res.data.list.length > 0) {
           List.forEach((element) => {
             element.isSysManage = element.isSysManage == 1 ? true : false;
@@ -301,9 +301,11 @@ export default {
         if (this.Itzm == true) {
           res = await this.$api.API_SafeManageCenterSaveSafeManageCenter(item);
         } else {
-          res = await this.$api.API_SafeManageCenterUpdateSafeManageCenter(
-            item
-          );
+          if (item.safeManageCenterName != "") {
+            res = await this.$api.API_SafeManageCenterUpdateSafeManageCenter(
+              item
+            );
+          }
         }
       } else {
         res = await this.$api.API_SafeManageCenterSaveSafeManageCenter(item);
@@ -312,8 +314,6 @@ export default {
         this.getlistdata();
         this.Itzm = false;
         //查询列表
-      } else {
-        this.$message.error("保存错误，请联系管理员" + res.message);
       }
       this.Itzm = false;
     },

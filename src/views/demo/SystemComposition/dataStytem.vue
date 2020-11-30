@@ -406,7 +406,9 @@ export default {
         if (this.Itzm == true) {
           res = await this.$api.API_DbManageSysSaveDbManageSys(item);
         } else {
-          res = await this.$api.API_DbManageSysUpdateDbManageSys(item);
+          if (item.equipmentName != "") {
+            res = await this.$api.API_DbManageSysUpdateDbManageSys(item);
+          }
         }
       } else {
         res = await this.$api.API_DbManageSysSaveDbManageSys(item);
@@ -415,8 +417,6 @@ export default {
         this.getlistdata();
         this.Itzm = false;
         //查询列表
-      } else {
-        this.$message.error("保存错误，请联系管理员" + res.message);
       }
       this.Itzm = false;
     },

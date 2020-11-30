@@ -307,7 +307,9 @@ export default {
         if (this.Itzm == true) {
           res = await this.$api.API_RegionBoundarySaveRegionBoundary(item);
         } else {
-          res = await this.$api.API_RegionBoundaryUpdateRegionBoundary(item);
+          if (item.boundaryName != "") {
+            res = await this.$api.API_RegionBoundaryUpdateRegionBoundary(item);
+          }
         }
       } else {
         res = await this.$api.API_RegionBoundarySaveRegionBoundary(item);
@@ -316,9 +318,7 @@ export default {
         this.getlistdata();
         this.Itzm = false;
         //查询列表
-      } else {
-        this.$message.error("保存错误，请联系管理员" + res.message);
-      }
+      } 
       this.Itzm = false;
     },
     is_preserve(item, Itzm, sortNum) {

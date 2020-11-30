@@ -200,9 +200,11 @@ export default {
             item
           );
         } else {
-          res = await this.$api.API_SecurityManageFileUpdateSecurityManageFile(
-            item
-          );
+          if (item.fileName != "") {
+            res = await this.$api.API_SecurityManageFileUpdateSecurityManageFile(
+              item
+            );
+          }
         }
       } else {
         res = await this.$api.API_SecurityManageFileSaveSecurityManageFile(
@@ -213,9 +215,7 @@ export default {
         this.getlistdata();
         this.Itzm = false;
         //查询列表
-      } else {
-        this.$message.error("保存错误，请联系管理员" + res.message);
-      }
+      } 
       this.Itzm = false;
     },
     is_preserve(item, Itzm, sortNum) {

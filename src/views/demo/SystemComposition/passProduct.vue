@@ -288,7 +288,9 @@ export default {
         if (this.Itzm == true) {
           res = await this.$api.API_PwdProductSavePwdProduct(item);
         } else {
-          res = await this.$api.API_PwdProductUpdatePwdProduct(item);
+          if (item.productName != "") {
+            res = await this.$api.API_PwdProductUpdatePwdProduct(item);
+          }
         }
       } else {
         res = await this.$api.API_PwdProductSavePwdProduct(item);
@@ -297,9 +299,7 @@ export default {
         this.getlistdata();
         this.Itzm = false;
         //查询列表
-      } else {
-        this.$message.error("保存错误，请联系管理员" + res.message);
-      }
+      } 
       this.Itzm = false;
     },
     is_preserve(item, Itzm, sortNum) {

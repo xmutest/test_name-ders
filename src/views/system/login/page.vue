@@ -30,7 +30,10 @@
           >
             华南评测报告管理系统
           </div>
-          <img class="page-login--logo" src="http://survey.iscn.org.cn/system/evaluate/img/logo.49822291.png" />
+          <img
+            class="page-login--logo"
+            src="http://survey.iscn.org.cn/system/evaluate/img/logo.49822291.png"
+          />
           <!-- form -->
           <div class="page-login--form">
             <el-card shadow="never">
@@ -73,6 +76,11 @@
                       <!-- <img class="login-code" src="./image/login-code.png" /> -->
                     </template>
                   </el-input>
+                </el-form-item>
+                <el-form-item style="margin-top: -15px; margin-bottom: 0px">
+                  <el-checkbox v-model="checked" style="color: #a0a0a0"
+                    >记住密码</el-checkbox
+                  >
                 </el-form-item>
                 <el-button
                   size="default"
@@ -188,6 +196,8 @@ export default {
       }
     };
     return {
+      // 记住密码
+      checked: true,
       identifyCodes: "1234567890",
       identifyCode: "",
       timeInterval: null,
@@ -234,6 +244,7 @@ export default {
       this.refreshTime();
     }, 1000);
     window.addEventListener("keydown", this.keyDown);
+    this.getCookie();
   },
   beforeDestroy() {
     clearInterval(this.timeInterval);
@@ -306,6 +317,18 @@ export default {
             loginName: this.formLogin.username,
             password: this.formLogin.password,
           }).then(() => {
+            if (this.checked == true) {
+              //传入账号名，密码，和保存天数3个参数
+              this.setCookie(
+                this.formLogin.username,
+                this.formLogin.password,
+                7
+              );
+            } else {
+              console.log("清空Cookie");
+              //清空Cookie
+              this.clearCookie();
+            }
             window.removeEventListener("keydown", this.keyDown, false);
             // 重定向对象不存在则返回顶层路径
             this.$router.replace(this.$route.query.redirect || "/");
@@ -315,6 +338,38 @@ export default {
           // this.$message.error("表单校验失败，请检查");
         }
       });
+    },
+    //设置cookie
+    setCookie(c_name, c_pwd, exdays) {
+      var exdate = new Date(); //获取时间
+      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
+      //字符串拼接cookie
+      window.document.cookie =
+        "userName" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
+      window.document.cookie =
+        "password" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
+    },
+    //读取cookie
+    getCookie: function () {
+      if (document.cookie.length > 0) {
+        var arr = document.cookie.split("; "); //这里显示的格式需要切割一下自己可输出看下
+        for (var i = 0; i < arr.length; i++) {
+          var arr2 = arr[i].split("="); //再次切割
+          //判断查找相对应的值
+          if (arr2[0] == "userName") {
+            //  console.log(arr2[1])
+            this.formLogin.username = arr2[1]; //保存到保存数据的地方
+          } else if (arr2[0] == "password") {
+            // console.log(arr2[1])
+            this.formLogin.password = arr2[1];
+          }
+        }
+        this.checked = true;
+      }
+    },
+    //清除cookie
+    clearCookie: function () {
+      this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了
     },
   },
 };

@@ -223,9 +223,11 @@ export default {
             item
           );
         } else {
-          res = await this.$api.API_SecurityPersonnelUpdateSecurityPersonnel(
-            item
-          );
+          if (item.personnelName != "") {
+            res = await this.$api.API_SecurityPersonnelUpdateSecurityPersonnel(
+              item
+            );
+          }
         }
       } else {
         res = await this.$api.API_SecurityPersonnelSaveSecurityPersonnel(item);
@@ -234,8 +236,6 @@ export default {
         this.getlistdata();
         this.Itzm = false;
         //查询列表
-      } else {
-        this.$message.error("保存错误，请联系管理员" + res.message);
       }
       this.Itzm = false;
     },

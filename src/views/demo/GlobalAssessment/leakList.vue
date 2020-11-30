@@ -20,27 +20,26 @@
                   </el-option>
                 </el-select>
                 <div class="scanningupload">
-                  <el-upload
-                    class="upload-demo"
-                    drag
-                    action
-                    :limit="10"
-                    :file-list="formFileList"
-                    :http-request="handleUploadForm"
-                    :on-exceed="formHandleExceed"
-                    :on-remove="formHandleRemove"
-                    :before-upload="beforeUploadForm"
-                    accept="application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    multiple
+                  <DaoruLou :sonValue="{ toolName, api: 1 }"></DaoruLou>
+                </div>
+              </div>
+              <div class="scanningTool">
+                <span class="scanningToolName">(2)应用系统扫描工具</span>
+                <el-select
+                  size="mini"
+                  v-model="ScantoolName"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in systemScanTool"
+                    :key="item.id"
+                    :label="item.value"
+                    :value="item.id"
                   >
-                    <i class="el-icon-upload"></i>
-                    <div class="el-upload__text">
-                      将文件拖到此处，或<em>点击上传</em>
-                    </div>
-                    <div class="el-upload__tip" slot="tip">
-                      上传文件只能是doc/docx格式，且不超过10m
-                    </div>
-                  </el-upload>
+                  </el-option>
+                </el-select>
+                <div class="scanningupload">
+                  <DaoruLou :sonValue="{ ScantoolName, api: 2 }"></DaoruLou>
                 </div>
               </div>
             </div>
@@ -56,12 +55,10 @@
 </template>
 
 <script>
+import DaoruLou from "./daorudou/daoruloudou.vue";
 export default {
   data() {
     return {
-      formMaxSize: 10, // 上传文件大小
-      formFileList: [], // 显示上传文件
-      uploadFormFileList: [], // 确定上传文件
       dataList: [],
       // 主机扫描工具
       scanningTool: [
@@ -77,97 +74,18 @@ export default {
         { id: 3, value: "Nessus" },
         { id: 4, value: "AppScan" },
       ],
-      ScantoolName: 1,
+      ScantoolName: 2,
     };
   },
   created() {},
-  methods: {
-    // 开始上传前验证
-    beforeUploadForm(file) {
-      // 验证文件大小
-      if (file.size / 1024 / 1024 > this.formMaxSize) {
-        this.$message({
-          message: `上传文件大小不能超过${this.formMaxSize}M!`,
-          type: "warning",
-        });
-        return false;
-      }
-      // 中文乱码处理
-      if (file.raw) {
-        let reader = new FileReader(); // 读取文件内容
-        reader.readAsText(file.raw, "gb2312"); // 防止中文乱码问题，不加reader.onload方法都不会触发
-        reader.onload = function (e) {
-          this.contentHtml = e.target.result; // txt文本内容，接下来就可以对其进行校验处理了
-        };
-      }
-      // 验证文件类型
-      var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      const extension = testmsg === "doc" || testmsg === "docx";
-      if (!extension) {
-        this.$message({
-          message: "上传文件只能是doc/docx格式!",
-          type: "warning",
-        });
-      }
-      return extension;
-    },
-    // 移除上传列表中文件
-    formHandleRemove(file, formFileList) {
-      let thiz = this;
-      for (let i = 0; i < thiz.uploadFormFileList.length; i++) {
-        if (thiz.uploadFormFileList[i].pname === file.name) {
-          thiz.uploadFormFileList.splice(i, 1);
-          break;
-        }
-      }
-    },
-    // 允许上传文件个数验证
-    formHandleExceed(files, formFileList) {
-      this.$message.warning(
-        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
-          files.length + formFileList.length
-        } 个文件`
-      );
-    },
-    // 上传文件
-    async handleUploadForm(param) {
-      let thiz = this;
-      let formData = new FormData();
-      //formData.append("projectId", this.toSonData); // 额外参数
-      formData.append("file", param.file);
-      let loading = thiz.$loading({
-        lock: true,
-        text: "上传中，请稍候...",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)",
-      });
-      formData.append("projectId", thiz.xmu_info.projectId);
-      thiz.$api.SYS_USER_InputDoc(formData).then((data) => {
-        if (data.code === 20000) {
-          thiz.$message({
-            message: "上传文件成功，" + data.message,
-            type: "success",
-          });
-          thiz.formFileList = [];
-          thiz.uploadFormFileList = [];
-          thiz.ifsTo = true;
-          thiz.$emit("toFatherData", thiz.ifsTo);
-        } else {
-          thiz.formFileList = [];
-          thiz.uploadFormFileList = [];
-          thiz.$message("上传文件失败，" + data.message);
-        }
-      });
-      loading.close();
-      // thiz.$http.post("/api/import/check/upload", formData).then(({ data }) => {
-
-      // });
-    },
+  components: {
+    DaoruLou,
   },
+  methods: {},
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .mude_is {
   margin: 20px 0;
   .mude_is_left {
@@ -188,6 +106,9 @@ export default {
 }
 .ScTlist {
   margin: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
   .scanningTool {
     .scanningToolName {
       font-size: 14px;
