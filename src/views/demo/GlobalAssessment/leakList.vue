@@ -178,7 +178,7 @@
                     <el-button
                       size="mini"
                       type="danger"
-                      @click="handleDelete(scope.$index, scope.row)"
+                      @click="handleDelete(scope.row)"
                       >删除</el-button
                     >
                   </template>
@@ -409,11 +409,6 @@ export default {
             message: "请输入主机IP",
             trigger: "blur",
           },
-          {
-            pattern: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/,
-            message: "请输入正确的ip地址",
-            trigger: "blur",
-          },
         ],
         vulnerabilityName: [
           {
@@ -461,15 +456,15 @@ export default {
       riskLevelOptions: [
         {
           label: "高",
-          value: 2,
+          value: "高",
         },
         {
           label: "中",
-          value: 1,
+          value: "中",
         },
         {
           label: "低",
-          value: 0,
+          value: "低",
         },
       ],
       pageList: {
@@ -503,7 +498,7 @@ export default {
     handelConfirm() {
       this.$refs["vulnerability"].validate(async (valid) => {
         if (!valid) return;
-        if (usr_updata === 0) {
+        if (this.usr_updata === 0) {
           // 添加
           let res = await this.$api.SYS_saveDetails_InputDoc(
             this.vulnerability
@@ -513,10 +508,20 @@ export default {
             this.getListts();
             this.$message.success("添加成功！！");
           } else {
-            this.$message.error('添加失败：'+res.message);
+            this.$message.error("添加失败：" + res.message);
           }
-        } else if (usr_updata === 1) {
+        } else if (this.usr_updata === 1) {
           // 修改
+          let res = await this.$api.SYS_updateDetails_InputDoc(
+            this.vulnerability
+          );
+          if (res.code === 20000) {
+            this.dialogVisible = false;
+            this.getListts();
+            this.$message.success("添加成功！！");
+          } else {
+            this.$message.error("添加失败：" + res.message);
+          }
         } else {
           this.$message.error("出错，请联系管理员");
         }
@@ -533,11 +538,11 @@ export default {
     },
     // 修改
     handleEdit(row) {
+      let tsmlist = JSON.stringify(row);
       this.usr_updata = 1;
       this.toListts = "修改";
       this.dialogVisible = true;
-      this.vulnerability = row;
-      console.log(row);
+      this.vulnerability = JSON.parse(tsmlist);
     },
     // 添加
     handleAddList() {
@@ -556,8 +561,28 @@ export default {
       this.toListts = "添加";
     },
     // 删除
-    handleDelete(index, row) {
-      console.log(index, row);
+    handleDelete(row) {
+      this.$confirm("确定删除此记录", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.SYS_delVulnerbility_InputDoc(row);
+          if (res.code === 20000) {
+            this.$message.success("删除成功！！");
+            this.getListts();
+            //查询列表
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };

@@ -118,4 +118,28 @@ export default ({
       data
     })
   },
+   // 漏洞修改
+  // 
+  async SYS_updateDetails_InputDoc(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/parsingHtml/updateDetails',
+      method: 'post',
+      data
+    })
+  },
+    // 漏洞删除
+  // 
+  async SYS_delVulnerbility_InputDoc(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/parsingHtml/delVulnerbility',
+      method: 'delete',
+      data
+    })
+  },
 })

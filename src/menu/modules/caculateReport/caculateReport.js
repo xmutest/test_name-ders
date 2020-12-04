@@ -26,12 +26,12 @@ export default {
       },
       {
         path: `${pre}zzfajh`,
-        title: '制作评论方案和计划',
+        title: '制作测评方案',
         icon: '  iconfont icon-zhizuofangan-'
       },
       {
         path: `${pre}makeAReport`,
-        title: '制作报告',
+        title: '制作测评报告',
         icon: '  iconfont icon-zhizuobaogao'
       },
     ])('/demo/caculateReport/')

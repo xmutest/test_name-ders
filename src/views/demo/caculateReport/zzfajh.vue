@@ -5,592 +5,122 @@
       <!-- 富文本输入框 -->
       <div class="mude_is_left">
         <el-card class="box-card">
-          <!-- <div class="mude_text_item">
-            <div class="descTItle">被测评单位(委托单位)</div>
-            <div class="demo-input-suffix">
-              <div>
-                <span>单位名称：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.companyName"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>联系人：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.contacts"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>移动电话：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.mobilePhone"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>所在部门：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.department"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>职务/职称：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.companyPosition"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>邮政编码：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.postalCode"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>办公电话：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.officesPhone"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>通讯地址：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.companyAddress"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>电子邮箱：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="BeingMeasured.email"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>行业类型：</span>
-                <el-select
-                  size="small"
-                  v-model="BeingMeasured.industryType"
-                  placeholder="请选择"
-                >
-                  <el-option :key="''" :label="'全部'" :value="''"> </el-option>
-                  <el-option
-                    v-for="item in industryTypes"
-                    :key="item.code"
-                    :label="item.name"
-                    :value="item.code"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-              <div>
-                <span>业务类型：</span>
-                <el-select
-                  size="small"
-                  v-model="BeingMeasured.businessType"
-                  placeholder="请选择"
-                >
-                  <el-option :key="''" :label="'全部'" :value="''"> </el-option>
-                  <el-option
-                    v-for="item in businessTypes"
-                    :key="item.code"
-                    :label="item.name"
-                    :value="item.code"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-              <upload-city
-                ref="addFormProvince"
-                @selectChange="selectChange"
-              ></upload-city>
+          <div class="mude_text_item">
+            <div class="descTItle">测评工具选择</div>
+            <div class="pc_gonjv">
+              <el-tree
+                :data="setFindAll"
+                show-checkbox
+                default-expand-all
+                :default-checked-keys="listtools"
+                node-key="id"
+                ref="tree"
+                highlight-current
+                :props="defaultProps"
+              >
+              </el-tree>
             </div>
             <div class="tijiaobaoc">
-              <el-button
-                type="primary"
-                size="small"
-                icon="el-icon-folder-opened"
-                >纳入委托单位库</el-button
-              >
-              <el-button type="primary" @click="BeingMeasuredble=true" size="small" icon="el-icon-s-order"
-                >现有委托单位库</el-button
-              >
+              <el-button type="primary" @click="submitReport">保存</el-button>
             </div>
           </div>
-          <div class="mude_text_item">
-            <div class="descTItle">测评单位</div>
-            <div class="demo-input-suffix">
-              <div>
-                <span>单位名称：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="TheMeasurementUnit.companyName"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>联系人：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="TheMeasurementUnit.contacts"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>移动电话：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="TheMeasurementUnit.mobilePhone"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>所在部门：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="TheMeasurementUnit.department"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>职务/职称：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="TheMeasurementUnit.companyPosition"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>邮政编码：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="TheMeasurementUnit.postalCode"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>办公电话：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="TheMeasurementUnit.officesPhone"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>通讯地址：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="TheMeasurementUnit.companyAddress"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>电子邮箱：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="TheMeasurementUnit.email"
-                  size="small"
-                >
-                </el-input>
-              </div>
-            </div>
-            <div class="tijiaobaoc">
-              <el-button
-                type="primary"
-                size="small"
-                icon="el-icon-folder-opened"
-                >纳入委托单位库</el-button
-              >
-              <el-button type="primary" @click="MeasurementUnitble=true" size="small" icon="el-icon-s-order"
-                >现有测评单位</el-button
-              >
-            </div>
-          </div> -->
           <div class="mude_text_item">
             <div class="descTItle">测评组(多姓名以顿号;分割)</div>
-             <div class="demo-input-suffix">
-              <div>
-                <span>技术测评组：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="assessmentGroup.technologyEvaluationTeam"
-                  size="small"
+            <div>
+              <el-row :gutter="10">
+                <el-form
+                  ref="assessmentGroup"
+                  :model="assessmentGroup"
+                  :rules="rules"
+                  size="medium"
+                  label-width="120px"
+                  label-position="left"
                 >
-                </el-input>
-              </div>
-              <div>
-                <span>管理评估组：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="assessmentGroup.manageEvaluationTeam"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>渗透测试组：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="assessmentGroup.penetrationTestTeam"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>质量监督人：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="assessmentGroup.qualitySupervisor"
-                  size="small"
-                >
-                </el-input>
-              </div>
-              <div>
-                <span>项目组长：</span>
-                <el-input
-                  placeholder="请输入"
-                  v-model="assessmentGroup.ahshg"
-                  size="small"
-                >
-                </el-input>
-              </div>
+                  <el-col :span="12">
+                    <el-form-item label="项目组长" prop="ahshg">
+                      <el-input
+                        v-model="assessmentGroup.ahshg"
+                        placeholder="请输入单行文本项目组长"
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="质量监督人" prop="qualitySupervisor">
+                      <el-input
+                        v-model="assessmentGroup.qualitySupervisor"
+                        placeholder="请输入质量监督人"
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24">
+                    <el-form-item
+                      label="技术测试组人员"
+                      prop="technologyEvaluationTeam"
+                    >
+                      <el-input
+                        v-model="assessmentGroup.technologyEvaluationTeam"
+                        placeholder="请输入技术测试组人员"
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24">
+                    <el-form-item
+                      label="管理评估组人员"
+                      prop="manageEvaluationTeam"
+                    >
+                      <el-input
+                        v-model="assessmentGroup.manageEvaluationTeam"
+                        placeholder="请输入管理评估组人员"
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24">
+                    <el-form-item
+                      label="渗透测试组人员"
+                      prop="penetrationTestTeam"
+                    >
+                      <el-input
+                        v-model="assessmentGroup.penetrationTestTeam"
+                        placeholder="请输入渗透测试组人员"
+                        clearable
+                        :style="{ width: '100%' }"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="方案时间" prop="timedata">
+                      <el-date-picker
+                        v-model="assessmentGroup.timedata"
+                        format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"
+                        :style="{ width: '100%' }"
+                        placeholder="请选择方案时间"
+                        clearable
+                      ></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="24">
+                    <div class="tijiaobaoc">
+                      <el-button type="primary" @click="submitForm"
+                        >制作方案</el-button
+                      >
+                      <el-button @click="resetForm">重置</el-button>
+                    </div>
+                  </el-col>
+                </el-form>
+              </el-row>
             </div>
-          </div>
-          <div class="tijiaobaoc">
-            <el-button type="primary" @click="submitReport">生成安全测评方案</el-button>
           </div>
         </el-card>
       </div>
-    </div>
-
-    <!-- 被测单位信息库 -->
-    <div class="baseofUnits">
-      <el-dialog
-        title="被测单位信息库"
-        :visible.sync="BeingMeasuredble"
-        :close-on-click-modal="false"
-      >
-        <div class="mude_text_item">
-          <div class="descTItle">单位信息</div>
-          <div class="demo-input-suffix">
-            <div>
-              <span>单位名称：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataBeingMeasured.companyName"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>联系人：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataBeingMeasured.contacts"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>移动电话：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataBeingMeasured.mobilePhone"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>所在部门：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataBeingMeasured.department"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>职务/职称：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataBeingMeasured.companyPosition"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>邮政编码：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataBeingMeasured.postalCode"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>办公电话：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataBeingMeasured.officesPhone"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>通讯地址：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataBeingMeasured.companyAddress"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>电子邮箱：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataBeingMeasured.email"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <upload-city
-              ref="addFormProvince"
-              @selectChange="selectChange"
-            ></upload-city>
-          </div>
-          <div class="tijiaobaoc">
-            <el-button
-              type="primary"
-              size="small"
-              icon="el-icon-circle-plus-outline"
-              >新增单位信息库</el-button
-            >
-            <el-button type="primary" size="small" icon="el-icon-circle-check"
-              >保存修改</el-button
-            >
-          </div>
-        </div>
-        <div class="mude_text_item">
-          <div class="descTItle">现有单位信息</div>
-          <el-table
-            :data="BeingMeasuredList"
-            @current-change="BeingMeasureChange"
-            style="width: 100%"
-          >
-            <el-table-column label="单位名称" width="200">
-              <template slot-scope="scope">
-                <span style="margin-left: 10px">{{
-                  scope.row.companyName
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="通讯地址" width="200">
-              <template slot-scope="scope">
-                {{ scope.row.companyAddress }}
-              </template>
-            </el-table-column>
-            <el-table-column label="联系人" width="150">
-              <template slot-scope="scope">
-                {{ scope.row.contacts }}
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" width="150">
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  @click="BeingMeasuredEdit(scope.$index, scope.row)"
-                  >选中</el-button
-                >
-                <el-button
-                  size="mini"
-                  type="danger"
-                  @click="BeingMeasureDelete(scope.$index, scope.row)"
-                  >删除</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </el-dialog>
-    </div>
-    <!-- 测单位信息库 -->
-    <div class="baseofUnits">
-      <el-dialog
-        title="测单位信息库"
-        :visible.sync="MeasurementUnitble"
-        :close-on-click-modal="false"
-      >
-        <div class="mude_text_item">
-          <div class="descTItle">单位信息</div>
-          <div class="demo-input-suffix">
-            <div>
-              <span>单位名称：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataTheMeasurementUnit.companyName"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>联系人：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataTheMeasurementUnit.contacts"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>移动电话：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataTheMeasurementUnit.mobilePhone"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>所在部门：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataTheMeasurementUnit.department"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>职务/职称：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataTheMeasurementUnit.companyPosition"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>邮政编码：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataTheMeasurementUnit.postalCode"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>办公电话：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataTheMeasurementUnit.officesPhone"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>通讯地址：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataTheMeasurementUnit.companyAddress"
-                size="small"
-              >
-              </el-input>
-            </div>
-            <div>
-              <span>电子邮箱：</span>
-              <el-input
-                placeholder="请输入"
-                v-model="updataTheMeasurementUnit.email"
-                size="small"
-              >
-              </el-input>
-            </div>
-          </div>
-          <div class="tijiaobaoc">
-            <el-button
-              type="primary"
-              size="small"
-              icon="el-icon-circle-plus-outline"
-              >新增单位信息库</el-button
-            >
-            <el-button type="primary" size="small" icon="el-icon-circle-check"
-              >保存修改</el-button
-            >
-          </div>
-        </div>
-        <div class="mude_text_item">
-          <div class="descTItle">现有单位信息</div>
-          <el-table
-            :data="TheMeasurementUnitList"
-            @current-change="TheMeasurementUnitChange"
-            style="width: 100%"
-          >
-            <el-table-column label="单位名称" width="200">
-              <template slot-scope="scope">
-                <span style="margin-left: 10px">{{
-                  scope.row.companyName
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="通讯地址" width="200">
-              <template slot-scope="scope">
-                {{ scope.row.companyAddress }}
-              </template>
-            </el-table-column>
-            <el-table-column label="联系人" width="150">
-              <template slot-scope="scope">
-                {{ scope.row.contacts }}
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" width="150">
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  @click="TheMeasurementUnitEdit(scope.$index, scope.row)"
-                  >选中</el-button
-                >
-                <el-button
-                  size="mini"
-                  type="danger"
-                  @click="TheMeasurementUnitDelete(scope.$index, scope.row)"
-                  >删除</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </el-dialog>
     </div>
   </d2-container>
 </template>
@@ -599,175 +129,137 @@
 export default {
   data() {
     return {
-      BeingMeasuredble: false,
-      // 被测评单位
-      BeingMeasured: {
-        // 单位名称
-        companyName: "",
-        // 联系人
-        contacts: "",
-        // 移动电话
-        mobilePhone: "",
-        // 所在部门(
-        department: "",
-        // 职务/职称()
-        companyPosition: "",
-        // 邮政编码()
-        postalCode: "",
-        // 办公电话
-        officesPhone: "",
-        // 通讯地址()
-        companyAddress: "",
-        // 电子邮箱()
-        email: "",
-        // 所在省/市()
-        provincesCities: "",
-        // 所在区/县()
-        districtCounty: "",
-        // 行业类型()
-        industryType: "",
-        // 业务类型()
-        businessType: "",
+      // 测评工具
+      setFindAll: [],
+      listtools: [],
+      fromdata: {
+        tools: [],
       },
-      // 修改被测评单位
-      updataBeingMeasured: {
-        // 单位名称
-        companyName: "",
-        // 联系人
-        contacts: "",
-        // 移动电话
-        mobilePhone: "",
-        // 所在部门(
-        department: "",
-        // 职务/职称()
-        companyPosition: "",
-        // 邮政编码()
-        postalCode: "",
-        // 办公电话
-        officesPhone: "",
-        // 通讯地址()
-        companyAddress: "",
-        // 电子邮箱()
-        email: "",
-        // 所在省/市()
-        provincesCities: "",
-        // 所在区/县()
-        districtCounty: "",
-        // 行业类型()
-        industryType: "",
-        // 业务类型()
-        businessType: "",
+      defaultProps: {
+        children: "toolsData",
+        label: "menuName",
       },
-      industryTypes: [],
-      businessTypes: [],
-      // 现有被测评单位信息
-      BeingMeasuredList: [
-        {
-          // 单位名称
-          companyName: "定场地成都的刺激多次基督教的",
-          // 通讯地址()
-          companyAddress: "定场地成都的刺激多次基督教的",
-          // 联系人
-          contacts: "252525525",
-        },
-      ],
-      // 测评单位
-      MeasurementUnitble: false,
-      TheMeasurementUnit: {
-        // 单位名称
-        companyName: "",
-        // 联系人
-        contacts: "",
-        // 移动电话
-        mobilePhone: "",
-        // 所在部门(
-        department: "",
-        // 职务/职称()
-        companyPosition: "",
-        // 邮政编码()
-        postalCode: "",
-        // 办公电话
-        officesPhone: "",
-        // 通讯地址()
-        companyAddress: "",
-        // 电子邮箱()
-        email: "",
+      assessmentGroup: {
+        ahshg: undefined,
+        qualitySupervisor: undefined,
+        technologyEvaluationTeam: undefined,
+        manageEvaluationTeam: undefined,
+        penetrationTestTeam: undefined,
+        timedata: null,
       },
-      updataTheMeasurementUnit: {
-        // 单位名称
-        companyName: "",
-        // 联系人
-        contacts: "",
-        // 移动电话
-        mobilePhone: "",
-        // 所在部门(
-        department: "",
-        // 职务/职称()
-        companyPosition: "",
-        // 邮政编码()
-        postalCode: "",
-        // 办公电话
-        officesPhone: "",
-        // 通讯地址()
-        companyAddress: "",
-        // 电子邮箱()
-        email: "",
+      rules: {
+        ahshg: [
+          {
+            required: true,
+            message: "请输入单行文本项目组长",
+            trigger: "blur",
+          },
+        ],
+        qualitySupervisor: [
+          {
+            required: true,
+            message: "请输入质量监督人",
+            trigger: "blur",
+          },
+        ],
+        technologyEvaluationTeam: [
+          {
+            required: true,
+            message: "请输入技术测试组人员",
+            trigger: "blur",
+          },
+        ],
+        manageEvaluationTeam: [
+          {
+            required: true,
+            message: "请输入管理评估组人员",
+            trigger: "blur",
+          },
+        ],
+        penetrationTestTeam: [
+          {
+            required: true,
+            message: "请输入渗透测试组人员",
+            trigger: "blur",
+          },
+        ],
+        timedata: [
+          {
+            required: true,
+            message: "请选择方案时间",
+            trigger: "change",
+          },
+        ],
       },
-      TheMeasurementUnitList: [],
-      //测评组
-      assessmentGroup:{
-        // 技术测评组()
-        technologyEvaluationTeam:'',
-        // 管理评估组()
-        manageEvaluationTeam:'',
-        // 渗透测试组()
-        penetrationTestTeam:'',
-        // 质量监督人()
-        qualitySupervisor:'',
-        // 项目组长
-        ahshg:''
-      }
     };
   },
   created() {
     this.getEtlist();
   },
   methods: {
-    textChangeHandler(delta, oldDelta, source) {
-      // console.log(delta,oldDelta,source)
+    // 保存测评工具
+    async submitReport() {
+      let tolist = this.$refs.tree.getCheckedKeys().filter((item) => {
+        if (item != "undefined") {
+          return item;
+        }
+      });
+      let isT = [];
+      tolist.forEach((element) => {
+        let em = {};
+        em.evaluationToolId = element;
+        isT.push(em);
+      });
+      this.fromdata.tools = isT;
+      let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
+      if (res.code === 20000) {
+        this.$message.success("保存成功！！");
+        this.getEtlist();
+        //查询列表
+      } else {
+        this.$message.error("错误，请联系管理员" + res.message);
+      }
     },
-    selectChange(provinceName, cityNmae) {
-      this.provincesCities = provinceName;
-      this.districtCounty = cityNmae;
+    // 获取评测工具
+    async getFindAll() {
+      let List = await this.$api.API_projectOverviewEvaluationToolFindAll();
+      if (List.code === 20000) {
+        this.setFindAll = List.data;
+        // this.fromdata.id = List.data.id;
+        //查询列表
+      } else {
+        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+      }
     },
-    async getEtlist() {},
-    async submitReport() {},
-    // 被测评
-    BeingMeasuredEdit(index, row) {
-      console.log(index, row);
+    async getEtlist() {
+      let List = await this.$api.API_projectOverviewdObjSelectionMethod();
+      if (List.code === 20000) {
+        this.getFindAll();
+        let tools = [];
+        List.data.tools.forEach((item) => {
+          tools.push(item.evaluationToolId);
+        });
+        this.listtools = tools;
+        // this.fromdata.id = List.data.id;
+        //查询列表
+      } else {
+        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+      }
     },
-    BeingMeasureDelete(index, row) {
-      console.log(index, row);
+    async submitForm() {
+      this.$refs["assessmentGroup"].validate((valid) => {
+        if (!valid) return;
+        // TODO 提交表单
+      });
     },
-    BeingMeasureChange(val) {
-      console.log(val);
-    },
-
-    // 测评单位
-    TheMeasurementUnitEdit(index, row) {
-      console.log(index, row);
-    },
-    TheMeasurementUnitDelete(index, row) {
-      console.log(index, row);
-    },
-    TheMeasurementUnitChange(val) {
-      console.log(val);
+    resetForm() {
+      this.$refs["assessmentGroup"].resetFields();
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .mude_is {
   margin: 20px 0;
   .mude_is_left {
@@ -809,5 +301,9 @@ export default {
   .descTItle {
     @extend %unable-border-left;
   }
+}
+.pc_gonjv {
+  max-height: 400px;
+  overflow: auto;
 }
 </style>

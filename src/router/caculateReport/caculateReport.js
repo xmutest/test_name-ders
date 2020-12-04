@@ -59,7 +59,7 @@ export default {
       component: _import('demo/caculateReport/zzfajh'),
       meta: {
         ...meta,
-        title: '制作评论方案和计划'
+        title: '制作测评方案'
       }
     },
     {
@@ -68,7 +68,7 @@ export default {
       component: _import('demo/caculateReport/makeAReport'),
       meta: {
         ...meta,
-        title: '制作报告'
+        title: '制作测评报告'
       }
     },
   ])('demo-caculateReport-')
