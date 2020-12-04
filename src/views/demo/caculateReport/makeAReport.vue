@@ -336,7 +336,7 @@
                 <el-input
                   v-model="assessmentGroup.recordSn"
                   placeholder="请输入备案证明编号："
-                  disabled
+                  :disabled="this.info.user_info.companyCode ? true : false"
                   :style="{ width: '170px' }"
                 ></el-input>
               </el-form-item>
@@ -393,7 +393,11 @@
 
           <div class="mude_text_item">
             <div class="descTItle">现有报告</div>
-            <el-table :header-cell-style="{'text-align':'center'}" :data="reportGeneratingRecords" style="width: 100%">
+            <el-table
+              :header-cell-style="{ 'text-align': 'center' }"
+              :data="reportGeneratingRecords"
+              style="width: 100%"
+            >
               <!-- <el-table-column label="报告编号" width="200">
                 <template slot-scope="scope">
                   <span style="margin-left: 10px">{{
@@ -1024,20 +1028,18 @@ export default {
     textChangeHandler() {
       var date = new Date();
       let dataTs = date.getFullYear() + "";
-      if (this.info.user_info.companyCode != null) {
-        let lst = `${this.xmu_info.data.recordSn}-${dataTs.substring(
-          0,
-          2
-        )}-${this.info.user_info.companyCode.substring(
-          this.info.user_info.companyCode.length - 6
-        )}-0${this.assessmentGroup.annualReview}`;
-        let Nmas = `${this.xmu_info.data.evaluatedUnit}_${this.xmu_info.data.systemName}_测评报告`;
-        this.assessmentGroup.reportNum = lst;
-        this.assessmentGroup.recordSn = this.xmu_info.data.recordSn;
-        this.assessmentGroup.reportName = Nmas;
-      } else {
-        this.$message.error("当前账号无测评机构代码，请联系管理员添加");
-      }
+      // if (this.info.user_info.companyCode != null) {
+      let lst = `${this.xmu_info.data.recordSn}-${dataTs.substring(
+        0,
+        2
+      )}-${this.info.user_info.companyCode.substring(
+        this.info.user_info.companyCode.length - 6
+      )}-0${this.assessmentGroup.annualReview}`;
+      let Nmas = `${this.xmu_info.data.evaluatedUnit}_${this.xmu_info.data.systemName}_测评报告`;
+      this.assessmentGroup.reportNum = lst;
+      this.assessmentGroup.recordSn = this.xmu_info.data.recordSn;
+      this.assessmentGroup.reportName = Nmas;
+      // }
 
       // console.log(date.getTime());
       this.assessmentGroup.reportTime = date.getTime();

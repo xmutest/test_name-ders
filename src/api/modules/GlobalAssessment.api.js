@@ -29,13 +29,13 @@ export default ({
       return xmu_info.projectId;
     }
   },
-    /**
+  /**
    * @description 分页查询整体测评结果汇总 
    * @param {Object} data 携带的信息
    */
- async APIwholeEvaluationFindResults(data = {}) {
-  data.projectId = await this.get_info();  
-  // 接口请求
+  async APIwholeEvaluationFindResults(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
     return request({
       url: '/wholeEvaluation/findResults',
       method: 'get',
@@ -46,9 +46,9 @@ export default ({
    * @description 查询整体评测
    * @param {Object} data 携带的信息
    */
- async API_WholeEvaluationFindWholeEvaluation(data = {}) {
-  data.projectId = await this.get_info();  
-  // 接口请求
+  async API_WholeEvaluationFindWholeEvaluation(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
     return request({
       url: '/wholeEvaluation/findWholeEvaluation',
       method: 'get',
@@ -59,7 +59,7 @@ export default ({
    * @description 保存整体评测
    * @param {Object} data 携带的信息
    */
- async API_WholeEvaluationSaveWholeEvaluation(data = {}) {
+  async API_WholeEvaluationSaveWholeEvaluation(data = {}) {
     // 接口请求
     data.projectId = await this.get_info();
     return request({
@@ -72,7 +72,7 @@ export default ({
    * @description 修改整体评测
    * @param {Object} data 携带的信息
    */
- async API_WholeEvaluationUpdateWholeEvaluation(data = {}) {
+  async API_WholeEvaluationUpdateWholeEvaluation(data = {}) {
     // 接口请求
     data.projectId = await this.get_info();
     return request({
@@ -80,5 +80,42 @@ export default ({
       method: 'post',
       data
     })
-  }
+  },
+  /**
+   * @description 模板导入
+   * @param {Object} data 
+   */
+  SYS_loudong_InputDoc(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/parsingHtml/analyzeHtml',
+      method: 'post',
+      data
+    })
+  },
+  // 漏洞查询
+  // 
+  async SYS_findDetails_InputDoc(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/parsingHtml/findDetails',
+      method: 'get',
+      params: data
+    })
+  },
+  // 漏洞添加
+  // 
+  async SYS_saveDetails_InputDoc(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/parsingHtml/saveDetails',
+      method: 'post',
+      data
+    })
+  },
 })

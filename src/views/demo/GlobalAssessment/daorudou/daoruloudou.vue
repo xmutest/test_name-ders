@@ -12,14 +12,14 @@
         :on-exceed="formHandleExceed"
         :on-remove="formHandleRemove"
         :before-upload="beforeUploadForm"
-        accept="application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        
         multiple
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">
+        <!-- <div class="el-upload__tip" slot="tip">
           上传文件只能是doc/docx格式，且不超过10m
-        </div>
+        </div> -->
       </el-upload>
     </div>
   </div>
@@ -69,14 +69,14 @@ export default {
       }
       // 验证文件类型
       var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      const extension = testmsg === "doc" || testmsg === "docx";
-      if (!extension) {
-        this.$message({
-          message: "上传文件只能是doc/docx格式!",
-          type: "warning",
-        });
-      }
-      return extension;
+      // const extension = testmsg === "doc" || testmsg === "docx";
+      // if (!extension) {
+      //   this.$message({
+      //     message: "上传文件只能是doc/docx格式!",
+      //     type: "warning",
+      //   });
+      // }
+      // return extension;
     },
     // 移除上传列表中文件
     formHandleRemove(file, formFileList) {
@@ -99,9 +99,11 @@ export default {
     // 上传文件
     async handleUploadForm(param) {
       let thiz = this;
+      thiz.ifsTo = false;
       let formData = new FormData();
-      //formData.append("projectId", this.toSonData); // 额外参数
-      formData.append("file", param.file);
+      formData.append("type", this.sonValue.toolName); // 额外参数
+      formData.append("point", this.sonValue.api); // 额外参数
+      formData.append("files", param.file);
       let loading = thiz.$loading({
         lock: true,
         text: "上传中，请稍候...",
@@ -109,7 +111,7 @@ export default {
         background: "rgba(0, 0, 0, 0.7)",
       });
       formData.append("projectId", thiz.xmu_info.projectId);
-      thiz.$api.SYS_USER_InputDoc(formData).then((data) => {
+      thiz.$api.SYS_loudong_InputDoc(formData).then((data) => {
         console.log(data);
         if (data.code === 20000) {
           thiz.$message({

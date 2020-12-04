@@ -24,11 +24,11 @@ export default {
         title: '系统安全防护评估',
         icon: '  iconfont icon-jielun-copy'
       },
-      // {
-      //   path: `${pre}zzfajh`,
-      //   title: '制作评论方案和计划',
-      //   icon: '  iconfont icon-zhizuofangan-'
-      // },
+      {
+        path: `${pre}zzfajh`,
+        title: '制作评论方案和计划',
+        icon: '  iconfont icon-zhizuofangan-'
+      },
       {
         path: `${pre}makeAReport`,
         title: '制作报告',
