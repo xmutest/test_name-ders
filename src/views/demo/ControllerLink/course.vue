@@ -82,9 +82,11 @@
                 <el-table
                   :data="tableData"
                   :span-method="arraySpanMethod"
+                  :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
+                  :cell-style="tableStyle"
                   border
                   style="width: 100%"
-                  :row-style="{ height: '20px' }"
+                  :row-style="{ height: '10px' }"
                 >
                   <el-table-column label="实施项目" prop="name" width="180">
                     <template slot-scope="scope">
@@ -778,6 +780,15 @@ export default {
               };
             }
           }
+        }
+      }
+    },
+    tableStyle({ row, column, rowIndex, columnIndex }){
+      if(row.len >= 4){
+        return{
+          background:'#A4D38A',
+          height:'50px',
+          padding:0,
         }
       }
     },
