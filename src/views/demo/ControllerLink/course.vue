@@ -787,8 +787,16 @@ export default {
       if(row.len >= 4){
         return{
           background:'#A4D38A',
-          height:'50px',
-          padding:0,
+          height:'10px',
+          padding:'0',
+          'line-height':'100%',
+          'font-size':'15px'
+          // position:'absolute',
+          // width:'100%',
+          // left:0,
+          // right:0,
+          // 'z-index':5,
+          // margin:'auto'
         }
       }
     },
