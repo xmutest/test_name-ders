@@ -257,6 +257,7 @@ export default {
           remarks: "",
           len: 4,
           ist: 1,
+          allrow:true,
           isfor: true,
           highlight: true,
         },
@@ -288,6 +289,7 @@ export default {
           evaluationCycle: 0,
           remarks: "",
           len: 4,
+          allrow:true,
           ist: 1,
           isfor: true,
           highlight: true,
@@ -551,6 +553,7 @@ export default {
           remarks: "",
           len: 4,
           ist: 1,
+          allrow:true,
           isfor: true,
           highlight: true,
         },
@@ -593,6 +596,7 @@ export default {
           remarks: "",
           len: 4,
           ist: 1,
+          allrow:true,
           isfor: true,
           highlight: true,
         },
@@ -737,6 +741,14 @@ export default {
         } else if (columnIndex === 1) {
           return [0, 0];
         }
+
+        // 清除总步骤多余的格子
+        if(row.allrow){
+          if (columnIndex === 2 || columnIndex === 3){
+            return [0,0]
+          }
+        }
+        
       } else {
         if (row.name === "安全计算环境") {
           if (columnIndex != 1) {
@@ -784,13 +796,10 @@ export default {
       }
     },
     tableStyle({ row, column, rowIndex, columnIndex }){
-      if(row.len >= 4){
+      if(row.allrow){
         return{
           background:'#A4D38A',
-          height:'10px',
-          padding:'0',
-          'line-height':'100%',
-          'font-size':'15px'
+          height:'60px'
           // position:'absolute',
           // width:'100%',
           // left:0,
@@ -844,7 +853,55 @@ export default {
       let that = this;
       let realityTime = [];
       this.timeArr.map((res) => {
+        let startDay = this.transferDay(startTime)
+        // 如果是周末,自转到下周一
+        if(startDay == 6){
+          startTime = startTime + (2 * 24  * 60 * 60 * 1000)
+        }else if(startDay == 0){
+          startTime = startTime + (1 * 24  * 60 * 60 * 1000)
+        }
+
+        let useDay = res / (1000 * 60 * 60 * 24)
+
+        let weekendNums = 0 
+        // 得出周末天数,转成毫秒
+        if(useDay > 0){
+          for(let i=0;i<=useDay;i++){
+            let thisDay = (startDay + i ) % 7
+            if(thisDay == 0 || thisDay  == 6){
+              weekendNums++
+            }
+          }
+        }
+
+        // 结束时间刚好在周末
+        let weekendTime = weekendNums * 24 * 60 * 60 * 1000 || 0
+        console.log(`几个节假日?${weekendTime}`)
+
+        // 加上周末时间
         let endTime = startTime + res;
+
+        let endDay = this.transferDay(endTime)
+        let endWeekendDay = 0
+        for(let i=0;i<=weekendNums;i++){
+          
+          let thisDay = (endDay + i) % 7
+          
+          if(thisDay == 0 || thisDay == 6){
+            endWeekendDay++
+          }
+        }
+
+        let endWeekendTime = endWeekendDay * 24 * 60 * 60 * 1000 || 0
+
+        endTime = endTime + weekendTime + endWeekendTime
+        
+        if(endDay == 6){
+          endTime = endTime + (2 * 24  * 60 * 60 * 1000)
+        }else if(endDay == 0){
+          endTime = endTime + (1 * 24  * 60 * 60 * 1000)
+        }
+
         let transferEndTime = that.transferDate(endTime, 1);
         let transferStartTime = that.transferDate(startTime, 1);
         let preRealityTime = {
@@ -949,6 +1006,9 @@ export default {
       } else {
         this.timeInfoInsert = data.detailTimePreview;
       }
+    },
+    transferDay(time){
+      return new Date(time).getDay()
     },
     async saveInfoAndExit() {
       let that = this;
