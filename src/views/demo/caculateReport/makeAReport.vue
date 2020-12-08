@@ -383,6 +383,12 @@
               </el-form-item>
 
               <div class="tijiaobaoc">
+                <el-button
+                  type="primary"
+                  size="small"
+                  @click="dialogFormVisible = true,CheckReportTeam()"
+                  >检查内容</el-button
+                >
                 <!-- <el-button type="primary" size="small">保存配置</el-button> -->
                 <el-button type="primary" size="small" @click="submitReport"
                   >制作报告</el-button
@@ -392,7 +398,7 @@
           </div>
 
           <div class="mude_text_item">
-            <div class="descTItle">现有报告</div>
+            <div class="descTItle">报告列表</div>
             <el-table
               :header-cell-style="{ 'text-align': 'center' }"
               :data="reportGeneratingRecords"
@@ -455,6 +461,33 @@
       </div>
     </div>
 
+    <div class="dialogList">
+      <el-dialog
+        title="检查内容"
+        width="80%"
+        :close-on-press-escape="false"
+        :close-on-click-modal="false"
+        :visible.sync="dialogFormVisible"
+      >
+       <div class="dialogListTop">
+        <el-table :data="gridData">
+          <el-table-column
+            property="menu"
+            label="菜单"
+            width="150"
+          ></el-table-column>
+          <el-table-column
+            property="name"
+            label="名称"
+          ></el-table-column>
+          <el-table-column
+            property="content"
+            label="检查结果"
+          ></el-table-column>
+        </el-table>
+        </div>
+      </el-dialog>
+    </div>
     <!-- 被测单位信息库 -->
     <!-- <div class="baseofUnits">
       <el-dialog
@@ -761,6 +794,9 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      dialogFormVisible: false,
+      // 检查列表
+      gridData: [],
       BeingMeasuredble: false,
       // // 被测评单位
       // BeingMeasured: {
@@ -926,18 +962,7 @@ export default {
         annualReview: 1,
       },
       // 现有报告
-      reportGeneratingRecords: [
-        {
-          // 报告编号()
-          reportNum: "",
-          // 备案证明编号()
-          recordSn: "",
-          // 报告名称()
-          reportName: "",
-          // 报告日期()
-          reportTime: "",
-        },
-      ],
+      reportGeneratingRecords: [],
       rules: {
         recordSn: [
           {
@@ -1024,22 +1049,29 @@ export default {
         // TODO 提交表单
       });
     },
+    // 检查内容
+    async CheckReportTeam() {
+      let res = await this.$api.API_CheckReportTeam();
+      if (res.code === 20000) {
+        this.gridData = res.data;
+      }
+    },
     // 生成默认值
     textChangeHandler() {
       var date = new Date();
       let dataTs = date.getFullYear() + "";
-      // if (this.info.user_info.companyCode != null) {
-      let lst = `${this.xmu_info.data.recordSn}-${dataTs.substring(
-        0,
-        2
-      )}-${this.info.user_info.companyCode.substring(
-        this.info.user_info.companyCode.length - 6
-      )}-0${this.assessmentGroup.annualReview}`;
-      let Nmas = `${this.xmu_info.data.evaluatedUnit}_${this.xmu_info.data.systemName}_测评报告`;
-      this.assessmentGroup.reportNum = lst;
-      this.assessmentGroup.recordSn = this.xmu_info.data.recordSn;
-      this.assessmentGroup.reportName = Nmas;
-      // }
+      if (this.info.user_info.companyCode != null) {
+        let lst = `${this.xmu_info.data.recordSn}-${dataTs.substring(
+          0,
+          2
+        )}-${this.info.user_info.companyCode.substring(
+          this.info.user_info.companyCode.length - 6
+        )}-0${this.assessmentGroup.annualReview}`;
+        let Nmas = `${this.xmu_info.data.evaluatedUnit}_${this.xmu_info.data.systemName}_测评报告`;
+        this.assessmentGroup.reportNum = lst;
+        this.assessmentGroup.recordSn = this.xmu_info.data.recordSn;
+        this.assessmentGroup.reportName = Nmas;
+      }
 
       // console.log(date.getTime());
       this.assessmentGroup.reportTime = date.getTime();
@@ -1233,6 +1265,10 @@ export default {
 .lst3 {
   width: 50%;
   display: inline-block;
+}
+.dialogListTop{
+  max-height: 450px;
+  overflow: auto;
 }
 </style>
 

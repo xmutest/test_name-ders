@@ -153,4 +153,48 @@ export default ({
       responseType: 'blob',
     })
   },
+  /**
+   * @description 生成测评报告方案管理组
+   * @param {Object} data 携带的信息
+   */
+  async API_reportType2GenerGate(data = {}) {
+    // 接口请求
+    data.projectId = await this.get_info();
+    // data.projectId = 5;
+    return request({
+      url: '/word/evaluationScheme',
+      method: 'post',
+      data
+    })
+  },
+  // GET 
+  // 
+  /**
+   * @description 查询测评组
+   * @param {Object} data 携带的信息
+   */
+  async API_findEvaluationTeam(data = {}) {
+    // 接口请求
+    data.projectId = await this.get_info();
+    // data.projectId = 5;
+    return request({
+      url: '/word/findEvaluationTeam',
+      method: 'get',
+      params: data
+    })
+  },
+    /**
+   * @description 检查内容
+   * @param {Object} data 携带的信息
+   */
+  async API_CheckReportTeam(data = {}) {
+    // 接口请求
+    data.projectId = await this.get_info();
+    // data.projectId = 5;
+    return request({
+      url: '/word/checkReport',
+      method: 'get',
+      params: data
+    })
+  },
 })

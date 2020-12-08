@@ -122,10 +122,17 @@
                     >
                   </template>
                 </el-table-column>
-                <el-table-column label="漏洞名称" width="180">
+                <el-table-column label="漏洞名称" width="150">
                   <template slot-scope="scope">
                     <span style="margin-left: 10px">{{
                       scope.row.vulnerabilityName
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="系统名称" width="120">
+                  <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{
+                      scope.row.systemName
                     }}</span>
                   </template>
                 </el-table-column>
@@ -328,7 +335,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="漏洞类型" prop="vulnerabilityType">
+            <el-form-item label="漏洞类型" label-width="120px" prop="vulnerabilityType">
               <el-select
                 v-model="vulnerability.vulnerabilityType"
                 placeholder="请选择"
@@ -341,6 +348,16 @@
                 >
                 </el-option>
               </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24" v-show="vulnerability.vulnerabilityType==2">
+            <el-form-item label="应用系统名称" label-width="120px" prop="vulnerabilityType">
+              <el-input
+                v-model="vulnerability.systemName"
+                placeholder="请输入应用系统名称"
+                clearable
+                :style="{ width: '100%' }"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-form>
@@ -401,6 +418,7 @@ export default {
         vulnerabilityNum: 0,
         vulnerabilityType: undefined,
         point: "JA",
+        systemName: "",
       },
       rules: {
         hostOrUrl: [
@@ -518,9 +536,9 @@ export default {
           if (res.code === 20000) {
             this.dialogVisible = false;
             this.getListts();
-            this.$message.success("添加成功！！");
+            this.$message.success("修改成功！！");
           } else {
-            this.$message.error("添加失败：" + res.message);
+            this.$message.error("修改失败：" + res.message);
           }
         } else {
           this.$message.error("出错，请联系管理员");

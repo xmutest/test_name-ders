@@ -36,11 +36,11 @@
                   {{ item2.safetyControlSpot }}
                 </td>
 
-                <td >
-                    <el-popover trigger="click" placement="top">
+                <td>
+                  <el-popover trigger="click" placement="top">
                     <div>
                       <p>
-                        {{ item3.assets }}  
+                        {{ item3.assets }}
                       </p>
                     </div>
                     <div slot="reference" class="name-wrapper tsList">
@@ -326,7 +326,12 @@
           <div>严重程度值：{{ beforeModificationSeverity }}</div>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="Tolist()" v-throttle>确 定</el-button>
+          <el-button type="primary" @click="Organization()" v-throttle
+            >纳入风险知识库</el-button
+          >
+          <el-button type="primary" @click="Tolist()" v-throttle
+            >确 定</el-button
+          >
           <el-button @click="(dialogVisible = false), getDataList()"
             >取 消</el-button
           >
@@ -393,6 +398,17 @@ export default {
     this.getDataList();
   },
   methods: {
+    // 纳入风险知识库
+    Organization() {
+      let listdats = {};
+      listdats.threatId = this.relevanceWeiList;
+      listdats.hazardAnalysis = this.amendAnalysis.hazardAnalysis;
+      listdats.originalRisk = this.amendAnalysis.originalRisk;
+      listdats.problemAnalysis = this.amendAnalysis.problemAnalysis;
+      listdats.problemDescription = this.amendAnalysis.problemDescription;
+      listdats.rectificationSuggestions=this.amendAnalysis.rectificationSuggestions;
+      console.log(listdats);
+    },
     Listdatamis(item) {
       this.getDaPuList(item.threatId);
       let ls = [
@@ -422,7 +438,6 @@ export default {
         }
       });
     },
-    Totisadd() {},
     shishiClick(item3, itemName) {
       if (itemName != "") {
         this.itemName = itemName;
@@ -665,7 +680,7 @@ export default {
   cursor: pointer;
   color: black;
 }
-.tsList{
+.tsList {
   max-width: 120px;
   overflow: hidden;
 }

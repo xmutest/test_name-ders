@@ -376,6 +376,10 @@ export default {
           label: "技术五部",
           value: 9,
         },
+        {
+          label: "质控部",
+          value: 10,
+        },
       ],
       apiList: {
         departmentId: 2,
@@ -420,6 +424,10 @@ export default {
           {
             label: "技术五部",
             value: 9,
+          },
+          {
+            label: "质控部",
+            value: 10,
           },
         ];
       }
@@ -488,6 +496,10 @@ export default {
         {
           label: "技术五部",
           value: 9,
+        },
+        {
+          label: "质控部",
+          value: 10,
         },
       ];
       departmentIdOptions.forEach((item) => {
@@ -562,6 +574,10 @@ export default {
           label: "技术五部",
           value: 9,
         },
+        {
+          label: "质控部",
+          value: 10
+        }
       ];
     },
     // 删除
