@@ -113,12 +113,17 @@
                       <span v-else-if="scope.row.name == '总计'">
                         {{ scope.row.evaluationCycle }}
                       </span>
+                      <span v-else-if="tableHead.indexOf(scope.row.projectImplementNum) != '-1'">
+                        {{ scope.row.evaluationCycle }}
+                      </span>
+                      
                       <el-input-number
                         v-else
                         @change="Itsclik()"
                         v-model="scope.row.evaluationCycle"
                         controls-position="right"
                         :min="0"
+                        :step="0.5"
                       ></el-input-number>
                       <!-- <span style="margin-left: 10px">{{  }}</span> -->
                     </template>
@@ -218,6 +223,7 @@ export default {
       sentences: "",
       tableData: [
         {
+          projectImplementNum:18,
           name: "一、测评准备过程",
           amount1: "",
           evaluationCycle: 0,
@@ -225,7 +231,7 @@ export default {
           len: 2,
           ist: 1,
           isfor: true,
-          highlight: true,
+          highlight: false,
         },
         {
           id: "",
@@ -262,6 +268,7 @@ export default {
           highlight: true,
         },
         {
+          projectImplementNum:19,
           name: "二、方案编制过程",
           amount1: "",
           evaluationCycle: 0,
@@ -269,7 +276,7 @@ export default {
           len: 2,
           ist: 1,
           isfor: true,
-          highlight: true,
+          highlight: false,
         },
         {
           id: "",
@@ -295,6 +302,7 @@ export default {
           highlight: true,
         },
         {
+          projectImplementNum:20,
           name: "三、现场实施过程",
           amount1: "",
           evaluationCycle: 0,
@@ -302,7 +310,7 @@ export default {
           len: 2,
           ist: 1,
           isfor: true,
-          highlight: true,
+          highlight: false,
         },
         {
           id: "",
@@ -558,6 +566,7 @@ export default {
           highlight: true,
         },
         {
+          projectImplementNum:21,
           name: "四、分析与报告编制过程",
           amount1: "",
           evaluationCycle: 0,
@@ -565,7 +574,7 @@ export default {
           len: 2,
           ist: 1,
           isfor: true,
-          highlight: true,
+          highlight: false,
         },
         {
           id: "",
@@ -612,6 +621,7 @@ export default {
           isfor: true,
         },
       ],
+      tableHead:[18,19,20,21],
       dialogVisible: false,
       timeInfoInsert: "", //测评时间表
       saveData: {},
@@ -619,6 +629,8 @@ export default {
   },
   created() {
     this.getEtlist();
+    this.tableData[0].totalValue = this.tableData[1].evaluationCycle + this.tableData[2].evaluationCycle
+    // console.log(this.tableData[0].totalValue)
   },
   computed: {
     ...mapState("d2admin", {
@@ -639,6 +651,27 @@ export default {
       this.tableData.forEach((el, index) => {
         if (el.projectImplementNum == 17) {
           this.tableData[index].evaluationCycle = ItNumber;
+        }
+        if(el.projectImplementNum == 18){
+          this.tableData[index].evaluationCycle = this.tableData[1].evaluationCycle + this.tableData[2].evaluationCycle
+        }
+        if(el.projectImplementNum == 19){
+          this.tableData[index].evaluationCycle = this.tableData[5].evaluationCycle
+        }
+        if(el.projectImplementNum == 20){
+          this.tableData[index].evaluationCycle = this.tableData[8].evaluationCycle + this.tableData[9].evaluationCycle + 
+            this.tableData[10].evaluationCycle + 
+            this.tableData[11].evaluationCycle +
+            this.tableData[12].evaluationCycle +
+            this.tableData[20].evaluationCycle +
+            this.tableData[21].evaluationCycle +
+            this.tableData[26].evaluationCycle +
+            this.tableData[28].evaluationCycle +
+            this.tableData[29].evaluationCycle +
+            this.tableData[30].evaluationCycle 
+        }
+        if(el.projectImplementNum == 21){
+          this.tableData[index].evaluationCycle = this.tableData[33].evaluationCycle + this.tableData[34].evaluationCycle
         }
       });
     },
@@ -910,7 +943,8 @@ export default {
         };
         realityTime.push(preRealityTime);
 
-        startTime = endTime;
+        // 下一轮开始的日期会多一个工作日
+        startTime = endTime + (1 * 24  * 60 * 60 * 1000);
       });
 
       if (realityTime[0].startTime != 0) {
@@ -1013,6 +1047,9 @@ export default {
     async saveInfoAndExit() {
       let that = this;
       this.saveData.detailTimePreview = this.timeInfoInsert;
+      
+      if(this.tableData[8].evaluationCycle < 3) return alert('现场实施过程阶段天数至少要有三天')
+
       let res = await this.$api.API_ProjectOverviewUpdateDetailTimePreview(
         this.saveData
       );
