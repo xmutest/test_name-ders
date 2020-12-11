@@ -207,6 +207,7 @@
 </template>
 
 <script>
+import log from '@/libs/util.log';
 import { mapState } from "vuex";
 export default {
   data() {
@@ -908,32 +909,47 @@ export default {
         }
 
         // 结束时间刚好在周末
-        let weekendTime = weekendNums * 24 * 60 * 60 * 1000 || 0
-        console.log(`几个节假日?${weekendTime}`)
+        // console.log(`几个节假日?${weekendNums}`)
 
         // 加上周末时间
         let endTime = startTime + res;
 
         let endDay = this.transferDay(endTime)
+
+
+        // endDay = this.transferDay(endTime)
+
+        // console.log(`判断一开始是否为周末${new Date(endTime).getDay()}`)
+
         let endWeekendDay = 0
-        for(let i=0;i<=weekendNums;i++){
-          
-          let thisDay = (endDay + i) % 7
-          
-          if(thisDay == 0 || thisDay == 6){
-            endWeekendDay++
+        if(weekendNums > 0){
+          for(let i=1;i<=weekendNums;i++){
+            let thisDay = (endDay + i) % 7
+            // console.log(`有周末?${endDay + i}`)
+            
+            if(thisDay == 0 || thisDay == 6){
+              // console.log(`进来了${thisDay,i}`)
+              endWeekendDay++
+            }
           }
         }
+        
 
+        // console.log(`补上的日子有${endWeekendDay}`);
+
+        let weekendTime = weekendNums * 24 * 60 * 60 * 1000 || 0
         let endWeekendTime = endWeekendDay * 24 * 60 * 60 * 1000 || 0
 
+        console.log(`endTime${new Date(endTime)},weekendTime${weekendNums},endWeekendTime${endWeekendDay}`)
         endTime = endTime + weekendTime + endWeekendTime
-        
+        endDay = this.transferDay(endTime)
+
         if(endDay == 6){
           endTime = endTime + (2 * 24  * 60 * 60 * 1000)
         }else if(endDay == 0){
           endTime = endTime + (1 * 24  * 60 * 60 * 1000)
         }
+
 
         let transferEndTime = that.transferDate(endTime, 1);
         let transferStartTime = that.transferDate(startTime, 1);
@@ -948,37 +964,42 @@ export default {
       });
 
       if (realityTime[0].startTime != 0) {
+        // let firseDateStart = new Date(realityTime[0].startTime),
+        //     firseDateEnd = new Date(realityTime[0].endTime)
+
+        console.log(this.addZeroOfDate(new Date(realityTime[0].startTime).getMonth() + 1))
+
         this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图1.1所示。其中，各阶段的时间安排如下：
     1、${new Date(realityTime[0].startTime).getFullYear()}年${
-          new Date(realityTime[0].startTime).getMonth() + 1
-        }月${new Date(realityTime[0].startTime).getDate()}日~${new Date(
+          this.addZeroOfDate(new Date(realityTime[0].startTime).getMonth() + 1)
+        }月${this.addZeroOfDate(new Date(realityTime[0].startTime).getDate())}日~${new Date(
           realityTime[0].endTime
         ).getFullYear()}年${
-          new Date(realityTime[0].endTime).getMonth() + 1
-        }月${new Date(realityTime[0].endTime).getDate()}日，测评准备阶段。
+          this.addZeroOfDate(new Date(realityTime[0].endTime).getMonth() + 1)
+        }月${this.addZeroOfDate(new Date(realityTime[0].endTime).getDate())}日，测评准备阶段。
     2、${new Date(realityTime[1].startTime).getFullYear()}年${
-          new Date(realityTime[1].startTime).getMonth() + 1
-        }月${new Date(realityTime[1].startTime).getDate()}日~${new Date(
+          this.addZeroOfDate(new Date(realityTime[1].startTime).getMonth() + 1)
+        }月${this.addZeroOfDate(new Date(realityTime[1].startTime).getDate())}日~${new Date(
           realityTime[1].endTime
         ).getFullYear()}年${
-          new Date(realityTime[1].endTime).getMonth() + 1
-        }月${new Date(realityTime[1].endTime).getDate()}日，方案编制过程。
+          this.addZeroOfDate(new Date(realityTime[1].endTime).getMonth() + 1)
+        }月${this.addZeroOfDate(new Date(realityTime[1].endTime).getDate())}日，方案编制过程。
     3、${new Date(realityTime[2].startTime).getFullYear()}年${
-          new Date(realityTime[2].startTime).getMonth() + 1
-        }月${new Date(realityTime[2].startTime).getDate()}日~${new Date(
+          this.addZeroOfDate(new Date(realityTime[2].startTime).getMonth() + 1)
+        }月${this.addZeroOfDate(new Date(realityTime[2].startTime).getDate())}日~${new Date(
           realityTime[2].endTime
         ).getFullYear()}年${
-          new Date(realityTime[2].endTime).getMonth() + 1
-        }月${new Date(realityTime[2].endTime).getDate()}日，现场实施过程。
+          this.addZeroOfDate(new Date(realityTime[2].endTime).getMonth() + 1)
+        }月${this.addZeroOfDate(new Date(realityTime[2].endTime).getDate())}日，现场实施过程。
     4、${new Date(realityTime[3].startTime).getFullYear()}年${
-          new Date(realityTime[3].startTime).getMonth() + 1
-        }月${new Date(realityTime[3].startTime).getDate()}日~${new Date(
+          this.addZeroOfDate(new Date(realityTime[3].startTime).getMonth() + 1)
+        }月${this.addZeroOfDate(new Date(realityTime[3].startTime).getDate())}日~${new Date(
           realityTime[3].endTime
         ).getFullYear()}年${
-          new Date(realityTime[3].endTime).getMonth() + 1
-        }月${new Date(
+          this.addZeroOfDate(new Date(realityTime[3].endTime).getMonth() + 1)
+        }月${this.addZeroOfDate(new Date(
           realityTime[3].endTime
-        ).getDate()}日，分析与报告编制过程。`;
+        ).getDate())}日，分析与报告编制过程。`;
       } else {
         this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图1.1所示。其中，各阶段的时间安排如下：
     1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。
@@ -1027,6 +1048,13 @@ export default {
           : "DD"
       }日对系统的整改情况进行了复核确认。`;
     },
+    addZeroOfDate(time){
+      let str = time + ''
+      let res = str
+      if(str.length <= 1) res = `0${str}`
+      
+      return res
+    },
     async func_getProjectTimeInfo() {
       let res = await this.$api.API_ProjectOverviewFindDetailTimePreview();
       
@@ -1048,7 +1076,7 @@ export default {
       let that = this;
       this.saveData.detailTimePreview = this.timeInfoInsert;
       
-      if(this.tableData[8].evaluationCycle < 3) return alert('现场实施过程阶段天数至少要有三天')
+      // if(this.tableData[8].evaluationCycle <= 3) return alert('现场实施过程阶段天数至少要有三天')
 
       let res = await this.$api.API_ProjectOverviewUpdateDetailTimePreview(
         this.saveData
