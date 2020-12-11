@@ -630,8 +630,7 @@ export default {
   },
   created() {
     this.getEtlist();
-    this.tableData[0].totalValue = this.tableData[1].evaluationCycle + this.tableData[2].evaluationCycle
-    // console.log(this.tableData[0].totalValue)
+    // this.tableData[0].totalValue = this.tableData[1].evaluationCycle + this.tableData[2].evaluationCycle
   },
   computed: {
     ...mapState("d2admin", {
@@ -644,7 +643,7 @@ export default {
       let ItNumber = 0;
       for (let item of this.tableData) {
         if (item.hasOwnProperty("projectImplementNum")) {
-          if (item.projectImplementNum != 17) {
+          if (item.projectImplementNum != 17 && this.tableHead.indexOf(item.projectImplementNum) == -1) {
             ItNumber += item["evaluationCycle"];
           }
         }
@@ -732,6 +731,11 @@ export default {
     },
     async submitReportTable() {
       let objectList = this.tableData;
+
+      if(this.tableData[8].evaluationCycle < 3) {
+        return alert('现场实施过程阶段天数至少要有三天')
+      }
+      
       let table = [];
       for (let item of objectList) {
         let resT = {};
@@ -1157,6 +1161,9 @@ export default {
 }
 .ql-snow .ql-editor pre.ql-syntax {
   background: #fff;
+}
+.el-table td{
+  text-align:center!important;
 }
 </style>
 
