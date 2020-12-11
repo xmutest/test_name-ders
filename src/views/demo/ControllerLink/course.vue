@@ -694,6 +694,7 @@ export default {
             }
           }
         });
+        this.Itsclik()
         //查询列表
       } else {
         this.$message.error("查询数据，请联系管理员" + res.message);
@@ -748,6 +749,8 @@ export default {
           table.push(resT);
         }
       }
+
+      console.log('保存的数据',table)
 
       this.apiCreupdata(table);
     },
