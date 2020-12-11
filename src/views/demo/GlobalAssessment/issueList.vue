@@ -2,21 +2,13 @@
   <d2-container>
     <div class="mude_is">
       <div class="ts_table">
-        <el-tabs
-          v-model="activeName"
-          type="border-card"
-          @tab-click="handleClick"
-        >
+        <el-tabs v-model="activeName" type="border-card">
           <el-tab-pane label="技术部分" name="technology">
             <div class="daochutechnology">
-              <el-button
-                type="primary"
-                @click="daochutechnology('technology', 'excol')"
+              <el-button type="primary" @click="daochutechnology(1, 'excol')"
                 >导出问题单（excol）</el-button
               >
-              <el-button
-                type="primary"
-                @click="daochutechnology('technology', 'excol')"
+              <el-button type="primary" @click="daochutechnology(1, 'word')"
                 >导出问题单（word）</el-button
               >
             </div>
@@ -41,16 +33,13 @@
                     <td colspan="10">{{ item.name }}</td>
                   </tr> -->
 
-                  <tbody
-                    v-for="(item1, index1) in item.content"
-                    :key="Math.random() + index1"
-                  >
+                  <tbody v-for="item1 in item.content" :key="item1.id">
                     <!-- <tr>
                       <td :rowspan="item.content.length * ToListm * 10">
                         {{ ins }}
                       </td>
                     </tr> -->
-                    <tr >
+                    <tr>
                       <td :rowspan="item.content.length * ToListm * 10">
                         {{ item.name }}
                       </td>
@@ -63,7 +52,7 @@
                     <template v-for="item2 in item1.assetsList">
                       <tr
                         v-for="(item3, index3) in item2.spotList"
-                        :key="Math.random() + index3"
+                        :key="item3.id"
                       >
                         <td v-if="!index3" :rowspan="item2.spotList.length">
                           {{ item2.spotName }}
@@ -127,11 +116,7 @@
                         </td>
                         <!-- 整改建议 -->
                         <td>
-                          <el-popover
-                            title="整改建议"
-                            trigger="click"
-                            placement="top"
-                          >
+                          <el-popover trigger="click" placement="top">
                             <div>
                               <el-input
                                 type="textarea"
@@ -155,7 +140,7 @@
                               v-else
                               class="name-wrapper"
                             >
-                              <span style="opacity: 0">点击填写</span>
+                              <span style="opacity: 0">点击填写备注</span>
                             </div>
                           </el-popover>
                         </td>
@@ -186,18 +171,169 @@
           </el-tab-pane>
           <el-tab-pane label="管理部分" name="management">
             <div class="daochutechnology">
-              <el-button
-                type="primary"
-                @click="daochutechnology('management', 'excol')"
+              <el-button type="primary" @click="daochutechnology(6, 'excol')"
                 >导出问题单（excol）</el-button
               >
-              <el-button
-                type="primary"
-                @click="daochutechnology('management', 'excol')"
+              <el-button type="primary" @click="daochutechnology(6, 'word')"
                 >导出问题单（word）</el-button
               >
             </div>
-            <div v-if="activeName == 'management'">时5时时</div>
+            <div v-if="activeName == 'management'">
+              <table id="partnerTable">
+                <thead>
+                  <tr>
+                    <!-- <th style="width: 50px">序号</th> -->
+                    <th>层面</th>
+                    <th>测评对象</th>
+                    <th>指标名称</th>
+                    <th>测评项</th>
+                    <th>现场记录</th>
+                    <th style="width: 120px">符合情况</th>
+                    <th>整改建议</th>
+                    <th style="width: 150px">风险</th>
+                    <th style="width: 50px">权重</th>
+                  </tr>
+                </thead>
+                <template tbody v-for="item in managementList">
+                  <!-- <tr class="List_b" :key="ins">
+                    <td colspan="10">{{ item.name }}</td>
+                  </tr> -->
+
+                  <tbody v-for="item1 in item.content" :key="item1.id">
+                    <!-- <tr>
+                      <td :rowspan="item.content.length * ToListm * 10">
+                        {{ ins }}
+                      </td>
+                    </tr> -->
+                    <tr>
+                      <td :rowspan="item.content.length * ToListm * 10">
+                        {{ item.name }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td :rowspan="item1.assetsList.length * ToListm">
+                        {{ item1.assetsName }}
+                      </td>
+                    </tr>
+                    <template v-for="item2 in item1.assetsList">
+                      <tr
+                        v-for="(item3, index3) in item2.spotList"
+                        :key="item3.id"
+                      >
+                        <td v-if="!index3" :rowspan="item2.spotList.length">
+                          {{ item2.spotName }}
+                        </td>
+                        <!-- 测评项 -->
+                        <td>
+                          <el-popover
+                            title="测评项"
+                            trigger="click"
+                            placement="top"
+                          >
+                            <div>
+                              <p>
+                                {{ item3.controlEntries }}
+                              </p>
+                            </div>
+                            <div slot="reference" class="name-wrapper tsList">
+                              {{
+                                item3.controlEntries == null
+                                  ? item3.controlEntries
+                                  : item3.controlEntries.substr(0, 35)
+                              }}
+                            </div>
+                          </el-popover>
+                        </td>
+                        <!-- 现场记录 -->
+                        <td>
+                          <el-popover
+                            title="现场记录"
+                            trigger="click"
+                            placement="top"
+                          >
+                            <div>
+                              <p>
+                                {{ item3.recordResults }}
+                              </p>
+                            </div>
+                            <div slot="reference" class="name-wrapper tsList">
+                              {{
+                                item3.recordResults == null
+                                  ? item3.recordResults
+                                  : item3.recordResults.substr(0, 35)
+                              }}
+                            </div>
+                          </el-popover>
+                        </td>
+                        <!-- 符合情况 -->
+                        <td>
+                          <span v-show="item3.accordSituation === 0"
+                            >没有选择</span
+                          >
+                          <span v-show="item3.accordSituation === 2"
+                            >部分符合</span
+                          >
+                          <span v-show="item3.accordSituation === 3"
+                            >不符合</span
+                          >
+                          <span v-show="item3.accordSituation === 4"
+                            >不适用</span
+                          >
+                        </td>
+                        <!-- 整改建议 -->
+                        <td>
+                          <el-popover trigger="click" placement="top">
+                            <div>
+                              <el-input
+                                type="textarea"
+                                :autosize="{ minRows: 4, maxRows: 8 }"
+                                placeholder="请输入内容"
+                                v-model="item3.remarks"
+                                @blur="Totisadd(item3)"
+                              >
+                              </el-input>
+                            </div>
+                            <div
+                              slot="reference"
+                              v-if="item3.remarks"
+                              class="name-wrapper"
+                            >
+                              {{ item3.remarks.substr(0, 35) }}
+                            </div>
+                            <div
+                              style="min-height: 100px"
+                              slot="reference"
+                              v-else
+                              class="name-wrapper"
+                            >
+                              <span style="opacity: 0">点击填写备注</span>
+                            </div>
+                          </el-popover>
+                        </td>
+                        <!-- 风险 -->
+                        <td>
+                          <el-select
+                            v-model="item3.riskGrade"
+                            placeholder="请选择"
+                            @change="Totisadd(item3)"
+                          >
+                            <el-option
+                              v-for="item in riskGradeList"
+                              :key="item.id"
+                              :label="item.value"
+                              :value="item.id"
+                            >
+                            </el-option>
+                          </el-select>
+                        </td>
+                        <!-- 权重 -->
+                        <td>{{ item3.weight }}</td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </template>
+              </table>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -207,6 +343,7 @@
 
 <script>
 import { cloneDeep } from "lodash";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -225,10 +362,12 @@ export default {
   created() {
     this.getdataList();
   },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
+  },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
     // 获取测评问题清单列表
     async getdataList() {
       let res = await this.$api.SYS_reviseManifest_InputDoc();
@@ -250,7 +389,55 @@ export default {
       }
     },
     // 导出问题单
-    daochutechnology(item, type) {},
+    async daochutechnology(item, type) {
+      let url = "";
+      let reportName = "";
+
+      if (item === 1) {
+        url = `${process.env.VUE_APP_API}/output/reviseManifest`;
+        if (type == "excol") {
+          reportName = "技术部分问题清单列表.xlsx";
+        } else if (type == "word") {
+          reportName = "技术部分问题清单列表.docx";
+        }
+      } else if (item === 6) {
+        url = `${process.env.VUE_APP_API}/word/reviseManifest`;
+        if (type == "excol") {
+          reportName = "管理部分问题清单列表.xlsx";
+        } else if (type == "word") {
+          reportName = "管理部分问题清单列表.docx";
+        }
+      }
+      let data = {
+        url: url,
+        data: { type: item, projectId: this.xmu_info.projectId },
+      };
+      let res = await this.$api.SYS_reportWord_DownLoadDoc(data);
+      if (res.code == 500) {
+        alert(res.message);
+      } else {
+        let blob = new Blob([res], {
+          type: "application/msword;charset=utf-8",
+        });
+
+        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        if (window.navigator && window.navigator.msSaveBlob) {
+          //IE浏览器、微软浏览器
+          /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+              IE可不重命名，以防万一，所以都写上比较好 */
+          window.navigator.msSaveBlob(blob, val.fileName);
+        } else {
+          //其他浏览器
+          let link = document.createElement("a"); // 创建a标签
+          link.style.display = "none";
+          let objectUrl = URL.createObjectURL(blob);
+          link.download = reportName;
+          link.href = objectUrl;
+          link.click();
+          URL.revokeObjectURL(objectUrl);
+        }
+      }
+    },
   },
 };
 </script>

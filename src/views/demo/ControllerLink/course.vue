@@ -731,8 +731,7 @@ export default {
     },
     async submitReportTable() {
       let objectList = this.tableData;
-
-      if(this.tableData[8].evaluationCycle < 3) {
+      if(this.tableData[7].evaluationCycle < 3) {
         return alert('现场实施过程阶段天数至少要有三天')
       }
       

@@ -141,7 +141,7 @@ export default ({
   },
   /**
    * @description 模板下载
-   * @param {Object} data 
+   * @param {Object} data  
    */
   SYS_reportWord_DownLoadDoc(data = {}) {
     // 模拟数据
@@ -149,7 +149,7 @@ export default ({
     return requestword({
       url: data.url,
       method: 'get',
-      data,
+      params:data.data,
       responseType: 'blob',
     })
   },

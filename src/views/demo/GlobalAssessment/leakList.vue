@@ -21,7 +21,7 @@
                         v-for="item in scanningTool"
                         :key="item.id"
                         :label="item.value"
-                        :value="item.id"
+                        :value="item.value"
                       >
                       </el-option>
                     </el-select>
@@ -43,10 +43,10 @@
                     </el-select>
                   </div>
                 </div>
-
+ 
                 <div class="scanningupload">
                   <DaoruLou
-                    :sonValue="{ toolName, api: pointtoolName }"
+                    :sonValue="{ type:1,toolName, api: pointtoolName }"
                     @toFatherData="toFatherData"
                   ></DaoruLou>
                 </div>
@@ -64,7 +64,7 @@
                         v-for="item in systemScanTool"
                         :key="item.id"
                         :label="item.value"
-                        :value="item.id"
+                        :value="item.value"
                       >
                       </el-option>
                     </el-select>
@@ -89,6 +89,7 @@
                 <div class="scanningupload">
                   <DaoruLou
                     :sonValue="{
+                      type:2,
                       toolName: ScantoolName,
                       api: pointScantoolName,
                     }"
@@ -374,7 +375,7 @@ export default {
       ],
       // 接入点
       pointtoolName: "JA",
-      toolName: 1,
+      toolName: '绿盟',
       //   应用系统扫描工具
       systemScanTool: [
         { id: 1, value: "绿盟" },
@@ -388,7 +389,7 @@ export default {
       ],
       // 接入点
       pointScantoolName: "JA",
-      ScantoolName: 2,
+      ScantoolName: '绿盟',
       dialogVisible: false,
       vulnerability: {
         hostOrUrl: undefined,

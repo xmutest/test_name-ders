@@ -168,4 +168,15 @@ async SYS_reviseMupdate_InputDoc(data = {}) {
     data
   })
 },
+// 导出问题清单列表excol
+async SYS_reviseMupdareviseManifest(data = {}) {
+  // 模拟数据
+  data.projectId = await this.get_info();
+  // 接口请求
+  return request({
+    url: '/word/reviseManifest',
+    method: 'get',
+    params:data
+  })
+},
 })

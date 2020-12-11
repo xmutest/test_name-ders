@@ -101,7 +101,8 @@ export default {
       let thiz = this;
       thiz.ifsTo = false;
       let formData = new FormData();
-      formData.append("type", this.sonValue.toolName); // 额外参数
+      formData.append("tool", this.sonValue.toolName);
+      formData.append("type", this.sonValue.type); // 额外参数
       formData.append("point", this.sonValue.api); // 额外参数
       formData.append("files", param.file);
       let loading = thiz.$loading({
