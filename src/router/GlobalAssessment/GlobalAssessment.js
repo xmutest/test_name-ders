@@ -27,6 +27,15 @@ export default {
       }
     },
     {
+      path: 'issuelist',
+      name: `${pre}issuelist`,
+      component: _import('demo/GlobalAssessment/issueList'),
+      meta: {
+        ...meta,
+        title: '测评问题清单'
+      }
+    },
+    {
       path: 'aqkzjaqcp',
       name: `${pre}aqkzjaqcp`,
       component: _import('demo/GlobalAssessment/aqkzjaqcp'),

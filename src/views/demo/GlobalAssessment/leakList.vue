@@ -107,7 +107,7 @@
               >
             </div>
             <div>
-              <el-table :data="dataList" style="width: 100%">
+              <el-table :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }" :data="dataList" style="width: 100%">
                 <el-table-column label="漏洞类型" width="100">
                   <template slot-scope="scope">
                     <span
@@ -122,7 +122,7 @@
                     >
                   </template>
                 </el-table-column>
-                <el-table-column label="漏洞名称" width="150">
+                <el-table-column label="漏洞名称" >
                   <template slot-scope="scope">
                     <span style="margin-left: 10px">{{
                       scope.row.vulnerabilityName
@@ -136,13 +136,7 @@
                     }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="漏洞数量" width="80">
-                  <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{
-                      scope.row.vulnerabilityNum
-                    }}</span>
-                  </template>
-                </el-table-column>
+               
                 <el-table-column label="主机IP/URL" width="180">
                   <template slot-scope="scope">
                     <span style="margin-left: 10px">{{
@@ -150,7 +144,7 @@
                     }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="漏洞危险等级" width="100">
+                <el-table-column label="等级" width="100">
                   <template slot-scope="scope">
                     <span style="margin-left: 10px">{{
                       scope.row.riskLevel
@@ -162,20 +156,7 @@
                     <span style="margin-left: 10px">{{ scope.row.point }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="漏洞修复建议">
-                  <template slot-scope="scope">
-                    <el-popover trigger="click" placement="top">
-                      <p>{{ scope.row.repairSuggestions }}</p>
-                      <div
-                        slot="reference"
-                        v-show="scope.row.repairSuggestions"
-                        class="name-wrapper"
-                      >
-                        {{ scope.row.repairSuggestions.substr(0, 135) }}
-                      </div>
-                    </el-popover>
-                  </template>
-                </el-table-column>
+               
 
                 <el-table-column label="操作" width="180">
                   <template slot-scope="scope">

@@ -52,13 +52,16 @@
                     </div>
                   </el-popover>
                 </td>
-                <td @click="shishiClick(item3, item1.sceneCheckName)">
+                <td
+                  class="leftLs"
+                  @click="shishiClick(item3, item1.sceneCheckName)"
+                >
                   <div slot="reference" class="name-wrapper">
                     <a class="text_click">
                       {{
                         item3.controlEntries == null
                           ? item3.controlEntries
-                          : item3.controlEntries.substr(0, 50)
+                          : item3.controlEntries.substr(0, 80)
                       }}
                     </a>
                   </div>
@@ -209,15 +212,25 @@
         <div class="relevance">
           <el-tabs style="height: 200px" type="border-card">
             <el-tab-pane label="风险知识库">
-              <div class="xuna">
+              <div class="xuna xunaListbu">
                 <el-radio
                   @change="Listdatamis(item)"
                   v-for="(item, index) in relevanceList"
                   :key="index"
                   v-model="Ts_radio"
                   :label="index"
-                  >{{ item.riskName }}</el-radio
                 >
+                  <span v-show="item.userId === 0">{{ item.riskName }}</span>
+                  <span v-show="item.userId !== 0"
+                    ><i class="el-icon-s-flag"></i>{{ item.riskName
+                    }}<el-button
+                      type="danger"
+                      icon="el-icon-delete"
+                      @click="deletefenis(item)"
+                      circle
+                    ></el-button
+                  ></span>
+                </el-radio>
               </div>
             </el-tab-pane>
             <el-tab-pane label="高风险判例" v-if="fenxianList">
@@ -327,7 +340,7 @@
         </div>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="Organization()" v-throttle
-            >纳入风险知识库</el-button
+            >纳入我的知识库</el-button
           >
           <el-button type="primary" @click="Tolist()" v-throttle
             >确 定</el-button
@@ -343,6 +356,8 @@
 
 <script>
 import { cloneDeep } from "lodash";
+import { mapState } from "vuex";
+import log from "@/libs/util.log";
 export default {
   data() {
     return {
@@ -392,25 +407,69 @@ export default {
       lust: {},
       // 判断名称
       itemName: "",
+      // 关联id
+      safetyControlRelationId: "",
     };
   },
   created() {
     this.getDataList();
   },
+  computed: {
+    ...mapState("d2admin", {
+      info: (state) => state.user.info,
+    }),
+  },
   methods: {
     // 纳入风险知识库
-    Organization() {
-      let listdats = {};
-      listdats.threatId = this.relevanceWeiList;
-      listdats.hazardAnalysis = this.amendAnalysis.hazardAnalysis;
-      listdats.originalRisk = this.amendAnalysis.originalRisk;
-      listdats.problemAnalysis = this.amendAnalysis.problemAnalysis;
-      listdats.problemDescription = this.amendAnalysis.problemDescription;
-      listdats.rectificationSuggestions=this.amendAnalysis.rectificationSuggestions;
-      console.log(listdats);
+    async Organization() {
+      let riskKnowledge = {};
+      riskKnowledge.threatId = this.relevanceWeiList;
+      let ls = "";
+      this.relevanceWeiList.forEach((item) => {
+        ls += this.DataListPou[item - 1].threatClassificationName + ",";
+      });
+      riskKnowledge.relationThreaten = ls.slice(0, ls.length - 1);
+      riskKnowledge.hazardAnalysis = this.amendAnalysis.hazardAnalysis;
+      riskKnowledge.originalRisk = this.amendAnalysis.originalRisk;
+      riskKnowledge.problemAnalysis = this.amendAnalysis.problemAnalysis;
+      riskKnowledge.problemDescription = this.amendAnalysis.problemDescription;
+      riskKnowledge.rectificationSuggestions = this.amendAnalysis.rectificationSuggestions;
+      if (
+        riskKnowledge.originalRisk != "" &&
+        riskKnowledge.originalRisk != "undefined"
+      ) {
+        if (riskKnowledge.originalRisk == "高") {
+          riskKnowledge.riskGrade = 1;
+        } else if (riskKnowledge.originalRisk == "中") {
+          riskKnowledge.riskGrade = 2;
+        } else if (riskKnowledge.originalRisk == "低") {
+          riskKnowledge.riskGrade = 3;
+        }
+      } else {
+        riskKnowledge.riskGrade = this.amendAnalysis.riskGrade;
+      }
+
+      riskKnowledge.userId = this.info.user_info.userId;
+      if (
+        this.safetyControlRelationId !== "" &&
+        this.safetyControlRelationId !== undefined
+      ) {
+        riskKnowledge.safetyControlRelationId = this.safetyControlRelationId;
+      } else {
+        return this.$message.error("获取关联id出错，请重新打开");
+      }
+      console.log(this.safetyControlRelationId);
+      let res = await this.$api.API_saveRiskKnowledge(riskKnowledge);
+      if (res.code === 20000) {
+        this.$message.success("纳入风险知识库成功");
+        this.getDaPuList(riskKnowledge.threatId);
+      } else {
+        this.$message.error("纳入风险知识库出错");
+      }
     },
-    Listdatamis(item) {
-      this.getDaPuList(item.threatId);
+    Listdatamis(items) {
+      this.getDaPuList(items.threatId);
+      let item = cloneDeep(items);
       let ls = [
         {
           id: 1,
@@ -438,7 +497,9 @@ export default {
         }
       });
     },
-    shishiClick(item3, itemName) {
+    shishiClick(item3s, itemName) {
+      console.log(item3s);
+      let item3 = cloneDeep(item3s);
       if (itemName != "") {
         this.itemName = itemName;
       }
@@ -453,7 +514,7 @@ export default {
       this.beforeModificationSeverity = item3.beforeModificationSeverity;
       this.api_data.amendId = item3.amendId;
       this.api_data.safetyControlId = item3.safetyControlId;
-      this.amendAnalysisVO = cloneDeep(item3);
+      this.amendAnalysisVO = item3;
       //
       this.dialogVisible = true;
       this.getDaPuList();
@@ -478,9 +539,14 @@ export default {
       }
     },
     async getDaPuList(its) {
+      this.amendAnalysisVO.userId = this.info.user_info.userId;
+      // this.amendAnalysisVO.safetyControlRelationId = this.safetyControlRelationId;
       let res = await this.$api.API_RiskFindRiskKnowledge(this.amendAnalysisVO);
       if (res.code == 20000) {
         this.relevanceList = res.data[0];
+        if (res.data[0].length !== 0) {
+          this.safetyControlRelationId = res.data[0][0].safetyControlRelationId;
+        }
         if (its) {
           this.relevanceWeiList = its;
         } else {
@@ -536,6 +602,31 @@ export default {
         })
         .catch((_) => {});
     },
+    deletefenis(item) {
+      this.$confirm("确定删除此记录", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.API_delRiskKnowledge({
+            riskKnowledgeId: item.id,
+          });
+          if (res.code === 20000) {
+            this.$message.success("删除成功！！");
+            this.getDaPuList();
+            //查询列表
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
   },
 };
 </script>
@@ -569,6 +660,10 @@ export default {
     color: #666;
     font-size: 13px;
   }
+}
+.leftLs {
+  text-align: left;
+  padding: 2px;
 }
 .relevanceWeiList {
   height: 300px;
@@ -683,6 +778,17 @@ export default {
 .tsList {
   max-width: 120px;
   overflow: hidden;
+}
+.xunaListbu {
+  ::v-deep .el-button {
+    border-radius: 50%;
+    padding: 2px;
+    margin-left: 15px;
+  }
+  .el-icon-s-flag {
+    color: red;
+    margin-right: 5px;
+  }
 }
 </style>
 

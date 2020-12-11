@@ -142,4 +142,30 @@ export default ({
       data
     })
   },
+  //  获取测评问题清单列表
+  // 
+//
+  async SYS_reviseManifest_InputDoc(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/reviseManifest/findList',
+      method: 'get',
+      params: data
+    })
+  },
+    //  修改测评问题清单列表
+  // 
+//
+async SYS_reviseMupdate_InputDoc(data = {}) {
+  // 模拟数据
+  data.projectId = await this.get_info();
+  // 接口请求
+  return request({
+    url: '/reviseManifest/update',
+    method: 'post',
+    data
+  })
+},
 })

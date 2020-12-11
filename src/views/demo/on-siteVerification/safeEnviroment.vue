@@ -66,7 +66,7 @@
             :name="Its.name + Its.id"
             :key="Its.id"
             :label="Its.name"
-          >
+          > 
             <div v-if="activeNameTabs == Its.name + Its.id">
               <table id="partnerTable">
                 <thead>

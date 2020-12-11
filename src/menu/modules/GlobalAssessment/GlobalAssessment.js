@@ -10,6 +10,11 @@ export default {
       icon: '  iconfont icon-jieguohuizong'
     },
     {
+      path: `${pre}issuelist`,
+      title: '测评问题清单',
+      icon: '  iconfont icon-jieguohuizong'
+    },
+    {
       path: `${pre}aqkzjaqcp`,
       title: '安全控制间安全测评',
       icon: '  iconfont icon-ceping'

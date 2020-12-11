@@ -90,7 +90,6 @@ export default ({
    */
   async API_RiskFindRiskKnowledge(data = {}) {
     data.projectId = await this.get_info();
-    console.log(data);
     // 接口请求
     return request({
       url: '/risk/findRiskKnowledge',
@@ -162,6 +161,34 @@ export default ({
       url: '/risk/findKnowledge',
       method: 'post',
       data
+    })
+  },
+  /**
+   * @description 纳入自定义风险知识库
+   * POST 
+   * @param {Object} data 携带的信息
+   */
+  async API_saveRiskKnowledge(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/risk/saveRiskKnowledge',
+      method: 'post',
+      data
+    })
+  },
+  /**
+   * @description 删除风险知识库
+   * POST 
+   * @param {Object} data 携带的信息
+   */
+  async API_delRiskKnowledge(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/risk/delRiskKnowledge',
+      method: 'post',
+      params:data
     })
   },
 })
