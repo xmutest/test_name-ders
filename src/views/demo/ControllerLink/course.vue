@@ -901,6 +901,8 @@ export default {
           startTime = startTime + (1 * 24  * 60 * 60 * 1000)
         }
 
+        startDay = this.transferDay(startTime)
+
         let useDay = res / (1000 * 60 * 60 * 24)
 
         let weekendNums = 0 
