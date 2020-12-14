@@ -469,7 +469,7 @@ export default {
               sortNum: 1,
               importantDegree: 5,
               equipmentType: 2,
-              isEvaluationObj: true,
+              isEvaluationObj: false,
               show: false,
             },
           ];
@@ -560,7 +560,7 @@ export default {
         sortNum,
         importantDegree: 5,
         equipmentType: 2,
-        isEvaluationObj: true,
+        isEvaluationObj: false,
         show: false,
       };
       itss.splice(item + 1, 0, list);

@@ -341,8 +341,10 @@
           </el-form-item>
           <div class="dia-footer">
             <el-form-item>
-              <el-button type="primary" @click="submitForm('xmform', ua_cre)"
-              v-throttle
+              <el-button
+                type="primary"
+                @click="submitForm('xmform', ua_cre)"
+                v-throttle
                 >保存</el-button
               >
               <!-- <el-button type="danger" v-if="ua_cre != 1 " @click="resetForm('xmform')"
@@ -479,6 +481,17 @@ export default {
   methods: {
     // 搜索
     searchBi() {
+      if (
+        this.projectModel.projectName !== "" &&
+        this.projectModel.projectName !== undefined
+      ) {
+        this.projectModel.page = 1;
+        this.projectModel.pageSize = this.total;
+      } else {
+        this.projectModel.page = 1;
+        this.projectModel.pageSize = 10;
+      }
+
       this.ProjectQueryList();
     },
     // 分页

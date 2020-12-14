@@ -155,6 +155,7 @@
                     <el-select
                       @change="afterAmendSeverityLis(item3)"
                       v-model="item3.afterAmendRisk"
+                      clearable
                       placeholder="请选择"
                     >
                       <el-option

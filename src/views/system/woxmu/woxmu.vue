@@ -479,6 +479,17 @@ export default {
   methods: {
     // 搜索
     searchBi() {
+      if (
+        this.projectModel.projectName !== "" &&
+        this.projectModel.projectName !== undefined
+      ) {
+        this.projectModel.page = 1;
+        this.projectModel.pageSize = this.total;
+      } else {
+        this.projectModel.page = 1;
+        this.projectModel.pageSize = 10;
+      }
+
       this.ProjectQueryList();
     },
     // 分页

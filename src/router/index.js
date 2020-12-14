@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { MessageBox, Message } from "element-ui";  // 引入
+import {
+  MessageBox,
+  Message
+} from "element-ui"; // 引入
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -32,6 +35,7 @@ const router = new VueRouter({
  * 路由拦截
  * 权限验证
  */
+
 router.beforeEach(async (to, from, next) => {
   // 确认已经加载多标签页数据 https://github.com/d2-projects/d2-admin/issues/201
   await store.dispatch('d2admin/page/isLoaded')
@@ -43,6 +47,20 @@ router.beforeEach(async (to, from, next) => {
   store.commit('d2admin/search/set', false)
   // 验证当前路由所有的匹配中是否需要有登录验证的
   if (to.matched.some(r => r.meta.auth)) {
+    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+      alert('当前系统不支持ie浏览器！请更换！');
+      next({
+        name: 'login',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+      // https://github.com/d2-projects/d2-admin/issues/138
+      NProgress.done();
+      window.navigate('https://www.google.cn/chrome/');
+    } else {
+      console.log("不是IE浏览器");
+    }
     // 这里暂时将cookie里是否存有token作为验证是否登录的条件
     // 请根据自身业务需要修改
     const token = util.cookies.get('token')

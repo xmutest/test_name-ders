@@ -409,6 +409,7 @@ export default {
       itemName: "",
       // 关联id
       safetyControlRelationId: "",
+      beforeDescription: "",
     };
   },
   created() {
@@ -498,13 +499,13 @@ export default {
       });
     },
     shishiClick(item3s, itemName) {
-      console.log(item3s);
       let item3 = cloneDeep(item3s);
       if (itemName != "") {
         this.itemName = itemName;
       }
       this.tsAmlist = item3;
       this.amendAnalysis = item3;
+      this.beforeDescription = item3.problemDescription;
       this.lust = {
         server: item3.server,
         software: item3.software,
@@ -521,17 +522,18 @@ export default {
       this.getDataListPou();
     },
     async Tolist() {
+      this.dialogVisible = false;
       // relationThreaten
       let ls = "";
       this.relevanceWeiList.forEach((item) => {
         ls += this.DataListPou[item - 1].threatClassificationName + ",";
       });
+      this.amendAnalysis.beforeDescription = this.beforeDescription;
       this.amendAnalysis.relationThreaten = ls.slice(0, ls.length - 1);
       this.amendAnalysis.threatId = this.relevanceWeiList;
       Object.assign(this.amendAnalysis, this.lust);
       let res = await this.$api.API_RiskUpdateAmendAnalysis(this.amendAnalysis);
-      if (res.code == 20000) {
-        this.dialogVisible = false;
+      if (res.code == 20000) {    
         this.getDataList();
         this.Ts_radio = "";
       } else {
@@ -593,6 +595,30 @@ export default {
     },
     // 设置关联威胁
     relevanceMenace() {
+      let Listda = "";
+      let DataList = cloneDeep(this.DataListPou);
+      let WeiList = cloneDeep(this.relevanceWeiList);
+      DataList.forEach((item) => {
+        WeiList.forEach((its) => {
+          if (item.id === its) {
+            if (item.threatGrade == "高") {
+              Listda = "高";
+              this.amendAnalysis.riskGrade = 1;
+            } else if (item.threatGrade == "中") {
+              if (Listda != "高") {
+                Listda = "中";
+                this.amendAnalysis.riskGrade = 2;
+              }
+            } else if (item.threatGrade == "低") {
+              if (Listda != "高" && Listda != "中") {
+                Listda = "低";
+                this.amendAnalysis.riskGrade = 3;
+              }
+            }
+          }
+        });
+      });
+      this.amendAnalysis.originalRisk = Listda;
       this.innerVisible = false;
     },
     handleClose(done) {

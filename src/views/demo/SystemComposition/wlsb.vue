@@ -468,7 +468,7 @@ export default {
               sortNum: 1,
               importantDegree: 5,
               equipmentType: 1,
-              isEvaluationObj: true,
+              isEvaluationObj: false,
               show: false,
             },
           ];
@@ -559,7 +559,7 @@ res = await this.$api.API_EquipmentUpdateEquipment(item);
         sortNum,
         importantDegree: 5,
         equipmentType: 1,
-        isEvaluationObj: true,
+        isEvaluationObj: false,
         show: false,
       };
       itss.splice(item + 1, 0, list);
