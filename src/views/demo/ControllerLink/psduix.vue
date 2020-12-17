@@ -77,12 +77,14 @@ export default {
   },
   created() {
     this.getEtlist();
-    
   },
   computed: {
     ...mapState("d2admin", {
       xmu_info: (state) => state.xmu.xmu_info,
     }),
+  },
+  destroyed: function () {
+    this.submitReport(1);
   },
   methods: {
     // 获取评测工具
@@ -132,7 +134,7 @@ export default {
         this.$message.error(List.message + "评测依据选项出差，请联系管理员");
       }
     },
-    async submitReport() {
+    async submitReport(it) {
       // let tolist = this.$refs.tree.getCheckedKeys().filter((item) => {
       //   if (item != "undefined") {
       //     return item;
@@ -147,8 +149,11 @@ export default {
       // this.fromdata.tools = isT;
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
-        this.$message.success("修改成功！！");
-        this.getEtlist();
+        if (it !== 1) {
+          this.$message.success("修改成功！！");
+          this.getEtlist();
+        }
+
         //查询列表
       } else {
         this.$message.error("错误，请联系管理员" + res.message);

@@ -159,7 +159,6 @@ export default ({
   // 
 //
 async SYS_reviseMupdate_InputDoc(data = {}) {
-  // 模拟数据
   data.projectId = await this.get_info();
   // 接口请求
   return request({
@@ -177,6 +176,30 @@ async SYS_reviseMupdareviseManifest(data = {}) {
     url: '/word/reviseManifest',
     method: 'get',
     params:data
+  })
+},
+  //  获取主机扫描统计
+//
+async SYSparsingHtmlFindHost(data = {}) {
+  // 模拟数据
+  data.projectId = await this.get_info();
+  // 接口请求
+  return request({
+    url: '/parsingHtml/findHost',
+    method: 'get',
+    params: data
+  })
+},
+//  获取应用扫描统计
+//
+async SYSParsingHtmlFindApp(data = {}) {
+  // 模拟数据
+  data.projectId = await this.get_info();
+  // 接口请求
+  return request({
+    url: '/parsingHtml/findApp',
+    method: 'get',
+    params: data
   })
 },
 })

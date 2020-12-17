@@ -6,10 +6,10 @@
           <el-tab-pane label="技术部分" name="technology">
             <div class="daochutechnology">
               <el-button type="primary" @click="daochutechnology(1, 'excol')"
-                >导出问题单（excol）</el-button
+                >导出问题单（Excel）</el-button
               >
               <el-button type="primary" @click="daochutechnology(1, 'word')"
-                >导出问题单（word）</el-button
+                >导出问题单（Word）</el-button
               >
             </div>
             <div v-if="activeName == 'technology'">
@@ -172,10 +172,10 @@
           <el-tab-pane label="管理部分" name="management">
             <div class="daochutechnology">
               <el-button type="primary" @click="daochutechnology(6, 'excol')"
-                >导出问题单（excol）</el-button
+                >导出问题单（Excel）</el-button
               >
               <el-button type="primary" @click="daochutechnology(6, 'word')"
-                >导出问题单（word）</el-button
+                >导出问题单（Word）</el-button
               >
             </div>
             <div v-if="activeName == 'management'">
@@ -394,18 +394,20 @@ export default {
       let reportName = "";
 
       if (item === 1) {
-        url = `${process.env.VUE_APP_API}/output/reviseManifest`;
         if (type == "excol") {
           reportName = "技术部分问题清单列表.xlsx";
+          url = `${process.env.VUE_APP_API}/output/reviseManifest`;
         } else if (type == "word") {
           reportName = "技术部分问题清单列表.docx";
+          url = `${process.env.VUE_APP_API}/word/reviseManifest`;
         }
       } else if (item === 6) {
-        url = `${process.env.VUE_APP_API}/word/reviseManifest`;
         if (type == "excol") {
           reportName = "管理部分问题清单列表.xlsx";
+          url = `${process.env.VUE_APP_API}/output/reviseManifest`;
         } else if (type == "word") {
           reportName = "管理部分问题清单列表.docx";
+          url = `${process.env.VUE_APP_API}/word/reviseManifest`;
         }
       }
       let data = {
@@ -417,7 +419,8 @@ export default {
         alert(res.message);
       } else {
         let blob = new Blob([res], {
-          type: "application/msword;charset=utf-8",
+          type:
+            "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
         });
 
         //浏览器兼容，Google和火狐支持a标签的download，IE不支持

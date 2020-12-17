@@ -214,7 +214,7 @@ export default {
           operatingSystem: "",
           terminalTypePurpose: "",
           remarks: "",
-          equipmentNum: 5,
+          equipmentNum: 1,
           importantDegree: 5,
           isEvaluationObj: false,
           sortNum: 1,
@@ -261,7 +261,7 @@ export default {
       this.timeout = setTimeout(() => {
         // console.log(item.computerRoomName);
         this.schujiaodian(item);
-      }, 1000);
+      }, 500);
       // console.log(item.computerRoomName);
     },
     // 分页
@@ -304,7 +304,7 @@ export default {
               operatingSystem: "",
               terminalTypePurpose: "",
               remarks: "",
-              equipmentNum: 5,
+              equipmentNum: 1,
               importantDegree: 5,
               isEvaluationObj: false,
               sortNum: 1,
@@ -377,7 +377,7 @@ export default {
         operatingSystem: "",
         terminalTypePurpose: "",
         remarks: "",
-        equipmentNum: 5,
+        equipmentNum: 1,
         importantDegree: 5,
         isEvaluationObj: false,
         sortNum,

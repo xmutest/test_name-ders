@@ -62,7 +62,7 @@ export default ({
     return request({
       url: '/project/updateOverallEvaluation',
       method: 'post',
-      params:data
+      data
     })
   },
   /**
@@ -90,6 +90,19 @@ export default ({
      method: 'get',
      params:data
    })
+  },
+  /**
+   * @description 查询 风险总数统计
+   * @param {Object} data 携带的信息
+   */
+  async API_CalculateriskTotalNum(data = {}) {
+    // 接口请求
+    data.projectId = await this.get_info();
+    return request({
+      url: '/calculateFraction/riskTotalNum',
+      method: 'get',
+      params:data
+    })
   },
 })
   

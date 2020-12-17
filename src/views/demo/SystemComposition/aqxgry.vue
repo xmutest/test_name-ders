@@ -156,7 +156,7 @@ export default {
       this.timeout = setTimeout(() => {
         // console.log(item.computerRoomName);
         this.schujiaodian(item);
-      }, 1000);
+      }, 500);
       // console.log(item.computerRoomName);
     },
     // 分页

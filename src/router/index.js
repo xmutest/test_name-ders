@@ -58,8 +58,6 @@ router.beforeEach(async (to, from, next) => {
       // https://github.com/d2-projects/d2-admin/issues/138
       NProgress.done();
       window.navigate('https://www.google.cn/chrome/');
-    } else {
-      console.log("不是IE浏览器");
     }
     // 这里暂时将cookie里是否存有token作为验证是否登录的条件
     // 请根据自身业务需要修改

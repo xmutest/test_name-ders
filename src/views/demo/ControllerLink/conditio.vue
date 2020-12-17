@@ -373,6 +373,9 @@ export default {
   created() {
     this.getEtlist();
   },
+  destroyed: function () {
+    this.submitReport(1);
+  },
   methods: {
     // 获取测评单位
     async PassiveCompany() {
@@ -385,13 +388,16 @@ export default {
       }
     },
     // 修改测评单位
-    async PassiveCompanyUpdate() {
+    async PassiveCompanyUpdate(it) {
       this.$refs["BeingMeasured"].validate(async (valid) => {
         if (!valid) return;
         let res = await this.$api.API_PassiveCompanyUpdate(this.BeingMeasured);
         if (res.code === 20000) {
-          this.$message.success("保存成功！！");
-          this.PassiveCompany();
+          if (it !== 1) {
+            this.$message.success("保存成功！！");
+            this.PassiveCompany();
+          }
+
           //查询列表
         } else {
           this.$message.error("错误，请联系管理员" + res.message);
@@ -431,9 +437,9 @@ export default {
         this.$message.error("错误，请联系管理员" + res.message);
       }
     },
-    async submitReport() {
+    async submitReport(it) {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
-      this.PassiveCompanyUpdate();
+      this.PassiveCompanyUpdate(it);
       this.submitReportation();
       if (res.code === 20000) {
         this.getEtlist();

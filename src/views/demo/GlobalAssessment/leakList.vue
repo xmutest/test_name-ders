@@ -8,136 +8,254 @@
           <div class="mude_text_item">
             <div class="descTItle">漏洞扫描报告</div>
             <div class="ScTlist">
-              <div class="scanningTool">
-                <div class="scanningToolListo">
-                  <div>
-                    <span class="scanningToolName">(1)主机扫描工具</span>
-                    <el-select
-                      size="mini"
-                      v-model="toolName"
-                      placeholder="请选择"
-                    >
-                      <el-option
-                        v-for="item in scanningTool"
-                        :key="item.id"
-                        :label="item.value"
-                        :value="item.value"
+              <el-tabs v-model="activeName" type="border-card">
+                <el-tab-pane label="主机扫描" name="first">
+                  <div class="scanningTool" v-if="activeName == 'first'">
+                    <div class="scanningToolListo">
+                      <div>
+                        <span class="scanningToolName">(1)主机扫描工具</span>
+                        <el-select
+                          size="mini"
+                          v-model="toolName"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="item in scanningTool"
+                            :key="item.id"
+                            :label="item.value"
+                            :value="item.value"
+                          >
+                          </el-option>
+                        </el-select>
+                      </div>
+                      <div>
+                        <span class="scanningToolName">(2)主机接入点：</span>
+                        <el-select
+                          size="mini"
+                          v-model="pointtoolName"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="item in pointtoolNameList"
+                            :key="item.id"
+                            :label="item.value"
+                            :value="item.value"
+                          >
+                          </el-option>
+                        </el-select>
+                      </div>
+                    </div>
+                    <div class="scanningupload">
+                      <DaoruLou
+                        :sonValue="{ type: 1, toolName, api: pointtoolName }"
+                        @toFatherData="toFatherData"
+                      ></DaoruLou>
+                    </div>
+                    <div>
+                      <el-table
+                        :header-cell-style="{
+                          'background-color': 'rgba(238, 238, 238,1.0)',
+                        }"
+                        :data="FindHostList"
+                        style="width: 100%"
                       >
-                      </el-option>
-                    </el-select>
+                        <el-table-column label="设备名称">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.systemName
+                            }}</span>
+                          </template>
+                        </el-table-column>
+
+                        <el-table-column label="IP地址" width="180">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.hostOrUrl
+                            }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="OS" width="150">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.operatingSysType
+                            }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="高" width="80">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.hignNum
+                            }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="中" width="80">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.middleNum
+                            }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="低" width="80">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.lowNum
+                            }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="操作" width="80">
+                          <template slot-scope="scope">
+                            <el-button
+                              size="mini"
+                              @click="handleEditdt(scope.row)"
+                              >编辑</el-button
+                            >
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                    </div>
                   </div>
-                  <div>
-                    <span class="scanningToolName">(2)主机接入点：</span>
-                    <el-select
-                      size="mini"
-                      v-model="pointtoolName"
-                      placeholder="请选择"
-                    >
-                      <el-option
-                        v-for="item in pointtoolNameList"
-                        :key="item.id"
-                        :label="item.value"
-                        :value="item.value"
+                </el-tab-pane>
+                <el-tab-pane label="应用系统扫描" name="second">
+                  <div class="scanningTool" v-if="activeName == 'second'">
+                    <div class="scanningToolListo">
+                      <div>
+                        <span class="scanningToolName"
+                          >(1)应用系统扫描工具</span
+                        >
+                        <el-select
+                          size="mini"
+                          v-model="ScantoolName"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="item in systemScanTool"
+                            :key="item.id"
+                            :label="item.value"
+                            :value="item.value"
+                          >
+                          </el-option>
+                        </el-select>
+                      </div>
+                      <div>
+                        <span class="scanningToolName"
+                          >(2)应用系统接入点：</span
+                        >
+                        <el-select
+                          size="mini"
+                          v-model="pointScantoolName"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="item in pointtoolNameList"
+                            :key="item.id"
+                            :label="item.value"
+                            :value="item.value"
+                          >
+                          </el-option>
+                        </el-select>
+                      </div>
+                    </div>
+                    <div class="scanningupload">
+                      <DaoruLou
+                        :sonValue="{
+                          type: 2,
+                          toolName: ScantoolName,
+                          api: pointScantoolName,
+                        }"
+                        @toFatherData="toFatherData"
+                      ></DaoruLou>
+                    </div>
+                    <div>
+                      <el-table
+                        :header-cell-style="{
+                          'background-color': 'rgba(238, 238, 238,1.0)',
+                        }"
+                        :data="HtmlFindAppList"
+                        style="width: 100%"
                       >
-                      </el-option>
-                    </el-select>
-                  </div>
-                </div>
- 
-                <div class="scanningupload">
-                  <DaoruLou
-                    :sonValue="{ type:1,toolName, api: pointtoolName }"
-                    @toFatherData="toFatherData"
-                  ></DaoruLou>
-                </div>
-              </div>
-              <div class="scanningTool">
-                <div class="scanningToolListo">
-                  <div>
-                    <span class="scanningToolName">(1)应用系统扫描工具</span>
-                    <el-select
-                      size="mini"
-                      v-model="ScantoolName"
-                      placeholder="请选择"
-                    >
-                      <el-option
-                        v-for="item in systemScanTool"
-                        :key="item.id"
-                        :label="item.value"
-                        :value="item.value"
-                      >
-                      </el-option>
-                    </el-select>
-                  </div>
-                  <div>
-                    <span class="scanningToolName">(2)应用系统接入点：</span>
-                    <el-select
-                      size="mini"
-                      v-model="pointScantoolName"
-                      placeholder="请选择"
-                    >
-                      <el-option
-                        v-for="item in pointtoolNameList"
-                        :key="item.id"
-                        :label="item.value"
-                        :value="item.value"
-                      >
-                      </el-option>
-                    </el-select>
-                  </div>
-                </div>
-                <div class="scanningupload">
-                  <DaoruLou
-                    :sonValue="{
-                      type:2,
-                      toolName: ScantoolName,
-                      api: pointScantoolName,
-                    }"
-                    @toFatherData="toFatherData"
-                  ></DaoruLou>
-                </div>
-              </div>
+                        <el-table-column label="系统名称">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.systemName
+                            }}</span>
+                          </template>
+                        </el-table-column>
+
+                        <el-table-column label="IP地址" width="180">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.hostOrUrl
+                            }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="OS" width="150">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.operatingSysType
+                            }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="高" width="80">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.hignNum
+                            }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="中" width="80">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.middleNum
+                            }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="低" width="80">
+                          <template slot-scope="scope">
+                            <span style="margin-left: 10px">{{
+                              scope.row.lowNum
+                            }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="操作" width="80">
+                          <template slot-scope="scope">
+                            <el-button
+                              size="mini"
+                              @click="handleEditdt(scope.row)"
+                              >编辑</el-button
+                            >
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                    </div>
+                  </div></el-tab-pane
+                >
+              </el-tabs>
             </div>
           </div>
           <!-- 数据表格 -->
           <div class="mude_text_item">
-            <div class="descTItle">汇总分析</div>
+            <div class="descTItle">漏洞列表</div>
             <div class="addList">
-              <el-button type="primary" @click="handleAddList" size="medium"
-                >添加</el-button
+              <el-button type="danger" @click="handleDelete" size="medium"
+                >删除所有</el-button
               >
             </div>
             <div>
-              <el-table :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }" :data="dataList" style="width: 100%">
-                <el-table-column label="漏洞类型" width="100">
-                  <template slot-scope="scope">
-                    <span
-                      v-show="scope.row.vulnerabilityType == 1"
-                      style="margin-left: 10px"
-                      >主机</span
-                    >
-                    <span
-                      v-show="scope.row.vulnerabilityType == 2"
-                      style="margin-left: 10px"
-                      >应用系统</span
-                    >
-                  </template>
-                </el-table-column>
-                <el-table-column label="漏洞名称" >
+              <el-table
+                :header-cell-style="{
+                  'background-color': 'rgba(238, 238, 238,1.0)',
+                }"
+                :data="dataList"
+                style="width: 100%"
+              >
+                <el-table-column label="漏洞名称">
                   <template slot-scope="scope">
                     <span style="margin-left: 10px">{{
                       scope.row.vulnerabilityName
                     }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="系统名称" width="120">
-                  <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{
-                      scope.row.systemName
-                    }}</span>
-                  </template>
-                </el-table-column>
-               
+
                 <el-table-column label="主机IP/URL" width="180">
                   <template slot-scope="scope">
                     <span style="margin-left: 10px">{{
@@ -157,18 +275,14 @@
                     <span style="margin-left: 10px">{{ scope.row.point }}</span>
                   </template>
                 </el-table-column>
-               
 
-                <el-table-column label="操作" width="180">
+                <el-table-column label="操作" width="90">
                   <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.row)"
-                      >编辑</el-button
-                    >
                     <el-button
+                      type="primary"
                       size="mini"
-                      type="danger"
-                      @click="handleDelete(scope.row)"
-                      >删除</el-button
+                      @click="handleEdit(scope.row)"
+                      >详细</el-button
                     >
                   </template>
                 </el-table-column>
@@ -201,7 +315,7 @@
       </div>
     </div>
     <!-- //弹框 -->
-    <el-dialog :visible.sync="dialogVisible" :title="toListts">
+    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" title="详细">
       <el-row :gutter="10">
         <el-form
           ref="vulnerability"
@@ -317,7 +431,11 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="漏洞类型" label-width="120px" prop="vulnerabilityType">
+            <el-form-item
+              label="漏洞类型"
+              label-width="120px"
+              prop="vulnerabilityType"
+            >
               <el-select
                 v-model="vulnerability.vulnerabilityType"
                 placeholder="请选择"
@@ -332,8 +450,12 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="24" v-show="vulnerability.vulnerabilityType==2">
-            <el-form-item label="应用系统名称" label-width="120px" prop="vulnerabilityType">
+          <el-col :span="24" v-show="vulnerability.vulnerabilityType == 2">
+            <el-form-item
+              label="应用系统名称"
+              label-width="120px"
+              prop="vulnerabilityType"
+            >
               <el-input
                 v-model="vulnerability.systemName"
                 placeholder="请输入应用系统名称"
@@ -346,17 +468,61 @@
       </el-row>
       <div slot="footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handelConfirm">确定</el-button>
+        <!-- <el-button type="primary" @click="handelConfirm">确定</el-button> -->
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="Confirmmsible" :close-on-click-modal="false" title="修改">
+      <el-form
+        ref="EditdtList"
+        :model="EditdtList"
+        :rules="rules"
+        size="medium"
+        label-width="120px"
+        label-position="left"
+      >
+        <el-form-item label="设备名称" prop="systemName">
+          <el-input
+            v-model="EditdtList.systemName"
+            placeholder="请输入设备名称"
+            clearable
+            :style="{ width: '100%' }"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="IP地址" prop="hostOrUrl">
+          <el-input
+            v-model="EditdtList.hostOrUrl"
+            placeholder="请输入IP地址"
+            clearable
+            :style="{ width: '100%' }"
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="OS" prop="operatingSysType">
+          <el-input
+            v-model="EditdtList.operatingSysType"
+            placeholder="请输入OS"
+            clearable
+            :style="{ width: '100%' }"
+          >
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="Confirmmsible = false">取消</el-button>
+        <el-button type="primary" @click="Confirmms">确定</el-button>
       </div>
     </el-dialog>
   </d2-container>
 </template>
 
 <script>
+import { cloneDeep } from "lodash";
 import DaoruLou from "./daorudou/daoruloudou.vue";
 export default {
   data() {
     return {
+      activeName: "first",
       toListts: "添加",
       dataList: [],
       // 主机扫描工具
@@ -373,9 +539,14 @@ export default {
         { id: 5, value: "JE" },
         { id: 6, value: "JF" },
       ],
+      EditdtList: {
+        systemName: undefined,
+        hostOrUrl: undefined,
+        operatingSysType: undefined,
+      },
       // 接入点
       pointtoolName: "JA",
-      toolName: '绿盟',
+      toolName: "绿盟",
       //   应用系统扫描工具
       systemScanTool: [
         { id: 1, value: "绿盟" },
@@ -389,7 +560,7 @@ export default {
       ],
       // 接入点
       pointScantoolName: "JA",
-      ScantoolName: '绿盟',
+      ScantoolName: "绿盟",
       dialogVisible: false,
       vulnerability: {
         hostOrUrl: undefined,
@@ -403,13 +574,6 @@ export default {
         systemName: "",
       },
       rules: {
-        hostOrUrl: [
-          {
-            required: true,
-            message: "请输入主机IP",
-            trigger: "blur",
-          },
-        ],
         vulnerabilityName: [
           {
             required: true,
@@ -473,6 +637,10 @@ export default {
       },
       total: 0,
       usr_updata: 0,
+      // 主机统计
+      FindHostList: [],
+      HtmlFindAppList: [],
+      Confirmmsible: false,
     };
   },
   created() {
@@ -482,6 +650,40 @@ export default {
     DaoruLou,
   },
   methods: {
+    // 修改统计
+    Confirmms() {
+      this.$refs["EditdtList"].validate(async (valid) => {
+        if (!valid) return;
+        let res = await this.$api.SYS_updateDetails_InputDoc(this.EditdtList);
+        if (res.code === 20000) {
+          this.Confirmmsible = false;
+          this.HtmlFindHost();
+          this.HtmlFindApp();
+          this.$message.success("修改成功！！");
+        } else {
+          this.$message.error("修改失败：" + res.message);
+        }
+      });
+    },
+    // 修改统计
+    handleEditdt(item) {
+      this.Confirmmsible = true;
+      this.EditdtList = cloneDeep(item);
+    },
+    // 获取主机统计
+    async HtmlFindHost() {
+      let res = await this.$api.SYSparsingHtmlFindHost();
+      if (res.code === 20000) {
+        this.FindHostList = res.data[0];
+      }
+    },
+    // 获取应用扫描统计
+    async HtmlFindApp() {
+      let res = await this.$api.SYSParsingHtmlFindApp();
+      if (res.code === 20000) {
+        this.HtmlFindAppList = res.data[0];
+      }
+    },
     toFatherData(ifsTo) {
       if (ifsTo === true) {
         this.getListts();
@@ -492,8 +694,9 @@ export default {
       if (res.code === 20000) {
         this.dataList = res.data.list;
         this.total = res.data.total;
+        this.HtmlFindHost();
+        this.HtmlFindApp();
       }
-      console.log(res);
     },
     handelConfirm() {
       this.$refs["vulnerability"].validate(async (valid) => {
@@ -608,10 +811,8 @@ export default {
   border-bottom: 0px solid #ebeef5;
 }
 .ScTlist {
-  margin: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  margin: 0 20px 10px 20px;
+
   .scanningTool {
     .scanningToolName {
       font-size: 14px;

@@ -79,6 +79,15 @@ export default {
         ...meta,
         title: '漏洞扫描结果统计'
       }
+    },
+    {
+      path: 'permeate',
+      name: `${pre}permeate`,
+      component: _import('demo/GlobalAssessment/permeate'),
+      meta: {
+        ...meta,
+        title: '渗透扫描结果统计'
+      }
     }
   ])('demo-GlobalAssessment-')
 }
