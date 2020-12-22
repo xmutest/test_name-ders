@@ -118,7 +118,7 @@ export default ({
       data
     })
   },
-   // 漏洞修改
+  // 漏洞修改
   // 
   async SYS_updateDetails_InputDoc(data = {}) {
     // 模拟数据
@@ -130,7 +130,7 @@ export default ({
       data
     })
   },
-    // 漏洞删除
+  // 漏洞删除
   // 
   async SYS_delVulnerbility_InputDoc(data = {}) {
     // 模拟数据
@@ -144,7 +144,7 @@ export default ({
   },
   //  获取测评问题清单列表
   // 
-//
+  //
   async SYS_reviseManifest_InputDoc(data = {}) {
     // 模拟数据
     data.projectId = await this.get_info();
@@ -155,51 +155,104 @@ export default ({
       params: data
     })
   },
-    //  修改测评问题清单列表
+  //  修改测评问题清单列表
   // 
-//
-async SYS_reviseMupdate_InputDoc(data = {}) {
-  data.projectId = await this.get_info();
-  // 接口请求
-  return request({
-    url: '/reviseManifest/update',
-    method: 'post',
-    data
-  })
-},
-// 导出问题清单列表excol
-async SYS_reviseMupdareviseManifest(data = {}) {
-  // 模拟数据
-  data.projectId = await this.get_info();
-  // 接口请求
-  return request({
-    url: '/word/reviseManifest',
-    method: 'get',
-    params:data
-  })
-},
+  //
+  async SYS_reviseMupdate_InputDoc(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/reviseManifest/update',
+      method: 'post',
+      data
+    })
+  },
+  // 导出问题清单列表excol
+  async SYS_reviseMupdareviseManifest(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/word/reviseManifest',
+      method: 'get',
+      params: data
+    })
+  },
   //  获取主机扫描统计
-//
-async SYSparsingHtmlFindHost(data = {}) {
-  // 模拟数据
-  data.projectId = await this.get_info();
-  // 接口请求
-  return request({
-    url: '/parsingHtml/findHost',
-    method: 'get',
-    params: data
-  })
-},
-//  获取应用扫描统计
-//
-async SYSParsingHtmlFindApp(data = {}) {
-  // 模拟数据
-  data.projectId = await this.get_info();
-  // 接口请求
-  return request({
-    url: '/parsingHtml/findApp',
-    method: 'get',
-    params: data
-  })
-},
+  //
+  async SYSparsingHtmlFindHost(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/parsingHtml/findHost',
+      method: 'get',
+      params: data
+    })
+  },
+  //  获取应用扫描统计
+  //
+  async SYSParsingHtmlFindApp(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/parsingHtml/findApp',
+      method: 'get',
+      params: data
+    })
+  },
+  //  
+
+  //查询渗透授权书
+  async SYSParsingHfindBook(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/penetration/findBook',
+      method: 'get',
+      params: data
+    })
+  },
+
+  /**
+     * @description 
+  上传渗透授权书
+     * @param {Object} data 
+     */
+  SYS_loudouploadBook(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: data.point,
+      method: 'post',
+      data
+    })
+  },
+  ///查询渗透部门人员
+
+  async SYSParsifindPenetrationUserk(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: 'user/findPenetrationUser',
+      method: 'post',
+      params:data
+    })
+  },
+//  删除渗透授权书
+  //
+  async SYSParsinationDelBook(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/penetration/delBook',
+      method: 'post',
+      data
+    })
+  },
+  //  
 })

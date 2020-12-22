@@ -380,6 +380,10 @@ export default {
           label: "质控部",
           value: 10,
         },
+        {
+          label: "渗透部",
+          value: 11,
+        },
       ],
       apiList: {
         departmentId: 2,
@@ -428,6 +432,10 @@ export default {
           {
             label: "质控部",
             value: 10,
+          },
+          {
+            label: "渗透部",
+            value: 11,
           },
         ];
       }
@@ -500,6 +508,10 @@ export default {
         {
           label: "质控部",
           value: 10,
+        },
+        {
+          label: "渗透部",
+          value: 11,
         },
       ];
       departmentIdOptions.forEach((item) => {
@@ -576,8 +588,12 @@ export default {
         },
         {
           label: "质控部",
-          value: 10
-        }
+          value: 10,
+        },
+        {
+          label: "渗透部",
+          value: 11,
+        },
       ];
     },
     // 删除

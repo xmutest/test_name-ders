@@ -17,9 +17,9 @@
                 <thead>
                   <tr>
                     <!-- <th style="width: 50px">序号</th> -->
-                    <th>层面</th>
-                    <th>测评对象</th>
-                    <th>指标名称</th>
+                    <th style="width: 100px">层面</th>
+                    <th style="width: 100px">测评对象</th>
+                    <th style="width: 100px">指标名称</th>
                     <th>测评项</th>
                     <th>现场记录</th>
                     <th style="width: 120px">符合情况</th>
@@ -183,9 +183,9 @@
                 <thead>
                   <tr>
                     <!-- <th style="width: 50px">序号</th> -->
-                    <th>层面</th>
-                    <th>测评对象</th>
-                    <th>指标名称</th>
+                    <th style="width: 100px">层面</th>
+                    <th style="width: 100px">测评对象</th>
+                    <th style="width: 100px">指标名称</th>
                     <th>测评项</th>
                     <th>现场记录</th>
                     <th style="width: 120px">符合情况</th>
@@ -395,18 +395,18 @@ export default {
 
       if (item === 1) {
         if (type == "excol") {
-          reportName = "技术部分问题清单列表.xlsx";
+          reportName = `${this.xmu_info.data.systemName}_问题清单(技术部分).xlsx`;
           url = `${process.env.VUE_APP_API}/output/reviseManifest`;
         } else if (type == "word") {
-          reportName = "技术部分问题清单列表.docx";
+          reportName = `${this.xmu_info.data.systemName}_问题清单(技术部分).docx`;
           url = `${process.env.VUE_APP_API}/word/reviseManifest`;
         }
       } else if (item === 6) {
         if (type == "excol") {
-          reportName = "管理部分问题清单列表.xlsx";
+          reportName = `${this.xmu_info.data.systemName}_问题清单(管理部分).xlsx`;
           url = `${process.env.VUE_APP_API}/output/reviseManifest`;
         } else if (type == "word") {
-          reportName = "管理部分问题清单列表.docx";
+          reportName = `${this.xmu_info.data.systemName}_问题清单(管理部分).docx`;
           url = `${process.env.VUE_APP_API}/word/reviseManifest`;
         }
       }

@@ -41,7 +41,7 @@ export default {
     },
     {
       path: `${pre}permeate`,
-      title: '漏洞扫描结果统计',
+      title: '渗透扫描结果统计',
       icon: '  iconfont icon-jierudian'
     }
   ])('/demo/GlobalAssessment/')

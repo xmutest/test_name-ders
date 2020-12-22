@@ -6,9 +6,13 @@
       <div class="mude_is_left">
         <el-card class="box-card">
           <div class="mude_text_item">
-            <div class="descTItle">漏洞扫描报告</div>
+            <div class="descTItle">漏洞扫描结果统计</div>
             <div class="ScTlist">
-              <el-tabs v-model="activeName" type="border-card">
+              <el-tabs
+                v-model="activeName"
+                @tab-click="handleClick"
+                type="border-card"
+              >
                 <el-tab-pane label="主机扫描" name="first">
                   <div class="scanningTool" v-if="activeName == 'first'">
                     <div class="scanningToolListo">
@@ -44,6 +48,10 @@
                           </el-option>
                         </el-select>
                       </div>
+                      <p class="tisks">
+                        * 请上传HTML格式的漏洞扫描报告
+                        （绿盟：index.html，天镜：files/Report_main.html)
+                      </p>
                     </div>
                     <div class="scanningupload">
                       <DaoruLou
@@ -154,6 +162,10 @@
                           </el-option>
                         </el-select>
                       </div>
+                      <p class="tisks">
+                        * 请上传HTML格式的漏洞扫描报告
+                        （绿盟：index.html，天镜：files/Report_main.html)
+                      </p>
                     </div>
                     <div class="scanningupload">
                       <DaoruLou
@@ -181,14 +193,14 @@
                           </template>
                         </el-table-column>
 
-                        <el-table-column label="IP地址" width="180">
+                        <el-table-column label="URL" width="180">
                           <template slot-scope="scope">
                             <span style="margin-left: 10px">{{
                               scope.row.hostOrUrl
                             }}</span>
                           </template>
                         </el-table-column>
-                        <el-table-column label="OS" width="150">
+                        <el-table-column label="类型" width="150">
                           <template slot-scope="scope">
                             <span style="margin-left: 10px">{{
                               scope.row.operatingSysType
@@ -315,7 +327,11 @@
       </div>
     </div>
     <!-- //弹框 -->
-    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" title="详细">
+    <el-dialog
+      :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      title="详细"
+    >
       <el-row :gutter="10">
         <el-form
           ref="vulnerability"
@@ -471,7 +487,11 @@
         <!-- <el-button type="primary" @click="handelConfirm">确定</el-button> -->
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="Confirmmsible" :close-on-click-modal="false" title="修改">
+    <el-dialog
+      :visible.sync="Confirmmsible"
+      :close-on-click-modal="false"
+      title="修改"
+    >
       <el-form
         ref="EditdtList"
         :model="EditdtList"
@@ -573,6 +593,7 @@ export default {
         point: "JA",
         systemName: "",
       },
+      bilityType: 1,
       rules: {
         vulnerabilityName: [
           {
@@ -689,7 +710,16 @@ export default {
         this.getListts();
       }
     },
+    handleClick(tab) {
+      if (tab.name == "first") {
+        this.bilityType = 1;
+      } else if (tab.name == "second") {
+        this.bilityType = 2;
+      }
+      this.getListts();
+    },
     async getListts() {
+      this.pageList.vulnerabilityType = this.bilityType;
       let res = await this.$api.SYS_findDetails_InputDoc(this.pageList);
       if (res.code === 20000) {
         this.dataList = res.data.list;
@@ -771,6 +801,7 @@ export default {
         type: "warning",
       })
         .then(async () => {
+          row.vulnerabilityType = this.bilityType;
           let res = await this.$api.SYS_delVulnerbility_InputDoc(row);
           if (res.code === 20000) {
             this.$message.success("删除成功！！");
@@ -832,5 +863,10 @@ export default {
   div {
     margin: 5px 0;
   }
+}
+.tisks {
+  color: red;
+  font-size: 14px;
+  font-family: cursive;
 }
 </style>

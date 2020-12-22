@@ -51,6 +51,7 @@ export default {
   computed: {
     ...mapState("d2admin", {
       xmu_info: (state) => state.xmu.xmu_info,
+      info: (state) => state.user.info,
     }),
   },
   destroyed: function () {
@@ -77,7 +78,7 @@ export default {
             lts = "低";
           }
         }
-        this.dateget = `目前，${this.xmu_info.data.systemName}存在高风险问题数${riskMap.highRiskNum}个，中风险问题数${riskMap.middleRiskNum}个，低风险问题数${riskMap.lowRiskNum}个，系统面临${lts}安全风险，通过综合分析评价，本次测评的等级测评结论为${riskMap.fractionResult}，综合得分为${riskMap.totalFraction}分。`;
+        this.dateget = `生产制造执行系统中存在不符合项或部分符合项，系统面临中、低安全风险，本次测评的等级测评结论为${riskMap.fractionResult}，综合得分为${riskMap.totalFraction}分。`;
       }
     },
     async getEtlist() {
@@ -85,7 +86,8 @@ export default {
       if (List.code === 20000) {
         this.dategetList();
         if (List.data == null || List.data.overallEvaluation == null) {
-          this.fromdata.overallEvaluation = `    通过对信息系统基本安全保护状态的分析，${this.xmu_info.data.evaluatedUnit}针对${this.xmu_info.data.systemName}面临的主要安全威胁采取了相应的安全机制，基本达到保护信息系统重要资产的作用。其中：`;
+          this.fromdata.overallEvaluation = `    为贯彻落实《中华人民共和国网络安全法》等相关法律、法规和标准对网络安全等级保护工作的要求，${this.xmu_info.data.evaluatedUnit}特委托${this.info.user_info.companyName}对其生产制造执行系统实施网络安全等级测评。
+    通过对信息系统基本安全保护状态的分析，${this.xmu_info.data.evaluatedUnit}针对${this.xmu_info.data.systemName}面临的主要安全威胁采取了相应的安全机制，基本达到保护信息系统重要资产的作用。其中：`;
         } else {
           this.fromdata.overallEvaluation = List.data.overallEvaluation;
 
