@@ -26,7 +26,7 @@
               placeholder="请输入内容"
               v-model="fromdata.accessPointDescribe"
             >
-                          </el-input
+            </el-input
             >
           </div>
           <div class="tijiaobaoc">
@@ -38,17 +38,8 @@
               <el-button type="primary" @click="openCanvasArea"
                 >修改图片</el-button
               >
-              <!-- <el-button type="primary"  v-drag="flag" 
-                >修改</el-button
-              > -->
             </div>
             <div class="to_tim">
-              <!-- <canvasToorBarSel
-                :showControl="showTools"
-                :selIndex="inputIndex"
-                @close="closeControl"
-                @addPic="casAdd"
-              ></canvasToorBarSel> -->
               <canvasToorBarSel
                 :showControl="showTools"
                 :selIndex="inputIndex"
@@ -107,11 +98,43 @@
                     >
                       <el-button type="primary">使用其他图片</el-button>
                     </el-upload>
-                    <el-button type="primary" @click="delectObj"
+                    <el-button type="danger" @click="delectObj"
                       >移除</el-button
                     >
                     <el-button type="primary" @click="saveNewCanvas"
                       >保存</el-button
+                    >
+                    <!-- <el-button type="primary" @click="drawRect"
+                      >画正方形</el-button
+                    > -->
+                    <el-button type="primary" @click="selShapeArea = true"
+                      >形状</el-button
+                    >
+                    <el-button type="primary" @click="showShapeFun($event)" 
+                      v-for="(item,key) in designIcon"
+                      :data-icon="item.value" 
+                      :data-sort="item.value"
+                      :data-nums="item.num"
+                      :key=key
+                    >
+                      {{item.name}}
+                    </el-button>
+                    <el-button type="primary" @click="inputWordArea = true"
+                      >文字输入</el-button
+                    >
+                    <el-popover
+                      width="400"
+                      trigger="click">
+                      <div class="arrowArea">
+                        <img :src="require('@/views/demo/GlobalAssessment/img/icon/top_arrow.png')" data-icon="top_arrow" @click="drawDesign($event)" class="iconPic"  alt="">
+                        <img :src="require('@/views/demo/GlobalAssessment/img/icon/right_arrow.png')" data-icon="right_arrow" @click="drawDesign($event)" class="iconPic"  alt="">
+                        <img :src="require('@/views/demo/GlobalAssessment/img/icon/down_arrow.png')" data-icon="down_arrow" @click="drawDesign($event)" class="iconPic"  alt="">
+                        <img :src="require('@/views/demo/GlobalAssessment/img/icon/left_arrow.png')" data-icon="left_arrow" @click="drawDesign($event)" class="iconPic"  alt="">
+                      </div>
+                      <el-button slot="reference" type="primary" class="buttonStyle">箭头</el-button>
+                    </el-popover>
+                    <el-button type="danger" @click="canvasReset"
+                      >清空</el-button
                     >
                     <img
                       :src="
@@ -121,45 +144,69 @@
                       class="casClose"
                     />
                   </div>
+
                   <canvas
                     id="canvas"
                     width="1000"
                     height="500"
                     class="canvasObj"
                   ></canvas>
-                  <!-- <easel-canvas
-                    :width="1000"
-                    :height="500"
-                    ref="canvaspic"
-                    class="canvasObj"
-                  >
-                    <easel-bitmap
-                      :image="imgUrls"
-                      :x="1000 / 2"
-                      :y="500 / 2"
-                      :align="['center', 'center']"
-                    >
-                    </easel-bitmap>
-                    <easel-bitmap
-                      :image="
-                        require(`@/views/demo/ControllerLink/img/palntlsImg/${item}.png`)
-                      "
-                      :x="0"
-                      :y="0"
-                      :align="['left', 'top']"
-                      @mousedown="objTouch($event)"
-                      v-for="(item, key) in bitmapArr"
-                      :key="key"
-                    >
-                    </easel-bitmap>
-                  </easel-canvas> -->
                 </div>
               </div>
 
               <img :src="imgUrls" alt="" class="resPic" />
             </div>
+            <!-- 形状选择 -->
+            <el-dialog
+              title="形状选择"
+              :visible.sync="selShapeArea"
+              width="50%"
+            >
+              <el-image
+              v-for="(item,key) in shape"
+              :key="key"
+              :src="item.value"
+              class="shapeStyle"
+              :data-icon="item.name"
+              @click="selShape($event)"
+              fit="contain"></el-image>
+              <span slot="footer" class="dialog-footer" v-show="false">
+                <el-button @click="selShapeArea = false">取 消</el-button>
+                <el-button type="primary" @click="rectPaint">确 定</el-button>
+              </span>
+            </el-dialog>
+            
+            <!-- 文字输入 -->
+            <el-dialog
+              title="文字输入"
+              :visible.sync="inputWordArea"
+              width="50%"
+            >
+              <el-input v-model="inputContent.content" placeholder="请输入内容"></el-input>
+              <div class="wordSetting">
+                字体大小:
+                <el-input-number 
+                  v-model="inputContent.size" 
+                  @change="handleChange"
+                  :min="16"
+                  :max="60" label="描述文字"
+                ></el-input-number>
+                字体颜色:<el-color-picker v-model="inputContent.color"></el-color-picker>
+              </div>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="inputWordArea = false">取 消</el-button>
+                <el-button type="primary" @click="wordInput">确 定</el-button>
+              </span>
+            </el-dialog>
           </div>
         </el-card>
+        <canvasShapeSel
+          :showControl="showShape"
+          :selIndex="inputSort"
+          :shapeNums="canvasShapeNums"
+          @close="closeShapeArea"
+          @addPic="shapeAdd"
+        ></canvasShapeSel>
       </div>
       <!-- 图片 -->
     </div>
@@ -168,6 +215,8 @@
 
 <script>
 import canvasToorBarSel from "@/components/canvasToorBarSel/canvasToorBarSel";
+import canvasShapeSel from "@/components/canvasShapeSel/canvasShapeSel";
+
 import { mapState } from "vuex";
 export default {
   data() {
@@ -193,7 +242,9 @@ export default {
         startLocateY: 0,
       },
       showTools: false,
+      showShape: false,
       inputIndex: "",
+      inputSort: "",
       showCanvas: false,
       bitmapArr: [],
       // 网络结构图
@@ -201,6 +252,106 @@ export default {
       // 接入点图片
       imgUrls: "",
       imgUrlsid: "",
+      designIcon:[
+        {
+          value:'database',
+          name:'数据库',
+          num:8
+        },
+        {
+          value:'safeDefend',
+          name:'安全防护',
+          num:8
+        },
+        {
+          value:'computer',
+          name:'计算机',
+          num:7,
+        },
+        {
+          value:'serve',
+          name:'服务器',
+          num:7,
+        },
+        {
+          value:'network',
+          name:'网络',
+          num:7,
+        },
+        {
+          value:'frame',
+          name:'机架',
+          num:6,
+        },
+        {
+          value:'user',
+          name:'用户',
+          num:6,
+        },
+        {
+          value:'firewall',
+          name:'防火墙',
+          num:5,
+        },
+        {
+          value:'switchboard',
+          name:'交换机',
+          num:7,
+        },
+        {
+          value:'switchboard',
+          name:'交换机',
+          num:7,
+        },
+        
+      ],
+      shape:[
+        {
+          value:require(`@/views/demo/GlobalAssessment/img/icon/square.png`),
+          name:'square',
+          desc:'正方形'
+        },
+        {
+          value:require(`@/views/demo/GlobalAssessment/img/icon/rect.png`),
+          name:'rect',
+          desc:'矩形'
+        },
+        {
+          value:require(`@/views/demo/GlobalAssessment/img/icon/line.png`),
+          name:'line',
+          desc:'直线'
+        },
+        {
+          value:require(`@/views/demo/GlobalAssessment/img/icon/dottedLine.png`),
+          name:'dottedLine',
+          desc:'虚线'
+        },
+        {
+          value:require(`@/views/demo/GlobalAssessment/img/icon/dottedSqure.png`),
+          name:'dottedSqure',
+          desc:'虚线正方形'
+        },
+        {
+          value:require(`@/views/demo/GlobalAssessment/img/icon/dottedRect.png`),
+          name:'dottedRect',
+          desc:'虚线矩形'
+        },
+        {
+          value:require(`@/views/demo/GlobalAssessment/img/icon/cloud.png`),
+          name:'cloud',
+          desc:'云框'
+        },
+      ],
+      selShapeArea:false,
+      rectWidth:0,
+      rectLength:0,
+      inputWordArea:false,
+      inputContent:{
+        content:'',
+        size:26,
+        color:'#000000',
+      },  //输入的内容
+      canvasShapeNums:0,  //拓补图当前选择图案的数量
     };
   },
   created() {
@@ -219,12 +370,10 @@ export default {
     // fabric
     this.initCanvas();
 
-    // setTimeout(function(){
-    //   that.outputPic()
-    // },1000)
   },
   components: {
     canvasToorBarSel,
+    canvasShapeSel
   },
   methods: {
     // 使用其他图片
@@ -266,7 +415,7 @@ export default {
           setTimeout(function(){
             that.setBg(that.imgUrls)
           },500)
-          // this.setBg(this.imgUrls);
+          
         } else {
           this.getlistdataImg();
         }
@@ -350,116 +499,6 @@ export default {
       this.canvas.clear();
       this.showCanvas = false;
       resPic.src = result;
-    },
-    // 移动元素
-    objTouch(e) {
-      let that = this;
-      let obj = e.currentTarget;
-      this.mouseInfo.startLocateX = obj.x;
-      this.mouseInfo.startLocateY = obj.y;
-
-      console.log(
-        "物体的初始位置",
-        this.mouseInfo.startLocateX,
-        this.mouseInfo.startLocateY
-      );
-
-      let casBasicPoint = {
-        x:
-          this.$refs.canvasArea.offsetLeft +
-          this.$refs.canvaspic.$el.offsetLeft,
-        y: this.$refs.canvasArea.offsetTop + this.$refs.canvaspic.$el.offsetTop,
-      };
-
-      this.mouseInfo.startX = e.stageX;
-      this.mouseInfo.startY = e.stageY;
-
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
-
-      function move(evt) {
-        // 鼠标点击坐标 - 画布原点坐标
-        let mouseX = evt.clientX - casBasicPoint.x,
-          mouseY = evt.clientY - casBasicPoint.y;
-
-        // console.log(mouseX,mouseY)
-        // debugger
-        let moveX = mouseX - that.mouseInfo.startLocateX,
-          moveY = mouseY - that.mouseInfo.startLocateY;
-
-        (obj.x = that.mouseInfo.startLocateX + moveX),
-          (obj.y = that.mouseInfo.startLocateY + moveY);
-
-        let picWidth = obj.image.width,
-          picHeight = obj.image.height,
-          nearDis = 5; //靠近距离
-
-        // 局限
-        if (obj.x < nearDis) {
-          obj.x = 0;
-        } else if (
-          obj.x + picWidth >
-          that.$refs.canvaspic.$el.width - nearDis
-        ) {
-          obj.x = that.$refs.canvaspic.$el.width - picWidth;
-        }
-
-        if (obj.y < nearDis) {
-          obj.y = 0;
-        } else if (
-          obj.y + picHeight >
-          that.$refs.canvaspic.$el.height - nearDis
-        ) {
-          obj.y = that.$refs.canvaspic.$el.height - picHeight;
-        }
-      }
-      function up(e) {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
-      }
-    },
-    objMove(e) {
-      // 触发事件对象
-      let obj = e.currentTarget;
-
-      // 获取图片宽高
-      let imgWidth = obj.image.width;
-      let imgHeight = obj.image.height;
-
-      this.mouseInfo.moveX = e.stageX;
-      this.mouseInfo.moveY = e.stageY;
-
-      let diveceX = this.mouseInfo.moveX - this.mouseInfo.startX;
-      let diveceY = this.mouseInfo.moveY - this.mouseInfo.startY;
-
-      let judgeX = this.mouseInfo.startLocateX + diveceX;
-      let judgeY = this.mouseInfo.startLocateY + diveceY;
-
-      if (judgeX < 0 || judgeX + imgWidth > 1000) {
-        if (judgeX < 0) {
-          judgeX = 0;
-        } else {
-          judgeX = 1000 - imgWidth;
-        }
-      }
-
-      if (judgeY < 0 || judgeY + imgHeight > 500) {
-        if (judgeY < 0) {
-          judgeY = 0;
-        } else {
-          judgeY = 500 - imgHeight;
-        }
-      }
-
-      obj.x = judgeX;
-      obj.y = judgeY;
-    },
-    objOut(e) {
-      // 触发事件对象
-      let obj = e.currentTarget;
-
-      this.mouseInfo.startLocateX = obj.x;
-      this.mouseInfo.startLocateY = obj.y;
     },
     // 流程工具选择
     showToolsFun(e) {
@@ -559,12 +598,12 @@ export default {
       // this.setBg();
     },
     initCanvas() {
-      console.log("run canvas");
+      
       let that = this;
       that.canvas = new fabric.Canvas("canvas");
       let casWidth = that.canvas.width,
-        casHeight = that.canvas.height;
-      console.log("fab", that.canvas);
+          casHeight = that.canvas.height
+        
     },
     setBg(src) {
       if (!src) return this.$message.error("暂无图片,请上传图片");
@@ -579,7 +618,6 @@ export default {
       bg.src = src;
       // 测试
       // bg.src = require("@/views/demo/GlobalAssessment/img/t1.png")
-      console.log("宽高", bg.width, bg.height);
       let bili;
 
       if (bg.width > bg.height) {
@@ -621,7 +659,8 @@ export default {
         let lineWidth = bg.width * bili
         var line = new fabric.Line([lineWidth + 1, 0, lineWidth + 1, that.canvas.height], {
           fill: 'green',
-          stroke: 'green'
+          stroke: 'green',
+          selectable:false,
         });
         that.canvas.add(line);
       };
@@ -639,8 +678,6 @@ export default {
       fabric.Image.fromURL(manSrc, function (obj) {
         obj.objectName = name
         that.canvas.add(obj);
-        // let items = that.canvas.getObjects()
-        // console.log('活动对象',items)
       });
     },
     saveNewCanvas() {
@@ -648,11 +685,14 @@ export default {
       //   width:bg.width,
       //   height:bg.height
       // }
+      let that = this
+  
+      this.clipWidth = this.bgPic.width * this.bgPic.bili,
+      this.clipHeight = this.bgPic.height * this.bgPic.bili
 
-      // var canvas = new fabric.Canvas("canvas");
       var result = this.canvas.toDataURL({
-        width: this.bgPic.width * this.bgPic.bili,
-        height: this.bgPic.height * this.bgPic.bili,
+        width: that.clipWidth,
+        height: that.clipHeight,
         left: 0,
         top: 0,
         format: "png",
@@ -661,33 +701,99 @@ export default {
       this.saveCanvas(result)
     },
     delectObj(){
-      
       let item = this.canvas.getActiveObject()
-      
-
-      
       // item存在则删除,且删除数组元素
       if(item != null){
         this.canvas.remove(item)
         let delectName = item.objectName,
-            delectIndex = 0
+            delectIndex = null
         // 找到数组内需要删除的元素下标
         for(let i = 0;i < this.bitmapArr.length;i++){
           if(this.bitmapArr[i].indexOf(delectName) != -1){
             delectIndex = i
           }
         }
-
-        this.bitmapArr.splice(delectIndex,1)
+        if(delectIndex != null) this.bitmapArr.splice(delectIndex,1)
       }else{
         this.$message({
           showClose: true,
           message: '未选中要移除的图片',
           type: 'warning'
-        });
+        })
       }
+    },
+    rectPaint(){
+      // 点击确定后
+      this.selShapeArea = true
+      
+    },
+    drawRect(w=80,h=80){
+      let rect = new fabric.Rect({
+        left: 0,
+        top: 0,
+        stroke: 'black',
+        fill:'transparent',
+        width: 100,
+        height: 100,
+      })
+      this.canvas.add(rect);
+    },
+    selShape(e){
+      this.selShapeArea = false
 
-    }
+      let name = e.currentTarget.dataset.icon,
+      src = require(`@/views/demo/GlobalAssessment/img/icon/${name}.png`)
+
+      this.createPic(src,name)
+    },
+    drawDesign(e){
+      console.log(e.currentTarget.dataset.icon)
+
+      let name = e.currentTarget.dataset.icon,
+          src = require(`@/views/demo/GlobalAssessment/img/icon/${name}.png`)
+
+      this.createPic(src,name)
+    },
+    wordInput(){
+      // console.log(`输入的文字${this.inputContent.content}`)
+      let that = this
+      let content = that.inputContent.content
+      console.log(`颜色${this.inputContent.color}`)
+
+      //字体大小
+      let word = new fabric.Text(content, {
+        fontSize: that.inputContent.size,
+        // stroke: that.inputContent.color,
+        fill:that.inputContent.color,
+        transparentCorners: false,
+        textAlign:"center",
+        left:0,
+        top:0
+      });
+      
+      this.canvas.add(word);
+    },
+    handleChange(value) {
+        console.log(value);
+    },
+    closeShapeArea(e){
+      this.showShape = e
+    },
+    showShapeFun(e){
+      this.showShape = true;
+      this.canvasShapeNums = e.currentTarget.dataset.nums
+      this.inputSort = e.currentTarget.dataset.sort
+    },
+    shapeAdd(e){
+      let pic = require(`@/views/demo/GlobalAssessment/img/icon/${this.inputSort}/${e}.png`);
+
+      // 填入画布
+      this.createPic(pic,e);
+    },
+    // 画布重置
+    canvasReset(){
+      this.canvas.clear()
+    },
   },
 };
 </script>
@@ -748,10 +854,14 @@ export default {
   margin-bottom: 20px;
 }
 .toorBar {
-  width: 100%;
+  width: 97%;
   padding: 20px 20px 0;
   margin-bottom: 20px;
   box-sizing: border-box;
+  .el-button{
+    margin-top:10px;
+    margin-left:10px;
+  }
 }
 .casClose {
   width: 30px;
@@ -773,4 +883,58 @@ export default {
   display: inline-block;
   margin: 0 5px;
 }
+.el-popper{
+  background:#fff!important;
+}
+.el-popover{
+  background:#fff!important;
+  margin-left:10px;
+  .buttonStyle{
+    // margin-left:10px;
+  }
+}
+.arrowArea{
+  width:100%;
+  height:100%;
+  display:-webkit-flex;
+  display:flex;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+  // background:#fff;
+  .iconPic{
+    width:30px;
+    height:100%;
+    cursor: pointer;
+  }
+}
+
+.shapeStyle{
+  cursor:pointer;
+  width: 80px;
+  height: 80px;
+  margin-left:10px;
+}
+
+.el-dialog{
+  width:600px;
+}
+
+.el-input-number {
+  margin:20px 0;
+}
+
+.el-color-picker{
+
+}
+
+.wordSetting{
+  display:-webkit-flex;
+  display:flex;
+  -webkit-align-items: center;
+  align-items: center;
+  .el-input-number {
+    margin-right:15px;
+  }
+}
+
 </style>
