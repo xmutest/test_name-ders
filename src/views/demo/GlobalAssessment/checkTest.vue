@@ -293,17 +293,12 @@ export default {
           name:'防火墙',
           num:5,
         },
-        {
-          value:'switchboard',
-          name:'交换机',
-          num:7,
-        },
-        {
-          value:'switchboard',
-          name:'交换机',
-          num:7,
-        },
-        
+        // {
+        //   value:'switchboard',
+        //   name:'交换机',
+        //   num:7,
+        // },
+
       ],
       shape:[
         {
