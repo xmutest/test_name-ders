@@ -73,8 +73,20 @@ new Vue({
     '$route.matched': {
       handler(matched) {
         if (matched.length > 0) {
+
           const _side = menuAside.filter(menu => menu.path === matched[0].path)
+          // const _hide = menuHeader.filter(menu => menu.path === matched[0].path)
+          // console.log(_hide);
+          // _hide.filter(item => {
+          //   item.children = item.children.filter(it => it.lit != true);
+          //   console.log(item.children);
+          // })
+          // const ks = _side.filter(item => {
+          //   item.children = item.children.filter(it => it.lit != true);
+          //   // console.log(item.children);
+          // })
           this.$store.commit('d2admin/menu/asideSet', _side.length > 0 ? _side[0].children : [])
+          // this.$store.commit('d2admin/menu/headerSet', _side.length > 0 ? _side[0].children : [])
         }
       },
       immediate: true

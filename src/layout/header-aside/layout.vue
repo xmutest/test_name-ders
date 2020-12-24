@@ -88,7 +88,7 @@
                   <el-button v-else size="mini"> 当前无项目选择 </el-button>
                 </el-tooltip>
                 <span style="margin: 15px; font-size: 14px"
-                  >综合得分：<span v-if="totalscore"
+                  >综合得分：<span v-if="totalscore&&this.totalscore.projectId!==undefined"
                     >{{ totalscore.totalFraction }}
                     <span style="margin-left: 15px">评级：{{ totalscore.fractionResult }}</span></span
                   >
@@ -144,7 +144,9 @@ export default {
       asideWidthCollapse: "65px",
     };
   },
-  created() {},
+  created() {
+    
+  },
   computed: {
     ...mapState("d2admin", {
       keepAlive: (state) => state.page.keepAlive,

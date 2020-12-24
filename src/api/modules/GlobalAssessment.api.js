@@ -255,4 +255,28 @@ export default ({
     })
   },
   //  
+   ///查询渗透统计表
+
+   async SYSParsifindfindTotalk(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/penetration/findTotal',
+      method: 'get',
+      params:data
+    })
+  },
+  //  删除渗透报告
+  //
+  async SYSParsinationdelPenetrationReport(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/penetration/delPenetrationReport',
+      method: 'post',
+      data
+    })
+  },
 })

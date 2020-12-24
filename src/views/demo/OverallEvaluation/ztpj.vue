@@ -78,7 +78,7 @@ export default {
             lts = "低";
           }
         }
-        this.dateget = `生产制造执行系统中存在不符合项或部分符合项，系统面临中、低安全风险，本次测评的等级测评结论为${riskMap.fractionResult}，综合得分为${riskMap.totalFraction}分。`;
+        this.dateget = `生产制造执行${this.xmu_info.data.systemName}中存在不符合项或部分符合项，${this.xmu_info.data.systemName}面临${lts}安全风险，本次测评的等级测评结论为${riskMap.fractionResult}，综合得分为${riskMap.totalFraction}分。`;
       }
     },
     async getEtlist() {

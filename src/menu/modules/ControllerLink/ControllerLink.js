@@ -39,11 +39,11 @@ export default {
     //   path: `${pre}anquanhj`,
     //   title: '安全环境'
     // },
-    {
-      path: `${pre}psduix`,
-      title: '测评对象选择方法',
-      icon: '  iconfont icon-zujianku-duixiangxuanze'
-    }
+    // {
+    //   path: `${pre}psduix`,
+    //   title: '测评对象选择方法',
+    //   icon: '  iconfont icon-zujianku-duixiangxuanze'
+    // }
     // ,
     // {
     //   path: `${pre}pszdian`,

@@ -50,16 +50,18 @@ export default {
   methods: {
     // 开始上传前验证
     beforeUploadForm(file) {
-      if (this.sonValue.technology.isGiveUp === false) {
-        if (
-          this.sonValue.technology.userId == "" ||
-          this.sonValue.technology.userId == "undefined"
-        ) {
-          this.$message({
-            message: `请选择渗透人员在上传授权书！`,
-            type: "warning",
-          });
-          return false;
+      if (this.sonValue.type === 1) {
+        if (this.sonValue.technology.isGiveUp === false) {
+          if (
+            this.sonValue.technology.userId == "" ||
+            this.sonValue.technology.userId == "undefined"
+          ) {
+            this.$message({
+              message: `请选择渗透人员在上传授权书！`,
+              type: "warning",
+            });
+            return false;
+          }
         }
       }
 
@@ -136,6 +138,7 @@ export default {
 
       thiz.$api.SYS_loudouploadBook(formData).then((data) => {
         if (data.code === 20000) {
+          console.log(data);
           thiz.$message({
             message: "上传文件成功，" + data.message,
             type: "success",
