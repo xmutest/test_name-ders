@@ -7,6 +7,7 @@
           <el-input
             placeholder="请输入内容"
             v-model="projectModel.projectName"
+            @input="searchBi"
             size="small"
             clearable
           ></el-input>

@@ -247,7 +247,7 @@
         </div>
         <div class="up_wt">
           <div>
-            <p>问题描述：</p>
+            <p>问题描述：<span class="Listiption">（相关资产会在报告里面自动生成，此处不需填资产）</span></p>
             <el-input
               type="textarea"
               v-model="amendAnalysis.problemDescription"
@@ -487,9 +487,9 @@ export default {
       ];
       let amendId = this.amendAnalysis.amendId;
       this.amendAnalysis = item;
-      if (this.itemName == "安全物理环境" || this.itemName == "安全计算环境") {
-        this.amendAnalysis.problemDescription = `${this.tsAmlist.assets}${item.problemDescription}`;
-      }
+      // if (this.itemName == "安全物理环境" || this.itemName == "安全计算环境") {
+      //   this.amendAnalysis.problemDescription = `${this.tsAmlist.assets}${item.problemDescription}`;
+      // }
 
       this.amendAnalysis.amendId = amendId;
       ls.forEach((it) => {
@@ -815,6 +815,10 @@ export default {
     color: red;
     margin-right: 5px;
   }
+}
+.Listiption{
+  font-size: 12px;
+  color: red;
 }
 </style>
 
