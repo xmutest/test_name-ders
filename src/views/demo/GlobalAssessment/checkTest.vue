@@ -256,12 +256,12 @@ export default {
         {
           value:'database',
           name:'数据库',
-          num:8
+          num:9
         },
         {
           value:'safeDefend',
           name:'安全防护',
-          num:8
+          num:9
         },
         {
           value:'computer',
@@ -293,12 +293,11 @@ export default {
           name:'防火墙',
           num:5,
         },
-        // {
-        //   value:'switchboard',
-        //   name:'交换机',
-        //   num:7,
-        // },
-
+        {
+          value:'switchboard',
+          name:'交换机',
+          num:7,
+        },
       ],
       shape:[
         {
@@ -754,6 +753,7 @@ export default {
       let that = this
       let content = that.inputContent.content
       console.log(`颜色${this.inputContent.color}`)
+      this.inputWordArea = false
 
       //字体大小
       let word = new fabric.Text(content, {
@@ -766,7 +766,8 @@ export default {
         top:0
       });
       
-      this.canvas.add(word);
+      this.canvas.add(word)
+      that.inputContent.content = ''
     },
     handleChange(value) {
         console.log(value);

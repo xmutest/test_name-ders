@@ -36,7 +36,8 @@ export default {
             // bug:数量不能大于等于9
             for(let i = 0 ;i < this.shapeNums;i++){
                 // debugger
-                arr.push(require(`@/views/demo/GlobalAssessment/img/icon/${this.selIndex}/${this.selIndex + (i+1)}.png`))
+                let index = i + 1
+                arr.push(require(`@/views/demo/GlobalAssessment/img/icon/${this.selIndex}/${this.selIndex + index}.png`))
                 // console.log(`数组${arr}`)
             }
             return arr
