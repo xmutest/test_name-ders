@@ -107,7 +107,7 @@
                     <!-- <el-button type="primary" @click="drawRect"
                       >画正方形</el-button
                     > -->
-                    <el-button type="primary" @click="selShapeArea = true"
+                    <el-button type="primary" v-if="false" @click="selShapeArea = true"
                       >形状</el-button
                     >
                     <el-button type="primary" @click="showShapeFun($event)" 
@@ -116,15 +116,18 @@
                       :data-sort="item.value"
                       :data-nums="item.num"
                       :key=key
+                      v-show="false"
                     >
                       {{item.name}}
                     </el-button>
-                    <el-button type="primary" @click="inputWordArea = true"
+                    <el-button type="primary" v-if="false" @click="inputWordArea = true"
                       >文字输入</el-button
                     >
                     <el-popover
                       width="400"
-                      trigger="click">
+                      trigger="click"
+                      v-if="false"
+                    >
                       <div class="arrowArea">
                         <img :src="require('@/views/demo/GlobalAssessment/img/icon/top_arrow.png')" data-icon="top_arrow" @click="drawDesign($event)" class="iconPic"  alt="">
                         <img :src="require('@/views/demo/GlobalAssessment/img/icon/right_arrow.png')" data-icon="right_arrow" @click="drawDesign($event)" class="iconPic"  alt="">
