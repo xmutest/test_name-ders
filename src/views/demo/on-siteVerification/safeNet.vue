@@ -337,7 +337,11 @@ export default {
       let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
       if (res.code === 20000) {
         this.dialogVisible = false;
-        this.$message.success("保存成功");
+         this.$message({
+              type: "success",
+              message: "保存成功！！",
+              duration: 1000,
+            });
         this.getDataList();
       }
     },

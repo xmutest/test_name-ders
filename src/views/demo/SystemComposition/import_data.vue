@@ -40,6 +40,16 @@
           </div>
         </el-upload>
       </div>
+      <div>
+        <div class="ks_to_name">3.导出测评调研表</div>
+        <div class="ks_to_text">
+          <div class="ks_buttm">
+            <el-link @click="ks_toBummt(2)" icon="el-icon-download"
+              >测评调研表</el-link
+            >
+          </div>
+        </div>
+      </div>
     </div>
   </d2-container>
 </template>
@@ -58,6 +68,7 @@ export default {
   computed: {
     ...mapState("d2admin", {
       xmu_info: (state) => state.xmu.xmu_info,
+      info: (state) => state.user.info,
     }),
   },
   methods: {
@@ -143,8 +154,20 @@ export default {
       // });
     },
     // 导出
-    async ks_toBummt() {
-      let res = await this.$api.SYS_USER_DownLoadDoc();
+    async ks_toBummt(item) {
+      let formData = {
+        projectId: this.xmu_info.projectId,
+        userId: this.info.userId,
+      };
+      let kstname = "";
+      let res = "";
+      if (item == 2) {
+        kstname = `${this.xmu_info.data.systemName}_测评调研表`;
+        res = await this.$api.SYS_USER_DownLoadDocLisks(formData);
+      } else {
+        kstname = "网络安全等级保护测评调研表（模板)";
+        res = await this.$api.SYS_USER_DownLoadDoc();
+      }
       if (res.code == 500) {
         alert(res.message);
       } else {
@@ -159,14 +182,14 @@ export default {
               IE可不重命名，以防万一，所以都写上比较好 */
           window.navigator.msSaveBlob(
             blob,
-            "网络安全等级保护测评调研表（模板).doc"
+            kstname
           );
         } else {
           //其他浏览器
           let link = document.createElement("a"); // 创建a标签
           link.style.display = "none";
           let objectUrl = URL.createObjectURL(blob);
-          link.download = "网络安全等级保护测评调研表（模板)";
+          link.download = kstname;
           link.href = objectUrl;
           link.click();
           URL.revokeObjectURL(objectUrl);
@@ -182,12 +205,12 @@ export default {
 <style lang="scss" scoped>
 .ks_to {
   position: absolute;
-  top: 50%;
+  top: 20%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -20%);
   .ks_buttm {
     margin: 15px 0;
-    .el-link.el-link--default{
+    .el-link.el-link--default {
       color: burlywood;
     }
   }

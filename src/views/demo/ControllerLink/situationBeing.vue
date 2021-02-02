@@ -49,13 +49,17 @@ export default {
         this.fromdata=List.data
         //查询列表
       } else {
-        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
     },
     async submitReport() {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
-        this.$message.success("修改成功！！");
+         this.$message({
+            type: "success",
+            message: "修改成功！！",
+            duration: 1000
+          });
         this.getEtlist();
         //查询列表
       } else {

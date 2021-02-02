@@ -359,7 +359,11 @@ export default {
       fractionModelList.push(item);
       let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
       if (res.code === 20000) {
-        this.$message.success("保存成功");
+        this.$message({
+              type: "success",
+              message: "保存成功！！",
+              duration: 1000,
+            });
         this.dialogVisible = false;
         this.getDataList();
       }
@@ -381,7 +385,11 @@ export default {
       fractionModelList.push(item);
       let res = await this.$api.SYS_FieldSurveYUpdate(fractionModelList);
       if (res.code === 20000) {
-        this.$message.success("保存成功");
+         this.$message({
+              type: "success",
+              message: "保存成功！！",
+              duration: 1000,
+            });
         this.getDataList();
       }
     },

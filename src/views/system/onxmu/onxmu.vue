@@ -635,7 +635,11 @@ export default {
             // 修改
             const res = await this.$api.API_Project_updata(this.xmform);
             if (res.code === 20000) {
-              this.$message.success("修改成功！！");
+               this.$message({
+            type: "success",
+            message: "修改成功！！",
+            duration: 1000
+          });
               this.dialogFormVisible = false;
               this.ProjectQueryList();
               this.resetForm("xmform");

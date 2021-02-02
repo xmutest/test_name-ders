@@ -154,6 +154,20 @@ export default ({
     })
   },
   /**
+   * @description 模板下载
+   * @param {Object} data  
+   */
+  SYS_reportWord_DownLoadDocpost(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return requestword({
+      url: data.url,
+      method: 'post',
+      data:data.data,
+      responseType: 'blob',
+    })
+  },
+  /**
    * @description 生成测评报告方案管理组
    * @param {Object} data 携带的信息
    */

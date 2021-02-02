@@ -43,7 +43,7 @@ export default ({
     })
   },
   /**
-   * @description 查询整体评测
+   * @description 查询整体测评
    * @param {Object} data 携带的信息
    */
   async API_WholeEvaluationFindWholeEvaluation(data = {}) {
@@ -56,7 +56,7 @@ export default ({
     })
   },
   /**
-   * @description 保存整体评测
+   * @description 保存整体测评
    * @param {Object} data 携带的信息
    */
   async API_WholeEvaluationSaveWholeEvaluation(data = {}) {
@@ -69,7 +69,7 @@ export default ({
     })
   },
   /**
-   * @description 修改整体评测
+   * @description 修改整体测评
    * @param {Object} data 携带的信息
    */
   async API_WholeEvaluationUpdateWholeEvaluation(data = {}) {
@@ -140,6 +140,18 @@ export default ({
       url: '/parsingHtml/delVulnerbility',
       method: 'delete',
       data
+    })
+  },
+    // 漏洞删除单个
+  // 
+  async ParsingHtmlDelSingleVulnerbility(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/parsingHtml/delSingleVulnerbility',
+      method: 'delete',
+      params:data
     })
   },
   //  获取测评问题清单列表

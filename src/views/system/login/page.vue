@@ -28,7 +28,7 @@
             style="font-size: 2.5em; font-weight: 700"
             class="page-login-logo_item"
           >
-            华南评测报告管理系统
+            华南测评报告管理系统
           </div>
           <img
             class="page-login--logo"
@@ -106,7 +106,7 @@
         <div class="page-login--content-footer">
           <p class="page-login--content-footer-locales"></p>
           <p class="page-login--content-footer-copyright">
-            <d2-icon name="copyright" />广州华南信息安全评测中心版权所有
+            <d2-icon name="copyright" />广州华南信息安全测评中心版权所有
             <d2-icon name="copyright" />粤ICP备19011520号-1
             <!-- <a href>@Fss</a> -->
           </p>

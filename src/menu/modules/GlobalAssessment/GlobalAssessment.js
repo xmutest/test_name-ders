@@ -15,6 +15,16 @@ export default {
       icon: '  iconfont icon-jieguohuizong'
     },
     {
+      path: `${pre}difference`,
+      title: '差距分析报告',
+      icon: '  iconfont icon-jieguohuizong'
+    },
+    {
+      path: `${pre}kssueList`,
+      title: '现场测评结果记录',
+      icon: '  iconfont icon-jieguohuizong'
+    },
+    {
       path: `${pre}aqkzjaqcp`,
       title: '安全控制间安全测评',
       icon: '  iconfont icon-ceping'
@@ -39,11 +49,11 @@ export default {
       title: '漏洞扫描结果统计',
       icon: '  iconfont icon-jierudian'
     },
-    {
-      path: `${pre}permeate`,
-      title: '渗透扫描结果统计',
-      icon: '  iconfont icon-jierudian'
-    }
+    // {
+    //   path: `${pre}permeate`,
+    //   title: '渗透扫描结果统计',
+    //   icon: '  iconfont icon-jierudian'
+    // }
   ])('/demo/GlobalAssessment/')
 
 }

@@ -18,8 +18,8 @@
             ></div>
             <el-input
               :ref="'equipmentName' + scope.$index"
-              @input="
-                changeInput({
+              @blur="
+                schujiaodian({
                   id: scope.row.id,
                   equipmentName: scope.row.equipmentName,
                 })
@@ -175,6 +175,7 @@
         <el-table-column label="测评对象" width="80">
           <template slot-scope="scope">
             <el-checkbox
+              v-show="scope.row.id"
               @change="schujiaodianTm(scope.row)"
               v-model="scope.row.isEvaluationObj"
             ></el-checkbox>
@@ -198,7 +199,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
+    <!-- <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
       <div class="search_ls">
         <div class="block">
           <el-pagination
@@ -213,7 +214,7 @@
           </el-pagination>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- 新增表单 -->
     <div class="add_from_xmu">
       <el-dialog
@@ -435,9 +436,9 @@ export default {
     async getlistdata() {
       let res = await this.$api.API_EquipmentFindEquipment(this.formPage);
       if (res.code === 20000) {
-        let List = res.data.list;
-        this.total = res.data.total;
-        if (res.data.list.length > 0) {
+        let List = res.data;
+        // this.total = res.data.total;
+        if (res.data.length > 0) {
           List.forEach((element) => {
             if (element.isEvaluationObj == 1) {
               element.isEvaluationObj = true;
@@ -502,10 +503,9 @@ export default {
         if (this.Itzm == true) {
           res = await this.$api.API_EquipmentSaveEquipment(item);
         } else {
-          if(item.equipmentName!=""){
-res = await this.$api.API_EquipmentUpdateEquipment(item);
+          if (item.equipmentName != "") {
+            res = await this.$api.API_EquipmentUpdateEquipment(item);
           }
-          
         }
       } else {
         res = await this.$api.API_EquipmentSaveEquipment(item);
@@ -514,7 +514,7 @@ res = await this.$api.API_EquipmentUpdateEquipment(item);
         this.getlistdata();
         this.Itzm = false;
         //查询列表
-      } 
+      }
       this.Itzm = false;
     },
     // 提交

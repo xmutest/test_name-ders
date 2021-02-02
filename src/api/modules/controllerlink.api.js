@@ -60,7 +60,7 @@ export default ({
       data
     })
   },
-  // 评测目的查询
+  // 测评目的查询
   async API_projectOverviewObjective(data = {}) {
     data.projectId = await this.get_info();
     // 接口请求

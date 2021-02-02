@@ -24,7 +24,7 @@ export default {
       component: _import('demo/ControllerLink/purpose'),
       meta: {
         ...meta,
-        title: '评测目的和依据'
+        title: '测评目的和依据'
       }
     },
     {
@@ -33,7 +33,7 @@ export default {
       component: _import('demo/ControllerLink/course'),
       meta: {
         ...meta,
-        title: '评测过程'
+        title: '测评过程'
       }
     },
     {

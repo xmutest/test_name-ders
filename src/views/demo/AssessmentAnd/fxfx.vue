@@ -247,7 +247,7 @@
         </div>
         <div class="up_wt">
           <div>
-            <p>问题描述：<span class="Listiption">（相关资产会在报告里面自动生成，此处不需填资产）</span></p>
+            <p>问题描述：<span v-show="this.itemName == '安全计算环境'" class="Listiption">（相关资产会在报告里面自动生成，此处不需填资产）</span></p>
             <el-input
               type="textarea"
               v-model="amendAnalysis.problemDescription"

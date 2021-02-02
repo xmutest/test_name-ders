@@ -5,12 +5,12 @@ export default {
   children: (pre => [
     {
       path: `${pre}purpose`,
-      title: '评测目的和依据',
-      icon: '  iconfont icon-mudedi'
+      title: '测评目的和依据',
+      icon: '  iconfont icon-mudedi',
     },
     {
       path: `${pre}course`,
-      title: '评测过程',
+      title: '测评过程',
       icon: '  iconfont icon-guocheng'
     },
     {

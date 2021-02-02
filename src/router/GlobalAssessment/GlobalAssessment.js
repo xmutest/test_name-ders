@@ -36,6 +36,24 @@ export default {
       }
     },
     {
+      path: 'difference',
+      name: `${pre}difference`,
+      component: _import('demo/GlobalAssessment/difference'),
+      meta: {
+        ...meta,
+        title: '差距分析报告'
+      }
+    },
+    {
+      path: 'kssueList',
+      name: `${pre}kssueList`,
+      component: _import('demo/GlobalAssessment/kssueList'),
+      meta: {
+        ...meta,
+        title: '现场测评结果记录'
+      }
+    },
+    {
       path: 'aqkzjaqcp',
       name: `${pre}aqkzjaqcp`,
       component: _import('demo/GlobalAssessment/aqkzjaqcp'),

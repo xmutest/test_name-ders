@@ -86,8 +86,7 @@ export default {
       if (List.code === 20000) {
         this.dategetList();
         if (List.data == null || List.data.overallEvaluation == null) {
-          this.fromdata.overallEvaluation = `    为贯彻落实《中华人民共和国网络安全法》等相关法律、法规和标准对网络安全等级保护工作的要求，${this.xmu_info.data.evaluatedUnit}特委托${this.info.user_info.companyName}对其${this.xmu_info.data.systemName}实施网络安全等级测评。
-    通过对安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设管理、安全运维管理十个方面的安全措施测试评估，数据分析，${this.xmu_info.data.systemName}安全保护状况描述如下：`;
+          this.fromdata.overallEvaluation = `    为贯彻落实《中华人民共和国网络安全法》等相关法律、法规和标准对网络安全等级保护工作的要求，${this.xmu_info.data.evaluatedUnit}特委托${this.info.user_info.companyName}对其${this.xmu_info.data.systemName}实施网络安全等级测评。通过对安全物理环境、安全通信网络、安全区域边界、安全计算环境、安全管理中心、安全管理制度、安全管理机构、安全管理人员、安全建设管理、安全运维管理十个方面的安全措施测试评估，数据分析。${this.xmu_info.data.systemName}安全保护状况描述如下：`;
         } else {
           this.fromdata.overallEvaluation = List.data.overallEvaluation;
 
@@ -96,7 +95,7 @@ export default {
 
         //查询列表
       } else {
-        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
     },
     async submitReport(it) {
@@ -106,7 +105,11 @@ export default {
 
       if (res.code === 20000) {
         if (it !== 1) {
-          this.$message.success("修改成功！！");
+           this.$message({
+            type: "success",
+            message: "修改成功！！",
+            duration: 1000
+          });
           this.getEtlist();
         }
 

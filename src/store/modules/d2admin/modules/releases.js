@@ -8,8 +8,8 @@ export default {
      * @param {Object} state state
      */
     versionShow () {
-      util.log.capsule('评测工具', `v${process.env.VUE_APP_VERSION}`)
-      console.log('评测工具错误请联系开发人员');
+      util.log.capsule('测评工具', `v${process.env.VUE_APP_VERSION}`)
+      console.log('测评工具错误请联系开发人员');
     }
   }
 }

@@ -72,15 +72,18 @@
             >
               <!-- tab -->
               <div style="margin: 10px 5px">
-                当前评测项目：
+                <span style="margin: 15px; font-size: 14px">
+                  当前测评项目：</span
+                >
+
                 <el-tooltip
                   class="item"
                   effect="dark"
                   :content="xmu_info.name"
                   placement="right-end"
                 >
-                  <el-button v-if="xmu_info.name" size="mini">
-                    <span v-if="xmu_info.name.length > 50"
+                  <el-button v-if="xmu_info.name" style="color: red" size="mini">
+                    <span  v-if="xmu_info.name.length > 50"
                       >{{ xmu_info.name.substring(0, 50) }}....</span
                     >
                     <span v-else>{{ xmu_info.name }}</span>
@@ -88,9 +91,12 @@
                   <el-button v-else size="mini"> 当前无项目选择 </el-button>
                 </el-tooltip>
                 <span style="margin: 15px; font-size: 14px"
-                  >综合得分：<span v-if="totalscore&&this.totalscore.projectId!==undefined"
+                  >综合得分：<span
+                    v-if="totalscore && this.totalscore.projectId !== undefined"
                     >{{ totalscore.totalFraction }}
-                    <span style="margin-left: 15px">评级：{{ totalscore.fractionResult }}</span></span
+                    <span style="margin-left: 15px"
+                      >评级：{{ totalscore.fractionResult }}</span
+                    ></span
                   >
                   <span v-else>无</span>
                 </span>
@@ -144,9 +150,7 @@ export default {
       asideWidthCollapse: "65px",
     };
   },
-  created() {
-    
-  },
+  created() {},
   computed: {
     ...mapState("d2admin", {
       keepAlive: (state) => state.page.keepAlive,

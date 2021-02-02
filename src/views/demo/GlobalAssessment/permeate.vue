@@ -240,7 +240,7 @@ export default {
         this.tonjiBookList = res.data;
       }
     },
-    // 获取评测人员
+    // 获取测评人员
     async getrenList() {
       let res = await this.$api.SYSParsifindPenetrationUserk({
         companyName: this.info.user_info.companyName,

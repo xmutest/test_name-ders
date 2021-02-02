@@ -52,7 +52,7 @@ export default {
         this.tabledatas = List.data;
         //查询列表
       } else {
-        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
     },
   },

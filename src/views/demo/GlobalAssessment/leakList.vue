@@ -50,7 +50,7 @@
                       </div>
                       <p class="tisks">
                         * 请上传HTML格式的漏洞扫描报告
-                        （绿盟：index.html，天镜：files/Report_main.html)
+                        （绿盟：index.html，天镜：files/Report_main.html，Nessus：支持英文/谷歌翻译的中文）
                       </p>
                     </div>
                     <div class="scanningupload">
@@ -164,7 +164,7 @@
                       </div>
                       <p class="tisks">
                         * 请上传HTML格式的漏洞扫描报告
-                        （绿盟：index.html，天镜：files/Report_main.html)
+                        （绿盟：index.html，天镜：files/Report_main.html，Nessus：支持英文/谷歌翻译的中文）
                       </p>
                     </div>
                     <div class="scanningupload">
@@ -288,13 +288,19 @@
                   </template>
                 </el-table-column>
 
-                <el-table-column label="操作" width="90">
+                <el-table-column label="操作" width="180">
                   <template slot-scope="scope">
                     <el-button
                       type="primary"
                       size="mini"
                       @click="handleEdit(scope.row)"
-                      >详细</el-button
+                      >修改</el-button
+                    >
+                    <el-button
+                      type="danger"
+                      size="mini"
+                      @click="delelcdluo(scope.row)"
+                      >删除</el-button
                     >
                   </template>
                 </el-table-column>
@@ -484,7 +490,7 @@
       </el-row>
       <div slot="footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <!-- <el-button type="primary" @click="handelConfirm">确定</el-button> -->
+        <el-button type="primary" @click="handelConfirm">保存</el-button>
       </div>
     </el-dialog>
     <el-dialog
@@ -572,7 +578,6 @@ export default {
         { id: 1, value: "绿盟" },
         { id: 2, value: "天镜" },
         { id: 3, value: "Nessus" },
-        { id: 4, value: "AppScan" },
       ],
       vulnerabilityTypeList: [
         { id: 1, value: "主机" },
@@ -680,7 +685,11 @@ export default {
           this.Confirmmsible = false;
           this.HtmlFindHost();
           this.HtmlFindApp();
-          this.$message.success("修改成功！！");
+           this.$message({
+            type: "success",
+            message: "修改成功！！",
+            duration: 1000
+          });
         } else {
           this.$message.error("修改失败：" + res.message);
         }
@@ -728,6 +737,30 @@ export default {
         this.HtmlFindApp();
       }
     },
+    // 删除
+    async delelcdluo(row) {
+      this.$confirm("确定删除此记录", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.ParsingHtmlDelSingleVulnerbility({infoId:row.infoId});
+          if (res.code === 20000) {
+            this.$message.success("删除成功！！");
+            this.getListts();
+            //查询列表
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     handelConfirm() {
       this.$refs["vulnerability"].validate(async (valid) => {
         if (!valid) return;
@@ -751,7 +784,11 @@ export default {
           if (res.code === 20000) {
             this.dialogVisible = false;
             this.getListts();
-            this.$message.success("修改成功！！");
+             this.$message({
+            type: "success",
+            message: "修改成功！！",
+            duration: 1000
+          });
           } else {
             this.$message.error("修改失败：" + res.message);
           }

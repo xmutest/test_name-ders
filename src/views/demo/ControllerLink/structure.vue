@@ -6,13 +6,13 @@
       <div class="mude_is_left">
         <el-card class="box-card">
           <div class="mude_text_item">
-            <div class="descTItle">网络结构描述</div>
+            <div class="descTItle">业务数据流</div>
             <el-input
               style="min-height: 200px; margin-bottom: 20px"
               type="textarea"
               :autosize="{ minRows: 10, maxRows: 15 }"
               placeholder="请输入内容"
-              v-model="fromdata.networkStructureDescribe"
+              v-model="fromdata.businessDataFlow"
             >
             </el-input>
           </div>
@@ -39,98 +39,20 @@
               </el-upload>
             </div>
           </div>
-          <!-- <div class="mude_text_item">
-            <div class="descTItle">系统边界表(仅方案)</div>
-            <div class="wangruo_table">
-              <el-table
-                :data="t_sys_boundary"
-                border
-                :header-cell-style="{
-                  'background-color': 'rgba(238, 238, 238,1.0)',
-                }"
-              >
-                <el-table-column label="边界名称">
-                  <template slot-scope="scope">
-                    <div
-                      @click="
-                        is_compile(scope.row, scope.$index, 'boundaryName')
-                      "
-                      class="itsz"
-                    ></div>
-                    <el-input
-                      :ref="'boundaryName' + scope.$index"
-                      @blur="schujiaodian(scope.row)"
-                      v-show="scope.row.show"
-                      v-model="scope.row.boundaryName"
-                    ></el-input>
-                    <span v-show="!scope.row.show">{{
-                      scope.row.boundaryName
-                    }}</span>
-                  </template>
-                </el-table-column>
-
-                <el-table-column label="接入方式">
-                  <template slot-scope="scope">
-                    <div
-                      @click="
-                        is_compile(scope.row, scope.$index, 'accessMethod')
-                      "
-                      class="itsz"
-                    ></div>
-                    <el-input
-                      :ref="'accessMethod' + scope.$index"
-                      @blur="schujiaodian(scope.row)"
-                      placeholder="请输入内容"
-                      v-show="scope.row.show"
-                      v-model="scope.row.accessMethod"
-                    ></el-input>
-                    <span v-show="!scope.row.show">{{
-                      scope.row.accessMethod
-                    }}</span>
-                  </template>
-                </el-table-column>
-
-                <el-table-column label="承载主要业务应用">
-                  <template slot-scope="scope">
-                    <div
-                      @click="
-                        is_compile(scope.row, scope.$index, 'mainBusiness')
-                      "
-                      class="itsz"
-                    ></div>
-                    <el-input
-                      :ref="'mainBusiness' + scope.$index"
-                      @blur="schujiaodian(scope.row)"
-                      placeholder="请输入内容"
-                      v-show="scope.row.show"
-                      v-model="scope.row.mainBusiness"
-                    ></el-input>
-                    <span v-show="!scope.row.show">{{
-                      scope.row.mainBusiness
-                    }}</span>
-                  </template>
-                </el-table-column>
-
-                <el-table-column fixed="right" label="操作" width="200">
-                  <template slot-scope="scope">
-                    <el-button
-                      size="mini"
-                      @click="
-                        is_preserve(scope.$index, true, scope.row.sortNum)
-                      "
-                      >新增</el-button
-                    >
-                    <el-button
-                      size="mini"
-                      type="danger"
-                      @click="deleteRow(scope.$index, scope.row)"
-                      >删除</el-button
-                    >
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-          </div> -->
+          <div class="mude_text_item">
+            <div class="descTItle">网络结构描述</div>
+            <el-input
+              style="min-height: 200px; margin-bottom: 20px"
+              type="textarea"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
+              v-model="fromdata.networkStructureDescribe"
+            >
+            </el-input>
+          </div>
+          <div class="tijiaobaoc">
+            <el-button type="primary" @click="submitReport">保存</el-button>
+          </div>
         </el-card>
       </div>
       <!-- 图片 -->
@@ -145,6 +67,7 @@ export default {
     return {
       fromdata: {
         networkStructureDescribe: "",
+        businessDataFlow: "",
         id: "",
       },
       Itzm: false,
@@ -273,20 +196,25 @@ export default {
         this.getlistdataImg();
         if (List.data.networkStructureDescribe != null) {
           data = List.data.networkStructureDescribe;
-        } else {
-          data = `    如图2-1${this.xmu_info.data.systemName}网络拓扑图所示`;
         }
         this.fromdata.networkStructureDescribe = data;
+        this.fromdata.businessDataFlow = List.data.businessDataFlow;
         this.fromdata.id = List.data.id;
         //查询列表
       } else {
-        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
     },
     async submitReport() {
+      this.fromdata.networkStructureDescribe = `    ${this.fromdata.networkStructureDescribe.trim()}`;
+      this.fromdata.businessDataFlow = `    ${this.fromdata.businessDataFlow.trim()}`;
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
-        this.$message.success("修改成功！！");
+        this.$message({
+          type: "success",
+          message: "修改成功！！",
+          duration: 1000,
+        });
         this.getEtlist();
         //查询列表
       } else {

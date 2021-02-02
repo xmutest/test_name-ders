@@ -6,7 +6,7 @@
       <div class="mude_is_left">
         <el-card class="box-card">
           <div class="mude_text_item">
-            <div class="descTItle">评测对象选择方法</div>
+            <div class="descTItle">测评对象选择方法</div>
             <el-input
               type="textarea"
               style="min-height: 200px; margin-bottom: 20px"
@@ -17,7 +17,7 @@
             </el-input>
           </div>
           <!-- <div class="mude_text_item">
-            <div class="descTItle">评测方法</div>
+            <div class="descTItle">测评方法</div>
             <el-input
               type="textarea"
               style="min-height: 200px; margin-bottom: 20px"
@@ -65,7 +65,7 @@ export default {
         objSelectionMethod: "",
         //测评方法
         evaluationMethod: "",
-        //评测工具
+        //测评工具
         tools: [],
       },
       setFindAll: [],
@@ -87,7 +87,7 @@ export default {
     this.submitReport(1);
   },
   methods: {
-    // 获取评测工具
+    // 获取测评工具
     async getFindAll() {
       let List = await this.$api.API_projectOverviewEvaluationToolFindAll();
       if (List.code === 20000) {
@@ -95,7 +95,7 @@ export default {
         // this.fromdata.id = List.data.id;
         //查询列表
       } else {
-        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
     },
     textChangeHandler(delta, oldDelta, source) {
@@ -132,7 +132,7 @@ export default {
         // this.fromdata.id = List.data.id;
         //查询列表
       } else {
-        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
     },
     async submitReport(it) {
@@ -151,7 +151,11 @@ export default {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         if (it !== 1) {
-          this.$message.success("修改成功！！");
+          this.$message({
+            type: "success",
+            message: "修改成功！！",
+            duration: 1000
+          });
           this.getEtlist();
         }
 

@@ -74,6 +74,22 @@ export default ({
       }
     })
   },
+   /**
+   * @description 项目查询
+   * @param {Object} data 项目创建携带的信息
+   */
+  API_Project_findAllList(data = {}) {
+    // 接口请求
+    return request({
+      url: '/project/findAllList',
+      method: 'post',
+      data: JSON.stringify(data),
+      params: {
+        page: data.page,
+        pageSize: data.pageSize
+      }
+    })
+  },
   /**
    * @description 项目部门人查询
    * @param {Object} data 项目部门人查询
@@ -109,6 +125,18 @@ export default ({
       url: '/project/update',
       method: 'post',
       data: JSON.stringify(data)
+    })
+  },
+  /**
+   * @description 项目复制
+   * @param {Object} data 复制携带的信息
+   */
+  APICopyCopyProject(data = {}) {
+    // 接口请求
+    return request({
+      url: '/copy/copyProject',
+      method: 'post',
+      params:data
     })
   },
   /**

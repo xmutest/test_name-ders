@@ -14,8 +14,8 @@
           ></div>
           <el-input
             :ref="'safeManageCenterName' + scope.$index"
-            @input="
-              changeInput({
+            @blur="
+              schujiaodian({
                 id: scope.row.id,
                 safeManageCenterName: scope.row.safeManageCenterName,
               })
@@ -150,7 +150,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
+    <!-- <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
       <div class="search_ls">
         <div class="block">
           <el-pagination
@@ -165,7 +165,7 @@
           </el-pagination>
         </div>
       </div>
-    </div>
+    </div> -->
   </d2-container>
 </template>
 
@@ -242,12 +242,12 @@ export default {
     },
     async getlistdata() {
       let res = await this.$api.APISafeManageCenterFindSafeManageCenter(
-        this.formPage
+        // this.formPage
       );
       if (res.code === 20000) {
-        let List = res.data.list;
-        this.total = res.data.total;
-        if (res.data.list.length > 0) {
+        let List = res.data;
+        // this.total = res.data;
+        if (res.data.length > 0) {
           List.forEach((element) => {
             element.isSysManage = element.isSysManage == 1 ? true : false;
             element.isAuditManage = element.isAuditManage == 1 ? true : false;

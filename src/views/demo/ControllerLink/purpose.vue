@@ -1,4 +1,4 @@
-<!--评测目的-->
+<!--测评目的-->
 <template>
   <d2-container>
     <div class="mude_is">
@@ -6,7 +6,7 @@
       <div class="mude_is_left">
         <el-card class="box-card">
           <div class="mude_text_item">
-            <div class="descTItle">评测目的</div>
+            <div class="descTItle">测评目的</div>
             <el-input
               style="min-height: 200px; margin-bottom: 20px"
               type="textarea"
@@ -18,7 +18,7 @@
           </div>
 
           <div class="mude_text_item">
-            <div class="descTItle">评测依据选项</div>
+            <div class="descTItle">测评依据选项</div>
             <div class="to_tims">
               <el-checkbox-group v-model="fromdata.evaluationBasis">
                 <el-checkbox
@@ -30,7 +30,7 @@
             </div>
           </div>
           <div class="mude_text_item">
-            <div class="descTItle">其他评测依据</div>
+            <div class="descTItle">其他测评依据</div>
             <el-input
               type="textarea"
               :autosize="{ minRows: 4, maxRows: 8 }"
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       fromdata: {
-        //评测目的
+        //测评目的
         evaluationObjective: "",
         //其他依据
         evaluationBasis: [],
@@ -109,7 +109,7 @@ export default {
         this.getevaluationBasisFindAll();
         //查询列表
       } else {
-        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
     },
     async getevaluationBasisFindAll() {
@@ -134,7 +134,7 @@ export default {
 
         //查询列表
       } else {
-        this.$message.error(res.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(res.message + "测评依据选项出差，请联系管理员");
       }
     },
     textChangeHandler(delta, oldDelta, source) {
@@ -148,7 +148,11 @@ export default {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         if (it !== 1) {
-          this.$message.success("修改成功！！");
+           this.$message({
+            type: "success",
+            message: "修改成功！！",
+            duration: 1000
+          });
           this.getEtlist();
         }
 

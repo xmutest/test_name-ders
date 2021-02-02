@@ -14,8 +14,8 @@
           ></div>
           <el-input
             :ref="'computerRoomName' + scope.$index"
-            @input="
-              changeInput({
+            @blur="
+              schujiaodian({
                 id: scope.row.id,
                 computerRoomName: scope.row.computerRoomName,
               })
@@ -74,6 +74,7 @@
       <el-table-column label="测评对象" width="80">
         <template slot-scope="scope">
           <el-checkbox
+            v-show="scope.row.id"
             @change="schujiaodianTm(scope.row)"
             v-model="scope.row.isEvaluationObj"
           ></el-checkbox>
@@ -96,7 +97,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
+    <!-- <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
       <div class="search_ls">
         <div class="block">
           <el-pagination
@@ -111,7 +112,7 @@
           </el-pagination>
         </div>
       </div>
-    </div>
+    </div> -->
   </d2-container>
 </template>
 
@@ -141,7 +142,7 @@ export default {
       ],
       formPage: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 999,
       },
       total: 0,
       indexs: null,
@@ -228,13 +229,11 @@ export default {
         });
     },
     async getlistdata() {
-      let res = await this.$api.API_JF_ComputerRoomFindComputerRoom(
-        this.formPage
-      );
+      let res = await this.$api.API_JF_ComputerRoomFindComputerRoom();
       if (res.code === 20000) {
-        let List = res.data.list;
-        this.total = res.data.total;
-        if (res.data.list.length > 0) {
+        let List = res.data;
+        // this.total = res.data;
+        if (res.data.length > 0) {
           List.forEach((element) => {
             if (element.isEvaluationObj == 1) {
               element.isEvaluationObj = true;
@@ -305,7 +304,7 @@ export default {
         if (this.Itzm == true) {
           res = await this.$api.API_JF_ComputerRoomFindSaveRoom(item);
         } else {
-          if (item.computerRoomName!="") {
+          if (item.computerRoomName != "") {
             res = await this.$api.API_JF_ComputerRoomFindUpdateRoom(item);
           }
         }

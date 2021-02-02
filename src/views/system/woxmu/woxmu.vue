@@ -341,8 +341,10 @@
           </el-form-item>
           <div class="dia-footer">
             <el-form-item>
-              <el-button type="primary" @click="submitForm('xmform', ua_cre)"
-              v-throttle
+              <el-button
+                type="primary"
+                @click="submitForm('xmform', ua_cre)"
+                v-throttle
                 >保存</el-button
               >
               <!-- <el-button type="danger" v-if="ua_cre != 1 " @click="resetForm('xmform')"
@@ -635,7 +637,11 @@ export default {
             // 修改
             const res = await this.$api.API_Project_updata(this.xmform);
             if (res.code === 20000) {
-              this.$message.success("修改成功！！");
+              this.$message({
+                type: "success",
+                message: "修改成功！！",
+                duration: 1000,
+              });
               this.dialogFormVisible = false;
               this.ProjectQueryList();
               this.resetForm("xmform");

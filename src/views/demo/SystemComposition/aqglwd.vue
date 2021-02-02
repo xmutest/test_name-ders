@@ -14,8 +14,8 @@
           ></div>
           <el-input
             :ref="'fileName' + scope.$index"
-            @input="
-              changeInput({
+            @blur="
+              schujiaodian({
                 id: scope.row.id,
                 fileName: scope.row.fileName,
               })
@@ -67,7 +67,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
+    <!-- <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
       <div class="search_ls">
         <div class="block">
           <el-pagination
@@ -82,7 +82,7 @@
           </el-pagination>
         </div>
       </div>
-    </div>
+    </div> -->
   </d2-container>
 </template>
 
@@ -148,12 +148,12 @@ export default {
     },
     async getlistdata() {
       let res = await this.$api.APISecurityManageFileFindSecurityManageFile(
-        this.formPage
+       
       );
       if (res.code === 20000) {
-        this.total = res.data.total;
-        let List = res.data.list;
-        if (res.data.list.length > 0) {
+        // this.total = res.data.total;
+        let List = res.data;
+        if (res.data.length > 0) {
           List.forEach((element) => {
             element["show"] = false;
           });

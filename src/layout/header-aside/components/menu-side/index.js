@@ -27,7 +27,7 @@ export default {
            
              <ul>
                <li>
-                华南信息评测中心
+                华南信息测评中心
                </li>   
                <el-menu-item index="/Jinxm"><d2-icon name="calendar-times-o items"/>进行中的项目</el-menu-item>    
                <el-menu-item index="/woxmu"><d2-icon name="hourglass-o items1"/>我创建的项目</el-menu-item>

@@ -1059,11 +1059,12 @@ export default {
     // 生成默认值
     textChangeHandler() {
       var date = new Date();
+      console.log(this.xmu_info.data);
       let dataTs = date.getFullYear() + "";
       if (this.info.user_info.companyCode != null) {
         let lst = `${this.xmu_info.data.recordSn}-${dataTs.substring(
-          0,
-          2
+          2,
+          4
         )}-${this.info.user_info.companyCode.substring(
           this.info.user_info.companyCode.length - 6
         )}-0${this.assessmentGroup.annualReview}`;

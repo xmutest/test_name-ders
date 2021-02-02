@@ -48,7 +48,7 @@
                         <el-radio
                           size="medium"
                           v-model="radio_projectId"
-                          @change="optionTo(scope.$index, scope.row)"
+                          @change="optionTo(scope.row)"
                           :label="scope.row.projectId"
                         >
                           {{ "" }}
@@ -139,6 +139,9 @@
                         @click="xmuDelete(scope.$index, scope.row)"
                         >删除</el-button
                       >
+                      <!-- <el-button size="mini" @click="truexmuList(scope.row)"
+                        >复制</el-button
+                      > -->
                     </template>
                   </el-table-column>
                 </el-table>
@@ -340,6 +343,22 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <!-- <el-form-item
+            label="项目复制"
+            prop="itemList"
+            v-if="ua_cre == 0"
+            :label-width="formLabelWidth"
+          >
+            <el-select v-model="xmform.itemList" clearable placeholder="请选择">
+              <el-option
+                v-for="item in tableDataList"
+                :key="item.projectId"
+                :label="item.projectName"
+                :value="item.projectId"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item> -->
           <div class="dia-footer">
             <el-form-item>
               <el-button
@@ -355,6 +374,51 @@
             </el-form-item>
           </div>
         </el-form>
+      </el-dialog>
+    </div>
+    <div>
+      <!-- 复制 -->
+      <el-dialog
+        title="复制项目"
+        :close-on-click-modal="false"
+        :visible.sync="diaprojectName"
+      >
+        <el-form
+          ref="copyProjec"
+          :model="copyProjec"
+          :rules="rules"
+          size="medium"
+          label-width="120px"
+          label-position="left"
+        >
+          <el-form-item label="当前项目：" prop="copyname">
+            <span>
+              {{ copyProjec.copyname }}
+            </span>
+          </el-form-item>
+          <el-form-item label="项目名称：" prop="projectName">
+            <el-input
+              v-model="copyProjec.projectName"
+              placeholder="请输入项目名称"
+              clearable
+              :style="{ width: '100%' }"
+            >
+            </el-input>
+          </el-form-item>
+          <el-form-item label="系统名称：" prop="systemName">
+            <el-input
+              v-model="copyProjec.systemName"
+              placeholder="请输入系统名称"
+              clearable
+              :style="{ width: '100%' }"
+            >
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer">
+          <el-button @click="diaprojectName = false">取消</el-button>
+          <el-button type="primary" @click="openList">确定</el-button>
+        </div>
       </el-dialog>
     </div>
   </d2-container>
@@ -377,6 +441,7 @@ export default {
       account: "",
       getTimeDate: "",
       its_id_to: 2,
+      tableDataList: [],
       tableData: [],
       // 标准体系列表
       standardlist: [
@@ -436,6 +501,7 @@ export default {
       membersIdLists: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
+      diaprojectName: false,
       xmform: {
         projectName: "", //COMMENT '项目名称
         systemName: "", //系统名称
@@ -448,6 +514,7 @@ export default {
         sag: "", //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         membersIdList: [], //项目参与人
         status: 1,
+        itemList: null,
       },
       projectModel: {
         page: 1,
@@ -456,6 +523,15 @@ export default {
         queryType: 1,
       },
       formLabelWidth: "120px",
+      projectIdks: null,
+      // 复制
+      copyProjec: {
+        copyname: "",
+        projectName: "",
+        systemName: "",
+        projectId1: "",
+        userId: "",
+      },
       rules: {
         projectName: [
           { required: true, message: "请输入项目名称", trigger: "blur" },
@@ -554,7 +630,7 @@ export default {
       this.its_id_to = id;
     },
     // 选择项目跳转
-    async optionTo(index, row) {
+    async optionTo(row) {
       let res = await this.Project_detail(row.projectId);
       // 设置 vuex 用户信息
       await this.$store.dispatch(
@@ -624,6 +700,13 @@ export default {
           }
           // 创建
           if (ua_cre === 0) {
+            if (this.xmform.itemList !== undefined) {
+              this.copyProjec.projectId1 = this.xmform.itemList;
+              this.copyProjec.projectName = this.xmform.projectName;
+              this.copyProjec.systemName = this.xmform.systemName;
+              this.dialogFormVisible = false;
+              return this.openList();
+            }
             const res = await this.$api.API_Project_Creation(this.xmform);
             if (res.code === 20000) {
               this.$message.success("创建成功！！");
@@ -638,10 +721,15 @@ export default {
             // 修改
             const res = await this.$api.API_Project_updata(this.xmform);
             if (res.code === 20000) {
-              this.$message.success("修改成功！！");
+              this.$message({
+                type: "success",
+                message: "修改成功！！",
+                duration: 1000,
+              });
               this.dialogFormVisible = false;
               this.ProjectQueryList();
               this.resetForm("xmform");
+              this.optionTo(this.projectIdks);
               //查询列表
             } else {
               this.$message.error(res.message);
@@ -666,6 +754,15 @@ export default {
         this.radio_projectId = this.xmu_info.projectId;
       }
     },
+    //查询全部项目
+    async ProjectfindAllList() {
+      let res = await this.$api.API_Project_findAllList(this.projectModel);
+      if (res.code === 20000) {
+        this.tableDataList = res.data;
+      } else {
+        this.$message.error(res.message);
+      }
+    },
     //获取项目参与人
     async datalog_list_rom(id) {
       let userId = "";
@@ -685,6 +782,7 @@ export default {
     dialogFormVisibleList() {
       this.ua_cre = 0;
       this.selectGoodsByGroupId(this.xmform.level);
+      this.ProjectfindAllList();
       this.table_name_el = "新建项目";
       this.resetForm("xmform");
       this.datalog_list_rom();
@@ -705,7 +803,7 @@ export default {
     },
     async xmuupdata(index, row) {
       this.ua_cre = 1;
-
+      this.projectIdks = row;
       this.table_name_el = "更新项目";
       this.datalog_list_rom(row.creator);
 
@@ -740,6 +838,19 @@ export default {
         membersIdList: [], //项目参与人
         status: 1,
       };
+    },
+    // 复制
+    truexmuList(item) {
+      this.diaprojectName = true;
+      this.copyProjec.copyname = item.projectName;
+    },
+    // 复制确认
+    async openList() {
+      this.copyProjec.userId = this.info.user_info.userId;
+      let res = await this.$api.APICopyCopyProject(this.copyProjec);
+      if (res.code === 20000) {
+        this.ProjectQueryList();
+      }
     },
     // 取消
     dialogFormVisib() {

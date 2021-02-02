@@ -26,7 +26,7 @@ export default ({
     }
   },
   /**
-   * @description 查询整体评测
+   * @description 查询整体测评
    * @param {Object} data 携带的信息
    */
  async API_ProjectfindOverallEvaluation(data = {}) {
@@ -40,7 +40,7 @@ export default ({
     })
   },
   /**
-   * @description 保存整体评测
+   * @description 保存整体测评
    * @param {Object} data 携带的信息
    */
  async API_WholeEvaluationSaveWholeEvaluation(data = {}) {
@@ -53,7 +53,7 @@ export default ({
     })
   },
   /**
-   * @description 修改整体评测
+   * @description 修改整体测评
    * @param {Object} data 携带的信息
    */
  async API_ProjectupdateOverallEvaluation(data = {}) {

@@ -7,7 +7,6 @@ import d2Admin from '@/plugin/d2admin'
 // store
 import store from '@/store/index'
 import axios from 'axios'
-
 Vue.prototype.$http = axios
 // 菜单和路由设置
 import router from './router'
@@ -33,8 +32,6 @@ Vue.directive('throttle', {
     });
   }
 });
-
-
 // 画布插件
 Vue.use(require('vue-easeljs'))
 Vue.use(fabric);

@@ -52,6 +52,20 @@ export default ({
       responseType: 'blob',
     })
   },
+    /**
+   * @description 数据模板下载
+   * @param {Object} data 
+   */
+ async SYS_USER_DownLoadDocLisks(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/input/downLoadAssets',
+      method: 'get',
+      params:data,
+      responseType: 'blob',
+    })
+  },
   /**
    * @param {Object} data 
    * GET 查询项目的机房

@@ -51,10 +51,11 @@ module.exports = {
     },
     // http://survey.iscn.org.cn/evaluation/
     //http://192.168.8.72:8080/evaluation/
-    // http://192.168.43.189:8080/evaluation/
+    // http://192.168.43.178:8080/evaluation/
+    // http://172.16.4.251:8080/evaluation/
     proxy: {
       '/api': {
-        target: 'http://192.168.43.189:8080/evaluation/',
+        target: 'http://survey.iscn.org.cn/evaluation/',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

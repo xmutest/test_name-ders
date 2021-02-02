@@ -63,6 +63,15 @@ export default {
       }
     },
     {
+      path: 'projectList',
+      name: `${pre}projectList`,
+      component: _import('demo/caculateReport/projectList'),
+      meta: {
+        ...meta,
+        title: '项目计划书'
+      }
+    },
+    {
       path: 'makeAReport',
       name: `${pre}makeAReport`,
       component: _import('demo/caculateReport/makeAReport'),

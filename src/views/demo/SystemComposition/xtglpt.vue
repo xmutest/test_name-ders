@@ -14,8 +14,8 @@
           ></div>
           <el-input
             :ref="'platformExtendName' + scope.$index"
-            @input="
-              changeInput({
+            @blur="
+              schujiaodian({
                 id: scope.row.id,
                 platformExtendName: scope.row.platformExtendName,
               })
@@ -144,7 +144,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="评测指导书">
+      <el-table-column label="测评指导书">
         <template slot-scope="scope">
           <el-select
             disabled
@@ -172,6 +172,7 @@
       <el-table-column label="测评对象" width="80">
         <template slot-scope="scope">
           <el-checkbox
+            v-show="scope.row.id"
             @change="schujiaodianTm(scope.row)"
             v-model="scope.row.isEvaluationObj"
           ></el-checkbox>
@@ -194,7 +195,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
+    <!-- <div class="page_name" style="padding: 0 20px 20px 20px; margin: 15px 0">
       <div class="search_ls">
         <div class="block">
           <el-pagination
@@ -209,7 +210,7 @@
           </el-pagination>
         </div>
       </div>
-    </div>
+    </div> -->
   </d2-container>
 </template>
 
@@ -302,9 +303,9 @@ export default {
     async getlistdata() {
       let res = await this.$api.PlatformExtendFindPlatformExtend(this.formPage);
       if (res.code === 20000) {
-        let List = res.data.list;
-        this.total = res.data.total;
-        if (res.data.list.length > 0) {
+        let List = res.data;
+        // this.total = res.data.total;
+        if (res.data.length > 0) {
           List.forEach((element) => {
             if (element.isEvaluationObj == 1) {
               element.isEvaluationObj = true;

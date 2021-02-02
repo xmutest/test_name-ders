@@ -476,7 +476,11 @@ export default {
       }
       let res = await this.$api.API_Userupdate(this.xmform);
       if (res.code === 20000) {
-        this.$message.success("修改成功！！");
+         this.$message({
+            type: "success",
+            message: "修改成功！！",
+            duration: 1000
+          });
         this.dialogVisibleupdata = false;
         this.gettableData();
         //查询列表

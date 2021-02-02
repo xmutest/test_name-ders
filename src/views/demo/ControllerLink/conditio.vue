@@ -384,7 +384,7 @@ export default {
         this.BeingMeasured = List.data;
         //查询列表
       } else {
-        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
     },
     // 修改测评单位
@@ -394,7 +394,11 @@ export default {
         let res = await this.$api.API_PassiveCompanyUpdate(this.BeingMeasured);
         if (res.code === 20000) {
           if (it !== 1) {
-            this.$message.success("保存成功！！");
+            this.$message({
+              type: "success",
+              message: "保存成功！！",
+              duration: 1000,
+            });
             this.PassiveCompany();
           }
 
@@ -416,7 +420,7 @@ export default {
         this.fromdata = List.data;
         //查询列表
       } else {
-        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
     },
     async getEtlistation() {
@@ -425,10 +429,11 @@ export default {
         this.fromdataation = List.data;
         //查询列表
       } else {
-        this.$message.error(List.message + "评测依据选项出差，请联系管理员");
+        this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
     },
     async submitReportation() {
+      this.fromdataation.businessSituation = `    ${this.fromdataation.businessSituation.trim()}`;
       let res = await this.$api.API_evaluationBasis_updata(this.fromdataation);
       if (res.code === 20000) {
         this.getEtlistation();
@@ -438,6 +443,8 @@ export default {
       }
     },
     async submitReport(it) {
+      this.fromdata.lastEvaluationSituation = `    ${this.fromdata.lastEvaluationSituation.trim()}`;
+      this.fromdata.systemSituation = `    ${this.fromdata.systemSituation.trim()}`;
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       this.PassiveCompanyUpdate(it);
       this.submitReportation();

@@ -3,13 +3,13 @@
   <d2-container>
     <div class="ks_to">
       <div>
-        <div class="ks_to_name">1.下载模板(包括01-10现场记录表)，填写现场核查记录</div>
+        <div class="ks_to_name">
+          1.下载模板(包括01-10现场记录表)，填写现场核查记录
+        </div>
         <div class="ks_to_text">
           <span>(1)请勿修改模板表头和字段</span>
           <span>(2)添加资产后请勿直接复制sheet，需重新生成模板</span>
-          <span
-            >(3)"符合情况"只能填写：符合、部分符合、不符合、不适用</span
-          >
+          <span>(3)"符合情况"只能填写：符合、部分符合、不符合、不适用</span>
           <div class="ks_buttm">
             <el-link @click="ks_toBummt" icon="el-icon-download"
               >下载导入模板</el-link
@@ -39,7 +39,16 @@
           </div>
         </el-upload>
       </div>
-
+      <div>
+        <div class="ks_to_name">3.导出结果记录</div>
+        <div class="ks_to_text">
+          <div class="ks_buttm">
+            <el-link @click="ks_toBummt(2)" icon="el-icon-download"
+              >导出结果记录</el-link
+            >
+          </div>
+        </div>
+      </div>
       <!-- <div class="ks_buttm">
         <el-button type="primary" @click="ks_toBummt">导出模板</el-button>
       </div> -->
@@ -84,8 +93,7 @@ export default {
       }
       // 验证文件类型
       var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      const extension =
-        testmsg === "xlsx";
+      const extension = testmsg === "xlsx";
       if (!extension) {
         this.$message({
           message: "上传文件只能是xlsx格式!",
@@ -147,10 +155,15 @@ export default {
       // });
     },
     // 导出
-    async ks_toBummt() {
+    async ks_toBummt(item) {
       //localhost:8080/api/output/sceneCheck?projectId=8
       // console.log();
-      let url = `${window.location.protocol}${process.env.VUE_APP_API}/output/allSceneCheck?projectId=${this.xmu_info.projectId}`;
+      let url = "";
+      if (item == 2) {
+        url = `${window.location.protocol}${process.env.VUE_APP_API}/output/allSceneCheck?projectId=${this.xmu_info.projectId}`;
+      } else {
+        url = `${window.location.protocol}${process.env.VUE_APP_API}/output/allSceneCheck?projectId=${this.xmu_info.projectId}&actionType=2`;
+      }
       window.open(url);
     },
   },
@@ -160,12 +173,12 @@ export default {
 <style lang="scss" scoped>
 .ks_to {
   position: absolute;
-  top: 50%;
+  top: 20%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -20%);
   .ks_buttm {
     margin: 15px 0;
-    .el-link.el-link--default{
+    .el-link.el-link--default {
       color: burlywood;
     }
   }

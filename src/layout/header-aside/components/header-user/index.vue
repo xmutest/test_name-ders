@@ -169,7 +169,8 @@ export default {
         this.$message({
           showClose: true,
           message: '密码修改成功',
-          type: 'success'
+          type: 'success',
+          duration: 1000
         });
 
         setTimeout(function(){ return that.logout() },500)

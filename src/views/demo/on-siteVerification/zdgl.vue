@@ -103,8 +103,9 @@
                       >
                         <div>
                           <p
-                            v-for="(item3,
-                            index3) in item2.controlEntries.split(';')"
+                            v-for="(
+                              item3, index3
+                            ) in item2.controlEntries.split(';')"
                             :key="index3"
                           >
                             {{ item3 }}
@@ -130,8 +131,9 @@
                       >
                         <div>
                           <p
-                            v-for="(item3,
-                            index3) in item2.inspectionContents.split(';')"
+                            v-for="(
+                              item3, index3
+                            ) in item2.inspectionContents.split(';')"
                             :key="index3"
                           >
                             {{ item3 }}
@@ -150,8 +152,9 @@
                       >
                         <div>
                           <p
-                            v-for="(item3,
-                            index3) in item2.inspectionMethod.split(';')"
+                            v-for="(
+                              item3, index3
+                            ) in item2.inspectionMethod.split(';')"
                             :key="index3"
                           >
                             {{ item3 }}
@@ -171,8 +174,9 @@
                       >
                         <div>
                           <p
-                            v-for="(item3,
-                            index3) in item2.recommendedValue.split(';')"
+                            v-for="(
+                              item3, index3
+                            ) in item2.recommendedValue.split(';')"
                             :key="index3"
                           >
                             {{ item3 }}
@@ -194,8 +198,9 @@
                       >
                         <div>
                           <p
-                            v-for="(item3,
-                            index3) in item2.judgmentCriteria.split(';')"
+                            v-for="(
+                              item3, index3
+                            ) in item2.judgmentCriteria.split(';')"
                             :key="index3"
                           >
                             {{ item3 }}
@@ -349,7 +354,11 @@ export default {
       let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
       if (res.code === 20000) {
         this.dialogVisible = false;
-        this.$message.success("保存成功");
+        this.$message({
+          type: "success",
+          message: "保存成功！！",
+          duration: 1000,
+        });
         this.getDataList();
       }
     },
@@ -370,7 +379,11 @@ export default {
       fractionModelList.push(item);
       let res = await this.$api.SYS_FieldSurveYUpdate(fractionModelList);
       if (res.code === 20000) {
-        this.$message.success("保存成功");
+        this.$message({
+          type: "success",
+          message: "保存成功！！",
+          duration: 1000,
+        });
         this.getDataList();
       }
     },
