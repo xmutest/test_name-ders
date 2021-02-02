@@ -774,7 +774,7 @@ export default {
               message: "保存成功！！",
               duration: 1000,
             });
-        this.getEtlist();
+        // this.getEtlist();
         //查询列表
       } else {
         this.$message.error("错误，请联系管理员" + res.message);
@@ -1100,6 +1100,9 @@ export default {
       );
 
       if (res.code != 20000) return alert("保存失败");
+
+      this.submitReport()
+
       this.dialogVisible = false;
     },
     async gainHoliday(data){
