@@ -226,25 +226,28 @@ export default {
       // fractionModelList.push(item);
       let res = await this.$api.API_RiskUpdateRiskCorrection(amendAnalysis);
       if (res.code === 20000) {
-         this.$message({
-            type: "success",
-            message: "保存成功！！",
-            duration: 1000
-          });
+        this.$message({
+          type: "success",
+          message: "保存成功！！",
+          duration: 1000,
+        });
         this.getDataList();
       }
     },
     async afterAmendSeverityLis(item) {
       let amendAnalysis = item;
+      if (amendAnalysis.afterAmendRisk == "") {
+        amendAnalysis.afterAmendRisk = null;
+      }
       // let fractionModelList = [];
       // fractionModelList.push(item);
       let res = await this.$api.API_RiskUpdateAfterAmendRisk(amendAnalysis);
       if (res.code === 20000) {
-          this.$message({
-            type: "success",
-            message: "保存成功！！",
-            duration: 1000
-          });
+        this.$message({
+          type: "success",
+          message: "保存成功！！",
+          duration: 1000,
+        });
         this.getDataList();
       }
     },
