@@ -685,7 +685,7 @@ export default {
       if (res.code === 20000) {
         let data = res.data;
         this.tableData.forEach((item, index) => {
-          if (item.hasOwnProperty("projectImplementNum")) {
+          if (item.hasOwnProperty("projectImplementNum") && this.tableHead.indexOf(item.projectImplementNum) == -1) {
             for (let itm of data) {
               if (item.projectImplementNum == itm.projectImplementNum) {
                 this.tableData[index].evaluationCycle = itm.evaluationCycle;
@@ -744,7 +744,7 @@ export default {
       let table = [];
       for (let item of objectList) {
         let resT = {};
-        if (item.hasOwnProperty("projectImplementNum")) {
+        if (item.hasOwnProperty("projectImplementNum") && this.tableHead.indexOf(item.projectImplementNum) == -1) {
           resT.evaluationCycle = item["evaluationCycle"];
           resT.projectImplementNum = item["projectImplementNum"];
           resT.remarks = item["remarks"];
@@ -755,8 +755,8 @@ export default {
         }
       }
 
-      console.log('保存的数据',table)
-
+      // console.log('保存的数据',table)
+      this.submitReport()
       this.apiCreupdata(table);
     },
     // 修改或者保存
@@ -774,7 +774,7 @@ export default {
               message: "保存成功！！",
               duration: 1000,
             });
-        // this.getEtlist();
+        this.getEtlist();
         //查询列表
       } else {
         this.$message.error("错误，请联系管理员" + res.message);

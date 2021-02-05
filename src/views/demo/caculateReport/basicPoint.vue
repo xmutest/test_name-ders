@@ -48,7 +48,7 @@ export default {
     }),
   },
   created() {
-    // console.log('项目信息',this.xmu_info)
+    
     
     
   },
@@ -103,38 +103,8 @@ export default {
       this.tableImitateDate.push(totalParams)
 
       console.log('result',this.tableImitateDate)
-
-      // for (let i = 0; i < imitateData.length; i++) {
-      //   let groupName = imitateData[i].groupName;
-      //   this.tableImitateIndex.push(groupIndex);
-      //   groupIndex += imitateData[i].group.length;
-      //   for (let j = 0; j < imitateData[i].group.length; j++) {
-      //     let paramsJson = {
-      //       groName: groupName,
-      //       name: imitateData[i]["group"][j].name,
-      //       cpxs: imitateData[i]["group"][j].cpxs,
-      //       objNum: imitateData[i]["group"][j].objNum,
-      //       totalNum: imitateData[i]["group"][j].totalNum,
-      //     };
-
-      //     // 处理插入的数据
-      //     this.tableImitateDate.push(paramsJson);
-      //     // tableImitateIndex
-      //   }
-      // }
-      // this.tableImitateIndex.push(this.tableImitateDate.length);
-
-      // //将合并数量插入到对应合并首行的数据中
-      // for (let i = 0; i < this.tableImitateIndex.length - 1; i++) {
-      //   this.tableImitateDate[this.tableImitateIndex[i]].rowspan =
-      //     this.tableImitateIndex[i + 1] - this.tableImitateIndex[i];
-      // }
-
-      // console.log(this.tableImitateDate);
-      // console.log(this.tableImitateIndex);
     },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-      // for (let i = 0; i < this.tableImitateIndex.length - 1; i++) {
         if(row.colspan >= 1){
           if(columnIndex == 0){
             return {
@@ -162,19 +132,13 @@ export default {
             };
           }
         }
-      // }
     },
     async func_get_config() {
 
       let res = await this.$api.API_CalculateFractionControlStatistics();
       
-      // let {dataList} = res.data
       let {data} = res
-      // console.log(dataList)
       this.arrengeData(data)
-
-      // this.xmu_info.level  等保等级
-    // standardExtends
     },
     tableStyle({ row, column, rowIndex, columnIndex }){
         if(row.colspan >= 1){
@@ -188,9 +152,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.mude_is {
-  // margin: 20px 0;
-}
 
 table th {
     color: #909399;

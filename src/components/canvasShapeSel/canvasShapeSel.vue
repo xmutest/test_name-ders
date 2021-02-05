@@ -93,6 +93,7 @@ export default {
             margin-top:10px;
             cursor:pointer;
         }
+        
         // .guidePic1,.guidePic3{
         //     width: 279px;
         //     position: absolute;
