@@ -196,6 +196,8 @@ export default {
         this.getlistdataImg();
         if (List.data.networkStructureDescribe != null) {
           data = List.data.networkStructureDescribe;
+        }else{
+          data =`    注意${this.xmu_info.data.systemName}`;
         }
         this.fromdata.networkStructureDescribe = data;
         this.fromdata.businessDataFlow = List.data.businessDataFlow;

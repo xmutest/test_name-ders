@@ -343,7 +343,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item
+          <el-form-item
             label="项目复制"
             prop="itemList"
             v-if="ua_cre == 0"
@@ -358,7 +358,7 @@
               >
               </el-option>
             </el-select>
-          </el-form-item> -->
+          </el-form-item>
           <div class="dia-footer">
             <el-form-item>
               <el-button
