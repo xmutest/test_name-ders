@@ -14,8 +14,7 @@
               placeholder="请输入内容"
               v-model="fromdatas.verificationTest"
             >
-                          </el-input
-            >
+            </el-input>
           </div>
           <div class="mude_text_item">
             <div class="descTItle">接入点描述</div>
@@ -624,16 +623,25 @@ export default {
       if (bg.width > bg.height) {
         if(that.canvas.width <= bg.width){
           bili = that.canvas.width / bg.width;
+
+          if(bg.height * bili > that.canvas.height){
+            bili = bili * 0.5
+          }
+
         }else{
           bili = bg.width / that.canvas.width ;
         }
       } else {
         if(that.canvas.height <= bg.height){
           bili = that.canvas.height / bg.height;
+          if(bg.width * bili > that.canvas.width){
+            bili = bili * 0.5
+          }
         }else{
           bili = bg.height / that.canvas.height
         }
       }
+
 
       this.bgPic = {
         width: bg.width,
