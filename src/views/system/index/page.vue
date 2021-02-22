@@ -702,9 +702,11 @@ export default {
           // 创建
           if (ua_cre === 0) {
             if (this.xmform.itemList !== undefined) {
+              console.log(this.xmform);
               this.copyProjec.projectId1 = this.xmform.itemList;
               this.copyProjec.projectName = this.xmform.projectName;
               this.copyProjec.systemName = this.xmform.systemName;
+              this.copyProjec.recordSn = this.xmform.recordSn;
               this.dialogFormVisible = false;
               return this.openList();
             }
