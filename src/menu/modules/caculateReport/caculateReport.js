@@ -3,7 +3,18 @@ export default {
   path: '/demo/caculateReport',
   title: '统计和报告',
   icon: 'folder-o',
-  children: (pre => [{
+  children: (pre => [
+    { 
+      path: `${pre}layout/grid`,
+      title: '归档材料',
+      icon: 'tasks',
+      children: [
+        { path: `/demo/SystemComposition/import_data`, title: '测评调研表' },
+        { path: `/demo/GlobalAssessment/kssueList`, title: '测评现场记录表' },
+        { path: `${pre}diffewt`, title: '问题确认单' }
+      ]
+    },
+    {
       path: `${pre}basicPoint`,
       title: '基本指标',
       icon: '  iconfont icon-jibenzhibiao'

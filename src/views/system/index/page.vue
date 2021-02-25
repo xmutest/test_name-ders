@@ -3,7 +3,7 @@
     <div class="page_name" style="padding: 0 20px 20px 20px">
       <div class="search_ls">
         <div>
-          <span class="search_ls_name">项目名称：</span>
+          <span class="search_ls_name"> 项目/系统名称：</span>
           <el-input
             placeholder="请输入内容"
             v-model="projectModel.projectName"

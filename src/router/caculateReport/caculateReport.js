@@ -80,5 +80,14 @@ export default {
         title: '制作测评报告'
       }
     },
+    {
+      path: 'diffewt',
+      name: `${pre}diffewt`,
+      component: _import('demo/caculateReport/diffewt'),
+      meta: {
+        ...meta,
+        title: '问题确认单'
+      }
+    },
   ])('demo-caculateReport-')
 }

@@ -149,7 +149,7 @@ export default ({
     return requestword({
       url: data.url,
       method: 'get',
-      params:data.data,
+      params: data.data,
       responseType: 'blob',
     })
   },
@@ -163,7 +163,7 @@ export default ({
     return requestword({
       url: data.url,
       method: 'post',
-      data:data.data,
+      data: data.data,
       responseType: 'blob',
     })
   },
@@ -197,7 +197,7 @@ export default ({
       params: data
     })
   },
-    /**
+  /**
    * @description 检查内容
    * @param {Object} data 携带的信息
    */
@@ -209,6 +209,21 @@ export default ({
       url: '/word/checkReport',
       method: 'get',
       params: data
+    })
+  },
+  /**
+   * @description 导出问题单
+   * @param {Object} data 携带的信息
+   */
+  async API_problemConfirm(data = {}) {
+    // 接口请求
+    data.projectId = await this.get_info();
+    // data.projectId = 5;
+    return request({
+      url: '/word/problemConfirm',
+      method: 'get',
+      params: data,
+      responseType: 'blob',
     })
   },
 })
