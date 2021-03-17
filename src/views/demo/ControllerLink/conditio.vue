@@ -362,7 +362,7 @@ export default {
             trigger: "blur",
           },
           {
-            pattern: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/,
+            pattern: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
             message: "请输入正确的电子邮箱",
             trigger: "blur",
           },

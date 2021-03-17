@@ -158,13 +158,74 @@ export default {
     async ks_toBummt(item) {
       //localhost:8080/api/output/sceneCheck?projectId=8
       // console.log();
+      let reportName = `${this.xmu_info.data.systemName}_现场记录表`;
       let url = "";
       if (item == 2) {
         url = `${window.location.protocol}${process.env.VUE_APP_API}/output/allSceneCheck?projectId=${this.xmu_info.projectId}`;
       } else {
         url = `${window.location.protocol}${process.env.VUE_APP_API}/output/allSceneCheck?projectId=${this.xmu_info.projectId}&actionType=2`;
       }
-      window.open(url);
+      let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
+      try {
+        let reader = new FileReader(); // 创建读取文件对象
+
+        reader.addEventListener("loadend", function () {
+          let ress = JSON.parse(reader.result); // 返回的数据
+          if(ress){
+            alert(ress.message)
+          }
+        });
+        reader.readAsText(res, "utf-8"); // 设置读取的数据以及返回的数据类型为utf-8
+        console.log(reader.readAsText(res, "utf-8"));
+      } catch (err) {
+        let blob = new Blob([res], {
+          type: "application/zip;application/msword;charset=utf-8",
+        });
+
+        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        if (window.navigator && window.navigator.msSaveBlob) {
+          //IE浏览器、微软浏览器
+          /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+              IE可不重命名，以防万一，所以都写上比较好 */
+          window.navigator.msSaveBlob(blob, reportName);
+        } else {
+          //其他浏览器
+          let link = document.createElement("a"); // 创建a标签
+          link.style.display = "none";
+          let objectUrl = URL.createObjectURL(blob);
+          link.download = `${reportName}`;
+          link.href = objectUrl;
+          link.click();
+          URL.revokeObjectURL(objectUrl);
+        }
+      }
+
+      // if (res.code) {
+      //   alert(res.message);
+      // } else {
+      //   let blob = new Blob([res], {
+      //     type: "application/zip;application/msword;charset=utf-8",
+      //   });
+
+      //   //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+      //   if (window.navigator && window.navigator.msSaveBlob) {
+      //     //IE浏览器、微软浏览器
+      //     /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+      //         IE可不重命名，以防万一，所以都写上比较好 */
+      //     window.navigator.msSaveBlob(blob, reportName);
+      //   } else {
+      //     //其他浏览器
+      //     let link = document.createElement("a"); // 创建a标签
+      //     link.style.display = "none";
+      //     let objectUrl = URL.createObjectURL(blob);
+      //     link.download = `${reportName}`;
+      //     link.href = objectUrl;
+      //     link.click();
+      //     URL.revokeObjectURL(objectUrl);
+      //   }
+      // }
+
+      // window.open(url);
     },
   },
 };

@@ -10,9 +10,9 @@ export default {
   props: {
     //第二种方式
     toSonData: {
-      type: Number,
+      type: Object,
       default: function () {
-        return 1;
+        return {};
       },
     },
   },
@@ -28,9 +28,42 @@ export default {
     // 导出
     async ks_toBummt() {
       //localhost:8080/api/output/sceneCheck?projectId=8
-      // console.log();
-      let url = `${window.location.protocol}${process.env.VUE_APP_API}/output/sceneCheck?sceneCheckId=${this.toSonData}&projectId=${this.xmu_info.projectId}`;
-      window.open(url);
+      let reportName = this.toSonData.name;
+      let url = `${window.location.protocol}${process.env.VUE_APP_API}/output/sceneCheck?sceneCheckId=${this.toSonData.sceneCheckId}&projectId=${this.xmu_info.projectId}`;
+      let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
+      try {
+        let reader = new FileReader(); // 创建读取文件对象
+
+        reader.addEventListener("loadend", function () {
+          let ress = JSON.parse(reader.result); // 返回的数据
+          if (ress) {
+            alert(ress.message);
+          }
+        });
+        reader.readAsText(res, "utf-8"); // 设置读取的数据以及返回的数据类型为utf-8
+        console.log(reader.readAsText(res, "utf-8"));
+      } catch (err) {
+        let blob = new Blob([res], {
+          type: "application/zip;application/msword;charset=utf-8",
+        });
+
+        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        if (window.navigator && window.navigator.msSaveBlob) {
+          //IE浏览器、微软浏览器
+          /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+              IE可不重命名，以防万一，所以都写上比较好 */
+          window.navigator.msSaveBlob(blob, reportName);
+        } else {
+          //其他浏览器
+          let link = document.createElement("a"); // 创建a标签
+          link.style.display = "none";
+          let objectUrl = URL.createObjectURL(blob);
+          link.download = `${reportName}`;
+          link.href = objectUrl;
+          link.click();
+          URL.revokeObjectURL(objectUrl);
+        }
+      }
 
       // let routeUrl = URL.createObjectURL(blob);
       // const link = document.createElement("a");

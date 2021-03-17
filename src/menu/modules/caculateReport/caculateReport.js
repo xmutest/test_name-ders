@@ -11,7 +11,8 @@ export default {
       children: [
         { path: `/demo/SystemComposition/import_data`, title: '测评调研表' },
         { path: `/demo/GlobalAssessment/kssueList`, title: '测评现场记录表' },
-        { path: `${pre}diffewt`, title: '问题确认单' }
+        { path: `${pre}diffewt`, title: '问题确认单' },
+        { path: `${pre}agent`, title: '评审记录' }
       ]
     },
     {

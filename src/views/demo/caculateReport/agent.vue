@@ -7,45 +7,6 @@
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">导出问题确认单</div>
-            <el-form
-              ref="assessmentGroup"
-              :model="assessmentGroup"
-              :rules="rules"
-              size="medium"
-            >
-              <el-form-item
-                label-width="140px"
-                label="报告日期："
-                prop="reportTime"
-                class="lisT3"
-              > 
-                <el-date-picker
-                  v-model="assessmentGroup.reportTime"
-                  type="date"
-                  format="yyyy - MM - dd"
-                  value-format="timestamp"
-                  :style="{ width: '150px' }"
-                  placeholder="请选择日期"
-                ></el-date-picker>
-              </el-form-item>
-
-              <el-form-item
-                label-width="100px"
-                label="报告名称："
-                prop="reportName"
-                class="lst3"
-              >
-                <el-input
-                  v-model="assessmentGroup.reportName"
-                  placeholder="请输入报告名称："
-                  :style="{ width: '100%' }"
-                ></el-input>
-              </el-form-item>
-            </el-form>
-          </div>
-
-          <div class="tijiaobaoc">
-            <el-button type="primary" @click="submitReport">导出</el-button>
           </div>
         </el-card>
       </div>
@@ -59,32 +20,11 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      assessmentGroup: {
-        // 报告名称()
-        reportName: "",
-        // 报告日期()
-        reportTime: "",
-      },
-      rules: {
-        reportName: [
-          {
-            required: true,
-            message: "请输入报告名称",
-            trigger: "blur",
-          },
-        ],
-        reportTime: [
-          {
-            required: true,
-            message: "请选择报告日期",
-            trigger: "change",
-          },
-        ],
-      },
+      
     };
   },
   created() {
-    this.getEtlist();
+    // this.getEtlist();
   },
   computed: {
     ...mapState("d2admin", {
@@ -93,12 +33,12 @@ export default {
     }),
   },
   methods: {
-    async getEtlist() {
-      var date = new Date();
-      this.assessmentGroup.reportTime = date.getTime();
-      // ${this.xmu_info.data.systemName}
-      this.assessmentGroup.reportName = `${this.xmu_info.data.evaluatedUnit}_问题确认单`;
-    },
+    // async getEtlist() {
+    //   var date = new Date();
+    //   this.assessmentGroup.reportTime = date.getTime();
+    //   // ${this.xmu_info.data.systemName}
+    //   this.assessmentGroup.reportName = `${this.xmu_info.data.evaluatedUnit}_问题确认单`;
+    // },
     async submitReport() {
       let url = `${process.env.VUE_APP_API}/word/differenceAnalysis`;
       let data = {

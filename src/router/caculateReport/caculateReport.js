@@ -89,5 +89,14 @@ export default {
         title: '问题确认单'
       }
     },
+    {
+      path: 'agent',
+      name: `${pre}agent`,
+      component: _import('demo/caculateReport/agent'),
+      meta: {
+        ...meta,
+        title: '评审记录'
+      }
+    },
   ])('demo-caculateReport-')
 }

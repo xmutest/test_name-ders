@@ -196,8 +196,8 @@ export default {
         this.getlistdataImg();
         if (List.data.networkStructureDescribe != null) {
           data = List.data.networkStructureDescribe;
-        }else{
-          data =`     如图2-1 ${this.xmu_info.data.systemName}网络拓扑图所示，`;
+        } else {
+          data = `     如图2-1 ${this.xmu_info.data.systemName}网络拓扑图所示，`;
         }
         this.fromdata.networkStructureDescribe = data;
         this.fromdata.businessDataFlow = List.data.businessDataFlow;
@@ -209,7 +209,10 @@ export default {
     },
     async submitReport() {
       this.fromdata.networkStructureDescribe = `    ${this.fromdata.networkStructureDescribe.trim()}`;
-      this.fromdata.businessDataFlow = `    ${this.fromdata.businessDataFlow.trim()}`;
+      if (this.fromdata.businessDataFlow !== null) {
+        this.fromdata.businessDataFlow = `    ${this.fromdata.businessDataFlow.trim()}`;
+      }
+
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         this.$message({

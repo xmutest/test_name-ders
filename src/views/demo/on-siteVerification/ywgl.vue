@@ -15,7 +15,7 @@
           ></upload-qu>
         </div>
         <div>
-          <upload-dachu :toSonData="api_data.sceneCheckId"></upload-dachu>
+          <upload-dachu :toSonData="api_data"></upload-dachu>
         </div>
         <!-- 上传 toSonData：传给后台的id  sendSonData上传成功的返回值-->
       </div>
@@ -323,6 +323,7 @@ export default {
       // 请求数据
       api_data: {
         sceneCheckId: 10,
+        name:'10_安全运维管理.xlsx'
       },
     };
   },

@@ -94,7 +94,7 @@
           size="small"
           label-width="100px"
           label-position="right"
-        > 
+        >
           <el-col :span="24">
             <el-form-item label="手机号" prop="loginName">
               <el-input
@@ -384,6 +384,18 @@ export default {
           label: "渗透部",
           value: 11,
         },
+        {
+          label: "合作一部",
+          value: 12,
+        },
+        {
+          label: "合作二部",
+          value: 13,
+        },
+        {
+          label: "合作三部",
+          value: 14,
+        },
       ],
       apiList: {
         departmentId: 2,
@@ -436,6 +448,18 @@ export default {
           {
             label: "渗透部",
             value: 11,
+          },
+          {
+            label: "合作一部",
+            value: 12,
+          },
+          {
+            label: "合作二部",
+            value: 13,
+          },
+          {
+            label: "合作三部",
+            value: 14,
           },
         ];
       }
@@ -513,6 +537,18 @@ export default {
           label: "渗透部",
           value: 11,
         },
+        {
+          label: "合作一部",
+          value: 12,
+        },
+        {
+          label: "合作二部",
+          value: 13,
+        },
+        {
+          label: "合作三部",
+          value: 14,
+        },
       ];
       departmentIdOptions.forEach((item) => {
         if (item.value === depar) {
@@ -549,11 +585,11 @@ export default {
       }
       let res = await this.$api.API_Userupdate(this.xmform);
       if (res.code === 20000) {
-         this.$message({
-            type: "success",
-            message: "修改成功！！",
-            duration: 1000
-          });
+        this.$message({
+          type: "success",
+          message: "修改成功！！",
+          duration: 1000,
+        });
         this.dialogVisibleupdata = false;
         this.gettableData();
         //查询列表
@@ -597,6 +633,18 @@ export default {
         {
           label: "渗透部",
           value: 11,
+        },
+        {
+          label: "合作一部",
+          value: 12,
+        },
+        {
+          label: "合作二部",
+          value: 13,
+        },
+        {
+          label: "合作三部",
+          value: 14,
         },
       ];
     },
