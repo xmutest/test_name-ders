@@ -226,4 +226,62 @@ export default ({
       responseType: 'blob',
     })
   },
+
+  /**
+     * @description 
+  上传备案证
+     * @param {Object} data 
+     */
+  reviewloadBook(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/upload',
+      method: 'post',
+      data
+    })
+  },
+  /**
+     * @description 
+  审核列表
+     * @param {Object} data 
+     */
+  revifindListok(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/findList',
+      method: 'get',
+      params: data
+    })
+  },
+  /**
+     * @description 
+  查询质控人员
+     * @param {Object} data 
+     */
+  userFindReviewok(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/user/findReview',
+      method: 'post',
+      data
+    })
+  },
+   /**
+     * @description 
+  // 派单提交
+     * @param {Object} data 
+     */
+  userreviewSendReview(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/sendReview',
+      method: 'post',
+      params:data,
+      data
+    })
+  },
 })

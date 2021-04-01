@@ -48,7 +48,7 @@ router.beforeEach(async (to, from, next) => {
   // 验证当前路由所有的匹配中是否需要有登录验证的
   if (to.matched.some(r => r.meta.auth)) {
     if (!!window.ActiveXObject || "ActiveXObject" in window) {
-      alert('当前系统不支持ie浏览器！请更换！');
+      alert('当前系统不支持IE浏览器，建议使用Google Chrome浏览器访问！');
       next({
         name: 'login',
         query: {

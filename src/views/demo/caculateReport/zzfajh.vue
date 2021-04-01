@@ -225,12 +225,11 @@ export default {
         manageEvaluationTeam: undefined,
         penetrationTestTeam: undefined,
         reportName: undefined,
-        reportTime: null,
+        reportTime: "",
         reportType: 2,
       },
       // 现有报告
-      reportGeneratingRecords: [
-      ],
+      reportGeneratingRecords: [],
       rules: {
         ahshg: [
           {
@@ -420,11 +419,11 @@ export default {
       this.fromdata.tools = isT;
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
-         this.$message({
-            type: "success",
-            message: "保存成功！！",
-            duration: 1000
-          });
+        this.$message({
+          type: "success",
+          message: "保存成功！！",
+          duration: 1000,
+        });
         this.getEtlist();
         //查询列表
       } else {
@@ -450,9 +449,19 @@ export default {
         this.assessmentGroup.reportName = `${this.xmu_info.data.systemName}网络安全等级测评方案`;
         var date = new Date();
         this.assessmentGroup.reportTime = date.getTime();
+
         // this.getEtlistds();
       } else {
         this.$message.error("制作失败");
+      }
+      this.reportTimepdate();
+    },
+    async reportTimepdate() {
+      let res = await this.$api.API_reportTimepdate({
+        projectId: this.xmu_info.projectId,
+      });
+      if (res.data.schemeTime !== 0 && res.data.schemeTime !== "") {
+        this.assessmentGroup.reportTime = res.data.schemeTime;
       }
     },
     async getEtlist() {

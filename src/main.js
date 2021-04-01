@@ -48,8 +48,29 @@ new Vue({
   created() {
     // 处理路由 得到每一级的路由设置
     this.$store.commit('d2admin/page/init', frameInRoutes)
-    // 设置顶栏菜单
-    this.$store.commit('d2admin/menu/headerSet', menuHeader)
+    let menuHeaderList = [];
+    setTimeout(() => {
+      let userType = store.state.d2admin.user.info.userTypeId
+      if (userType == 10) {
+        menuHeader.forEach(item => {
+          if (item.typeid) {
+            menuHeaderList.push(item)
+          } else {
+            if (item.children) {
+              item.children.forEach(is => {
+                if (is.typeid) {
+                  menuHeaderList.push(is)
+                }
+              })
+            }
+          }
+        });
+      } else {
+        menuHeaderList = menuHeader
+      }
+      // 设置顶栏菜单
+      this.$store.commit('d2admin/menu/headerSet', menuHeaderList)
+    }, 50)
     // 设置侧边栏菜单
     this.$store.commit('d2admin/menu/asideSet', menuAside)
     // 初始化菜单搜索功能
@@ -69,22 +90,38 @@ new Vue({
     // 检测路由变化切换侧边栏内容 
     '$route.matched': {
       handler(matched) {
-        if (matched.length > 0) {
+        setTimeout(() => {
+          let userType = store.state.d2admin.user.info.userTypeId
+          if (matched.length > 0) {
+            const _side = menuAside.filter(menu => menu.path === matched[0].path);
+            let _sideList = [];
+            if (userType == 10) {
+              if (_side.length !== 0) {
+                _side[0].children.forEach(item => {
+                  if (item.title == '评审记录') {
+                    _sideList.push(item)
+                  }
+                })
+              }
+              this.$store.commit('d2admin/menu/asideSet', _sideList.length > 0 ? _sideList : [])
+            } else {
+              this.$store.commit('d2admin/menu/asideSet', _side.length > 0 ? _side[0].children : [])
+            }
+            // const _hide = menuHeader.filter(menu => menu.path === matched[0].path)
+            // console.log(_hide);
+            // _hide.filter(item => {
+            //   item.children = item.children.filter(it => it.lit != true);
+            //   console.log(item.children);
+            // })
+            // const ks = _side.filter(item => {
+            //   item.children = item.children.filter(it => it.lit != true);
+            //   // console.log(item.children);
+            // })
 
-          const _side = menuAside.filter(menu => menu.path === matched[0].path)
-          // const _hide = menuHeader.filter(menu => menu.path === matched[0].path)
-          // console.log(_hide);
-          // _hide.filter(item => {
-          //   item.children = item.children.filter(it => it.lit != true);
-          //   console.log(item.children);
-          // })
-          // const ks = _side.filter(item => {
-          //   item.children = item.children.filter(it => it.lit != true);
-          //   // console.log(item.children);
-          // })
-          this.$store.commit('d2admin/menu/asideSet', _side.length > 0 ? _side[0].children : [])
-          // this.$store.commit('d2admin/menu/headerSet', _side.length > 0 ? _side[0].children : [])
-        }
+            // this.$store.commit('d2admin/menu/headerSet', _side.length > 0 ? _side[0].children : [])
+          }
+        }, 50)
+
       },
       immediate: true
     }

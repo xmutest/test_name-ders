@@ -5,7 +5,11 @@ import {
 import util from '@/libs/util.js'
 import router from '@/router'
 import api from '@/api'
-
+import {
+  menuHeader,
+  menuAside
+} from '@/menu'
+import store from '@/store/index'
 export default {
   namespaced: true,
   actions: {
@@ -28,6 +32,26 @@ export default {
         password
       })
       res = res.data;
+      // 设置顶栏菜单
+      let menuHeaderList = [];
+      if (res.departmentId == 10) {
+        menuHeader.forEach(item => {
+          if (item.typeid) {
+            menuHeaderList.push(item)
+          } else {
+            if (item.children) {
+              item.children.forEach(is => {
+                if (is.typeid) {
+                  menuHeaderList.push(is)
+                }
+              })
+            }
+          }
+        });
+      } else {
+        menuHeaderList = menuHeader
+      }
+      store.commit('d2admin/menu/headerSet', menuHeaderList)
       // 设置 cookie 一定要存 uuid 和 token 两个 cookie
       // 整个系统依赖这两个数据进行校验和存储
       // uuid 是用户身份唯一标识 用户注册的时候确定 并且不可改变 不可重复
@@ -38,12 +62,13 @@ export default {
       // 设置 vuex 用户信息
       await dispatch('d2admin/user/set', {
         name: res.userName,
-        user_info: res
+        user_info: res,
+        userTypeId: res.departmentId
       }, {
         root: true
       })
       // 用户登录后从持久化数据加载一系列的设置
-      await dispatch('load')
+      await dispatch('load');
     },
     /**
      * @description 注销用户并返回登录页面

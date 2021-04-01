@@ -55,7 +55,7 @@ module.exports = {
     // http://172.16.4.251:8080/evaluation/
     proxy: {
       '/api': {
-        target: 'http://survey.iscn.org.cn/evaluation/',
+        target: 'http://172.16.4.251:8080/evaluation/',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

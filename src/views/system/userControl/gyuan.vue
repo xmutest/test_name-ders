@@ -309,7 +309,7 @@ export default {
             trigger: "blur",
           },
           {
-            pattern: /^1[3|4|5|7|8][0-9]{9}$/,
+            pattern: /^1[0-9][0-9]{9}$/,
             message: "手机号码有误，请重填",
             trigger: "blur",
           },

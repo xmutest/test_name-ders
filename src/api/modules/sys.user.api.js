@@ -211,5 +211,17 @@ export default ({
       method: 'post',
       data
     })
-  }
+  },
+  /**
+   * @description 时间设置保存
+   * @param {Object} data 
+   */
+   API_reportTimepdate(data = {}) {
+    // 接口请求
+    return request({
+      url: '/reportTime/detail',
+      method: 'get',
+      params:data
+    })
+  },
 })

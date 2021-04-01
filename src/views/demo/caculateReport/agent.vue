@@ -6,7 +6,63 @@
       <div class="mude_is_left">
         <el-card class="box-card">
           <div class="mude_text_item">
-            <div class="descTItle">导出问题确认单</div>
+            <div class="descTItle">项目基本信息</div>
+            <div class="jineginfo">
+              <div>
+                <span>项目名称：</span
+                ><span>{{ xmu_info.data.projectName }}</span>
+              </div>
+              <div>
+                <span>系统名称：</span
+                ><span>{{ xmu_info.data.systemName }}</span>
+              </div>
+              <div>
+                <span>被测单位：</span
+                ><span>{{ xmu_info.data.evaluatedUnit }}</span>
+              </div>
+              <div>
+                <span>备案证号码：</span
+                ><span>{{ xmu_info.data.recordSn }}</span>
+              </div>
+              <div>
+                <el-table :data="tabList" border style="width: 100%">
+                  <el-table-column label="报告文件名">
+                    <template slot-scope="scope">
+                      <span class="xiazaiList" @click="submitReport(scope.row, 1)">{{
+                        scope.row.fileName
+                      }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="备案证">
+                    <template slot-scope="scope">
+                      <span class="xiazaiList" @click="submitReport(scope.row, 2)">{{
+                        scope.row.recordName
+                      }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="备注">
+                    <template slot-scope="scope">
+                      {{ scope.row.remarks }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="上传人姓名" width="180">
+                    <template slot-scope="scope">
+                      {{ scope.row.userName }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="上传时间" width="150">
+                    <template slot-scope="scope">
+                      {{ scope.row.uploadTime }}
+                    </template>
+                  </el-table-column>
+                  <!-- <el-table-column label="操作"> </el-table-column> -->
+                </el-table>
+              </div>
+            </div>
+          </div>
+          <div class="mude_text_item">
+            <div class="descTItle">评审记录列表</div>
+            <div class="jineginfo"></div>
           </div>
         </el-card>
       </div>
@@ -20,10 +76,11 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      
+      tabList: [],
     };
   },
   created() {
+    this.revifindListok();
     // this.getEtlist();
   },
   computed: {
@@ -33,47 +90,53 @@ export default {
     }),
   },
   methods: {
+    // 获取列表
+    async revifindListok() {
+      let res = await this.$api.revifindListok({
+        projectId: this.xmu_info.projectId,
+      });
+      if (res.code == 20000) {
+        this.tabList = res.data;
+      }
+    },
     // async getEtlist() {
     //   var date = new Date();
     //   this.assessmentGroup.reportTime = date.getTime();
     //   // ${this.xmu_info.data.systemName}
     //   this.assessmentGroup.reportName = `${this.xmu_info.data.evaluatedUnit}_问题确认单`;
     // },
-    async submitReport() {
-      let url = `${process.env.VUE_APP_API}/word/differenceAnalysis`;
-      let data = {
-        url: url,
-        data: {
-          reportTime: this.assessmentGroup.reportTime,
-          projectId: this.xmu_info.projectId,
-        },
-      };
-      let res = await this.$api.API_problemConfirm(data);
-      if (res.code == 500) {
-        alert(res.message);
-      } else {
-        let blob = new Blob([res], {
-          type:
-            "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
-        });
+    async submitReport(val, ids) {
+      console.log(val);
+      //  下载报告
+      let url = "";
+      let fileName = "";
+      if (ids == 1) {
+        url = `${val.fileUrl}`;
+        fileName = `${val.fileName}`;
+      } else if (ids == 2) {
+        url = `${val.recordUrl}`;
+        fileName = `${val.recordName}`;
+      }
+      let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
+      let blob = new Blob([res], {
+        type: "application/msword;charset=utf-8",
+      });
 
-        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
-        if (window.navigator && window.navigator.msSaveBlob) {
-          //IE浏览器、微软浏览器
-          /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+      //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+      if (window.navigator && window.navigator.msSaveBlob) {
+        //IE浏览器、微软浏览器
+        /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
               IE可不重命名，以防万一，所以都写上比较好 */
-          window.navigator.msSaveBlob(blob, val.fileName);
-        } else {
-          //其他浏览器
-          let link = document.createElement("a"); // 创建a标签
-          link.style.display = "none";
-          let objectUrl = URL.createObjectURL(blob);
-          let reportName=`${this.assessmentGroup.reportName}.docx`
-          link.download = reportName;
-          link.href = objectUrl;
-          link.click();
-          URL.revokeObjectURL(objectUrl);
-        }
+        window.navigator.msSaveBlob(blob, fileName);
+      } else {
+        //其他浏览器
+        let link = document.createElement("a"); // 创建a标签
+        link.style.display = "none";
+        let objectUrl = URL.createObjectURL(blob);
+        link.download = fileName;
+        link.href = objectUrl;
+        link.click();
+        URL.revokeObjectURL(objectUrl);
       }
     },
   },
@@ -81,6 +144,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.xiazaiList{
+  cursor: pointer;
+  color: cornflowerblue;
+}
+.xiazaiList:hover{
+  color: red;
+  border-bottom: red solid 1px;
+}
+.jineginfo {
+  margin-left: 10px;
+  div {
+    margin: 15px 0;
+  }
+}
 .mude_is {
   margin: 20px 0;
   .mude_is_left {

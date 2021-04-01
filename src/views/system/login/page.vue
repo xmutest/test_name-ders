@@ -32,7 +32,7 @@
           </div>
           <img
             class="page-login--logo"
-            src="http://survey.iscn.org.cn/system/evaluate/img/logo.49822291.png"
+            src="http://survey.iscn.org.cn/system/evaluate/img/logo2.c2ddc0ab.png"
           />
           <!-- form -->
           <div class="page-login--form">
@@ -159,6 +159,7 @@
 import dayjs from "dayjs";
 import { mapActions } from "vuex";
 import localeMixin from "@/locales/mixin.js";
+
 export default {
   mixins: [localeMixin],
 
@@ -317,6 +318,8 @@ export default {
             loginName: this.formLogin.username,
             password: this.formLogin.password,
           }).then(() => {
+            
+
             if (this.checked == true) {
               //传入账号名，密码，和保存天数3个参数
               this.setCookie(

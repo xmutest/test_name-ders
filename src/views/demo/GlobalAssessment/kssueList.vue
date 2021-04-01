@@ -77,6 +77,15 @@ export default {
       this.assessmentGroup.reportTime = date.getTime();
       // ${this.xmu_info.data.systemName}
       this.assessmentGroup.reportName = `${this.xmu_info.data.evaluatedUnit}测评现场记录表`;
+      this.reportTimepdate();
+    },
+    async reportTimepdate() {
+      let res = await this.$api.API_reportTimepdate({
+        projectId: this.xmu_info.projectId,
+      });
+      if (res.data.sceneTime !== 0 && res.data.sceneTime !== null) {
+        this.assessmentGroup.reportTime = res.data.sceneTime;
+      }
     },
     async submitReport() {
       let url = `${process.env.VUE_APP_API}/word/sceneCheck`;

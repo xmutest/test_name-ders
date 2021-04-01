@@ -6,7 +6,7 @@ const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 const meta = {
   auth: true,
-  project:true
+  project: true
 }
 
 export default {
@@ -96,6 +96,15 @@ export default {
       meta: {
         ...meta,
         title: '评审记录'
+      }
+    },
+    {
+      path: 'reportReview',
+      name: `${pre}reportReview`,
+      component: _import('demo/caculateReport/reportReview'),
+      meta: {
+        ...meta,
+        title: '报告审核'
       }
     },
   ])('demo-caculateReport-')

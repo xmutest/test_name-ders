@@ -3,16 +3,22 @@ export default {
   path: '/demo/caculateReport',
   title: '统计和报告',
   icon: 'folder-o',
-  children: (pre => [
-    { 
+  children: (pre => [{
       path: `${pre}layout/grid`,
       title: '归档材料',
       icon: 'tasks',
-      children: [
-        { path: `/demo/SystemComposition/import_data`, title: '测评调研表' },
-        { path: `/demo/GlobalAssessment/kssueList`, title: '测评现场记录表' },
-        { path: `${pre}diffewt`, title: '问题确认单' },
-        { path: `${pre}agent`, title: '评审记录' }
+      children: [{
+          path: `/demo/SystemComposition/import_data`,
+          title: '测评调研表'
+        },
+        {
+          path: `/demo/GlobalAssessment/kssueList`,
+          title: '测评现场记录表'
+        },
+        {
+          path: `${pre}diffewt`,
+          title: '问题确认单'
+        }
       ]
     },
     {
@@ -49,6 +55,17 @@ export default {
       path: `${pre}makeAReport`,
       title: '制作测评报告',
       icon: '  iconfont icon-zhizuobaogao'
+    },
+    {
+      path: `${pre}reportReview`,
+      title: '报告审核',
+      icon: '  iconfont icon-zhizuobaogao'
+    },
+    {
+      path: `${pre}agent`,
+      title: '评审记录',
+      icon: '  iconfont icon-zhizuobaogao',
+      typeid: 2
     },
   ])('/demo/caculateReport/')
 

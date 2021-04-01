@@ -29,7 +29,8 @@ function supplementPath(menu) {
 export const menuAside = supplementPath([{
     path: '/index',
     title: '首页',
-    icon: 'home'
+    icon: 'home',
+    typeid: 2
   },
   {
     path: `/Jinxm`,
@@ -56,7 +57,8 @@ export const menuAside = supplementPath([{
 export const menuHeader = supplementPath([{
     path: '/index',
     title: '首页',
-    icon: 'home'
+    icon: 'home',
+    typeid: 2
   },
   ControllerLink,
   SystemComposition,

@@ -125,20 +125,55 @@
                       </p>
                     </template>
                   </el-table-column>
+                  <el-table-column
+                    v-if="info.userTypeId == 10 && info.user_info.userType == 3"
+                    label="派单状态"
+                    width="100"
+                  >
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span v-if="scope.row.isSend == 0">未派单</span>
+                        <span v-else>已派单</span>
+                      </p>
+                    </template>
+                  </el-table-column>
                   <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
-                      <el-button
-                        size="mini"
-                        type="primary"
-                        @click="xmuupdata(scope.$index, scope.row)"
-                        >修改</el-button
-                      >
-                      <el-button
-                        size="mini"
-                        type="danger"
-                        @click="xmuDelete(scope.$index, scope.row)"
-                        >删除</el-button
-                      >
+                      <div v-if="info.userTypeId !== 10">
+                        <el-button
+                          size="mini"
+                          type="primary"
+                          @click="xmuupdata(scope.$index, scope.row)"
+                          >修改</el-button
+                        >
+                        <el-button
+                          size="mini"
+                          type="danger"
+                          @click="xmuDelete(scope.$index, scope.row)"
+                          >删除</el-button
+                        >
+                      </div>
+                      <div v-else>
+                        <el-button
+                          v-if="info.user_info.userType == 3"
+                          size="mini"
+                          type="primary"
+                          @click="Listpaidan(scope.row)"
+                          >派单</el-button
+                        >
+                        <el-button
+                          size="mini"
+                          @click="pingshengList(scope.row)"
+                          type="primary"
+                          >评审</el-button
+                        >
+                      </div>
                       <!-- <el-button size="mini" @click="truexmuList(scope.row)"
                         >复制</el-button
                       > -->
@@ -421,6 +456,33 @@
         </div>
       </el-dialog>
     </div>
+    <div class="add_from_xmu">
+      <el-dialog
+        style="min-width: 660px"
+        :close-on-click-modal="false"
+        title="派单"
+        :visible.sync="paidanFormVisible"
+      >
+        <el-select v-model="paidanginfo.sendId" clearable placeholder="请选择">
+          <el-option
+            v-for="item in paidanFormList"
+            :key="item.userId"
+            :label="item.userName"
+            :value="item.userId"
+          >
+          </el-option>
+        </el-select>
+        <div class="dia-footer">
+          <el-button type="primary" @click="paidangtijoap()" v-throttle
+            >保存</el-button
+          >
+          <!-- <el-button type="danger" v-if="ua_cre != 1 " @click="resetForm('xmform')"
+                >重置</el-button
+              > -->
+          <el-button @click="paidanFormVisible = false">取 消</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </d2-container>
 </template>
 
@@ -543,6 +605,13 @@ export default {
         //   { required: true, message: "请选择项目参与人", trigger: "blur" },
         // ],
       },
+      // 派单
+      paidanFormVisible: false,
+      paidanFormList: [],
+      paidanginfo: {
+        sendId: "",
+        reviewId: "",
+      },
     };
   },
   computed: {
@@ -553,9 +622,59 @@ export default {
   },
   components: {},
   created() {
+    // console.log(this.info);
     this.ProjectQueryList();
   },
   methods: {
+    // 派单
+    async Listpaidan(row) {
+      this.optionTo(row);
+      let res = await this.$api.userFindReviewok();
+      this.paidanFormList = res.data;
+      this.paidanFormVisible = true;
+      this.ProjectQueryList();
+    },
+    // 评审
+    async pingshengList(row) {
+      let res = await this.Project_detail(row.projectId);
+      // 设置 vuex 用户信息
+      await this.$store.dispatch(
+        "d2admin/xmu/set",
+        {
+          name: row.projectName,
+          projectId: row.projectId,
+          data: res,
+        },
+        {
+          root: true,
+        }
+      );
+      this.$router.push({ path: "demo/caculateReport/agent" });
+    },
+    // 派单提交
+    async paidangtijoap() {
+      if (
+        this.paidanginfo.sendId == "" ||
+        this.paidanginfo.sendId == undefined
+      ) {
+        return this.$message.error("请选择人员");
+      }
+      this.paidanginfo.projectId = this.xmu_info.projectId;
+
+      let res = await this.$api.userreviewSendReview(this.paidanginfo);
+      if (res.code === 20000) {
+        this.$message({
+          message: "派单成功！！",
+          type: "success",
+        });
+        this.paidanginfo = {
+          sendId: "",
+          reviewId: "",
+        };
+        this.paidanFormVisible = false;
+        this.ProjectQueryList();
+      }
+    },
     // 搜索
     searchBi() {
       if (
@@ -632,6 +751,7 @@ export default {
     },
     // 选择项目跳转
     async optionTo(row) {
+      this.paidanginfo.reviewId = row.reviewId;
       let res = await this.Project_detail(row.projectId);
       // 设置 vuex 用户信息
       await this.$store.dispatch(

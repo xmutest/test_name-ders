@@ -249,8 +249,16 @@ export default {
         this.assessmentGroup.recordSn = this.xmu_info.data.recordSn;
         this.assessmentGroup.reportName = Nmas;
       }
-
+      this.reportTimepdate();
       // console.log(date.getTime());
+    },
+    async reportTimepdate() {
+      let res = await this.$api.API_reportTimepdate({
+        projectId: this.xmu_info.projectId,
+      });
+      if (res.data.planTime !== 0 && res.data.planTime !== null) {
+        this.assessmentGroup.reportTime = res.data.planTime;
+      }
     },
     async submitReport() {
       let url = `${process.env.VUE_APP_API}/word/missionPlan`;

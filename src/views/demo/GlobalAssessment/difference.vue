@@ -98,6 +98,15 @@ export default {
       this.assessmentGroup.reportTime = date.getTime();
       // ${this.xmu_info.data.systemName}
       this.assessmentGroup.reportName = `${this.xmu_info.data.evaluatedUnit}_差距分析报告`;
+      this.reportTimepdate();
+    },
+    async reportTimepdate() {
+      let res = await this.$api.API_reportTimepdate({
+        projectId: this.xmu_info.projectId,
+      });
+      if (res.data.analysisTime !== 0 && res.data.analysisTime !== null) {
+        this.assessmentGroup.reportTime = res.data.analysisTime;
+      }
     },
     async submitReport() {
       let url = `${process.env.VUE_APP_API}/word/differenceAnalysis`;
@@ -128,7 +137,7 @@ export default {
           let link = document.createElement("a"); // 创建a标签
           link.style.display = "none";
           let objectUrl = URL.createObjectURL(blob);
-          let reportName=`${this.assessmentGroup.reportName}.docx`
+          let reportName = `${this.assessmentGroup.reportName}.docx`;
           link.download = reportName;
           link.href = objectUrl;
           link.click();

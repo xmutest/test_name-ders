@@ -386,7 +386,7 @@
                 <el-button
                   type="primary"
                   size="small"
-                  @click="dialogFormVisible = true,CheckReportTeam()"
+                  @click="(dialogFormVisible = true), CheckReportTeam()"
                   >检查内容</el-button
                 >
                 <!-- <el-button type="primary" size="small">保存配置</el-button> -->
@@ -469,22 +469,19 @@
         :close-on-click-modal="false"
         :visible.sync="dialogFormVisible"
       >
-       <div class="dialogListTop">
-        <el-table :data="gridData">
-          <el-table-column
-            property="menu"
-            label="菜单"
-            width="150"
-          ></el-table-column>
-          <el-table-column
-            property="name"
-            label="名称"
-          ></el-table-column>
-          <el-table-column
-            property="content"
-            label="检查结果"
-          ></el-table-column>
-        </el-table>
+        <div class="dialogListTop">
+          <el-table :data="gridData">
+            <el-table-column
+              property="menu"
+              label="菜单"
+              width="150"
+            ></el-table-column>
+            <el-table-column property="name" label="名称"></el-table-column>
+            <el-table-column
+              property="content"
+              label="检查结果"
+            ></el-table-column>
+          </el-table>
         </div>
       </el-dialog>
     </div>
@@ -1076,6 +1073,15 @@ export default {
 
       // console.log(date.getTime());
       this.assessmentGroup.reportTime = date.getTime();
+      this.reportTimepdate();
+    },
+    async reportTimepdate() {
+      let res = await this.$api.API_reportTimepdate({
+        projectId: this.xmu_info.projectId,
+      });
+      if (res.data.reportTime !== 0 && res.data.reportTime !== null) {
+        this.assessmentGroup.reportTime = res.data.reportTime;
+      }
     },
     selectChange(provinceName, cityNmae) {
       this.provincesCities = provinceName;
@@ -1267,7 +1273,7 @@ export default {
   width: 50%;
   display: inline-block;
 }
-.dialogListTop{
+.dialogListTop {
   max-height: 450px;
   overflow: auto;
 }
