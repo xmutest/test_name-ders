@@ -107,5 +107,14 @@ export default {
         title: '报告审核'
       }
     },
+    {
+      path: 'daochupinfsheng',
+      name: `${pre}daochupinfsheng`,
+      component: _import('demo/caculateReport/daochupinfsheng'),
+      meta: {
+        ...meta,
+        title: '导出评审记录'
+      }
+    },
   ])('demo-caculateReport-')
 }

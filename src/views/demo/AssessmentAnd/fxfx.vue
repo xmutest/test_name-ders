@@ -233,21 +233,43 @@
                 </el-radio>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="高风险判例" v-if="fenxianList">
+            <el-tab-pane label="高风险判例" v-if="fenxianList.length != 0">
               <div class="xuna">
-                <p
-                  v-for="(item3, index3) in fenxianList.split('。')"
-                  :key="index3"
-                >
-                  {{ item3 }}
-                </p>
+                <div v-for="(item, index) in fenxianList" :key="index">
+                  <h4>{{ item.title }}</h4>
+                  <!-- <el-input
+                    type="textarea"
+                    :rows="2"
+                    readonly
+                    v-model=" "
+                  >
+                  </el-input> -->
+                  <pre
+                    >{{ item.highRiskJudge }}
+                 </pre
+                  >
+                </div>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="整改建议" v-if="fenxianList.length != 0">
+              <div class="xuna">
+                <div v-for="(item, index) in fenxianList" :key="index">
+                  <h4>{{ item.title }}</h4>
+                  {{ item.suggestion }}
+                </div>
               </div>
             </el-tab-pane>
           </el-tabs>
         </div>
         <div class="up_wt">
           <div>
-            <p>问题描述：<span v-show="this.itemName == '安全计算环境'" class="Listiption">（相关资产会在报告里面自动生成，此处不需填资产）</span></p>
+            <p>
+              问题描述：<span
+                v-show="this.itemName == '安全计算环境'"
+                class="Listiption"
+                >（相关资产会在报告里面自动生成，此处不需填资产）</span
+              >
+            </p>
             <el-input
               type="textarea"
               v-model="amendAnalysis.problemDescription"
@@ -389,7 +411,7 @@ export default {
         amendId: 1,
         safetyControlId: 136,
       },
-      fenxianList: null,
+      fenxianList: [],
       amendAnalysisVO: {},
       tsAmlist: {},
       amendAnalysis: {
@@ -533,7 +555,7 @@ export default {
       this.amendAnalysis.threatId = this.relevanceWeiList;
       Object.assign(this.amendAnalysis, this.lust);
       let res = await this.$api.API_RiskUpdateAmendAnalysis(this.amendAnalysis);
-      if (res.code == 20000) {    
+      if (res.code == 20000) {
         this.getDataList();
         this.Ts_radio = "";
       } else {
@@ -557,6 +579,14 @@ export default {
 
         this.DataListOp = res.data[2];
         this.fenxianList = res.data[3];
+        if (this.fenxianList.length != 0) {
+          let toriginalRisk =
+            this.amendAnalysis["originalRisk"] ||
+            this.amendAnalysis["riskGrade"];
+          if (toriginalRisk == undefined) {
+            this.$set(this.amendAnalysis, "originalRisk", "高");
+          }
+        }
       } else {
         this.$message.error("信息加载出错");
       }
@@ -584,7 +614,8 @@ export default {
       }
     },
     FmeListo(item) {
-      this.amendAnalysis.originalRisk = item;
+      // this.amendAnalysis.originalRisk = item;
+      this.$set(this.amendAnalysis, "originalRisk", item);
       if (item == "高") {
         this.amendAnalysis.riskGrade = 1;
       } else if (item == "中") {
@@ -734,6 +765,9 @@ export default {
     .xuna {
       overflow: auto;
       height: 135px;
+      h4 {
+        color: #08c;
+      }
       .el-radio {
         display: block;
         margin: 5px 0;
@@ -816,9 +850,14 @@ export default {
     margin-right: 5px;
   }
 }
-.Listiption{
+.Listiption {
   font-size: 12px;
   color: red;
+}
+::v-deep .el-tabs--border-card > .el-tabs__header {
+  #tab-1 {
+    color: red;
+  }
 }
 </style>
 

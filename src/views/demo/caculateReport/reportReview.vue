@@ -6,6 +6,15 @@
       <div class="mude_is_left">
         <el-card class="box-card">
           <div class="mude_text_item">
+            <div class="descTItle">类型</div>
+            <div class="ListmUPdata">
+              <el-radio-group v-model="sendType">
+                <el-radio :label="1">报告</el-radio>
+                <el-radio :label="3">方案</el-radio>
+              </el-radio-group>
+            </div>
+          </div>
+          <div class="mude_text_item">
             <div class="descTItle">测评报告</div>
             <div class="ListmUPdata">
               <el-upload
@@ -19,7 +28,6 @@
                 :auto-upload="false"
                 :on-change="fileChangeformFileList"
                 multiple
-                accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
               >
                 <el-button size="mini" type="primary">上传测评报告</el-button>
               </el-upload>
@@ -39,13 +47,12 @@
                 :auto-upload="false"
                 :on-change="fileChangeformpanFileList"
                 multiple
-                accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
               >
                 <el-button size="mini" type="primary">上传备案证</el-button>
               </el-upload>
             </div>
           </div>
-          <div class="mude_text_item">
+          <div style="max-width: 996px" class="mude_text_item">
             <div class="descTItle">备注</div>
             <el-input
               type="textarea"
@@ -62,15 +69,22 @@
           </div>
 
           <div class="">
-            <div class="descTItle">报告审核记录</div>
+            <div class="descTItle">报告审核列表</div>
             <div class="">
               <el-table :data="tabList" border style="width: 100%">
+                <el-table-column label="类型" width="100">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.fileType == 1 ? "报告" : "方案" }}</span>
+                  </template>
+                </el-table-column>
                 <el-table-column label="报告文件名">
                   <template slot-scope="scope">
                     <span
                       class="xiazaiList"
-                      @click="submitReport(scope.row, 1)"
-                      >{{ scope.row.fileName }}</span
+                      v-for="item in scope.row.reportReviewModels"
+                      :key="item.id"
+                      @click="submitReport(item, 1)"
+                      >{{ item.fileName }}</span
                     >
                   </template>
                 </el-table-column>
@@ -83,17 +97,18 @@
                     >
                   </template>
                 </el-table-column>
+
                 <el-table-column label="备注">
                   <template slot-scope="scope">
                     {{ scope.row.remarks }}
                   </template>
                 </el-table-column>
-                <el-table-column label="上传人姓名" width="180">
+                <el-table-column label="上传人姓名" width="150">
                   <template slot-scope="scope">
                     {{ scope.row.userName }}
                   </template>
                 </el-table-column>
-                <el-table-column label="上传时间" width="150">
+                <el-table-column label="上传时间" width="180">
                   <template slot-scope="scope">
                     {{ scope.row.uploadTime }}
                   </template>
@@ -101,6 +116,128 @@
                 <!-- <el-table-column label="操作"> </el-table-column> -->
               </el-table>
             </div>
+          </div>
+          <div class="mude_text_item">
+            <div class="descTItle">
+              <div>报告评审记录列表</div>
+            </div>
+            <el-table :data="pcLinfotabList" border style="width: 100%">
+              <el-table-column label="评审过程记录">
+                <template slot-scope="scope">
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6 }"
+                    readonly
+                    v-model="scope.row.reviewRecord"
+                  >
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="评审意见">
+                <template slot-scope="scope">
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6 }"
+                    readonly
+                    v-model="scope.row.reviewOpinion"
+                  >
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="附件">
+                <template slot-scope="scope">
+                  <p
+                    v-for="item in scope.row.reportReviewModels"
+                    @click="submitReport(item, 1)"
+                    class="xiazaiList"
+                    :key="item.id"
+                  >
+                    {{ item.fileName }}
+                  </p>
+                </template>
+              </el-table-column>
+
+              <el-table-column label="时间" width="150">
+                <template slot-scope="scope">
+                  {{ scope.row.reviewFirstTime }}
+                </template>
+              </el-table-column>
+              <el-table-column label="审核人" width="100">
+                <template slot-scope="scope">
+                  {{ scope.row.userName }}
+                </template>
+              </el-table-column>
+              <!-- <el-table-column label="操作" width="100">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    @click="infodeiList(scope.row)"
+                    type="primary"
+                    >详细</el-button
+                  >
+                </template>
+              </el-table-column> -->
+            </el-table>
+          </div>
+          <div class="mude_text_item">
+            <div class="descTItle">
+              <div>方案评审记录列表</div>
+              <div class="boot_an">
+                <el-button
+                  type="primary"
+                  v-if="info.userTypeId == 10"
+                  @click="addListks(2)"
+                  size="mini"
+                  >新建方案评审记录</el-button
+                >
+              </div>
+            </div>
+            <el-table :data="fanganfotabList" border style="width: 100%">
+              <el-table-column label="评审过程记录">
+                <template slot-scope="scope">
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6 }"
+                    readonly
+                    v-model="scope.row.reviewRecord"
+                  >
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="评审意见">
+                <template slot-scope="scope">
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6 }"
+                    readonly
+                    v-model="scope.row.reviewOpinion"
+                  >
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="附件">
+                <template slot-scope="scope">
+                  <p
+                    v-for="item in scope.row.reportReviewModels"
+                    @click="submitReport(item, 1)"
+                    class="xiazaiList"
+                    :key="item.id"
+                  >
+                    {{ item.fileName }}
+                  </p>
+                </template>
+              </el-table-column>
+              <el-table-column label="审核人" width="100">
+                <template slot-scope="scope">
+                  {{ scope.row.userName }}
+                </template>
+              </el-table-column>
+              <el-table-column label="时间" width="150">
+                <template slot-scope="scope">
+                  {{ scope.row.time }}
+                </template>
+              </el-table-column>
+            </el-table>
           </div>
         </el-card>
       </div>
@@ -120,6 +257,10 @@ export default {
       formpanFileList: [], // 显示备案证上传文件
       projemList: "",
       tabList: [],
+      pcLinfotabList: [],
+      // 文件类型
+      sendType: 1,
+      fanganfotabList: [],
     };
   },
   created() {
@@ -132,6 +273,17 @@ export default {
     }),
   },
   methods: {
+    // 查询评审记录列表
+    async userreviewFind() {
+      let res = await this.$api.userreviewFind({
+        projectId: this.xmu_info.projectId,
+      });
+      this.pcLinfotabList = res.data;
+      let refangan = await this.$api.userreviewfindPlan({
+        projectId: this.xmu_info.projectId,
+      });
+      this.fanganfotabList = refangan.data;
+    },
     // 获取列表
     async revifindListok() {
       let res = await this.$api.revifindListok({
@@ -140,6 +292,7 @@ export default {
       if (res.code == 20000) {
         this.tabList = res.data;
       }
+      this.userreviewFind();
     },
     // 开始上传前验证
     beforeUploadForm(file) {
@@ -216,6 +369,7 @@ export default {
       formData.append("projectId", thiz.xmu_info.projectId);
       formData.append("remarks", thiz.projemList);
       formData.append("userName", thiz.info.name);
+      formData.append("sendType", thiz.sendType);
       let res = await thiz.$api.reviewloadBook(formData);
       if (res.code == 20000) {
         this.$message({
@@ -293,7 +447,7 @@ export default {
 }
 .mude_text_item {
   margin: 15px 0;
-  max-width: 996px;
+
   .ListmUPdata {
     margin-left: 15px;
   }
@@ -301,6 +455,7 @@ export default {
 .xiazaiList {
   cursor: pointer;
   color: cornflowerblue;
+  display: inline-block;
 }
 .xiazaiList:hover {
   color: red;

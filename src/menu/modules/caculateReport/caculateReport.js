@@ -18,6 +18,10 @@ export default {
         {
           path: `${pre}diffewt`,
           title: '问题确认单'
+        },
+        {
+          path: `${pre}daochupinfsheng`,
+          title: '导出评审记录'
         }
       ]
     },

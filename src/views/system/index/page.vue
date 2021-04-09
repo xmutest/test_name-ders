@@ -21,7 +21,7 @@
             circle
           ></el-button>
         </div>
-        <div class="die_roift">
+        <div v-if="info.userTypeId != 10" class="die_roift">
           <el-button @click="dialogFormVisibleList" type="primary"
             ><i class="el-icon--left el-icon-circle-plus-outline"></i
             >新增</el-button
@@ -140,6 +140,23 @@
                       >
                         <span v-if="scope.row.isSend == 0">未派单</span>
                         <span v-else>已派单</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    v-if="info.userTypeId == 10 && info.user_info.userType == 3"
+                    label="审核人员"
+                    width="100"
+                  >
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{ scope.row.approvedName }}</span>
                       </p>
                     </template>
                   </el-table-column>
@@ -534,7 +551,9 @@ export default {
         },
         {
           id: 3,
-          value: [{ label: "GBT22239-2019", value: 1 }],
+          value: [{ label: "GBT22239-2019", value: 1 },
+          // { label: "金融行业", value: 5 },
+          ],
         },
       ],
       //等级保护
@@ -643,6 +662,7 @@ export default {
         {
           name: row.projectName,
           projectId: row.projectId,
+          reviewId: row.reviewId,
           data: res,
         },
         {
@@ -759,6 +779,7 @@ export default {
         {
           name: row.projectName,
           projectId: row.projectId,
+          reviewId: row.reviewId,
           data: res,
         },
         {

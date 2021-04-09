@@ -226,7 +226,21 @@ export default ({
       responseType: 'blob',
     })
   },
-
+  /**
+   * @description 导出初审表
+   * @param {Object} data 携带的信息
+   */
+  async API_reviewFirstfirm(data = {}) {
+    // 接口请求
+    data.projectId = await this.get_info();
+    // data.projectId = 5;
+    return request({
+      url: '/word/reviewFirst',
+      method: 'get',
+      params: data,
+      responseType: 'blob',
+    })
+  },
   /**
      * @description 
   上传备案证
@@ -269,7 +283,7 @@ export default ({
       data
     })
   },
-   /**
+  /**
      * @description 
   // 派单提交
      * @param {Object} data 
@@ -280,8 +294,78 @@ export default ({
     return request({
       url: '/review/sendReview',
       method: 'post',
-      params:data,
+      params: data,
       data
+    })
+  },
+  /**
+     * @description 
+  // 获取中级测评师
+     * @param {Object} data 
+     */
+  userreviewfindAssessor(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/user/findAssessor',
+      method: 'post',
+      params: data,
+      data
+    })
+  },
+  /**
+     * @description 
+  GET /passiveCompany/findModel
+查询被测单位信息
+     * @param {Object} data 
+     */
+  userpassiveCompany(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/passiveCompany/findModel',
+      method: 'get',
+      params: data
+    })
+  },
+  // 新建测评记录
+  userreviewSave(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/save',
+      method: 'post',
+      data
+    })
+  },
+   // 新建方案记录
+   userresavePlan(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/savePlan',
+      method: 'post',
+      data
+    })
+  },
+  // 查询测评报告记录
+  userreviewFind(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/find',
+      method: 'get',
+      params: data
+    })
+  },
+   // 查询测评方案记录
+   userreviewfindPlan(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/findPlan',
+      method: 'get',
+      params: data
     })
   },
 })
