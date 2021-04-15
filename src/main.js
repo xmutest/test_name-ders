@@ -66,6 +66,11 @@ new Vue({
           }
         });
       } else {
+        menuHeader.forEach(item => {
+          if (item.title == "统计和报告") {
+            item.children.pop()
+          }
+        })
         menuHeaderList = menuHeader
       }
       // 设置顶栏菜单
@@ -105,6 +110,12 @@ new Vue({
               }
               this.$store.commit('d2admin/menu/asideSet', _sideList.length > 0 ? _sideList : [])
             } else {
+              if (_side.length != 0) {
+                if (_side[0].title == "统计和报告") {
+                  _side[0].children = _side[0].children.filter(item => item.title != "评审记录")
+                }
+              }
+
               this.$store.commit('d2admin/menu/asideSet', _side.length > 0 ? _side[0].children : [])
             }
             // const _hide = menuHeader.filter(menu => menu.path === matched[0].path)

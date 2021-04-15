@@ -62,7 +62,7 @@ export default {
     },
     {
       path: `${pre}reportReview`,
-      title: '报告审核',
+      title: '方案/报告审核',
       icon: '  iconfont icon-zhizuobaogao'
     },
     {

@@ -125,6 +125,19 @@
                       </p>
                     </template>
                   </el-table-column>
+                  <el-table-column label="状态" width="100">
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{ scope.row.status }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
                   <el-table-column
                     v-if="info.userTypeId == 10 && info.user_info.userType == 3"
                     label="派单状态"
@@ -551,8 +564,9 @@ export default {
         },
         {
           id: 3,
-          value: [{ label: "GBT22239-2019", value: 1 },
-          // { label: "金融行业", value: 5 },
+          value: [
+            { label: "GBT22239-2019", value: 1 },
+            { label: "金融行业", value: 5 },
           ],
         },
       ],

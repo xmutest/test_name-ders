@@ -1,4 +1,4 @@
-
+<!--安全物理环境-->
 <template>
   <d2-container>
     <div v-if="dataList.length > 0">
@@ -24,6 +24,7 @@
         title="已有安全措施"
         :visible.sync="dialogVisible"
         width="80%"
+        :close-on-click-modal="false"
         :before-close="handleClose"
       >
         <div class="table_To1"></div>
@@ -54,237 +55,264 @@
         </div>
       </el-dialog>
       <div class="ts_table">
-        <div
-          v-for="Its in dataList"
-          :name="Its.name + Its.id"
-          :key="Its.id"
-          :label="Its.name"
+        <el-tabs
+          v-loading="loading"
+          v-model="activeNameTabs"
+          class="container-tab"
+          type="border-card"
         >
-          <div v-if="activeNameTabs == Its.name + Its.id">
-            <table id="partnerTable">
-              <thead>
-                <tr>
-                  <th style="width: 100px">安全控制点</th>
-                  <th>控制项</th>
-                  <th>检查内容</th>
-                  <th>检查方法</th>
-                  <th>推荐值</th>
-                  <th>判断标准</th>
-                  <th>结果记录</th>
-                  <th style="width: 140px">符合情况</th>
-                  <th>备注</th>
-                  <th style="width: 50px">权重</th>
-                </tr>
-              </thead>
-              <template v-for="(ite, ins) in Its.safetyControls">
-                <tr class="List_b" :key="ins">
-                  <td colspan="10">{{ ite.name }}</td>
-                </tr>
-                <tbody v-for="item1 in ite.content" :key="item1.id">
-                  <tr v-for="(item2, index) in item1.contentList" :key="index">
-                    <td v-if="!index" :rowspan="item1.contentList.length">
-                      {{ item1.safetyControlSpot }}
-                    </td>
-                    <td
-                      :style="
-                        item2.accordSituation
-                          ? {
-                              'background-color':
-                                itemsCoacr[item2.accordSituation].color,
-                            }
-                          : ''
-                      "
-                    >
-                      <el-popover
-                        title="控制项"
-                        trigger="click"
-                        placement="top"
-                      >
-                        <div>
-                          <p
-                            v-for="(item3,
-                            index3) in item2.controlEntries.split(';')"
-                            :key="index3"
-                          >
-                            {{ item3 }}
-                          </p>
-                        </div>
-                        <div slot="reference" class="name-wrapper">
-                          <span v-if="item2.accordSituation != 4">{{
-                            item2.controlEntries.substr(0, 35)
-                          }}</span>
-                          <span v-else-if="item2.accordSituation == 4"
-                            ><del>{{
-                              item2.controlEntries.substr(0, 35)
-                            }}</del></span
-                          >
-                        </div>
-                      </el-popover>
-                    </td>
-                    <td>
-                      <el-popover
-                        title="检查内容"
-                        trigger="click"
-                        placement="top"
-                      >
-                        <div>
-                          <p
-                            v-for="(item3,
-                            index3) in item2.inspectionContents.split(';')"
-                            :key="index3"
-                          >
-                            {{ item3 }}
-                          </p>
-                        </div>
-                        <div slot="reference" class="name-wrapper">
-                          {{ item2.inspectionContents.substr(0, 35) }}
-                        </div>
-                      </el-popover>
-                    </td>
-                    <td>
-                      <el-popover
-                        title="检查方法"
-                        trigger="click"
-                        placement="top"
-                      >
-                        <div>
-                          <p
-                            v-for="(item3,
-                            index3) in item2.inspectionMethod.split(';')"
-                            :key="index3"
-                          >
-                            {{ item3 }}
-                          </p>
-                        </div>
-                        <div slot="reference" class="name-wrapper">
-                          {{ item2.inspectionMethod.substr(0, 35) }}
-                        </div>
-                      </el-popover>
-                    </td>
-                    <td>
-                      <el-popover
-                        title="推荐值"
-                        v-if="item2.recommendedValue"
-                        trigger="click"
-                        placement="top"
-                      >
-                        <div>
-                          <p
-                            v-for="(item3,
-                            index3) in item2.recommendedValue.split(';')"
-                            :key="index3"
-                          >
-                            {{ item3 }}
-                          </p>
-                        </div>
-                        <div slot="reference" class="name-wrapper">
-                          {{ item2.recommendedValue.substr(0, 35) }}
-                        </div>
-                      </el-popover>
-                      <div v-else>
-                        {{ item2.recommendedValue }}
-                      </div>
-                    </td>
-                    <td>
-                      <el-popover
-                        title="判断标准"
-                        trigger="click"
-                        placement="top"
-                      >
-                        <div>
-                          <p
-                            v-for="(item3,
-                            index3) in item2.judgmentCriteria.split(';')"
-                            :key="index3"
-                          >
-                            {{ item3 }}
-                          </p>
-                        </div>
-                        <div slot="reference" class="name-wrapper">
-                          {{ item2.judgmentCriteria.substr(0, 35) }}
-                        </div>
-                      </el-popover>
-                    </td>
-                    <td>
-                      <el-popover trigger="click" placement="top">
-                        <div>
-                          <el-input
-                            type="textarea"
-                            :autosize="{ minRows: 8, maxRows: 12 }"
-                            placeholder="请输入内容"
-                            v-model="item2.recordResults"
-                            @blur="Totisadd(item2)"
-                          >
-                          </el-input>
-                        </div>
-                        <div
-                          slot="reference"
-                          v-if="item2.recordResults"
-                          class="name-wrapper"
-                        >
-                          {{ item2.recordResults.substr(0, 35) }}
-                        </div>
-                        <div
-                          style="min-height: 100px"
-                          slot="reference"
-                          v-else
-                          class="name-wrapper"
-                        >
-                          <span style="opacity: 0">点击填写</span>
-                        </div>
-                      </el-popover>
-                    </td>
-                    <td>
-                      <el-select
-                        v-model="item2.accordSituation"
-                        @change="Totisadd(item2)"
-                        placeholder="请选择"
-                      >
-                        <el-option
-                          v-for="item in accordSituationlist"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
-                        >
-                        </el-option>
-                      </el-select>
-                    </td>
-                    <td>
-                      <el-popover trigger="click" placement="top">
-                        <div>
-                          <el-input
-                            type="textarea"
-                            :autosize="{ minRows: 4, maxRows: 8 }"
-                            placeholder="请输入内容"
-                            v-model="item2.remark"
-                            @blur="Totisadd(item2)"
-                          >
-                          </el-input>
-                        </div>
-                        <div
-                          slot="reference"
-                          v-if="item2.remark"
-                          class="name-wrapper"
-                        >
-                          {{ item2.remark.substr(0, 35) }}
-                        </div>
-                        <div
-                          style="min-height: 100px"
-                          slot="reference"
-                          v-else
-                          class="name-wrapper"
-                        >
-                          <span style="opacity: 0">点击填写备注</span>
-                        </div>
-                      </el-popover>
-                    </td>
-                    <td>{{ item2.weight }}</td>
+          <el-tab-pane
+            v-for="Its in dataList"
+            :name="Its.name + Its.id"
+            :key="Its.id"
+            :label="Its.name"
+          >
+            <div v-if="activeNameTabs == Its.name + Its.id">
+              <table id="partnerTable">
+                <thead>
+                  <tr>
+                    <th style="width: 100px">安全控制点</th>
+                    <th>控制项</th>
+                    <th>检查内容</th>
+                    <th>检查方法</th>
+                    <th>推荐值</th>
+                    <th>判断标准</th>
+                    <th>结果记录</th>
+                    <th style="width: 140px">符合情况</th>
+                    <th>建议</th>
+                    <th style="width: 50px">权重</th>
                   </tr>
-                </tbody>
-              </template>
-            </table>
-          </div>
-        </div>
+                </thead>
+                <template v-for="(ite, ins) in Its.safetyControls">
+                  <tr class="List_b" :key="ins">
+                    <td colspan="10">{{ ite.name }}</td>
+                  </tr>
+                  <tbody v-for="item1 in ite.content" :key="item1.id">
+                    <tr
+                      v-for="(item2, index) in item1.contentList"
+                      :key="index"
+                    >
+                      <td v-if="!index" :rowspan="item1.contentList.length">
+                        {{ item1.safetyControlSpot }}
+                      </td>
+                      <td
+                        :style="
+                          item2.accordSituation
+                            ? {
+                                'background-color':
+                                  itemsCoacr[item2.accordSituation].color,
+                              }
+                            : ''
+                        "
+                      >
+                        <el-popover
+                          title="控制项"
+                          trigger="click"
+                          placement="top"
+                        >
+                          <div>
+                            <p
+                              v-for="(
+                                item3, index3
+                              ) in item2.controlEntries.split(';')"
+                              :key="index3"
+                            >
+                              {{ item3 }}
+                            </p>
+                          </div>
+                          <div slot="reference" class="name-wrapper">
+                            <span v-if="item2.accordSituation != 4">{{
+                              item2.controlEntries.substr(0, 35)
+                            }}</span>
+                            <span v-else-if="item2.accordSituation == 4"
+                              ><del>{{
+                                item2.controlEntries.substr(0, 35)
+                              }}</del></span
+                            >
+                          </div>
+                        </el-popover>
+                      </td>
+                      <td>
+                        <el-popover
+                          title="检查内容"
+                          v-if="item2.inspectionContents"
+                          trigger="click"
+                          placement="top"
+                        >
+                          <div>
+                            <p
+                              v-for="(
+                                item3, index3
+                              ) in item2.inspectionContents.split(';')"
+                              :key="index3"
+                            >
+                              {{ item3 }}
+                            </p>
+                          </div>
+                          <div slot="reference" class="name-wrapper">
+                            {{ item2.inspectionContents.substr(0, 35) }}
+                          </div>
+                        </el-popover>
+                        <div v-else>
+                          {{ item2.inspectionContents }}
+                        </div>
+                      </td>
+                      <td>
+                        <el-popover
+                          title="检查方法"
+                          trigger="click"
+                          placement="top"
+                          v-if="item2.inspectionMethod"
+                        >
+                          <div>
+                            <p
+                              v-for="(
+                                item3, index3
+                              ) in item2.inspectionMethod.split(';')"
+                              :key="index3"
+                            >
+                              {{ item3 }}
+                            </p>
+                          </div>
+                          <div slot="reference" class="name-wrapper">
+                            {{ item2.inspectionMethod.substr(0, 35) }}
+                          </div>
+                        </el-popover>
+                        <div v-else>
+                          {{ item2.inspectionMethod }}
+                        </div>
+                      </td>
+                      <td>
+                        <el-popover
+                          title="推荐值"
+                          v-if="item2.recommendedValue"
+                          trigger="click"
+                          placement="top"
+                        >
+                          <div>
+                            <p
+                              v-for="(
+                                item3, index3
+                              ) in item2.recommendedValue.split(';')"
+                              :key="index3"
+                            >
+                              {{ item3 }}
+                            </p>
+                          </div>
+                          <div slot="reference" class="name-wrapper">
+                            {{ item2.recommendedValue.substr(0, 35) }}
+                          </div>
+                        </el-popover>
+                        <div v-else>
+                          {{ item2.recommendedValue }}
+                        </div>
+                      </td>
+                      <td>
+                        <el-popover
+                          title="判断标准"
+                          trigger="click"
+                          placement="top"
+                          v-if="item2.judgmentCriteria"
+                        >
+                          <div>
+                            <p
+                              v-for="(
+                                item3, index3
+                              ) in item2.judgmentCriteria.split(';')"
+                              :key="index3"
+                            >
+                              {{ item3 }}
+                            </p>
+                          </div>
+                          <div slot="reference" class="name-wrapper">
+                            {{ item2.judgmentCriteria.substr(0, 35) }}
+                          </div>
+                        </el-popover>
+                        <div v-else>
+                          {{ item2.judgmentCriteria }}
+                        </div>
+                      </td>
+                      <td>
+                        <el-popover trigger="click" placement="top">
+                          <div>
+                            <el-input
+                              type="textarea"
+                              :autosize="{ minRows: 8, maxRows: 12 }"
+                              placeholder="请输入内容"
+                              v-model="item2.recordResults"
+                              @blur="Totisadd(item2)"
+                            >
+                            </el-input>
+                          </div>
+                          <div
+                            slot="reference"
+                            v-if="item2.recordResults"
+                            class="name-wrapper"
+                          >
+                            {{ item2.recordResults.substr(0, 35) }}
+                          </div>
+                          <div
+                            style="min-height: 100px"
+                            slot="reference"
+                            v-else
+                            class="name-wrapper"
+                          >
+                            <span style="opacity: 0">点击填写</span>
+                          </div>
+                        </el-popover>
+                      </td>
+                      <td>
+                        <el-select
+                          v-model="item2.accordSituation"
+                          @change="Totisadd(item2)"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="item in accordSituationlist"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                          >
+                          </el-option>
+                        </el-select>
+                      </td>
+                      <td>
+                        <el-popover trigger="click" placement="top">
+                          <div>
+                            <el-input
+                              type="textarea"
+                              :autosize="{ minRows: 4, maxRows: 8 }"
+                              placeholder="请输入内容"
+                              v-model="item2.remark"
+                              @blur="Totisadd(item2)"
+                            >
+                            </el-input>
+                          </div>
+                          <div
+                            slot="reference"
+                            v-if="item2.remark"
+                            class="name-wrapper"
+                          >
+                            {{ item2.remark.substr(0, 35) }}
+                          </div>
+                          <div
+                            style="min-height: 100px"
+                            slot="reference"
+                            v-else
+                            class="name-wrapper"
+                          >
+                            <span style="opacity: 0">点击填写备注</span>
+                          </div>
+                        </el-popover>
+                      </td>
+                      <td>{{ item2.weight }}</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </table>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
       </div>
     </div>
     <div v-else>
@@ -322,7 +350,7 @@ export default {
       // 请求数据
       api_data: {
         sceneCheckId: 8,
-        name:'08_安全管理人员.xlsx'
+        name: "08_安全管理人员.xlsx",
       },
     };
   },
@@ -348,11 +376,6 @@ export default {
       fractionModelList.push(item);
       let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
       if (res.code === 20000) {
-         this.$message({
-              type: "success",
-              message: "保存成功！！",
-              duration: 1000,
-            });
         this.dialogVisible = false;
         this.getDataList();
       }
@@ -374,18 +397,20 @@ export default {
       fractionModelList.push(item);
       let res = await this.$api.SYS_FieldSurveYUpdate(fractionModelList);
       if (res.code === 20000) {
-         this.$message({
-              type: "success",
-              message: "保存成功！！",
-              duration: 1000,
-            });
         this.getDataList();
       }
     },
     async getDataList() {
+      let loading = this.$loading({
+        lock: true,
+        text: "拉取数据中，请稍候...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       this.loading = true;
       const res = await this.$api.SYS_FieldSurveyFindAssetsList(this.api_data);
       if (res.code === 20000) {
+        loading.close();
         if (res.data.assetsList.length == 0) {
           this.loading = false;
           return;
@@ -397,12 +422,14 @@ export default {
         }
         this.loading = false;
         this.dataList = listTs;
-        this.ToMitList.forEach((element) => {
-          if (element.content == null) {
-            this.submitReporAdd(element);
-          }
-        });
       }
+      loading.close();
+      this.ToMitList.forEach((element) => {
+        if (element.content == null) {
+          this.submitReporAdd(element);
+        }
+      });
+      loading.close();
       //  const res= await this.$http.get('/api/safetyControl/findSpotByBookId',{params:this.api_data});
       //  this.dataList=res.data.data;
     },
@@ -454,5 +481,11 @@ export default {
   td {
     color: #fff !important;
   }
+}
+::v-deep .el-tabs--border-card > .el-tabs__header {
+  position: sticky;
+  top: -21px;
+  z-index: 1;
+  padding: 5px 0px;
 }
 </style>

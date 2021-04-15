@@ -262,7 +262,6 @@ export default {
     is_preserve(item, Itzm, sortNum) {
       var itss = this.t_sys_boundary;
       this.Itzm = Itzm;
-      console.log();
       var list = {
         boundaryName: "",
         accessMethod: "",

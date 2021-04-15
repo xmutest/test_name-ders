@@ -593,15 +593,22 @@ export default {
     },
     async getDataList() {
       // let its = dataLists;
-
+      let loading = this.$loading({
+        lock: true,
+        text: "拉取数据中，请稍候...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       // this.dataList = its.data.pageData;
       let res = await this.$api.API_RiskFindAmendAnalysis(this.api_data);
       if (res.code == 20000) {
         this.dataList = res.data.pageData;
         this.Toamount = res.data.count + 5;
         this.Ts_radio = "";
+        loading.close();
       } else {
         this.$message.error("信息加载出错");
+        loading.close();
       }
     },
     // 获取关联威胁

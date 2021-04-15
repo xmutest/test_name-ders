@@ -6,7 +6,7 @@
       <div class="mude_is_left">
         <el-card class="box-card">
           <div class="mude_text_item">
-            <div class="descTItle">导出评审记录</div>
+            <div class="descTItle">报告评审记录列表</div>
             <el-table :data="pcLinfotabList" border style="width: 100%">
               <el-table-column label="评审意见">
                 <template slot-scope="scope">
@@ -47,6 +47,51 @@
               </el-table-column>
             </el-table>
           </div>
+          <div class="mude_text_item">
+            <div class="descTItle">
+              <div>方案评审记录列表</div>
+            </div>
+            <el-table :data="fanganfotabList" border style="width: 100%">
+              <el-table-column label="评审意见">
+                <template slot-scope="scope">
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6 }"
+                    readonly
+                    v-model="scope.row.reviewOpinion"
+                  >
+                  </el-input>
+                </template>
+              </el-table-column>
+
+              <el-table-column label="审核人" width="100">
+                <template slot-scope="scope">
+                  {{ scope.row.userName }}
+                </template>
+              </el-table-column>
+              <el-table-column label="时间" width="150">
+                <template slot-scope="scope">
+                  {{ scope.row.time }}
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="200">
+                <template slot-scope="scope">
+                  <el-button
+                    type="primary"
+                    size="mini"
+                    @click="fansubmitReport(scope.row, 1)"
+                    >导出初审</el-button
+                  >
+                  <el-button
+                    type="primary"
+                    size="mini"
+                    @click="fansubmitReport(scope.row, 2)"
+                    >导出终审</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
         </el-card>
       </div>
       <!-- 图片 -->
@@ -60,6 +105,7 @@ export default {
   data() {
     return {
       pcLinfotabList: [],
+      fanganfotabList: [],
       assessmentGroup: {
         // 报告名称()
         reportName: "",
@@ -100,11 +146,51 @@ export default {
         projectId: this.xmu_info.projectId,
       });
       this.pcLinfotabList = res.data;
+      let refangan = await this.$api.userreviewfindPlan({
+        projectId: this.xmu_info.projectId,
+      });
+      this.fanganfotabList = refangan.data;
     },
     async getEtlist() {
       // ${this.xmu_info.data.systemName}
       this.assessmentGroup.reportName = `${this.xmu_info.data.evaluatedUnit}测评报告评审记录`;
       this.userreviewFind();
+    },
+    async fansubmitReport(row, item) {
+      let data = {
+        projectId: this.xmu_info.projectId,
+        type: item,
+        id: row.id,
+      };
+      let Listname = item == 1 ? "初审" : "终审";
+      let reportName = `${this.assessmentGroup.reportName}方案_${Listname}`;
+      let res = await this.$api.userreplan(data);
+      if (res.code == 500) {
+        alert(res.message);
+      } else {
+        let blob = new Blob([res], {
+          type:
+            "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
+        });
+
+        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        if (window.navigator && window.navigator.msSaveBlob) {
+          //IE浏览器、微软浏览器
+          /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+              IE可不重命名，以防万一，所以都写上比较好 */
+          window.navigator.msSaveBlob(blob, val.fileName);
+        } else {
+          //其他浏览器
+          let link = document.createElement("a"); // 创建a标签
+          link.style.display = "none";
+          let objectUrl = URL.createObjectURL(blob);
+
+          link.download = reportName;
+          link.href = objectUrl;
+          link.click();
+          URL.revokeObjectURL(objectUrl);
+        }
+      }
     },
     async submitReport(row, item) {
       let data = {
@@ -164,6 +250,9 @@ export default {
 }
 .el-card__header {
   border-bottom: 0px solid #ebeef5;
+}
+.mude_text_item {
+  margin: 15px 0;
 }
 .demo-input-suffix {
   display: flex;

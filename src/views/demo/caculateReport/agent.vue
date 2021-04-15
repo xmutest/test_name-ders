@@ -27,7 +27,7 @@
             </div>
           </div>
           <div class="mude_text_item">
-            <div class="descTItle">提交审核列表</div>
+            <div class="descTItle">审核列表</div>
             <div class="jineginfo">
               <el-table :data="tabList" border style="width: 100%">
                 <el-table-column label="类型" width="100">
@@ -76,6 +76,78 @@
           </div>
           <div class="mude_text_item">
             <div class="descTItle">
+              <div>方案评审记录列表</div>
+              <div class="boot_an">
+                <el-button
+                  type="primary"
+                  v-if="info.userTypeId == 10"
+                  @click="addListks(2)"
+                  size="mini"
+                  >新建方案评审记录</el-button
+                >
+              </div>
+            </div>
+            <el-table :data="fanganfotabList" border style="width: 100%">
+              <el-table-column label="评审过程记录">
+                <template slot-scope="scope">
+                  <pre>{{ scope.row.reviewRecord }}</pre>
+                  <!-- <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6 }"
+                    readonly
+                    v-model="scope.row.reviewRecord"
+                  >
+                  </el-input> -->
+                </template>
+              </el-table-column>
+              <el-table-column label="评审意见">
+                <template slot-scope="scope">
+                  <pre>{{ scope.row.reviewOpinion }}</pre>
+                  <!-- <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6 }"
+                    readonly
+                    v-model="scope.row.reviewOpinion"
+                  >
+                  </el-input> -->
+                </template>
+              </el-table-column>
+              <el-table-column label="附件">
+                <template slot-scope="scope">
+                  <p
+                    v-for="item in scope.row.reportReviewModels"
+                    @click="submitReport(item, 1)"
+                    class="xiazaiList"
+                    :key="item.id"
+                  >
+                    {{ item.fileName }}
+                  </p>
+                </template>
+              </el-table-column>
+              <el-table-column label="审核人" width="100">
+                <template slot-scope="scope">
+                  {{ scope.row.userName }}
+                </template>
+              </el-table-column>
+              <el-table-column label="时间" width="150">
+                <template slot-scope="scope">
+                  {{ scope.row.time }}
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="100">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    @click="infodeiList(scope.row, 2)"
+                    type="primary"
+                    >详细</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div class="mude_text_item">
+            <div class="descTItle">
               <div>报告评审记录列表</div>
               <div class="boot_an">
                 <el-button
@@ -90,24 +162,26 @@
             <el-table :data="pcLinfotabList" border style="width: 100%">
               <el-table-column label="评审过程记录">
                 <template slot-scope="scope">
-                  <el-input
+                  <pre>{{ scope.row.reviewRecord }}</pre>
+                  <!-- <el-input
                     type="textarea"
                     :autosize="{ minRows: 2, maxRows: 6 }"
                     readonly
                     v-model="scope.row.reviewRecord"
                   >
-                  </el-input>
+                  </el-input> -->
                 </template>
               </el-table-column>
               <el-table-column label="评审意见">
                 <template slot-scope="scope">
-                  <el-input
+                  <pre>{{ scope.row.reviewOpinion }}</pre>
+                  <!-- <el-input
                     type="textarea"
                     :autosize="{ minRows: 2, maxRows: 6 }"
                     readonly
                     v-model="scope.row.reviewOpinion"
                   >
-                  </el-input>
+                  </el-input> -->
                 </template>
               </el-table-column>
               <el-table-column label="附件">
@@ -144,76 +218,6 @@
               </el-table-column>
             </el-table>
             <div class="jineginfo"></div>
-          </div>
-          <div class="mude_text_item">
-            <div class="descTItle">
-              <div>方案评审记录列表</div>
-              <div class="boot_an">
-                <el-button
-                  type="primary"
-                  v-if="info.userTypeId == 10"
-                  @click="addListks(2)"
-                  size="mini"
-                  >新建方案评审记录</el-button
-                >
-              </div>
-            </div>
-            <el-table :data="fanganfotabList" border style="width: 100%">
-              <el-table-column label="评审过程记录">
-                <template slot-scope="scope">
-                  <el-input
-                    type="textarea"
-                    :autosize="{ minRows: 2, maxRows: 6 }"
-                    readonly
-                    v-model="scope.row.reviewRecord"
-                  >
-                  </el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="评审意见">
-                <template slot-scope="scope">
-                  <el-input
-                    type="textarea"
-                    :autosize="{ minRows: 2, maxRows: 6 }"
-                    readonly
-                    v-model="scope.row.reviewOpinion"
-                  >
-                  </el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="附件">
-                <template slot-scope="scope">
-                  <p
-                    v-for="item in scope.row.reportReviewModels"
-                    @click="submitReport(item, 1)"
-                    class="xiazaiList"
-                    :key="item.id"
-                  >
-                    {{ item.fileName }}
-                  </p>
-                </template>
-              </el-table-column>
-              <el-table-column label="审核人" width="100">
-                <template slot-scope="scope">
-                  {{ scope.row.userName }}
-                </template>
-              </el-table-column>
-              <el-table-column label="时间" width="150">
-                <template slot-scope="scope">
-                  {{ scope.row.time }}
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" width="100">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    @click="infodeiList(scope.row, 2)"
-                    type="primary"
-                    >详细</el-button
-                  >
-                </template>
-              </el-table-column>
-            </el-table>
           </div>
         </el-card>
       </div>
@@ -1097,6 +1101,7 @@ export default {
       this.formFileList.push(file.raw); //上传文件变化时将文件对象push进files数组
     },
     addListks(item) {
+      this.userpassiveCompany();
       this.pingcheji = item;
       this.kslistdatafy = true;
     },
@@ -1197,7 +1202,6 @@ export default {
         this.tabList = res.data;
       }
       this.userreviewfindAssessor();
-      this.userpassiveCompany();
     },
     // 获取测评师
     async userreviewfindAssessor() {
@@ -1212,8 +1216,8 @@ export default {
       this.paymentOrderModel.department = res.data.department;
       this.paymentOrderModel.contact = res.data.contacts;
     },
+
     async submitReport(val, ids) {
-      console.log(val);
       //  下载报告
       let url = "";
       let fileName = "";
@@ -1269,6 +1273,10 @@ span {
   div {
     margin: 15px 0;
   }
+}
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 .mude_text_item {
   margin: 15px 0;

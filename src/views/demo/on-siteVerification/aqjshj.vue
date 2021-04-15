@@ -1,4 +1,4 @@
-<!--安全计算环境-->
+<!--安全物理环境-->
 <template>
   <d2-container>
     <div v-if="dataList.length > 0">
@@ -17,14 +17,23 @@
         <div>
           <upload-dachu :toSonData="api_data"></upload-dachu>
         </div>
+        <div>
+          <el-input v-model="inputactiveNameTabs" placeholder="请输入内容">
+            <el-button
+              slot="append"
+              @click="NameTabss"
+              icon="el-icon-search"
+            ></el-button>
+          </el-input>
+        </div>
         <!-- 上传 toSonData：传给后台的id  sendSonData上传成功的返回值-->
       </div>
       <!-- 安全保护 -->
       <el-dialog
         title="已有安全措施"
         :visible.sync="dialogVisible"
-        :close-on-click-modal="false"
         width="80%"
+        :close-on-click-modal="false"
         :before-close="handleClose"
       >
         <div class="table_To1"></div>
@@ -64,7 +73,7 @@
           <el-tab-pane
             v-for="Its in dataList"
             :name="Its.name + Its.id"
-            :key="Its.name"
+            :key="Its.id"
             :label="Its.name"
           >
             <div v-if="activeNameTabs == Its.name + Its.id">
@@ -79,7 +88,7 @@
                     <th>判断标准</th>
                     <th>结果记录</th>
                     <th style="width: 140px">符合情况</th>
-                    <th>备注</th>
+                    <th>建议</th>
                     <th style="width: 50px">权重</th>
                   </tr>
                 </thead>
@@ -112,8 +121,9 @@
                         >
                           <div>
                             <p
-                              v-for="(item3,
-                              index3) in item2.controlEntries.split(';')"
+                              v-for="(
+                                item3, index3
+                              ) in item2.controlEntries.split(';')"
                               :key="index3"
                             >
                               {{ item3 }}
@@ -134,13 +144,15 @@
                       <td>
                         <el-popover
                           title="检查内容"
+                          v-if="item2.inspectionContents"
                           trigger="click"
                           placement="top"
                         >
                           <div>
                             <p
-                              v-for="(item3,
-                              index3) in item2.inspectionContents.split(';')"
+                              v-for="(
+                                item3, index3
+                              ) in item2.inspectionContents.split(';')"
                               :key="index3"
                             >
                               {{ item3 }}
@@ -150,17 +162,22 @@
                             {{ item2.inspectionContents.substr(0, 35) }}
                           </div>
                         </el-popover>
+                        <div v-else>
+                          {{ item2.inspectionContents }}
+                        </div>
                       </td>
                       <td>
                         <el-popover
                           title="检查方法"
                           trigger="click"
                           placement="top"
+                          v-if="item2.inspectionMethod"
                         >
                           <div>
                             <p
-                              v-for="(item3,
-                              index3) in item2.inspectionMethod.split(';')"
+                              v-for="(
+                                item3, index3
+                              ) in item2.inspectionMethod.split(';')"
                               :key="index3"
                             >
                               {{ item3 }}
@@ -170,6 +187,9 @@
                             {{ item2.inspectionMethod.substr(0, 35) }}
                           </div>
                         </el-popover>
+                        <div v-else>
+                          {{ item2.inspectionMethod }}
+                        </div>
                       </td>
                       <td>
                         <el-popover
@@ -180,8 +200,9 @@
                         >
                           <div>
                             <p
-                              v-for="(item3,
-                              index3) in item2.recommendedValue.split(';')"
+                              v-for="(
+                                item3, index3
+                              ) in item2.recommendedValue.split(';')"
                               :key="index3"
                             >
                               {{ item3 }}
@@ -200,11 +221,13 @@
                           title="判断标准"
                           trigger="click"
                           placement="top"
+                          v-if="item2.judgmentCriteria"
                         >
                           <div>
                             <p
-                              v-for="(item3,
-                              index3) in item2.judgmentCriteria.split(';')"
+                              v-for="(
+                                item3, index3
+                              ) in item2.judgmentCriteria.split(';')"
                               :key="index3"
                             >
                               {{ item3 }}
@@ -214,6 +237,9 @@
                             {{ item2.judgmentCriteria.substr(0, 35) }}
                           </div>
                         </el-popover>
+                        <div v-else>
+                          {{ item2.judgmentCriteria }}
+                        </div>
                       </td>
                       <td>
                         <el-popover trigger="click" placement="top">
@@ -309,6 +335,7 @@ import { cloneDeep } from "lodash";
 export default {
   data() {
     return {
+      inputactiveNameTabs: "",
       activeNameTabs: "",
       dialogVisible: false,
       loading: true,
@@ -333,8 +360,9 @@ export default {
       // 请求数据
       api_data: {
         sceneCheckId: 4,
-        name:'04_安全计算环境.xlsx'
+        name: "04_安全计算环境.xlsx",
       },
+      listTs: [],
     };
   },
   created() {
@@ -355,9 +383,9 @@ export default {
     },
     // 获取
     async submitReport(item) {
-      // let fractionModelList = [];
-      // fractionModelList.push(item);
-      let res = await this.$api.SYSFieldSurveyUpdateList(this.ToMitList);
+      let fractionModelList = [];
+      fractionModelList.push(item);
+      let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
       if (res.code === 20000) {
         this.dialogVisible = false;
         this.getDataList();
@@ -384,28 +412,49 @@ export default {
       }
     },
     async getDataList() {
+      let loading = this.$loading({
+        lock: true,
+        text: "拉取数据中，请稍候...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       this.loading = true;
       const res = await this.$api.SYS_FieldSurveyFindAssetsList(this.api_data);
       if (res.code === 20000) {
+        loading.close();
         if (res.data.assetsList.length == 0) {
           this.loading = false;
           return;
         }
         var listTs = cloneDeep(res.data.assetsList);
+        this.listTs = listTs;
         this.ToMitList = cloneDeep(res.data.protectiveList);
         if (this.activeNameTabs == 0) {
           this.activeNameTabs = listTs[0].name + listTs[0].id;
         }
         this.loading = false;
         this.dataList = listTs;
-        this.ToMitList.forEach((element) => {
-          if (element.content == null) {
-            this.submitReporAdd(element);
-          }
-        });
       }
+      loading.close();
+      this.ToMitList.forEach((element) => {
+        if (element.content == null) {
+          this.submitReporAdd(element);
+        }
+      });
+
       //  const res= await this.$http.get('/api/safetyControl/findSpotByBookId',{params:this.api_data});
       //  this.dataList=res.data.data;
+    },
+    // 跳转
+    NameTabss() {
+      let msuer = this.listTs.filter(
+        (item) => item.name == this.inputactiveNameTabs
+      );
+      if (msuer.length !== 0) {
+        this.activeNameTabs = msuer[0].name + msuer[0].id;
+      }else{
+        this.$message.error("错误，请输入搜索值");
+      }
     },
   },
 };
@@ -463,5 +512,3 @@ export default {
   padding: 5px 0px;
 }
 </style>
-
-

@@ -12,7 +12,8 @@ import {
 } from './tools'
 import ElementUI from "element-ui";
 import {
-  MessageBox
+  MessageBox,
+  Loading
 } from "element-ui";
 
 /**
@@ -22,12 +23,12 @@ function createService() {
   // 创建一个 axios 实例
   const service = axios.create()
   // 请求拦截
-  
+
   service.interceptors.request.use(
     config => config,
     error => {
       // 发送失败
-      console.log(error)
+      loading.close();
       return Promise.reject(error)
     }
   )
@@ -170,6 +171,7 @@ function createService() {
  * @param {Object} service axios 实例
  */
 function createRequestFunction(service) {
+
   return function (config) {
     const token = util.cookies.get('token')
     const configDefault = {
@@ -181,8 +183,11 @@ function createRequestFunction(service) {
       baseURL: process.env.VUE_APP_API,
       data: {}
     }
+    
     return service(Object.assign(configDefault, config))
+    
   }
+ 
 }
 
 function createRequestFunctionword(service) {

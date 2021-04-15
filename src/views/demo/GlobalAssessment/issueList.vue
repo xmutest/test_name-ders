@@ -370,12 +370,20 @@ export default {
   methods: {
     // 获取测评问题清单列表
     async getdataList() {
+       let loading = this.$loading({
+        lock: true,
+        text: "拉取数据中，请稍候...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       let res = await this.$api.SYS_reviseManifest_InputDoc();
       if (res.code === 20000) {
         this.managementList = res.data.management;
         this.technologyList = res.data.technology;
+         loading.close();
       } else {
         this.$message.error(res.message);
+         loading.close();
       }
     },
     // 修改

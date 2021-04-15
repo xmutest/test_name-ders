@@ -66,7 +66,7 @@
             :name="Its.name + Its.id"
             :key="Its.id"
             :label="Its.name"
-          > 
+          >
             <div v-if="activeNameTabs == Its.name + Its.id">
               <table id="partnerTable">
                 <thead>
@@ -79,7 +79,7 @@
                     <th>判断标准</th>
                     <th>结果记录</th>
                     <th style="width: 140px">符合情况</th>
-                    <th>备注</th>
+                    <th>建议</th>
                     <th style="width: 50px">权重</th>
                   </tr>
                 </thead>
@@ -112,8 +112,9 @@
                         >
                           <div>
                             <p
-                              v-for="(item3,
-                              index3) in item2.controlEntries.split(';')"
+                              v-for="(
+                                item3, index3
+                              ) in item2.controlEntries.split(';')"
                               :key="index3"
                             >
                               {{ item3 }}
@@ -134,13 +135,15 @@
                       <td>
                         <el-popover
                           title="检查内容"
+                          v-if="item2.inspectionContents"
                           trigger="click"
                           placement="top"
                         >
                           <div>
                             <p
-                              v-for="(item3,
-                              index3) in item2.inspectionContents.split(';')"
+                              v-for="(
+                                item3, index3
+                              ) in item2.inspectionContents.split(';')"
                               :key="index3"
                             >
                               {{ item3 }}
@@ -150,17 +153,22 @@
                             {{ item2.inspectionContents.substr(0, 35) }}
                           </div>
                         </el-popover>
+                        <div v-else>
+                          {{ item2.inspectionContents }}
+                        </div>
                       </td>
                       <td>
                         <el-popover
                           title="检查方法"
                           trigger="click"
                           placement="top"
+                          v-if="item2.inspectionMethod"
                         >
                           <div>
                             <p
-                              v-for="(item3,
-                              index3) in item2.inspectionMethod.split(';')"
+                              v-for="(
+                                item3, index3
+                              ) in item2.inspectionMethod.split(';')"
                               :key="index3"
                             >
                               {{ item3 }}
@@ -170,6 +178,9 @@
                             {{ item2.inspectionMethod.substr(0, 35) }}
                           </div>
                         </el-popover>
+                        <div v-else>
+                          {{ item2.inspectionMethod }}
+                        </div>
                       </td>
                       <td>
                         <el-popover
@@ -180,8 +191,9 @@
                         >
                           <div>
                             <p
-                              v-for="(item3,
-                              index3) in item2.recommendedValue.split(';')"
+                              v-for="(
+                                item3, index3
+                              ) in item2.recommendedValue.split(';')"
                               :key="index3"
                             >
                               {{ item3 }}
@@ -200,11 +212,13 @@
                           title="判断标准"
                           trigger="click"
                           placement="top"
+                          v-if="item2.judgmentCriteria"
                         >
                           <div>
                             <p
-                              v-for="(item3,
-                              index3) in item2.judgmentCriteria.split(';')"
+                              v-for="(
+                                item3, index3
+                              ) in item2.judgmentCriteria.split(';')"
                               :key="index3"
                             >
                               {{ item3 }}
@@ -214,6 +228,9 @@
                             {{ item2.judgmentCriteria.substr(0, 35) }}
                           </div>
                         </el-popover>
+                        <div v-else>
+                          {{ item2.judgmentCriteria }}
+                        </div>
                       </td>
                       <td>
                         <el-popover trigger="click" placement="top">
@@ -333,7 +350,7 @@ export default {
       // 请求数据
       api_data: {
         sceneCheckId: 1,
-        name:'01_安全物理环境.xlsx'
+        name: "01_安全物理环境.xlsx",
       },
     };
   },
@@ -384,9 +401,16 @@ export default {
       }
     },
     async getDataList() {
+      let loading = this.$loading({
+        lock: true,
+        text: "拉取数据中，请稍候...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       this.loading = true;
       const res = await this.$api.SYS_FieldSurveyFindAssetsList(this.api_data);
       if (res.code === 20000) {
+        loading.close();
         if (res.data.assetsList.length == 0) {
           this.loading = false;
           return;
@@ -399,6 +423,7 @@ export default {
         this.loading = false;
         this.dataList = listTs;
       }
+      loading.close();
       this.ToMitList.forEach((element) => {
         if (element.content == null) {
           this.submitReporAdd(element);

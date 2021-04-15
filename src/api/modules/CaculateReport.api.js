@@ -338,8 +338,8 @@ export default ({
       data
     })
   },
-   // 新建方案记录
-   userresavePlan(data = {}) {
+  // 新建方案记录
+  userresavePlan(data = {}) {
     // 模拟数据
     // 接口请求
     return request({
@@ -358,8 +358,19 @@ export default ({
       params: data
     })
   },
-   // 查询测评方案记录
-   userreviewfindPlan(data = {}) {
+  // 导出方案
+  userreplan(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/word/plan',
+      method: 'get',
+      params: data,
+      responseType: 'blob',
+    })
+  },
+  // 查询测评方案记录
+  userreviewfindPlan(data = {}) {
     // 模拟数据
     // 接口请求
     return request({
