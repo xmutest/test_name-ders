@@ -179,7 +179,7 @@ function createRequestFunction(service) {
         Authorization: 'Bearer ' + token,
         'Content-Type': get(config, 'headers.Content-Type', 'application/json')
       },
-      timeout: 15000,
+      // timeout: 15000,
       baseURL: process.env.VUE_APP_API,
       data: {}
     }
@@ -198,7 +198,7 @@ function createRequestFunctionword(service) {
         Authorization: 'Bearer ' + token,
         'Content-Type': get(config, 'headers.Content-Type', 'application/json')
       },
-      timeout: 8000,
+      timeout: 36000,
       data: {}
     }
     return service(Object.assign(configDefault, config))

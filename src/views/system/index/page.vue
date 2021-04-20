@@ -97,34 +97,66 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="创建人" width="120">
-                    <template slot-scope="scope">
-                      <p
-                        :class="
-                          radio_projectId == scope.row.projectId
-                            ? 'blue-class'
-                            : ''
-                        "
-                      >
-                        <span>{{ scope.row.creatorName }}</span>
-                      </p>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="创建时间" width="100">
-                    <template slot-scope="scope">
-                      <p
-                        :class="
-                          radio_projectId == scope.row.projectId
-                            ? 'blue-class'
-                            : ''
-                        "
-                      >
-                        <span>{{
-                          timestampToTime(scope.row.createdTime)
-                        }}</span>
-                      </p>
-                    </template>
-                  </el-table-column>
+                  <div v-if="info.userTypeId != 10">
+                    <el-table-column label="创建人" width="120">
+                      <template slot-scope="scope">
+                        <p
+                          :class="
+                            radio_projectId == scope.row.projectId
+                              ? 'blue-class'
+                              : ''
+                          "
+                        >
+                          <span>{{ scope.row.creatorName }}</span>
+                        </p>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="创建时间" width="100">
+                      <template slot-scope="scope">
+                        <p
+                          :class="
+                            radio_projectId == scope.row.projectId
+                              ? 'blue-class'
+                              : ''
+                          "
+                        >
+                          <span>{{
+                            timestampToTime(scope.row.createdTime)
+                          }}</span>
+                        </p>
+                      </template>
+                    </el-table-column>
+                  </div>
+                  <div v-if="info.userTypeId == 10">
+                    <el-table-column label="提交人" width="120">
+                      <template slot-scope="scope">
+                        <p
+                          :class="
+                            radio_projectId == scope.row.projectId
+                              ? 'blue-class'
+                              : ''
+                          "
+                        >
+                          <span>{{ scope.row.reviewSendName }}</span>
+                        </p>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="提交审批时间" width="100">
+                      <template slot-scope="scope">
+                        <p
+                          :class="
+                            radio_projectId == scope.row.projectId
+                              ? 'blue-class'
+                              : ''
+                          "
+                        >
+                          <span>{{
+                            timestampToTime(scope.row.reviewTime)
+                          }}</span>
+                        </p>
+                      </template>
+                    </el-table-column>
+                  </div>
                   <el-table-column label="状态" width="100">
                     <template slot-scope="scope">
                       <p
@@ -493,7 +525,12 @@
         title="派单"
         :visible.sync="paidanFormVisible"
       >
-        <el-select v-model="paidanginfo.sendId" clearable placeholder="请选择">
+        <el-select
+          multiple
+          v-model="paidanginfo.sendId"
+          clearable
+          placeholder="请选择"
+        >
           <el-option
             v-for="item in paidanFormList"
             :key="item.userId"
@@ -694,7 +731,6 @@ export default {
         return this.$message.error("请选择人员");
       }
       this.paidanginfo.projectId = this.xmu_info.projectId;
-
       let res = await this.$api.userreviewSendReview(this.paidanginfo);
       if (res.code === 20000) {
         this.$message({
@@ -735,6 +771,9 @@ export default {
     },
     //时间
     timestampToTime(timestamp) {
+      if (!timestamp) {
+        return "";
+      }
       var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
       var Y = date.getFullYear() + "-";
       var M =

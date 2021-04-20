@@ -44,6 +44,10 @@ export const menuAside = supplementPath([{
     path: `/onxmu`,
     title: '已完成的项目'
   },
+  {
+    path: `/todealwith`,
+    title: '待我处理'
+  },
   ControllerLink,
   SystemComposition,
   siteVerification,

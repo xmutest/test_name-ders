@@ -12,11 +12,12 @@ const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 /**
  * 在主框架内显示
- */ 
-const frameIn = [
-  {
+ */
+const frameIn = [{
     path: '/',
-    redirect: { name: 'index' },
+    redirect: {
+      name: 'index'
+    },
     component: layoutHeaderAside,
     children: [
       // 首页
@@ -88,7 +89,16 @@ const frameIn = [
         name: 'redirect',
         hidden: true,
         component: _import('system/function/redirect')
-      }
+      },
+      {
+        path: 'todealwith',
+        name: 'todealwith',
+        meta: {
+          auth: true,
+          title: '待我处理'
+        },
+        component: _import('system/todealwith/todealwith')
+      },
     ]
   },
   controllerlink,
@@ -115,13 +125,11 @@ const frameOut = [
 /**
  * 错误页面
  */
-const errorPage = [
-  {
-    path: '*',
-    name: '404',
-    component: _import('system/error/404')
-  }
-]
+const errorPage = [{
+  path: '*',
+  name: '404',
+  component: _import('system/error/404')
+}]
 
 // 导出需要显示菜单的
 export const frameInRoutes = frameIn

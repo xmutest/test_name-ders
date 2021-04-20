@@ -652,7 +652,7 @@ export default {
         page: 1,
         pageSize: 10,
         projectName: "",
-        queryType: 1,
+        queryType: 4,
       },
       formLabelWidth: "120px",
       projectIdks: null,

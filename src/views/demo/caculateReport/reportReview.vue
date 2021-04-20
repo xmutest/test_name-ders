@@ -60,6 +60,16 @@
                     {{ scope.row.uploadTime }}
                   </template>
                 </el-table-column>
+                <el-table-column label="操作" width="80">
+                  <template slot-scope="scope">
+                    <el-button
+                      size="mini"
+                      @click="delectinfo(scope.row)"
+                      type="danger"
+                      >删除</el-button
+                    >
+                  </template>
+                </el-table-column>
                 <!-- <el-table-column label="操作"> </el-table-column> -->
               </el-table>
             </div>
@@ -372,8 +382,45 @@ export default {
         } 个文件`
       );
     },
-
+    // 删除
+    delectinfo(item) {
+      console.log(item);
+      this.$confirm("确定删除此记录", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let ids = [];
+          item.reportReviewModels.forEach((item) => {
+            ids.push(item.id);
+          });
+          if (ids.length == 0) {
+            ids.push(item.id);
+          }
+          let res = await this.$api.userdelFilePlan(ids);
+          if (res.code === 20000) {
+            this.$message.success("删除成功！！");
+            this.revifindListok();
+            //查询列表
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     async submitUpload() {
+      let loading = this.$loading({
+        lock: true,
+        text: "提交数据中，请稍候...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       let thiz = this;
       let formData = new FormData();
       if (thiz.formFileList.length !== 0) {
@@ -392,6 +439,7 @@ export default {
       formData.append("sendType", thiz.formsendType.sendType);
       let res = await thiz.$api.reviewloadBook(formData);
       if (res.code == 20000) {
+        loading.close();
         this.$message({
           message: "上传文件成功",
           type: "success",
@@ -403,6 +451,7 @@ export default {
         this.revifindListok();
       } else {
       }
+      loading.close();
     },
     async submitReport(val, ids) {
       //  下载报告

@@ -30,7 +30,7 @@
             <div class="descTItle">审核列表</div>
             <div class="jineginfo">
               <el-table :data="tabList" border style="width: 100%">
-                <el-table-column label="类型" width="100">
+                <el-table-column label="类型" width="80">
                   <template slot-scope="scope">
                     {{ scope.row.fileType == 1 ? "报告" : "方案" }}
                   </template>
@@ -46,7 +46,7 @@
                     >
                   </template>
                 </el-table-column>
-                <el-table-column label="备案证">
+                <el-table-column label="备案证" width="150">
                   <template slot-scope="scope">
                     <span
                       class="xiazaiList"
@@ -55,7 +55,7 @@
                     >
                   </template>
                 </el-table-column>
-                <el-table-column label="备注">
+                <el-table-column label="备注" width="150">
                   <template slot-scope="scope">
                     {{ scope.row.remarks }}
                   </template>
@@ -70,7 +70,6 @@
                     {{ scope.row.uploadTime }}
                   </template>
                 </el-table-column>
-                <!-- <el-table-column label="操作"> </el-table-column> -->
               </el-table>
             </div>
           </div>
@@ -134,13 +133,19 @@
                   {{ scope.row.time }}
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="100">
+              <el-table-column label="操作" width="150">
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
                     @click="infodeiList(scope.row, 2)"
                     type="primary"
-                    >详细</el-button
+                    >修改</el-button
+                  >
+                  <el-button
+                    size="mini"
+                    @click="delectinfo(scope.row, 1)"
+                    type="danger"
+                    >删除</el-button
                   >
                 </template>
               </el-table-column>
@@ -206,13 +211,19 @@
                   {{ scope.row.reviewFirstTime }}
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="100">
+              <el-table-column label="操作" width="150">
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
                     @click="infodeiList(scope.row, 1)"
                     type="primary"
-                    >详细</el-button
+                    >修改</el-button
+                  >
+                  <el-button
+                    size="mini"
+                    @click="delectinfo(scope.row, 2)"
+                    type="danger"
+                    >删除</el-button
                   >
                 </template>
               </el-table-column>
@@ -356,7 +367,7 @@
       </el-dialog>
       <!-- 新建 -->
       <el-dialog
-        title="新建评审记录"
+        :title="mustop.title + '评审记录'"
         :visible.sync="kslistdatafy"
         :close-on-click-modal="false"
       >
@@ -719,7 +730,7 @@
                 </el-radio-group>
               </el-form-item>
             </el-col>
-            <el-col :span="24">
+            <el-col v-if="this.mustop.id == 1" :span="24">
               <el-form-item label="附件">
                 <el-upload
                   class="upload-demo"
@@ -750,6 +761,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { cloneDeep } from "lodash";
 export default {
   data() {
     return {
@@ -781,6 +793,11 @@ export default {
         reviewRecord: null,
         reviewOpinion: null,
         reviewResult: null,
+      },
+      // 新建还是修改
+      mustop: {
+        title: "新建",
+        id: 1,
       },
       rules: {
         planA: [
@@ -1039,7 +1056,8 @@ export default {
   created() {
     this.userreviewFind();
     this.revifindListok();
-    // this.getEtlist();
+    // this.getEtlist();]
+    this.userreviewfindAssessor();
   },
   computed: {
     ...mapState("d2admin", {
@@ -1101,6 +1119,10 @@ export default {
       this.formFileList.push(file.raw); //上传文件变化时将文件对象push进files数组
     },
     addListks(item) {
+      this.mustop = {
+        title: "新建",
+        id: 1,
+      };
       this.userpassiveCompany();
       this.pingcheji = item;
       this.kslistdatafy = true;
@@ -1127,18 +1149,29 @@ export default {
             formData.append("files", file);
           });
         }
-        this.paymentOrderModel.projectId = this.xmu_info.projectId;
-        this.paymentOrderModel.id = this.xmu_info.reviewId;
-        for (const key in this.paymentOrderModel) {
-          formData.append(key, this.paymentOrderModel[key]);
+        if (this.mustop.id == 1) {
+          this.paymentOrderModel.projectId = this.xmu_info.projectId;
+          this.paymentOrderModel.id = this.xmu_info.reviewId;
+          for (const key in this.paymentOrderModel) {
+            formData.append(key, this.paymentOrderModel[key]);
+          }
         }
         let res = "";
         if (this.pingcheji == 1) {
-          res = await this.$api.userreviewSave(formData);
+          if (this.mustop.id == 1) {
+            res = await this.$api.userreviewSave(formData);
+          } else {
+            res = await this.$api.updateReviewReview(this.paymentOrderModel);
+          }
         } else if (this.pingcheji == 2) {
-          res = await this.$api.userresavePlan(formData);
+          if (this.mustop.id == 1) {
+            res = await this.$api.userresavePlan(formData);
+          } else {
+            res = await this.$api.updatePlanReview(this.paymentOrderModel);
+          }
         }
         if (res.code === 20000) {
+          loading.close();
           this.$message({
             message: "创建成功",
             type: "success",
@@ -1159,6 +1192,43 @@ export default {
         projectId: this.xmu_info.projectId,
       });
       this.fanganfotabList = refangan.data;
+    },
+    // 删除
+    delectinfo(item, ms) {
+      console.log(item);
+      this.$confirm("确定删除此记录", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = "";
+          if (ms == 1) {
+            res = await this.$api.userdelreviewDeletePla({
+              id: item.id,
+              projectId: item.projectId,
+            });
+          } else if (ms == 2) {
+            res = await this.$api.userdelreviedeleteReview({
+              reviewId: item.id,
+              projectId: item.projectId,
+            });
+          }
+
+          if (res.code === 20000) {
+            this.$message.success("删除成功！！");
+            this.userreviewFind();
+            //查询列表
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     close() {
       this.$refs["paymentOrderModel"].resetFields();
@@ -1189,9 +1259,36 @@ export default {
     },
     // 详细
     async infodeiList(item, its) {
-      this.infopaymentOrderModel = item;
+      this.mustop = {
+        title: "修改",
+        id: 2,
+      };
+      // this.infopaymentOrderModel = item;
       this.pingcheji = its;
-      this.kslistdatafyinfo = true;
+      this.paymentOrderModel = cloneDeep(item);
+      if (its == 2) {
+        this.paymentOrderModel.planA = cloneDeep(Number(item.planA));
+        this.paymentOrderModel.planB = cloneDeep(Number(item.planB));
+        this.paymentOrderModel.planC = cloneDeep(Number(item.planC));
+        this.paymentOrderModel.planD = cloneDeep(Number(item.planD));
+        this.paymentOrderModel.planE = cloneDeep(Number(item.planE));
+      } else if (its == 1) {
+        let review = [
+          "reviewA",
+          "reviewB",
+          "reviewC",
+          "reviewD",
+          "reviewE",
+          "reviewF",
+          "reviewG",
+        ];
+        review.forEach((its) => {
+          this.paymentOrderModel[its] = cloneDeep(Number(item[its]));
+        });
+      }
+      this.paymentOrderModel.reviewResult = Number(item.reviewResult);
+      this.kslistdatafy = true;
+      // this.kslistdatafyinfo = true;
     },
     // 获取列表
     async revifindListok() {
@@ -1201,7 +1298,6 @@ export default {
       if (res.code == 20000) {
         this.tabList = res.data;
       }
-      this.userreviewfindAssessor();
     },
     // 获取测评师
     async userreviewfindAssessor() {

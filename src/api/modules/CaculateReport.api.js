@@ -379,4 +379,56 @@ export default ({
       params: data
     })
   },
+  // 删除审核列表
+  userdelFilePlan(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/delFile',
+      method: 'post',
+      data,
+      params: data
+    })
+  },
+  // 删除方案
+  userdelreviewDeletePla(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/deletePlan',
+      method: 'post',
+      data,
+      params: data
+    })
+  }, // 删除审核
+  userdelreviedeleteReview(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/deleteReview',
+      method: 'post',
+      data,
+      params: data
+    })
+  },
+  // 修改审核
+  updateReviewReview(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/updateReview',
+      method: 'post',
+      data
+    })
+  },
+  // 修改方案
+  updatePlanReview(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/review/updatePlan',
+      method: 'post',
+      data
+    })
+  },
 })

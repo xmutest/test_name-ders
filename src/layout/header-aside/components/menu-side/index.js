@@ -36,7 +36,16 @@ export default {
                    this.info.userTypeId == 10?null:<el-menu-item  index="/woxmu"><d2-icon name="hourglass-o items1"/>我创建的项目</el-menu-item>
                    :null
                  }
-                 <el-menu-item index="/onxmu"><d2-icon name="power-off items2"/>已完成的项目</el-menu-item>
+                  {
+                   this.info.userTypeId?
+                   this.info.userTypeId == 10?null:<el-menu-item index="/onxmu"><d2-icon name="power-off items2"/>已完成的项目</el-menu-item>
+                   :null
+                 }
+                  {
+                   this.info.userTypeId?
+                   this.info.userTypeId != 10?null:<el-menu-item index="/todealwith"><d2-icon name="power-off items2"/>待我处理</el-menu-item>
+                   :null
+                 }
                  {
                    this.info.user_info?
                    this.info.user_info.userType===1?<el-menu-item index="/usercontrol"><d2-icon name="address-book-o item2"/>用户管理</el-menu-item>:null

@@ -18,7 +18,7 @@
           <upload-dachu :toSonData="api_data"></upload-dachu>
         </div>
         <div>
-          <el-input v-model="inputactiveNameTabs" placeholder="请输入内容">
+          <el-input v-model="inputactiveNameTabs" placeholder="请输入资产名称查询">
             <el-button
               slot="append"
               @click="NameTabss"
