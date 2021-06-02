@@ -5,7 +5,7 @@
       <!-- 富文本输入框 -->
       <div class="mude_is_left">
         <el-card class="box-card">
-          <div class="mude_text_item">
+          <!-- <div class="mude_text_item">
             <div class="descTItle">测评工具选择</div>
             <div class="pc_gonjv">
               <el-tree
@@ -23,9 +23,9 @@
             <div class="tijiaobaoc">
               <el-button type="primary" @click="submitReport">保存</el-button>
             </div>
-          </div>
+          </div> -->
           <div class="mude_text_item">
-            <div class="descTItle">测评组（多个姓名请以分号分割）</div>
+            <!-- <div class="descTItle">测评组（多个姓名请以分号分割）</div> -->
             <div>
               <el-row :gutter="10">
                 <el-form
@@ -36,7 +36,7 @@
                   label-width="120px"
                   label-position="left"
                 >
-                  <el-col :span="12">
+                  <!-- <el-col :span="12">
                     <el-form-item label="项目组长" prop="ahshg">
                       <el-input
                         v-model="assessmentGroup.ahshg"
@@ -94,7 +94,7 @@
                         :style="{ width: '100%' }"
                       ></el-input>
                     </el-form-item>
-                  </el-col>
+                  </el-col> -->
                   <el-col :span="24">
                     <div class="mude_text_item">
                       <div class="descTItle">测评方案</div>

@@ -18,13 +18,31 @@
           <upload-dachu :toSonData="api_data"></upload-dachu>
         </div>
         <div>
-          <el-input v-model="inputactiveNameTabs" placeholder="请输入资产名称查询">
+          <el-select
+            v-model="inputactiveNameTabs"
+            clearable
+            filterable
+            @change="NameTabss"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in listTs"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name"
+            >
+            </el-option>
+          </el-select>
+          <!-- <el-input
+            v-model="inputactiveNameTabs"
+            placeholder="请输入资产名称查询"
+          >
             <el-button
               slot="append"
               @click="NameTabss"
               icon="el-icon-search"
             ></el-button>
-          </el-input>
+          </el-input> -->
         </div>
         <!-- 上传 toSonData：传给后台的id  sendSonData上传成功的返回值-->
       </div>
@@ -55,7 +73,10 @@
                 <el-button type="primary" @click="submitReporAdd(Its)"
                   >生成</el-button
                 >
-                <el-button type="primary" @click="submitReport(Its)"
+                <el-button type="primary" @click="submitReport(Its, 1)"
+                  >保存</el-button
+                >
+                <el-button type="primary" @click="submitReport(Its, 2)"
                   >保存并退出</el-button
                 >
               </div>
@@ -381,14 +402,17 @@ export default {
         this.$message.error("错误，请联系管理员" + res.message);
       }
     },
-    // 获取
-    async submitReport(item) {
+       // 获取
+    async submitReport(item, it) {
       let fractionModelList = [];
       fractionModelList.push(item);
       let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
       if (res.code === 20000) {
-        this.dialogVisible = false;
-        this.getDataList();
+        if (it == 2) {
+          this.dialogVisible = false;
+          this.getDataList();
+        }
+        this.$message.success("保存成功");
       }
     },
     handleClose(done) {
@@ -452,8 +476,8 @@ export default {
       );
       if (msuer.length !== 0) {
         this.activeNameTabs = msuer[0].name + msuer[0].id;
-      }else{
-        this.$message.error("错误，请输入搜索值");
+      } else {
+        this.activeNameTabs = this.listTs[0].name + this.listTs[0].id;
       }
     },
   },

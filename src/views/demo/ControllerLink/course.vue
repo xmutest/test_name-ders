@@ -989,7 +989,7 @@ export default {
 
         console.log(this.addZeroOfDate(new Date(realityTime[0].startTime).getMonth() + 1))
 
-        this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图1.1所示。其中，各阶段的时间安排如下：
+        this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图1-1所示。其中，各阶段的时间安排如下：
     1、${new Date(realityTime[0].startTime).getFullYear()}年${
           this.addZeroOfDate(new Date(realityTime[0].startTime).getMonth() + 1)
         }月${this.addZeroOfDate(new Date(realityTime[0].startTime).getDate())}日~${new Date(
@@ -1021,7 +1021,7 @@ export default {
           realityTime[3].endTime
         ).getDate())}日，分析与报告编制过程。`;
       } else {
-        this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图1.1所示。其中，各阶段的时间安排如下：
+        this.sentences = `本次等级测评分为四个过程：测评准备过程、方案编制过程、测评实施过程、分析与报告编制过程。具体如图1-1所示。其中，各阶段的时间安排如下：
     1、YYYY年MM月DD日~YYYY年MM月DD日，测评准备阶段。
     2、YYYY年MM月DD日~YYYY年MM月DD日，方案编制过程。
     3、YYYY年MM月DD日~YYYY年MM月DD日，现场实施过程。

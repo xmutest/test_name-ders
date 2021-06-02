@@ -46,7 +46,10 @@
                 <el-button type="primary" @click="submitReporAdd(Its)"
                   >生成</el-button
                 >
-                <el-button type="primary" @click="submitReport(Its)"
+                <el-button type="primary" @click="submitReport(Its, 1)"
+                  >保存</el-button
+                >
+                <el-button type="primary" @click="submitReport(Its, 2)"
                   >保存并退出</el-button
                 >
               </div>
@@ -370,14 +373,17 @@ export default {
         this.$message.error("错误，请联系管理员" + res.message);
       }
     },
-    // 获取
-    async submitReport(item) {
+       // 获取
+    async submitReport(item, it) {
       let fractionModelList = [];
       fractionModelList.push(item);
       let res = await this.$api.SYSFieldSurveyUpdateList(fractionModelList);
       if (res.code === 20000) {
-        this.dialogVisible = false;
-        this.getDataList();
+        if (it == 2) {
+          this.dialogVisible = false;
+          this.getDataList();
+        }
+        this.$message.success("保存成功");
       }
     },
     handleClose(done) {

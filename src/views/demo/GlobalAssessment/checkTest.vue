@@ -25,7 +25,7 @@
               placeholder="请输入内容"
               v-model="fromdata.accessPointDescribe"
             >
-            </el-input
+                          </el-input
             >
           </div>
           <div class="tijiaobaoc">
@@ -97,43 +97,82 @@
                     >
                       <el-button type="primary">使用其他图片</el-button>
                     </el-upload>
-                    <el-button type="danger" @click="delectObj"
-                      >移除</el-button
-                    >
+                    <el-button type="danger" @click="delectObj">移除</el-button>
                     <el-button type="primary" @click="saveNewCanvas"
                       >保存</el-button
                     >
                     <!-- <el-button type="primary" @click="drawRect"
                       >画正方形</el-button
                     > -->
-                    <el-button type="primary" v-if="false" @click="selShapeArea = true"
+                    <el-button
+                      type="primary"
+                      v-if="false"
+                      @click="selShapeArea = true"
                       >形状</el-button
                     >
-                    <el-button type="primary" @click="showShapeFun($event)" 
-                      v-for="(item,key) in designIcon"
-                      :data-icon="item.value" 
+                    <el-button
+                      type="primary"
+                      @click="showShapeFun($event)"
+                      v-for="(item, key) in designIcon"
+                      :data-icon="item.value"
                       :data-sort="item.value"
                       :data-nums="item.num"
-                      :key=key
+                      :key="key"
                       v-show="false"
                     >
-                      {{item.name}}
+                      {{ item.name }}
                     </el-button>
-                    <el-button type="primary" v-if="false" @click="inputWordArea = true"
+                    <el-button
+                      type="primary"
+                      v-if="false"
+                      @click="inputWordArea = true"
                       >文字输入</el-button
                     >
-                    <el-popover
-                      width="400"
-                      trigger="click"
-                      v-if="false"
-                    >
+                    <el-popover width="400" trigger="click" v-if="false">
                       <div class="arrowArea">
-                        <img :src="require('@/views/demo/GlobalAssessment/img/icon/top_arrow.png')" data-icon="top_arrow" @click="drawDesign($event)" class="iconPic"  alt="">
-                        <img :src="require('@/views/demo/GlobalAssessment/img/icon/right_arrow.png')" data-icon="right_arrow" @click="drawDesign($event)" class="iconPic"  alt="">
-                        <img :src="require('@/views/demo/GlobalAssessment/img/icon/down_arrow.png')" data-icon="down_arrow" @click="drawDesign($event)" class="iconPic"  alt="">
-                        <img :src="require('@/views/demo/GlobalAssessment/img/icon/left_arrow.png')" data-icon="left_arrow" @click="drawDesign($event)" class="iconPic"  alt="">
+                        <img
+                          :src="
+                            require('@/views/demo/GlobalAssessment/img/icon/top_arrow.png')
+                          "
+                          data-icon="top_arrow"
+                          @click="drawDesign($event)"
+                          class="iconPic"
+                          alt=""
+                        />
+                        <img
+                          :src="
+                            require('@/views/demo/GlobalAssessment/img/icon/right_arrow.png')
+                          "
+                          data-icon="right_arrow"
+                          @click="drawDesign($event)"
+                          class="iconPic"
+                          alt=""
+                        />
+                        <img
+                          :src="
+                            require('@/views/demo/GlobalAssessment/img/icon/down_arrow.png')
+                          "
+                          data-icon="down_arrow"
+                          @click="drawDesign($event)"
+                          class="iconPic"
+                          alt=""
+                        />
+                        <img
+                          :src="
+                            require('@/views/demo/GlobalAssessment/img/icon/left_arrow.png')
+                          "
+                          data-icon="left_arrow"
+                          @click="drawDesign($event)"
+                          class="iconPic"
+                          alt=""
+                        />
                       </div>
-                      <el-button slot="reference" type="primary" class="buttonStyle">箭头</el-button>
+                      <el-button
+                        slot="reference"
+                        type="primary"
+                        class="buttonStyle"
+                        >箭头</el-button
+                      >
                     </el-popover>
                     <el-button type="danger" @click="canvasReset"
                       >清空</el-button
@@ -165,35 +204,42 @@
               width="50%"
             >
               <el-image
-              v-for="(item,key) in shape"
-              :key="key"
-              :src="item.value"
-              class="shapeStyle"
-              :data-icon="item.name"
-              @click="selShape($event)"
-              fit="contain"></el-image>
+                v-for="(item, key) in shape"
+                :key="key"
+                :src="item.value"
+                class="shapeStyle"
+                :data-icon="item.name"
+                @click="selShape($event)"
+                fit="contain"
+              ></el-image>
               <span slot="footer" class="dialog-footer" v-show="false">
                 <el-button @click="selShapeArea = false">取 消</el-button>
                 <el-button type="primary" @click="rectPaint">确 定</el-button>
               </span>
             </el-dialog>
-            
+
             <!-- 文字输入 -->
             <el-dialog
               title="文字输入"
               :visible.sync="inputWordArea"
               width="50%"
             >
-              <el-input v-model="inputContent.content" placeholder="请输入内容"></el-input>
+              <el-input
+                v-model="inputContent.content"
+                placeholder="请输入内容"
+              ></el-input>
               <div class="wordSetting">
                 字体大小:
-                <el-input-number 
-                  v-model="inputContent.size" 
+                <el-input-number
+                  v-model="inputContent.size"
                   @change="handleChange"
                   :min="16"
-                  :max="60" label="描述文字"
+                  :max="60"
+                  label="描述文字"
                 ></el-input-number>
-                字体颜色:<el-color-picker v-model="inputContent.color"></el-color-picker>
+                字体颜色:<el-color-picker
+                  v-model="inputContent.color"
+                ></el-color-picker>
               </div>
               <span slot="footer" class="dialog-footer">
                 <el-button @click="inputWordArea = false">取 消</el-button>
@@ -254,100 +300,100 @@ export default {
       // 接入点图片
       imgUrls: "",
       imgUrlsid: "",
-      designIcon:[
+      designIcon: [
         {
-          value:'database',
-          name:'数据库',
-          num:9
+          value: "database",
+          name: "数据库",
+          num: 9,
         },
         {
-          value:'safeDefend',
-          name:'安全防护',
-          num:9
+          value: "safeDefend",
+          name: "安全防护",
+          num: 9,
         },
         {
-          value:'computer',
-          name:'计算机',
-          num:7,
+          value: "computer",
+          name: "计算机",
+          num: 7,
         },
         {
-          value:'serve',
-          name:'服务器',
-          num:7,
+          value: "serve",
+          name: "服务器",
+          num: 7,
         },
         {
-          value:'network',
-          name:'网络',
-          num:7,
+          value: "network",
+          name: "网络",
+          num: 7,
         },
         {
-          value:'frame',
-          name:'机架',
-          num:6,
+          value: "frame",
+          name: "机架",
+          num: 6,
         },
         {
-          value:'user',
-          name:'用户',
-          num:6,
+          value: "user",
+          name: "用户",
+          num: 6,
         },
         {
-          value:'firewall',
-          name:'防火墙',
-          num:5,
+          value: "firewall",
+          name: "防火墙",
+          num: 5,
         },
         {
-          value:'switchboard',
-          name:'交换机',
-          num:7,
-        },
-      ],
-      shape:[
-        {
-          value:require(`@/views/demo/GlobalAssessment/img/icon/square.png`),
-          name:'square',
-          desc:'正方形'
-        },
-        {
-          value:require(`@/views/demo/GlobalAssessment/img/icon/rect.png`),
-          name:'rect',
-          desc:'矩形'
-        },
-        {
-          value:require(`@/views/demo/GlobalAssessment/img/icon/line.png`),
-          name:'line',
-          desc:'直线'
-        },
-        {
-          value:require(`@/views/demo/GlobalAssessment/img/icon/dottedLine.png`),
-          name:'dottedLine',
-          desc:'虚线'
-        },
-        {
-          value:require(`@/views/demo/GlobalAssessment/img/icon/dottedSqure.png`),
-          name:'dottedSqure',
-          desc:'虚线正方形'
-        },
-        {
-          value:require(`@/views/demo/GlobalAssessment/img/icon/dottedRect.png`),
-          name:'dottedRect',
-          desc:'虚线矩形'
-        },
-        {
-          value:require(`@/views/demo/GlobalAssessment/img/icon/cloud.png`),
-          name:'cloud',
-          desc:'云框'
+          value: "switchboard",
+          name: "交换机",
+          num: 7,
         },
       ],
-      selShapeArea:false,
-      rectWidth:0,
-      rectLength:0,
-      inputWordArea:false,
-      inputContent:{
-        content:'',
-        size:26,
-        color:'#000000',
-      },  //输入的内容
-      canvasShapeNums:0,  //拓补图当前选择图案的数量
+      shape: [
+        {
+          value: require(`@/views/demo/GlobalAssessment/img/icon/square.png`),
+          name: "square",
+          desc: "正方形",
+        },
+        {
+          value: require(`@/views/demo/GlobalAssessment/img/icon/rect.png`),
+          name: "rect",
+          desc: "矩形",
+        },
+        {
+          value: require(`@/views/demo/GlobalAssessment/img/icon/line.png`),
+          name: "line",
+          desc: "直线",
+        },
+        {
+          value: require(`@/views/demo/GlobalAssessment/img/icon/dottedLine.png`),
+          name: "dottedLine",
+          desc: "虚线",
+        },
+        {
+          value: require(`@/views/demo/GlobalAssessment/img/icon/dottedSqure.png`),
+          name: "dottedSqure",
+          desc: "虚线正方形",
+        },
+        {
+          value: require(`@/views/demo/GlobalAssessment/img/icon/dottedRect.png`),
+          name: "dottedRect",
+          desc: "虚线矩形",
+        },
+        {
+          value: require(`@/views/demo/GlobalAssessment/img/icon/cloud.png`),
+          name: "cloud",
+          desc: "云框",
+        },
+      ],
+      selShapeArea: false,
+      rectWidth: 0,
+      rectLength: 0,
+      inputWordArea: false,
+      inputContent: {
+        content: "",
+        size: 26,
+        color: "#000000",
+      }, //输入的内容
+      canvasShapeNums: 0, //拓补图当前选择图案的数量
     };
   },
   created() {
@@ -365,11 +411,10 @@ export default {
 
     // fabric
     this.initCanvas();
-
   },
   components: {
     canvasToorBarSel,
-    canvasShapeSel
+    canvasShapeSel,
   },
   methods: {
     // 使用其他图片
@@ -404,14 +449,13 @@ export default {
       let res = await this.$api.API_ImgFindAccessPointImg();
       if (res.code === 20000) {
         if (res.data !== null) {
-          let that = this
+          let that = this;
           this.imgUrls = res.data.imgUrl + res.data.imgName;
           this.imgUrlsid = res.data.id;
 
-          setTimeout(function(){
-            that.setBg(that.imgUrls)
-          },500)
-          
+          setTimeout(function () {
+            that.setBg(that.imgUrls);
+          }, 500);
         } else {
           this.getlistdataImg();
         }
@@ -427,7 +471,7 @@ export default {
         if (res.data !== null) {
           this.imgUrl = res.data.imgUrl + res.data.imgName;
           this.imgUrls = this.imgUrl;
-          
+
           this.setBg(this.imgUrl);
         }
       }
@@ -523,7 +567,7 @@ export default {
 
       this.bitmapArr.push(e);
       // 填入画布
-      this.createPic(pic,e);
+      this.createPic(pic, e);
     },
     async getEtlist() {
       let List = await this.$api.API_WholeEvaluationFindWholeEvaluation();
@@ -570,11 +614,11 @@ export default {
         );
       }
       if (res.code === 20000) {
-         this.$message({
-            type: "success",
-            message: "修改成功！！",
-            duration: 1000
-          });
+        this.$message({
+          type: "success",
+          message: "修改成功！！",
+          duration: 1000,
+        });
         this.getEtlist();
         //查询列表
       } else {
@@ -594,54 +638,52 @@ export default {
     openCanvasArea() {
       this.showCanvas = true;
 
+      // this.imgUrls = "http://evaluate.iscn.org.cn/img/792/fogwgam9dt.jpg";
       this.setBg(this.imgUrls);
       // this.setBg();
     },
     initCanvas() {
-      
       let that = this;
       that.canvas = new fabric.Canvas("canvas");
       let casWidth = that.canvas.width,
-          casHeight = that.canvas.height
-        
+        casHeight = that.canvas.height;
     },
     setBg(src) {
       if (!src) return this.$message.error("暂无图片,请上传图片");
       let that = this;
       // 清空画布
-      that.canvas.clear()
-      this.bitmapArr = []
+      that.canvas.clear();
+      this.bitmapArr = [];
 
       let bg = new Image();
       // bg.crossOrigin = "Anonymous";  //跨域
 
       bg.src = src;
       // 测试
-      // bg.src = require("@/views/demo/GlobalAssessment/img/t1.png")
-      let bili;
+      // bg.src = require("@/views/demo/GlobalAssessment/img/44444.png");
+      let bili = 1;
+      if (bg.width > that.canvas.width) {
+        if (bg.width > bg.height) {
+          if (that.canvas.width <= bg.width) {
+            bili = that.canvas.width / bg.width;
 
-      if (bg.width > bg.height) {
-        if(that.canvas.width <= bg.width){
-          bili = that.canvas.width / bg.width;
-
-          if(bg.height * bili > that.canvas.height){
-            bili = bili * 0.5
+            if (bg.height * bili > that.canvas.height) {
+              bili = bili * 0.5;
+            }
+          } else {
+            bili = bg.width / that.canvas.width;
           }
-
-        }else{
-          bili = bg.width / that.canvas.width ;
-        }
-      } else {
-        if(that.canvas.height <= bg.height){
-          bili = that.canvas.height / bg.height;
-          if(bg.width * bili > that.canvas.width){
-            bili = bili * 0.5
+        } else {
+          if (that.canvas.height <= bg.height) {
+            bili = that.canvas.height / bg.height;
+            if (bg.width * bili > that.canvas.width) {
+              bili = bili * 0.5;
+            }
+          } else {
+            bili = bg.height / that.canvas.height;
           }
-        }else{
-          bili = bg.height / that.canvas.height
         }
       }
-
 
       this.bgPic = {
         width: bg.width,
@@ -657,7 +699,7 @@ export default {
           scaleY: bili,
           originX: "left",
           originY: "top",
-          crossOrigin: 'anonymous'
+          crossOrigin: "anonymous",
         });
         that.canvas.setBackgroundImage(
           Shape,
@@ -665,12 +707,15 @@ export default {
         );
         that.canvas.renderAll();
 
-        let lineWidth = bg.width * bili
-        var line = new fabric.Line([lineWidth + 1, 0, lineWidth + 1, that.canvas.height], {
-          fill: 'green',
-          stroke: 'green',
-          selectable:false,
-        });
+        let lineWidth = bg.width * bili;
+        var line = new fabric.Line(
+          [lineWidth + 1, 0, lineWidth + 1, that.canvas.height],
+          {
+            fill: "green",
+            stroke: "green",
+            selectable: false,
+          }
+        );
         that.canvas.add(line);
       };
 
@@ -680,12 +725,12 @@ export default {
       //   });
       //   that.canvas.add(line);
     },
-    createPic(src,name) {
+    createPic(src, name) {
       let that = this;
       let manSrc = src;
 
       fabric.Image.fromURL(manSrc, function (obj) {
-        obj.objectName = name
+        obj.objectName = name;
         that.canvas.add(obj);
       });
     },
@@ -694,10 +739,10 @@ export default {
       //   width:bg.width,
       //   height:bg.height
       // }
-      let that = this
-  
-      this.clipWidth = this.bgPic.width * this.bgPic.bili,
-      this.clipHeight = this.bgPic.height * this.bgPic.bili
+      let that = this;
+
+      (this.clipWidth = this.bgPic.width * this.bgPic.bili),
+        (this.clipHeight = this.bgPic.height * this.bgPic.bili);
 
       var result = this.canvas.toDataURL({
         width: that.clipWidth,
@@ -705,105 +750,104 @@ export default {
         left: 0,
         top: 0,
         format: "png",
-      })
-      
-      this.saveCanvas(result)
+      });
+
+      this.saveCanvas(result);
     },
-    delectObj(){
-      let item = this.canvas.getActiveObject()
+    delectObj() {
+      let item = this.canvas.getActiveObject();
       // item存在则删除,且删除数组元素
-      if(item != null){
-        this.canvas.remove(item)
+      if (item != null) {
+        this.canvas.remove(item);
         let delectName = item.objectName,
-            delectIndex = null
+          delectIndex = null;
         // 找到数组内需要删除的元素下标
-        for(let i = 0;i < this.bitmapArr.length;i++){
-          if(this.bitmapArr[i].indexOf(delectName) != -1){
-            delectIndex = i
+        for (let i = 0; i < this.bitmapArr.length; i++) {
+          if (this.bitmapArr[i].indexOf(delectName) != -1) {
+            delectIndex = i;
           }
         }
-        if(delectIndex != null) this.bitmapArr.splice(delectIndex,1)
-      }else{
+        if (delectIndex != null) this.bitmapArr.splice(delectIndex, 1);
+      } else {
         this.$message({
           showClose: true,
-          message: '未选中要移除的图片',
-          type: 'warning'
-        })
+          message: "未选中要移除的图片",
+          type: "warning",
+        });
       }
     },
-    rectPaint(){
+    rectPaint() {
       // 点击确定后
-      this.selShapeArea = true
-      
+      this.selShapeArea = true;
     },
-    drawRect(w=80,h=80){
+    drawRect(w = 80, h = 80) {
       let rect = new fabric.Rect({
         left: 0,
         top: 0,
-        stroke: 'black',
-        fill:'transparent',
+        stroke: "black",
+        fill: "transparent",
         width: 100,
         height: 100,
-      })
+      });
       this.canvas.add(rect);
     },
-    selShape(e){
-      this.selShapeArea = false
+    selShape(e) {
+      this.selShapeArea = false;
 
       let name = e.currentTarget.dataset.icon,
-      src = require(`@/views/demo/GlobalAssessment/img/icon/${name}.png`)
+        src = require(`@/views/demo/GlobalAssessment/img/icon/${name}.png`);
 
-      this.createPic(src,name)
+      this.createPic(src, name);
     },
-    drawDesign(e){
-      console.log(e.currentTarget.dataset.icon)
+    drawDesign(e) {
+      console.log(e.currentTarget.dataset.icon);
 
       let name = e.currentTarget.dataset.icon,
-          src = require(`@/views/demo/GlobalAssessment/img/icon/${name}.png`)
+        src = require(`@/views/demo/GlobalAssessment/img/icon/${name}.png`);
 
-      this.createPic(src,name)
+      this.createPic(src, name);
     },
-    wordInput(){
+    wordInput() {
       // console.log(`输入的文字${this.inputContent.content}`)
-      let that = this
-      let content = that.inputContent.content
-      console.log(`颜色${this.inputContent.color}`)
-      this.inputWordArea = false
+      let that = this;
+      let content = that.inputContent.content;
+      console.log(`颜色${this.inputContent.color}`);
+      this.inputWordArea = false;
 
       //字体大小
       let word = new fabric.Text(content, {
         fontSize: that.inputContent.size,
         // stroke: that.inputContent.color,
-        fill:that.inputContent.color,
+        fill: that.inputContent.color,
         transparentCorners: false,
-        textAlign:"center",
-        left:0,
-        top:0
+        textAlign: "center",
+        left: 0,
+        top: 0,
       });
-      
-      this.canvas.add(word)
-      that.inputContent.content = ''
+
+      this.canvas.add(word);
+      that.inputContent.content = "";
     },
     handleChange(value) {
-        console.log(value);
+      console.log(value);
     },
-    closeShapeArea(e){
-      this.showShape = e
+    closeShapeArea(e) {
+      this.showShape = e;
     },
-    showShapeFun(e){
+    showShapeFun(e) {
       this.showShape = true;
-      this.canvasShapeNums = e.currentTarget.dataset.nums
-      this.inputSort = e.currentTarget.dataset.sort
+      this.canvasShapeNums = e.currentTarget.dataset.nums;
+      this.inputSort = e.currentTarget.dataset.sort;
     },
-    shapeAdd(e){
+    shapeAdd(e) {
       let pic = require(`@/views/demo/GlobalAssessment/img/icon/${this.inputSort}/${e}.png`);
 
       // 填入画布
-      this.createPic(pic,e);
+      this.createPic(pic, e);
     },
     // 画布重置
-    canvasReset(){
-      this.canvas.clear()
+    canvasReset() {
+      this.canvas.clear();
     },
   },
 };
@@ -869,9 +913,9 @@ export default {
   padding: 20px 20px 0;
   margin-bottom: 20px;
   box-sizing: border-box;
-  .el-button{
-    margin-top:10px;
-    margin-left:10px;
+  .el-button {
+    margin-top: 10px;
+    margin-left: 10px;
   }
 }
 .casClose {
@@ -894,58 +938,56 @@ export default {
   display: inline-block;
   margin: 0 5px;
 }
-.el-popper{
-  background:#fff!important;
+.el-popper {
+  background: #fff !important;
 }
-.el-popover{
-  background:#fff!important;
-  margin-left:10px;
-  .buttonStyle{
+.el-popover {
+  background: #fff !important;
+  margin-left: 10px;
+  .buttonStyle {
     // margin-left:10px;
   }
 }
-.arrowArea{
-  width:100%;
-  height:100%;
-  display:-webkit-flex;
-  display:flex;
+.arrowArea {
+  width: 100%;
+  height: 100%;
+  display: -webkit-flex;
+  display: flex;
   -webkit-justify-content: space-around;
   justify-content: space-around;
   // background:#fff;
-  .iconPic{
-    width:30px;
-    height:100%;
+  .iconPic {
+    width: 30px;
+    height: 100%;
     cursor: pointer;
   }
 }
 
-.shapeStyle{
-  cursor:pointer;
+.shapeStyle {
+  cursor: pointer;
   width: 80px;
   height: 80px;
-  margin-left:10px;
+  margin-left: 10px;
 }
 
-.el-dialog{
-  width:600px;
+.el-dialog {
+  width: 600px;
 }
 
 .el-input-number {
-  margin:20px 0;
+  margin: 20px 0;
 }
 
-.el-color-picker{
-
+.el-color-picker {
 }
 
-.wordSetting{
-  display:-webkit-flex;
-  display:flex;
+.wordSetting {
+  display: -webkit-flex;
+  display: flex;
   -webkit-align-items: center;
   align-items: center;
   .el-input-number {
-    margin-right:15px;
+    margin-right: 15px;
   }
 }
-
 </style>

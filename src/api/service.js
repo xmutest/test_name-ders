@@ -37,6 +37,9 @@ function createService() {
     async response => {
         // dataAxios 是 axios 返回数据中的 data
         const dataAxios = response.data
+        if (response.config.url == `${process.env.VUE_APP_API}/user/leadToAuthorize`) {
+          return dataAxios
+        }
         // 这个状态码是和后端约定的
         const {
           code
@@ -69,6 +72,7 @@ function createService() {
                 type: 'error'
               });
             case 555:
+
               // [ 示例 ] code === 0 代表没有错误
               return ElementUI.Message({
                 title: '警告',
@@ -118,7 +122,6 @@ function createService() {
       },
       error => {
         const status = get(error, 'response.status')
-        console.log(status);
         switch (status) {
           case undefined:
             error.message = '网络出错，请检查！！！';
@@ -173,21 +176,28 @@ function createService() {
 function createRequestFunction(service) {
 
   return function (config) {
-    const token = util.cookies.get('token')
+    let token, baseURL;
+    if (config.token) {
+      token = config.token;
+    } else {
+      token = util.cookies.get('token')
+    }
+    if (config.base == 'VUE_APP_manage') {
+      baseURL = process.env.VUE_APP_manage;
+    } else {
+      baseURL = process.env.VUE_APP_API
+    }
     const configDefault = {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': get(config, 'headers.Content-Type', 'application/json')
       },
-      // timeout: 15000,
-      baseURL: process.env.VUE_APP_API,
+      timeout: 600000,
+      baseURL: baseURL,
       data: {}
     }
-    
     return service(Object.assign(configDefault, config))
-    
   }
- 
 }
 
 function createRequestFunctionword(service) {
@@ -198,7 +208,6 @@ function createRequestFunctionword(service) {
         Authorization: 'Bearer ' + token,
         'Content-Type': get(config, 'headers.Content-Type', 'application/json')
       },
-      timeout: 36000,
       data: {}
     }
     return service(Object.assign(configDefault, config))

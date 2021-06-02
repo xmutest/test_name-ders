@@ -36,7 +36,7 @@ export default {
   },
   data() {
     return {
-      formMaxSize: 10, // 上传文件大小
+      formMaxSize: 100, // 上传文件大小
       formFileList: [], // 显示上传文件
       uploadFormFileList: [], // 确定上传文件
     };

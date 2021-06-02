@@ -21,11 +21,55 @@ export default {
   },
   computed: {
     ...mapState("d2admin", {
+       info: (state) => state.user.info,
       xmu_info: (state) => state.xmu.xmu_info,
     }),
   },
   methods: {
     // 导出
+    doadhh() {
+      console.log();
+      var url = `${window.location.protocol}${process.env.VUE_APP_API}/output/sceneCheck?sceneCheckId=${this.toSonData.sceneCheckId}&projectId=${this.xmu_info.projectId}`;
+      var xhr = new XMLHttpRequest();
+      var fileName = this.toSonData.name; // 文件名称
+      xhr.open("GET", url, true);
+      xhr.responseType = "blob";
+      xhr.setRequestHeader("Authorization",`Bearer ${this.info.user_info.token}`); // 请求头中的验证信息等（如果有）
+      xhr.onload = function (res) {
+        if (this.status === 200) {
+          var type = xhr.getResponseHeader("application/msword;charset=utf-8");
+          var blob = new Blob([this.response], { type: type });
+          if (typeof window.navigator.msSaveBlob !== "undefined") {
+            /*
+             * For IE
+             * >=IE10
+             */
+            window.navigator.msSaveBlob(blob, fileName);
+          } else {
+            /*
+             * For Non-IE (chrome, firefox)
+             */
+            var URL = window.URL || window.webkitURL;
+            var objectUrl = URL.createObjectURL(blob);
+            if (fileName) {
+              var a = document.createElement("a");
+              if (typeof a.download === "undefined") {
+                window.location = objectUrl;
+              } else {
+                a.href = objectUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+              }
+            } else {
+              window.location = objectUrl;
+            }
+          }
+        }
+      };
+      xhr.send();
+    },
     async ks_toBummt() {
       //localhost:8080/api/output/sceneCheck?projectId=8
       let reportName = this.toSonData.name;

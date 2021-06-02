@@ -27,7 +27,7 @@
             <span v-show="!scope.row.show">{{ scope.row.equipmentName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="虚拟设备" width="80">
+        <el-table-column label="是否虚拟设备" width="80">
           <template slot-scope="scope">
             <el-checkbox
               @change="

@@ -396,6 +396,10 @@ export default {
           label: "合作三部",
           value: 14,
         },
+        {
+          label: "合作四部",
+          value: 15,
+        },
       ],
       apiList: {
         departmentId: 2,
@@ -460,6 +464,10 @@ export default {
           {
             label: "合作三部",
             value: 14,
+          },
+          {
+            label: "合作四部",
+            value: 15,
           },
         ];
       }
@@ -548,6 +556,10 @@ export default {
         {
           label: "合作三部",
           value: 14,
+        },
+        {
+          label: "合作四部",
+          value: 15,
         },
       ];
       departmentIdOptions.forEach((item) => {
@@ -645,6 +657,10 @@ export default {
         {
           label: "合作三部",
           value: 14,
+        },
+        {
+          label: "合作四部",
+          value: 15,
         },
       ];
     },

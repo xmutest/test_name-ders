@@ -24,7 +24,7 @@
                     <span>{{ scope.row.fileType == 1 ? "报告" : "方案" }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="报告文件名">
+                <el-table-column label="审核材料">
                   <template slot-scope="scope">
                     <span
                       class="xiazaiList"
@@ -35,17 +35,8 @@
                     >
                   </template>
                 </el-table-column>
-                <el-table-column label="备案证">
-                  <template slot-scope="scope">
-                    <span
-                      class="xiazaiList"
-                      @click="submitReport(scope.row, 2)"
-                      >{{ scope.row.recordName }}</span
-                    >
-                  </template>
-                </el-table-column>
 
-                <el-table-column label="备注">
+                <el-table-column label="备注" width="150">
                   <template slot-scope="scope">
                     {{ scope.row.remarks }}
                   </template>
@@ -221,7 +212,7 @@
               <el-radio :label="3">方案</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="测评方案/报告">
+          <el-form-item label="审核材料">
             <el-upload
               class="upload-demo"
               action
@@ -235,22 +226,9 @@
               multiple
             >
               <el-button size="mini" type="primary">上传</el-button>
-            </el-upload>
-          </el-form-item>
-          <el-form-item label="备案证">
-            <el-upload
-              class="upload-demo"
-              action
-              :limit="1"
-              :file-list="formpanFileList"
-              :on-exceed="formHandleExceed"
-              :on-remove="formHandleRemove"
-              :before-upload="beforeUploadForm"
-              :auto-upload="false"
-              :on-change="fileChangeformpanFileList"
-              multiple
-            >
-              <el-button size="mini" type="primary">上传</el-button>
+              <span style="color: red; font-size: 12px; margin-left: 5px"
+                >（请上传压缩包，包含要审核的测评方案或测评报告，备案证，定级报告）</span
+              >
             </el-upload>
           </el-form-item>
           <el-form-item label="备注">
@@ -444,6 +422,10 @@ export default {
           message: "上传文件成功",
           type: "success",
         });
+        this.$api.API_reportFirstdatem({
+          projectId: thiz.xmu_info.projectId,
+          userName: this.info.name,
+        });
         this.formFileList = [];
         this.formpanFileList = [];
         this.projemList = "";
@@ -464,27 +446,28 @@ export default {
         url = `${val.recordUrl}`;
         fileName = `${val.recordName}`;
       }
-      let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
-      let blob = new Blob([res], {
-        type: "application/msword;charset=utf-8",
-      });
+      window.open(url);
+      // let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
+      // let blob = new Blob([res], {
+      //   type: "application/msword;charset=utf-8",
+      // });
 
-      //浏览器兼容，Google和火狐支持a标签的download，IE不支持
-      if (window.navigator && window.navigator.msSaveBlob) {
-        //IE浏览器、微软浏览器
-        /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
-              IE可不重命名，以防万一，所以都写上比较好 */
-        window.navigator.msSaveBlob(blob, fileName);
-      } else {
-        //其他浏览器
-        let link = document.createElement("a"); // 创建a标签
-        link.style.display = "none";
-        let objectUrl = URL.createObjectURL(blob);
-        link.download = fileName;
-        link.href = objectUrl;
-        link.click();
-        URL.revokeObjectURL(objectUrl);
-      }
+      // //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+      // if (window.navigator && window.navigator.msSaveBlob) {
+      //   //IE浏览器、微软浏览器
+      //   /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+      //         IE可不重命名，以防万一，所以都写上比较好 */
+      //   window.navigator.msSaveBlob(blob, fileName);
+      // } else {
+      //   //其他浏览器
+      //   let link = document.createElement("a"); // 创建a标签
+      //   link.style.display = "none";
+      //   let objectUrl = URL.createObjectURL(blob);
+      //   link.download = fileName;
+      //   link.href = objectUrl;
+      //   link.click();
+      //   URL.revokeObjectURL(objectUrl);
+      // }
     },
     fileChangeformpanFileList(file) {
       this.formpanFileList.push(file.raw); //上传文件变化时将文件对象push进files数组

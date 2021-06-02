@@ -12,7 +12,7 @@
             clearable
           ></el-input>
         </div>
-        <div>
+        <!-- <div>
           <el-button
             icon="el-icon-search"
             type="primary"
@@ -20,6 +20,23 @@
             @click="searchBi"
             circle
           ></el-button>
+        </div> -->
+        <div>
+          <span class="search_ls_name"> 项目状态：</span>
+          <el-select
+            v-model="projectModel.queryType"
+            @change="searchBi"
+            placeholder="请选择"
+            size="small"
+          >
+            <el-option
+              v-for="item in optionStatus"
+              :key="item.value"
+              :label="item.title"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </div>
         <div v-if="info.userTypeId != 10" class="die_roift">
           <el-button @click="dialogFormVisibleList" type="primary"
@@ -97,66 +114,78 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <div v-if="info.userTypeId != 10">
-                    <el-table-column label="创建人" width="120">
-                      <template slot-scope="scope">
-                        <p
-                          :class="
-                            radio_projectId == scope.row.projectId
-                              ? 'blue-class'
-                              : ''
-                          "
-                        >
-                          <span>{{ scope.row.creatorName }}</span>
-                        </p>
-                      </template>
-                    </el-table-column>
-                    <el-table-column label="创建时间" width="100">
-                      <template slot-scope="scope">
-                        <p
-                          :class="
-                            radio_projectId == scope.row.projectId
-                              ? 'blue-class'
-                              : ''
-                          "
-                        >
-                          <span>{{
-                            timestampToTime(scope.row.createdTime)
-                          }}</span>
-                        </p>
-                      </template>
-                    </el-table-column>
-                  </div>
-                  <div v-if="info.userTypeId == 10">
-                    <el-table-column label="提交人" width="120">
-                      <template slot-scope="scope">
-                        <p
-                          :class="
-                            radio_projectId == scope.row.projectId
-                              ? 'blue-class'
-                              : ''
-                          "
-                        >
-                          <span>{{ scope.row.reviewSendName }}</span>
-                        </p>
-                      </template>
-                    </el-table-column>
-                    <el-table-column label="提交审批时间" width="100">
-                      <template slot-scope="scope">
-                        <p
-                          :class="
-                            radio_projectId == scope.row.projectId
-                              ? 'blue-class'
-                              : ''
-                          "
-                        >
-                          <span>{{
-                            timestampToTime(scope.row.reviewTime)
-                          }}</span>
-                        </p>
-                      </template>
-                    </el-table-column>
-                  </div>
+                  <el-table-column
+                    v-if="info.userTypeId != 10"
+                    label="创建人"
+                    width="120"
+                  >
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{ scope.row.creatorName }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    v-if="info.userTypeId != 10"
+                    label="创建时间"
+                    width="100"
+                  >
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{
+                          timestampToTime(scope.row.createdTime)
+                        }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+
+                  <el-table-column
+                    v-if="info.userTypeId == 10"
+                    label="提交人"
+                    width="120"
+                  >
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{ scope.row.reviewSendName }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    v-if="info.userTypeId == 10"
+                    label="提交审批时间"
+                    width="150"
+                  >
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{ timestampToTime(scope.row.reviewTime) }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+
                   <el-table-column label="状态" width="100">
                     <template slot-scope="scope">
                       <p
@@ -167,6 +196,23 @@
                         "
                       >
                         <span>{{ scope.row.status }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                     <el-table-column
+                    v-if="info.user_info.userType == 1?true:info.userTypeId == 10 && info.user_info.userType == 3"
+                    label="审核人员"
+                    width="100"
+                  >
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{ scope.row.approvedName }}</span>
                       </p>
                     </template>
                   </el-table-column>
@@ -188,23 +234,7 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column
-                    v-if="info.userTypeId == 10 && info.user_info.userType == 3"
-                    label="审核人员"
-                    width="100"
-                  >
-                    <template slot-scope="scope">
-                      <p
-                        :class="
-                          radio_projectId == scope.row.projectId
-                            ? 'blue-class'
-                            : ''
-                        "
-                      >
-                        <span>{{ scope.row.approvedName }}</span>
-                      </p>
-                    </template>
-                  </el-table-column>
+               
                   <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
                       <div v-if="info.userTypeId !== 10">
@@ -322,6 +352,53 @@
           </el-form-item>
           <div class="ist_lis">
             <div>
+              <el-form-item label="等保等级" :label-width="formLabelWidth">
+                <el-select
+                  v-model="xmform.level"
+                  :disabled="ua_cre == 1 ? true : false"
+                  @change="selectGoodsByGroupId($event)"
+                >
+                  <el-option
+                    v-for="item in levellist"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+            <div>
+              <el-form-item label="SAG等级" :label-width="formLabelWidth">
+                <el-select
+                  :disabled="ua_cre == 1 ? true : false"
+                  v-model="xmform.sag"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in saglist"
+                    :key="item.id"
+                    :label="item.sagCombination"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </div>
+          <span
+            style="
+              color: red;
+              font-size: 12px;
+              display: block;
+              margin-top: -20px;
+              text-align: right;
+              margin-right: 12px;
+              margin-bottom: 15px; /* position: absolute; */ /* top: 0; */
+            "
+          >
+            业务信息安全等级 - S， 系统服务安全等级 - A
+          </span>
+          <div class="ist_lis">
+            <div>
               <el-form-item label="标准体系" :label-width="formLabelWidth">
                 <el-select
                   v-model="xmform.standard"
@@ -372,40 +449,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <div class="ist_lis">
-            <div>
-              <el-form-item label="等保等级" :label-width="formLabelWidth">
-                <el-select
-                  v-model="xmform.level"
-                  :disabled="ua_cre == 1 ? true : false"
-                  @change="selectGoodsByGroupId($event)"
-                >
-                  <el-option
-                    v-for="item in levellist"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-            <div>
-              <el-form-item label="SAG等级" :label-width="formLabelWidth">
-                <el-select
-                  :disabled="ua_cre == 1 ? true : false"
-                  v-model="xmform.sag"
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item in saglist"
-                    :key="item.id"
-                    :label="item.sagCombination"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </div>
+
           <el-form-item
             label="项目参与人"
             prop="membersIdList"
@@ -648,6 +692,16 @@ export default {
         status: 1,
         itemList: null,
       },
+      optionStatus: [
+        { title: "进行中", value: 1 },
+        { title: "我创建的项目", value: 2 },
+        { title: "已完成", value: 3 },
+        { title: "生成报告", value: 4 },
+        { title: "提交审核", value: 5 },
+        { title: "审核中", value: 6 },
+        { title: "完成初审", value: 7 },
+        { title: "完成终审", value: 8 },
+      ],
       projectModel: {
         page: 1,
         pageSize: 10,
@@ -682,6 +736,7 @@ export default {
         sendId: "",
         reviewId: "",
       },
+      radio_projectId: 0,
     };
   },
   computed: {

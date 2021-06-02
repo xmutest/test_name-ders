@@ -317,9 +317,11 @@ export default {
           this.login({
             loginName: this.formLogin.username,
             password: this.formLogin.password,
-          }).then(() => {
-            
-
+          }).then(async () => {
+            let res = await this.$api.API_leadToAuthorize({ platformType: 3 });
+            if (res.code == 20000) {
+              window.sessionStorage.setItem("ms_token", res.data);
+            }
             if (this.checked == true) {
               //传入账号名，密码，和保存天数3个参数
               this.setCookie(

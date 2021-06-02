@@ -6,8 +6,7 @@ import util from '@/libs/util.js'
 import router from '@/router'
 import api from '@/api'
 import {
-  menuHeader,
-  menuAside
+  menuHeader
 } from '@/menu'
 import store from '@/store/index'
 export default {

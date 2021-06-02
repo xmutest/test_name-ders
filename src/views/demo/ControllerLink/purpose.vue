@@ -99,7 +99,7 @@ export default {
           this.fromdata.evaluationBasis = List.data.evaluationBasis.split(",");
         }
         if (List.data.otherEvaluationBasis == null) {
-          this.fromdata.otherEvaluationBasis = `《${this.xmu_info.data.systemName}定级报告》`;
+          this.fromdata.otherEvaluationBasis = `《${this.xmu_info.data.systemName}网络安全等级保护定级报告》`;
         } else {
           this.fromdata.otherEvaluationBasis = List.data.otherEvaluationBasis;
         }

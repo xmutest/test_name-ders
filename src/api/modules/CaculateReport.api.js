@@ -294,7 +294,6 @@ export default ({
     return request({
       url: '/review/sendReview',
       method: 'post',
-      params: data,
       data
     })
   },

@@ -30,7 +30,7 @@
             <span v-show="!scope.row.show">{{ scope.row.equipmentName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="虚拟设备" width="80">
+        <el-table-column label="是否虚拟设备" width="80">
           <template slot-scope="scope">
             <el-checkbox
               @change="
@@ -236,7 +236,7 @@
             ></el-input>
           </el-form-item>
           <el-form-item
-            label="虚拟设备"
+            label="是否虚拟设备"
             :label-width="formLabelWidth"
             prop="isFictitiousEquipment"
           >
@@ -389,7 +389,7 @@ export default {
     };
   },
   created() {
-    // 设备名称	虚拟设备	系统及版本	品牌及型号	用途	备注	数量	重要程度	测评指导书	测评对象
+    // 设备名称	是否虚拟设备	系统及版本	品牌及型号	用途	备注	数量	重要程度	测评指导书	测评对象
     this.getlistdata();
     // })
   },

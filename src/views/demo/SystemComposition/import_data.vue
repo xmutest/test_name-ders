@@ -6,7 +6,7 @@
         <div class="ks_to_name">1.下载模板，填写测评调研表</div>
         <div class="ks_to_text">
           <span>(1)请勿修改模板表头和字段</span>
-          <span>(2)"是否虚拟设备"和"是否抽选"只能填写是或否</span>
+          <span>(2)"是否是否虚拟设备"和"是否抽选"只能填写是或否</span>
           <span
             >(3)"重要程度"有5个级别：不重要；不太重要；一般；重要；非常重要，请按此5个级别填写</span
           >
@@ -36,7 +36,7 @@
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           <div class="el-upload__tip" slot="tip">
-            上传文件只能是doc/docx格式，且不超过10m
+            上传文件只能是docx格式，且不超过10m
           </div>
         </el-upload>
       </div>
@@ -92,10 +92,10 @@ export default {
       }
       // 验证文件类型
       var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      const extension = testmsg === "doc" || testmsg === "docx";
+      const extension = testmsg === "docx";
       if (!extension) {
         this.$message({
-          message: "上传文件只能是doc/docx格式!",
+          message: "上传文件只能是docx格式!",
           type: "warning",
         });
       }
@@ -190,7 +190,7 @@ export default {
           let link = document.createElement("a"); // 创建a标签
           link.style.display = "none";
           let objectUrl = URL.createObjectURL(blob);
-          link.download = kstname;
+          link.download = `${kstname}.docx`;
           link.href = objectUrl;
           link.click();
           URL.revokeObjectURL(objectUrl);

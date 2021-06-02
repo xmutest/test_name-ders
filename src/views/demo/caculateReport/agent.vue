@@ -35,7 +35,7 @@
                     {{ scope.row.fileType == 1 ? "报告" : "方案" }}
                   </template>
                 </el-table-column>
-                <el-table-column label="报告文件名">
+                <el-table-column label="审核材料">
                   <template slot-scope="scope">
                     <span
                       class="xiazaiList"
@@ -46,15 +46,7 @@
                     >
                   </template>
                 </el-table-column>
-                <el-table-column label="备案证" width="150">
-                  <template slot-scope="scope">
-                    <span
-                      class="xiazaiList"
-                      @click="submitReport(scope.row, 2)"
-                      >{{ scope.row.recordName }}</span
-                    >
-                  </template>
-                </el-table-column>
+
                 <el-table-column label="备注" width="150">
                   <template slot-scope="scope">
                     {{ scope.row.remarks }}
@@ -389,7 +381,7 @@
                 <el-date-picker
                   v-model="paymentOrderModel.reviewFirstTime"
                   format="yyyy-MM-dd"
-                  value-format="timestamp"
+                  value-format="yyyy-MM-dd"
                   :style="{ width: '100%' }"
                   placeholder="请选择评审时间"
                   clearable
@@ -400,7 +392,7 @@
                 <el-date-picker
                   v-model="paymentOrderModel.time"
                   format="yyyy-MM-dd"
-                  value-format="timestamp"
+                  value-format="yyyy-MM-dd"
                   :style="{ width: '100%' }"
                   placeholder="请选择评审时间"
                   clearable
@@ -773,8 +765,8 @@ export default {
       kslistdatafyinfo: false,
       infopaymentOrderModel: {},
       paymentOrderModel: {
-        reviewFirstTime: new Date().getTime(),
-        time: new Date().getTime(),
+        reviewFirstTime: "",
+        time: "",
         planA: null,
         planB: null,
         planC: null,
@@ -1170,11 +1162,22 @@ export default {
             res = await this.$api.updatePlanReview(this.paymentOrderModel);
           }
         }
+        let type;
+        if (this.paymentOrderModel.reviewResult == 1) {
+          type = 1;
+        } else {
+          type = 0;
+        }
         if (res.code === 20000) {
           loading.close();
           this.$message({
             message: "创建成功",
             type: "success",
+          });
+          this.$api.API_reporreviewFirst({
+            type,
+            projectId: this.xmu_info.projectId,
+            userName: this.info.name,
           });
           this.close();
           this.userreviewFind();
@@ -1233,8 +1236,8 @@ export default {
     close() {
       this.$refs["paymentOrderModel"].resetFields();
       this.paymentOrderModel = {
-        reviewFirstTime: new Date().getTime(),
-        time: new Date().getTime(),
+        reviewFirstTime: "",
+        time: "",
         planA: null,
         planB: null,
         planC: null,
@@ -1324,27 +1327,28 @@ export default {
         url = `${val.recordUrl}`;
         fileName = `${val.recordName}`;
       }
-      let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
-      let blob = new Blob([res], {
-        type: "application/msword;charset=utf-8",
-      });
+      window.open(url);
+      // let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
+      // let blob = new Blob([res], {
+      //   type: "application/msword;charset=utf-8",
+      // });
 
-      //浏览器兼容，Google和火狐支持a标签的download，IE不支持
-      if (window.navigator && window.navigator.msSaveBlob) {
-        //IE浏览器、微软浏览器
-        /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
-              IE可不重命名，以防万一，所以都写上比较好 */
-        window.navigator.msSaveBlob(blob, fileName);
-      } else {
-        //其他浏览器
-        let link = document.createElement("a"); // 创建a标签
-        link.style.display = "none";
-        let objectUrl = URL.createObjectURL(blob);
-        link.download = fileName;
-        link.href = objectUrl;
-        link.click();
-        URL.revokeObjectURL(objectUrl);
-      }
+      // //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+      // if (window.navigator && window.navigator.msSaveBlob) {
+      //   //IE浏览器、微软浏览器
+      //   /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+      //         IE可不重命名，以防万一，所以都写上比较好 */
+      //   window.navigator.msSaveBlob(blob, fileName);
+      // } else {
+      //   //其他浏览器
+      //   let link = document.createElement("a"); // 创建a标签
+      //   link.style.display = "none";
+      //   let objectUrl = URL.createObjectURL(blob);
+      //   link.download = fileName;
+      //   link.href = objectUrl;
+      //   link.click();
+      //   URL.revokeObjectURL(objectUrl);
+      // }
     },
   },
 };
