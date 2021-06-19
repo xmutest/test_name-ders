@@ -69,6 +69,26 @@
         </template>
       </el-table-column>
 
+      <el-table-column label="所属单位" width="150">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'companyName')"
+            class="itsz"
+          ></div>
+          <el-input
+            :ref="'companyName' + scope.$index"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                companyName: scope.row.companyName,
+              })
+            "
+            v-show="scope.row.show"
+            v-model="scope.row.companyName"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.companyName }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
           <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
@@ -119,6 +139,7 @@ export default {
           telephone: "",
           sortNum: 1,
           show: false,
+          companyName: "",
         },
       ],
       formPage: {
@@ -169,9 +190,10 @@ export default {
       this.getlistdata();
     },
     async getlistdata() {
-      let res = await this.$api.APISecurityPersonnelFindSecurityPersonnel(
+      let res = await this.$api
+        .APISecurityPersonnelFindSecurityPersonnel
         // this.formPage
-      );
+        ();
       if (res.code === 20000) {
         // this.total = res.data.total;
         let List = res.data;
@@ -191,6 +213,7 @@ export default {
               telephone: "",
               sortNum: 1,
               show: false,
+              companyName: "",
             },
           ];
         }
@@ -248,6 +271,7 @@ export default {
         telephone: "",
         sortNum,
         show: false,
+        companyName: "",
       };
       itss.splice(item + 1, 0, basicData);
       this.tabledatas = itss;

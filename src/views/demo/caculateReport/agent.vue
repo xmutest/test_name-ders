@@ -1178,6 +1178,7 @@ export default {
             type,
             projectId: this.xmu_info.projectId,
             userName: this.info.name,
+            time: this.paymentOrderModel.reviewFirstTime,
           });
           this.close();
           this.userreviewFind();
@@ -1198,7 +1199,6 @@ export default {
     },
     // 删除
     delectinfo(item, ms) {
-      console.log(item);
       this.$confirm("确定删除此记录", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

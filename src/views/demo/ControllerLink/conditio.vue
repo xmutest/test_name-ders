@@ -187,23 +187,124 @@
             >
             </el-input>
           </div>
-          <div class="mude_text_item">
-            <div class="descTItle">前次测评情况</div>
-            <div class="to_tim">
-              <el-input
-                type="textarea"
-                style="min-height: 200px; margin-bottom: 20px"
-                :autosize="{ minRows: 10, maxRows: 15 }"
-                placeholder="请输入内容"
-                v-model="fromdata.lastEvaluationSituation"
-              >
-              </el-input>
-            </div>
-          </div>
           <div class="tijiaobaoc">
             <el-button type="primary" @click="submitReport">保存</el-button>
           </div>
+          <div class="mude_text_item">
+            <div class="descTItle">前次测评情况</div>
+            <div>
+              <span style="font-size: 14px; margin-right: 15px"
+                >是否为首次测评</span
+              >
+              <el-radio-group
+                v-model="fromdata.firstTime"
+                @change="xuanzhesFlist"
+              >
+                <el-radio :label="1">是</el-radio>
+                <el-radio :label="2">否</el-radio>
+              </el-radio-group>
+            </div>
+            <div v-if="fromdata.firstTime == 1" class="to_tim">
+              <div style="height: 50px">
+                <!-- <el-input
+                  type="textarea"
+                  style="min-height: 200px; margin-bottom: 20px"
+                  :autosize="{ minRows: 10, maxRows: 15 }"
+                  placeholder="请输入内容"
+                  v-model="fromdata.lastEvaluationSituation"
+                >
+                </el-input> -->
+              </div>
+            </div>
+            <div v-else class="to_tim">
+              <div class="tijiaobaoc">
+                <el-button type="primary" @click="xingzhengList" size="mini"
+                  >新增</el-button
+                >
+              </div>
+              <div>
+                <el-table :data="tabaleList" style="width: 100%">
+                  <el-table-column label="安全问题">
+                    <template slot-scope="scope">
+                      {{ scope.row.safetyProblem }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="整改结果" width="100">
+                    <template slot-scope="scope">
+                      {{ scope.row.result == 1 ? "已整改" : "未整改" }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="情况说明">
+                    <template slot-scope="scope">
+                      {{ scope.row.situation }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="操作" width="150">
+                    <template slot-scope="scope">
+                      <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)"
+                        >修改</el-button
+                      >
+                      <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDelete(scope.$index, scope.row)"
+                        >删除</el-button
+                      >
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
+          </div>
         </el-card>
+        <el-dialog :title="titleL.name" :visible.sync="dialogVisible">
+          <div>
+            <el-form
+              ref="paymentOrderModel"
+              :model="paymentOrderModel"
+              :rules="rules"
+              size="medium"
+              label-width="120px"
+              label-position="left"
+            >
+              <el-form-item label="安全问题" prop="safetyProblem">
+                <el-input
+                  v-model="paymentOrderModel.safetyProblem"
+                  type="textarea"
+                  placeholder="请输入安全问题"
+                  :autosize="{ minRows: 4, maxRows: 8 }"
+                  :style="{ width: '100%' }"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="整改结果" prop="result">
+                <el-radio-group v-model="paymentOrderModel.result" size="mini">
+                  <el-radio
+                    v-for="(item, index) in resultOptions"
+                    :key="index"
+                    :label="item.value"
+                    :disabled="item.disabled"
+                    >{{ item.label }}</el-radio
+                  >
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label="情况说明" prop="situation">
+                <el-input
+                  v-model="paymentOrderModel.situation"
+                  type="textarea"
+                  placeholder="请输入情况说明"
+                  :autosize="{ minRows: 4, maxRows: 8 }"
+                  :style="{ width: '100%' }"
+                ></el-input>
+              </el-form-item>
+            </el-form>
+            <div class="tijiaobaoc">
+              <el-button @click="dialogVisible = false">取消</el-button>
+              <el-button type="primary" @click="handelConfirm">确定</el-button>
+            </div>
+          </div>
+        </el-dialog>
       </div>
     </div>
   </d2-container>
@@ -221,7 +322,19 @@ export default {
         systemSituation: "",
         lastEvaluationSituation: "",
         id: "",
+        firstTime: 2,
       },
+      paymentOrderModel: {
+        safetyProblem: undefined,
+        result: 1,
+        situation: undefined,
+      },
+      titleL: {
+        id: 1,
+        name: "新增测评",
+      },
+      dialogVisible: false,
+      tabaleList: [],
       // 被测评单位
       BeingMeasured: {
         // 单位名称
@@ -295,6 +408,17 @@ export default {
         { id: 5, value: "公众服务" },
         { id: 6, value: "其他" },
       ],
+
+      resultOptions: [
+        {
+          label: "已整改",
+          value: 1,
+        },
+        {
+          label: "未整改",
+          value: 2,
+        },
+      ],
       rules: {
         companyAddress: [
           {
@@ -313,6 +437,13 @@ export default {
             pattern: /^[1-9][0-9]{5}$/,
             message: "请输入正确的邮政编码",
             trigger: "blur",
+          },
+        ],
+        result: [
+          {
+            required: true,
+            message: "整改结果不能为空",
+            trigger: "change",
           },
         ],
         contacts: [
@@ -377,6 +508,18 @@ export default {
     this.submitReport(1);
   },
   methods: {
+    async xingzhengList() {
+      this.dialogVisible = true;
+      this.titleL = {
+        id: 1,
+        name: "新增测评",
+      };
+      this.paymentOrderModel = {
+        safetyProblem: undefined,
+        result: 1,
+        situation: undefined,
+      };
+    },
     // 获取测评单位
     async PassiveCompany() {
       let List = await this.$api.PassiveCompanyFindModel();
@@ -386,6 +529,63 @@ export default {
       } else {
         this.$message.error(List.message + "测评依据选项出差，请联系管理员");
       }
+    },
+    handelConfirm() {
+      this.$refs["paymentOrderModel"].validate(async (valid) => {
+        if (!valid) return;
+        let res;
+        if (this.titleL.id == 1) {
+          res = await this.$api.lastEvaluatisaveview(this.paymentOrderModel);
+        } else {
+          res = await this.$api.lastEvaluatupdateview(this.paymentOrderModel);
+        }
+        if (res.code === 20000) {
+          this.$message({
+            type: "success",
+            message: "保存成功！！",
+            duration: 1000,
+          });
+          this.gettabaleList();
+          this.dialogVisible = false;
+          //查询列表
+        } else {
+          this.$message.error("错误，请联系管理员" + res.message);
+        }
+      });
+    },
+    handleEdit(index, row) {
+      this.dialogVisible = true;
+      this.titleL = {
+        id: 2,
+        name: "修改测评",
+      };
+      this.paymentOrderModel = row;
+    },
+    handleDelete(index, row) {
+      this.$confirm("确定删除此记录", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.lastEvaluadeleteew({ id: row.id });
+          if (res.code === 20000) {
+            this.$message.success("删除成功！！");
+            this.gettabaleList();
+            //查询列表
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    async xuanzhesFlist() {
+      this.$api.lastEvaluseteew({ firstTime: this.fromdata.firstTime });
     },
     // 修改测评单位
     async PassiveCompanyUpdate(it) {
@@ -415,12 +615,20 @@ export default {
     async getEtlist() {
       let List = await this.$api.API_projectOverviewdObjfindSystemSituation();
       if (List.code === 20000) {
+        this.gettabaleList();
         this.getEtlistation();
         this.PassiveCompany();
         this.fromdata = List.data;
         //查询列表
       } else {
         this.$message.error(List.message + "测评依据选项出差，请联系管理员");
+      }
+    },
+    async gettabaleList() {
+      let List = await this.$api.lastEvaluationetailTimePreview();
+      if (List.code === 20000) {
+        this.tabaleList = List.data;
+        //查询列表
       }
     },
     async getEtlistation() {

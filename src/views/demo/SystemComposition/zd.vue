@@ -62,7 +62,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="设备类别/用途">
+      <el-table-column label="用途">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'terminalTypePurpose')"
@@ -202,11 +202,9 @@ export default {
       Itzm: false,
       //  		重要程度	测评对象	排序号
       importance_list: [
-        { value: 5, label: "非常重要" },
+        { value: 5, label: "关键" },
         { value: 4, label: "重要" },
         { value: 3, label: "一般" },
-        { value: 2, label: "不太重要" },
-        { value: 1, label: "不重要" },
       ],
       tabledatas: [
         {

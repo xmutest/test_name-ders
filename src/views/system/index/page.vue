@@ -20,7 +20,7 @@
             @click="searchBi"
             circle
           ></el-button>
-        </div> -->
+        </div>  -->
         <div>
           <span class="search_ls_name"> 项目状态：</span>
           <el-select
@@ -311,6 +311,7 @@
             <el-select
               style="width: 350px"
               v-model="xmulistId"
+              filterable
               @change="getList(xmulistId)"
               placeholder="请选择"
             >
@@ -848,11 +849,11 @@ export default {
         this.projectModel.projectName !== "" &&
         this.projectModel.projectName !== undefined
       ) {
-        this.projectModel.page = 1;
-        this.projectModel.pageSize = this.total;
+        this.projectModel.pageNum = 1;
+        this.projectModel.pageSize > 20 ? this.total : 20;
       } else {
-        this.projectModel.page = 1;
-        this.projectModel.pageSize = 10;
+        this.projectModel.pageNum = 1;
+        this.projectModel.pageSize = 20;
       }
 
       this.ProjectQueryList();
@@ -1078,6 +1079,7 @@ export default {
     },
     // 新镇
     async dialogFormVisibleList() {
+      
       this.ua_cre = 0;
       this.selectGoodsByGroupId(this.xmform.level);
       this.ProjectfindAllList();
@@ -1087,6 +1089,7 @@ export default {
       this.xmulistId = "";
       this.xtUliId = "";
       let ms_token = window.sessionStorage.getItem("ms_token");
+      this.dialogFormVisible = true;
       if (ms_token) {
         let ms = await this.$api.API_findListoFndList_men({
           token: ms_token,
@@ -1095,7 +1098,6 @@ export default {
       } else {
         console.log("获取token失败，请重新登录获取");
       }
-      this.dialogFormVisible = true;
     },
     // 获取系统
     async getList(item) {

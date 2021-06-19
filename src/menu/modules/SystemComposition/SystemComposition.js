@@ -9,7 +9,7 @@ export default {
     },
     {
       path: `${pre}jf`,
-      title: '机房',
+      title: '物理机房',
       icon: '  iconfont icon-jifang'
     },
     {
@@ -34,7 +34,7 @@ export default {
     },
     {
       path: `${pre}xtglpt`,
-      title: '系统管理平台/全局扩展',
+      title: '系统管理软件/平台',
       icon: '  iconfont icon-layui-myicon-guanli'
     },
     {
@@ -49,13 +49,17 @@ export default {
     },
     {
       path: `${pre}zd`,
-      title: '终端/ 感知设备/现场设备',
+      title: '终端设备',
       icon: '  iconfont icon-xianchangshebei'
     },
-
+    {
+      path: `${pre}restsList`,
+      title: '其他设备',
+      icon: '  iconfont icon-xianchangshebei'
+    },
     {
       path: `${pre}keySort`,
-      title: '关键数据类别',
+      title: '数据资源',
       icon: '  iconfont icon-guanjianshuju-shuzi'
     },
     {

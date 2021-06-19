@@ -6,7 +6,7 @@ const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 const meta = {
   auth: true,
-  project:true
+  project: true
 }
 
 export default {
@@ -27,6 +27,16 @@ export default {
       }
     },
     {
+      path: 'company',
+      name: `${pre}company`,
+      component: _import('demo/OverallEvaluation/company'),
+      meta: {
+        ...meta,
+        title: '安全状况描述'
+      },
+
+    },
+    {
       path: 'djcpjl',
       name: `${pre}djcpjl`,
       component: _import('demo/OverallEvaluation/djcpjl'),
@@ -34,7 +44,7 @@ export default {
         ...meta,
         title: '等级测评结论'
       },
-      
+
     }
   ])('demo-OverallEvaluation-')
 }

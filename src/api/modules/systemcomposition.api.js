@@ -52,17 +52,17 @@ export default ({
       responseType: 'blob',
     })
   },
-    /**
+  /**
    * @description 数据模板下载
    * @param {Object} data 
    */
- async SYS_USER_DownLoadDocLisks(data = {}) {
+  async SYS_USER_DownLoadDocLisks(data = {}) {
     // 模拟数据
     // 接口请求
     return request({
       url: '/input/downLoadAssets',
       method: 'get',
-      params:data,
+      params: data,
       responseType: 'blob',
     })
   },
@@ -154,7 +154,7 @@ export default ({
     return request({
       url: '/regionBoundary/delRegionBoundary',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -171,7 +171,7 @@ export default ({
     })
   },
 
-   // 网络设备
+  // 网络设备
   /**
    * @param {Object} data 
    * GET 查询项目的网络设备
@@ -207,7 +207,7 @@ export default ({
     return request({
       url: '/equipment/delEquipment',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -224,7 +224,7 @@ export default ({
     })
   },
 
-   // 业务应用软件接口
+  // 业务应用软件接口
   /**
    * @param {Object} data 
    * GET 查询项目的业务应用软件接口
@@ -260,7 +260,7 @@ export default ({
     return request({
       url: '/softwarePlatform/delSoftwarePlatform',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -313,7 +313,7 @@ export default ({
     return request({
       url: '/platformExtend/delPlatformExtend',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -366,7 +366,7 @@ export default ({
     return request({
       url: '/serverStorage/delServerStorage',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -419,7 +419,7 @@ export default ({
     return request({
       url: '/terminal/delTerminal',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -473,7 +473,7 @@ export default ({
     return request({
       url: '/dbManageSys/delDbManageSys',
       method: 'delete',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -528,7 +528,7 @@ export default ({
     return request({
       url: '/cruxDataType/delCruxDataType',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -582,7 +582,7 @@ export default ({
     return request({
       url: '/safeManageCenter/delSafeManageCenter',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -599,8 +599,8 @@ export default ({
     })
   },
 
-  
-    //密码产品接口接口
+
+  //密码产品接口接口
   /**
    * @param {Object} data 
    * GET 查询密码产品接口接口
@@ -636,7 +636,7 @@ export default ({
     return request({
       url: '/pwdProduct/delPwdProduct',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -690,7 +690,7 @@ export default ({
     return request({
       url: '/securityPersonnel/delSecurityPersonnel',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -744,7 +744,7 @@ export default ({
     return request({
       url: '/securityManageFile/delSecurityManageFile',
       method: 'post',
-      params:data,
+      params: data,
     })
   },
   /**
@@ -758,6 +758,87 @@ export default ({
       url: '/securityManageFile/updateSecurityManageFile',
       method: 'post',
       data,
+    })
+  },
+
+
+  //其他设备接口
+  /**
+   * @param {Object} data 
+   * GET 查询其他设备接口
+   */
+  async otherEquipmentanageFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/otherEquipment/find',
+      method: 'get',
+      params: data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * post 
+保存其他设备接口
+   */
+  async otherEquipmentyManageFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/otherEquipment/save',
+      method: 'post',
+      data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * 
+删除其他设备接口
+   */
+  async otherEquidel(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/otherEquipment/del',
+      method: 'post',
+      params: data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * POST 
+修改其他设备接口
+   */
+  async otherEquipupdateFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/otherEquipment/update',
+      method: 'post',
+      data,
+    })
+  },
+  /**
+   * @param {Object} data 
+   * POST 
+更新安全状况描述
+   */
+  async updateSafetyStatusDescriptiongeFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/project/updateSafetyStatusDescription',
+      method: 'post',
+      data,
+      params: data
+    })
+  },
+  /**
+   * @param {Object} data 
+   * POST 
+查询安全状况描述
+   */
+  async updafindSafetyStatusDescriptioniongeFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/project/findSafetyStatusDescription',
+      method: 'get',
+      params: data,
     })
   },
 })

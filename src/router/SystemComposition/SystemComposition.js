@@ -6,7 +6,7 @@ const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 const meta = {
   auth: true,
-  project:true
+  project: true
 }
 
 export default {
@@ -34,7 +34,7 @@ export default {
       component: _import('demo/SystemComposition/jf'),
       meta: {
         ...meta,
-        title: '机房'
+        title: '物理机房'
       }
     },
     {
@@ -79,7 +79,7 @@ export default {
       component: _import('demo/SystemComposition/xtglpt'),
       meta: {
         ...meta,
-        title: '系统管理平台/全局扩展'
+        title: '系统管理软件/平台'
       }
     },
     {
@@ -97,7 +97,16 @@ export default {
       component: _import('demo/SystemComposition/zd'),
       meta: {
         ...meta,
-        title: '终端/ 感知设备/现场设备'
+        title: '终端设备'
+      }
+    }, ,
+    {
+      path: 'restsList',
+      name: `${pre}restsList`,
+      component: _import('demo/SystemComposition/restsList'),
+      meta: {
+        ...meta,
+        title: '其他设备'
       }
     },
     {
@@ -115,7 +124,7 @@ export default {
       component: _import('demo/SystemComposition/keySort'),
       meta: {
         ...meta,
-        title: '关键数据类别'
+        title: '数据资源'
       }
     },
     {

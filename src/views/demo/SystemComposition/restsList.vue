@@ -1,4 +1,4 @@
-<!--服务器/存储设备-->
+<!--终端/ 感知设备/现场设备-->
 <template>
   <d2-container>
     <el-table
@@ -6,96 +6,82 @@
       border
       :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
     >
-      <el-table-column label="管理软件/平台名称">
+      <el-table-column label="设备名称">
         <template slot-scope="scope">
           <div
-            @click="is_compile(scope.row, scope.$index, 'platformExtendName')"
+            @click="is_compile(scope.row, scope.$index, 'terminalName')"
             class="itsz"
           ></div>
           <el-input
-            :ref="'platformExtendName' + scope.$index"
+            :ref="'terminalName' + scope.$index"
             @blur="
               schujiaodian({
                 id: scope.row.id,
-                platformExtendName: scope.row.platformExtendName,
+                terminalName: scope.row.terminalName,
               })
             "
             v-show="scope.row.show"
-            v-model="scope.row.platformExtendName"
+            v-model="scope.row.terminalName"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.terminalName }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="是否虚拟设备" width="80">
+        <template slot-scope="scope">
+          <el-checkbox
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                isFictitiousEquipment: scope.row.isFictitiousEquipment,
+              })
+            "
+            v-model="scope.row.isFictitiousEquipment"
+          ></el-checkbox>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="操作系统/控制软件">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'operatingSystem')"
+            class="itsz"
+          ></div>
+          <el-input
+            :ref="'operatingSystem' + scope.$index"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                operatingSystem: scope.row.operatingSystem,
+              })
+            "
+            v-show="scope.row.show"
+            v-model="scope.row.operatingSystem"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.operatingSystem }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="用途">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'terminalTypePurpose')"
+            class="itsz"
+          ></div>
+          <el-input
+            :ref="'terminalTypePurpose' + scope.$index"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                terminalTypePurpose: scope.row.terminalTypePurpose,
+              })
+            "
+            v-show="scope.row.show"
+            v-model="scope.row.terminalTypePurpose"
           ></el-input>
           <span v-show="!scope.row.show">{{
-            scope.row.platformExtendName
+            scope.row.terminalTypePurpose
           }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="所在设备名称">
-        <template slot-scope="scope">
-          <div
-            @click="is_compile(scope.row, scope.$index, 'inEquipmentName')"
-            class="itsz"
-          ></div>
-          <el-input
-            :ref="'inEquipmentName' + scope.$index"
-            @blur="
-              schujiaodian({
-                id: scope.row.id,
-                inEquipmentName: scope.row.inEquipmentName,
-              })
-            "
-            placeholder="请输入内容"
-            v-show="scope.row.show"
-            v-model="scope.row.inEquipmentName"
-          ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.inEquipmentName }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="版本">
-        <template slot-scope="scope">
-          <div
-            @click="
-              is_compile(scope.row, scope.$index, 'platformExtendEdition')
-            "
-            class="itsz"
-          ></div>
-          <el-input
-            :ref="'platformExtendEdition' + scope.$index"
-            @blur="
-              schujiaodian({
-                id: scope.row.id,
-                platformExtendEdition: scope.row.platformExtendEdition,
-              })
-            "
-            placeholder="请输入内容"
-            v-show="scope.row.show"
-            v-model="scope.row.platformExtendEdition"
-          ></el-input>
-          <span v-show="!scope.row.show">{{
-            scope.row.platformExtendEdition
-          }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="主要功能">
-        <template slot-scope="scope">
-          <div
-            @click="is_compile(scope.row, scope.$index, 'majorFunction')"
-            class="itsz"
-          ></div>
-          <el-input
-            :ref="'majorFunction' + scope.$index"
-            @blur="
-              schujiaodian({
-                id: scope.row.id,
-                majorFunction: scope.row.majorFunction,
-              })
-            "
-            placeholder="请输入内容"
-            v-show="scope.row.show"
-            v-model="scope.row.majorFunction"
-          ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.majorFunction }}</span>
         </template>
       </el-table-column>
 
@@ -113,7 +99,6 @@
                 remarks: scope.row.remarks,
               })
             "
-            placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.remarks"
           ></el-input>
@@ -121,17 +106,38 @@
         </template>
       </el-table-column>
 
+      <el-table-column label="数量">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'equipmentNum')"
+            class="itsz"
+          ></div>
+          <el-input
+            :ref="'equipmentNum' + scope.$index"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                equipmentNum: scope.row.equipmentNum,
+              })
+            "
+            placeholder="请输入内容"
+            v-show="scope.row.show"
+            v-model="scope.row.equipmentNum"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.equipmentNum }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="重要程度" width="130">
         <template slot-scope="scope">
           <el-select
+            v-model="scope.row.importantDegree"
+            filterable
             @change="
               schujiaodian({
                 id: scope.row.id,
                 importantDegree: scope.row.importantDegree,
               })
             "
-            v-model="scope.row.importantDegree"
-            filterable
             placeholder="请选择"
           >
             <el-option
@@ -143,32 +149,6 @@
           </el-select>
         </template>
       </el-table-column>
-
-      <el-table-column label="测评指导书">
-        <template slot-scope="scope">
-          <el-select
-            disabled
-            @change="
-              schujiaodian({
-                id: scope.row.id,
-                evaluationInstructionBookId:
-                  scope.row.evaluationInstructionBookId,
-              })
-            "
-            v-model="scope.row.evaluationInstructionBookId"
-            filterable
-            placeholder="请选择"
-          >
-            <el-option
-              v-for="item in evaluationBookNameList"
-              :key="item.id"
-              :label="item.label"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </template>
-      </el-table-column>
-
       <el-table-column label="测评对象" width="80">
         <template slot-scope="scope">
           <el-checkbox
@@ -178,7 +158,7 @@
           ></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="200">
+      <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
           <el-button
@@ -220,14 +200,6 @@ export default {
   data() {
     return {
       Itzm: false,
-      evaluationBookNameList: [
-        { id: 24, label: "业务应用系统" },
-        { id: 25, label: "云管理平台（扩展）" },
-        { id: 26, label: "移动管理平台（扩展）" },
-        { id: 27, label: "物联管理平台（扩展）" },
-        { id: 28, label: "工控管理平台（扩展）" },
-        { id: 29, label: "大数据管理平台（扩展）" },
-      ],
       //  		重要程度	测评对象	排序号
       importance_list: [
         { value: 5, label: "关键" },
@@ -236,13 +208,15 @@ export default {
       ],
       tabledatas: [
         {
-          platformExtendName: "",
-          inEquipmentName: "",
-          platformExtendEdition: "",
-          importantDegree: 5,
+          terminalName: "",
+          isFictitiousEquipment: "",
+          operatingSystem: "",
+          terminalTypePurpose: "",
           remarks: "",
-          evaluationInstructionBookId: 24,
+          equipmentNum: 1,
+          importantDegree: 5,
           isEvaluationObj: false,
+          sortNum: 1,
           show: false,
         },
       ],
@@ -299,16 +273,21 @@ export default {
       this.getlistdata();
     },
     async getlistdata() {
-      let res = await this.$api.PlatformExtendFindPlatformExtend(this.formPage);
+      let res = await this.$api.otherEquipmentanageFile(this.formPage);
       if (res.code === 20000) {
         let List = res.data;
         // this.total = res.data.total;
-        if (res.data.length > 0) {
+        if (res.data.length>0) {
           List.forEach((element) => {
             if (element.isEvaluationObj == 1) {
               element.isEvaluationObj = true;
             } else {
               element.isEvaluationObj = false;
+            }
+            if (element.isFictitiousEquipment == 1) {
+              element.isFictitiousEquipment = true;
+            } else {
+              element.isFictitiousEquipment = false;
             }
             element["show"] = false;
           });
@@ -319,14 +298,15 @@ export default {
         } else {
           this.tabledatas = [
             {
-              platformExtendName: "",
-              inEquipmentName: "",
-              platformExtendEdition: "",
-              importantDegree: 5,
-              evaluationInstructionBookId: 24,
+              terminalName: "",
+              isFictitiousEquipment: "",
+              operatingSystem: "",
+              terminalTypePurpose: "",
               remarks: "",
-              sortNum: 1,
+              equipmentNum: 1,
+              importantDegree: 5,
               isEvaluationObj: false,
+              sortNum: 1,
               show: false,
             },
           ];
@@ -339,6 +319,7 @@ export default {
       }
     },
     is_compile(item, index, itname) {
+      // console.log(item,index,itname)
       if (this.indexs == index || this.indexs == "") {
         item.show = true;
       } else {
@@ -360,17 +341,24 @@ export default {
           item.isEvaluationObj = 0;
         }
       }
+      if (typeof item.isFictitiousEquipment == "boolean") {
+        if (item.isFictitiousEquipment == true) {
+          item.isFictitiousEquipment = 1;
+        } else {
+          item.isFictitiousEquipment = 0;
+        }
+      }
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {
-          res = await this.$api.API_PlatformExtendSavePlatformExtend(item);
+          res = await this.$api.otherEquipmentyManageFile(item);
         } else {
-          if (item.platformExtendName != "") {
-            res = await this.$api.API_PlatformExtendUpdatePlatformExtend(item);
+          if (item.terminalName != "") {
+            res = await this.$api.otherEquipupdateFile(item);
           }
         }
       } else {
-        res = await this.$api.API_PlatformExtendSavePlatformExtend(item);
+        res = await this.$api.otherEquipmentyManageFile(item);
       }
       if (res.code === 20000) {
         this.getlistdata();
@@ -383,14 +371,15 @@ export default {
       var itss = this.tabledatas;
       this.Itzm = Itzm;
       var list = {
-        platformExtendName: "",
-        inEquipmentName: "",
-        platformExtendEdition: "",
-        importantDegree: 5,
-        evaluationInstructionBookId: 24,
+        terminalName: "",
+        isFictitiousEquipment: "",
+        operatingSystem: "",
+        terminalTypePurpose: "",
         remarks: "",
-        sortNum,
+        equipmentNum: 1,
+        importantDegree: 5,
         isEvaluationObj: false,
+        sortNum,
         show: false,
       };
       itss.splice(item + 1, 0, list);
@@ -398,13 +387,14 @@ export default {
       this.schujiaodian(this.tabledatas[item + 1]);
     },
     async deleteRow(index, rows) {
+      console.log(rows);
       this.$confirm("确定删除此记录?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(async () => {
-          let res = await this.$api.APIPlatformExtendDelPlatformExtend({
+          let res = await this.$api.otherEquidel({
             id: rows.id,
           });
           if (res.code === 20000) {
@@ -427,7 +417,7 @@ export default {
     },
     async schujiaodianTm(item) {
       let data = {
-        assetsNum: 6,
+        assetsNum: 9,
         assetsId: item.id,
         guideBookId: item.evaluationInstructionBookId,
         projectId: this.xmu_info.projectId,
@@ -447,7 +437,7 @@ export default {
           if (item.isEvaluationObj === true) {
             res = await this.$api.SYS_FieldSurveyActive(data);
           } else {
-            res = await this.$api.SYS_FieldSurveyDelete(data);
+            res = await this.$api.otherEquidel(data);
           }
           if (res.code === 20000) {
             this.schujiaodian({
@@ -483,6 +473,4 @@ export default {
   left: 0;
 }
 </style>
-
-
 

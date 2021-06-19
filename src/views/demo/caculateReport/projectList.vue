@@ -270,31 +270,39 @@ export default {
         },
       };
       let res = await this.$api.SYS_reportWord_DownLoadDocpost(data);
-      if (res.code == 500) {
-        alert(res.message);
-      } else {
-        let blob = new Blob([res], {
-          type:
-            "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
-        });
+      let this_ = this;
+      const reader = new FileReader();
+      reader.onload = function () {
+        try {
+          const msg = JSON.parse(reader.result); //此处的msg就是后端返回的msg内容
+          this_.$message({
+            message: msg.message,
+            type: "error",
+          });
+        } catch (error) {
+          let blob = new Blob([res], {
+            type: "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
+          });
 
-        //浏览器兼容，Google和火狐支持a标签的download，IE不支持
-        if (window.navigator && window.navigator.msSaveBlob) {
-          //IE浏览器、微软浏览器
-          /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+          //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+          if (window.navigator && window.navigator.msSaveBlob) {
+            //IE浏览器、微软浏览器
+            /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
               IE可不重命名，以防万一，所以都写上比较好 */
-          window.navigator.msSaveBlob(blob, val.fileName);
-        } else {
-          //其他浏览器
-          let link = document.createElement("a"); // 创建a标签
-          link.style.display = "none";
-          let objectUrl = URL.createObjectURL(blob);
-          link.download = this.assessmentGroup.reportName;
-          link.href = objectUrl;
-          link.click();
-          URL.revokeObjectURL(objectUrl);
+            window.navigator.msSaveBlob(blob, val.fileName);
+          } else {
+            //其他浏览器
+            let link = document.createElement("a"); // 创建a标签
+            link.style.display = "none";
+            let objectUrl = URL.createObjectURL(blob);
+            link.download = this_.assessmentGroup.reportName;
+            link.href = objectUrl;
+            link.click();
+            URL.revokeObjectURL(objectUrl);
+          }
         }
-      }
+      };
+      reader.readAsText(res);
     },
   },
 };

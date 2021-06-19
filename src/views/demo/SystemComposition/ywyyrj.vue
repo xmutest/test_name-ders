@@ -150,6 +150,27 @@
           ></el-checkbox>
         </template>
       </el-table-column>
+      <el-table-column label="备注">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'remarks')"
+            class="itsz"
+          ></div>
+          <el-input
+            :ref="'remarks' + scope.$index"
+            @blur="
+              schujiaodian({
+                id: scope.row.id,
+                remarks: scope.row.remarks,
+              })
+            "
+            placeholder="请输入内容"
+            v-show="scope.row.show"
+            v-model="scope.row.remarks"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.remarks }}</span>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
           <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
@@ -193,11 +214,9 @@ export default {
     return {
       //  		重要程度	测评对象	排序号
       importance_list: [
-        { value: 5, label: "非常重要" },
+        { value: 5, label: "关键" },
         { value: 4, label: "重要" },
         { value: 3, label: "一般" },
-        { value: 2, label: "不太重要" },
-        { value: 1, label: "不重要" },
       ],
       tabledatas: [
         {
@@ -209,6 +228,7 @@ export default {
           developManufacturers: "",
           sortNum: 1,
           show: false,
+          remarks: "",
         },
       ],
       formPage: {
@@ -294,6 +314,7 @@ export default {
               developManufacturers: "",
               sortNum: 1,
               show: false,
+              remarks: "",
             },
           ];
         }
@@ -360,6 +381,7 @@ export default {
         developManufacturers: "",
         sortNum,
         show: false,
+        remarks: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

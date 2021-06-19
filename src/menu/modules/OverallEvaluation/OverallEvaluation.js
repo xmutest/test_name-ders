@@ -10,6 +10,11 @@ export default {
       icon: '  iconfont icon-Overall-evaluation'
     },
     {
+      path: `${pre}company`,
+      title: '安全状况描述',
+      icon: '  iconfont icon-Overall-evaluation'
+    },
+    {
       path: `${pre}djcpjl`,
       title: '等级测评结论',
       icon: '  iconfont icon-jielun-copy'

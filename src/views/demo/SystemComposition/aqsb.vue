@@ -360,11 +360,9 @@ export default {
       dialogTableVisible: false,
       dialogFormVisible: false,
       importantDegree_list: [
-        { value: 5, label: "非常重要" },
+        { value: 5, label: "关键" },
         { value: 4, label: "重要" },
         { value: 3, label: "一般" },
-        { value: 2, label: "不太重要" },
-        { value: 1, label: "不重要" },
       ],
       xmform: {
         equipmentName: "",

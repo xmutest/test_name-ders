@@ -131,7 +131,28 @@
           <span v-show="!scope.row.show">{{ scope.row.productNum }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column label="重要程度" width="130">
+        <template slot-scope="scope">
+          <el-select
+            v-model="scope.row.importantDegree"
+            filterable
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                importantDegree: scope.row.importantDegree,
+              })
+            "
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in importantDegree_list"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
           <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
@@ -182,10 +203,16 @@ export default {
           pwdModel: "",
           pwdAlgorithm: "",
           productPurpose: "",
+          importantDegree: 5,
           productNum: "",
           sortNum: 1,
           show: false,
         },
+      ],
+      importantDegree_list: [
+        { value: 5, label: "关键" },
+        { value: 4, label: "重要" },
+        { value: 3, label: "一般" },
       ],
       formPage: {
         pageNum: 1,
@@ -254,6 +281,7 @@ export default {
               manufacturer: "",
               pwdModel: "",
               pwdAlgorithm: "",
+              importantDegree: 5,
               productPurpose: "",
               productNum: "",
               sortNum: 1,
@@ -299,7 +327,7 @@ export default {
         this.getlistdata();
         this.Itzm = false;
         //查询列表
-      } 
+      }
       this.Itzm = false;
     },
     is_preserve(item, Itzm, sortNum) {
@@ -311,6 +339,7 @@ export default {
         pwdModel: "",
         pwdAlgorithm: "",
         productPurpose: "",
+        importantDegree: 5,
         productNum: "",
         sortNum,
         show: false,

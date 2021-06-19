@@ -417,19 +417,84 @@ export default ({
     return request({
       url: '/projectOverview/findDetailTimePreview',
       method: 'get',
-      params:data
+      params: data
     })
   },
   /**
-  * @description 查询项目概述的详细过程时间预览
-  */
+   * @description 查询项目概述的详细过程时间预览
+   */
   async API_ProjectOverviewUpdateDetailTimePreview(data = {}) {
-    
+
     // 接口请求
     return request({
       url: '/projectOverview/updateDetailTimePreview',
       method: 'post',
-      params:data
+      params: data
+    })
+  },
+
+
+  /**
+   * @description 查询上次测评
+   */
+  async lastEvaluationetailTimePreview(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/lastEvaluation/findList',
+      method: 'get',
+      params: data
+    })
+  },
+
+
+  /**
+   * @description 新增上次测评
+   */
+  async lastEvaluatisaveview(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/lastEvaluation/save',
+      method: 'post',
+      data
+    })
+  },
+  /**
+   * @description 修改上次测评
+   */
+  async lastEvaluatupdateview(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/lastEvaluation/update',
+      method: 'post',
+      data
+    })
+  },
+  /**
+   * @description 删除上次测评
+   */
+  async lastEvaluadeleteew(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/lastEvaluation/delete',
+      method: 'get',
+      params: data
+    })
+  },
+  /**
+   * @description GET 
+设置为是否首次
+   */
+  async lastEvaluseteew(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/lastEvaluation/set',
+      method: 'get',
+      params: data
     })
   },
 })
