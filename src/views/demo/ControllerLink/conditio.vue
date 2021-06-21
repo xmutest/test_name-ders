@@ -651,7 +651,7 @@ export default {
       }
     },
     async submitReport(it) {
-      this.fromdata.lastEvaluationSituation = `    ${this.fromdata.lastEvaluationSituation.trim()}`;
+      // this.fromdata.lastEvaluationSituation = `    ${this.fromdata.lastEvaluationSituation.trim()}`;
       this.fromdata.systemSituation = `    ${this.fromdata.systemSituation.trim()}`;
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       this.PassiveCompanyUpdate(it);

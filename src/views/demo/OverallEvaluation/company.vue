@@ -13,7 +13,7 @@
               :autosize="{ minRows: 20, maxRows: 35 }"
               placeholder="【填写说明：根据实际测评情况简要描述被测对象的整体安全状况，包括最主要的中高风险安全问题及数量和等级结论，建议不超过400字】"
               v-model="fromdata.safetyStatusDescription"
-            >
+            > 
             </el-input>
             <!-- <div>
               <p class="textLidateget">
@@ -104,6 +104,7 @@ export default {
       }
     },
     async submitReport(it) {
+      this.fromdata.safetyStatusDescription = `    ${this.fromdata.safetyStatusDescription.trim()}`;
       let res = await this.$api.updateSafetyStatusDescriptiongeFile(
         this.fromdata
       );
