@@ -484,6 +484,11 @@ export default {
     async submitForm() {
       this.$refs["assessmentGroup"].validate(async (valid) => {
         if (!valid) return;
+        this.assessmentGroup.fractionVersion = window.sessionStorage.getItem(
+          "radiomstjisfen"
+        )
+          ? Number(window.sessionStorage.getItem("radiomstjisfen"))
+          : 1;
         // TODO 提交表单
         let res = await this.$api.API_reportType2GenerGate(
           this.assessmentGroup

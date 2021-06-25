@@ -29,11 +29,11 @@ export default ({
    * @description 查询整体测评
    * @param {Object} data 携带的信息
    */
- async API_ProjectfindOverallEvaluation(data = {}) {
-  data.projectId = await this.get_info();  
-  // 接口请求
+  async API_ProjectfindOverallEvaluation(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
     return request({
-    //   url: '/project/findOverallEvaluation',
+      //   url: '/project/findOverallEvaluation',
       url: '/project/findOverallEvaluation',
       method: 'get',
       params: data
@@ -43,7 +43,7 @@ export default ({
    * @description 保存整体测评
    * @param {Object} data 携带的信息
    */
- async API_WholeEvaluationSaveWholeEvaluation(data = {}) {
+  async API_WholeEvaluationSaveWholeEvaluation(data = {}) {
     // 接口请求
     data.projectId = await this.get_info();
     return request({
@@ -56,7 +56,7 @@ export default ({
    * @description 修改整体测评
    * @param {Object} data 携带的信息
    */
- async API_ProjectupdateOverallEvaluation(data = {}) {
+  async API_ProjectupdateOverallEvaluation(data = {}) {
     // 接口请求
     data.projectId = await this.get_info();
     return request({
@@ -75,34 +75,39 @@ export default ({
     return request({
       url: '/calculateFraction/summaryGraph',
       method: 'get',
-      params:data
+      params: data
     })
-  },  
+  },
   /**
-  * @description 查询  等级测评结论 分数
-  * @param {Object} data 携带的信息
-  */
+   * @description 查询  等级测评结论 分数
+   * @param {Object} data 携带的信息
+   */
   async API_CalculateFractionInConclusionFraction(data = {}) {
-   // 接口请求
-   data.projectId = await this.get_info();
-   return request({
-     url: '/calculateFraction/inConclusionFraction',
-     method: 'get',
-     params:data
-   })
+    // 接口请求
+    data.fractionVersion = window.sessionStorage.getItem("radiomstjisfen") ?
+      Number(window.sessionStorage.getItem("radiomstjisfen")) :
+      1;
+    data.projectId = await this.get_info();
+    return request({
+      url: '/calculateFraction/inConclusionFraction',
+      method: 'get',
+      params: data
+    })
   },
   /**
    * @description 查询 风险总数统计
    * @param {Object} data 携带的信息
    */
   async API_CalculateriskTotalNum(data = {}) {
-    // 接口请求
+    data.fractionVersion = window.sessionStorage.getItem("radiomstjisfen") ?
+      Number(window.sessionStorage.getItem("radiomstjisfen")) :
+      1;
     data.projectId = await this.get_info();
+    // console.log(window.sessionStorage.getItem('radiomstjisfen'));
     return request({
-      url: '/calculateFraction/riskTotalNum',
+      url: '/calculateFraction/totalFraction',
       method: 'get',
-      params:data
-    })
+      params: data
+    });
   },
 })
-  

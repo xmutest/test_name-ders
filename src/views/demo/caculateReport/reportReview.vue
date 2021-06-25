@@ -227,7 +227,7 @@
             >
               <el-button size="mini" type="primary">上传</el-button>
               <span style="color: red; font-size: 12px; margin-left: 5px"
-                >（请上传压缩包，包含要审核的测评方案或测评报告，备案证，定级报告）</span
+                >（请上传压缩包，包含要审核的测评方案或测评报告，备案证，定级报告，现场授权书，渗透授权书）</span
               >
             </el-upload>
           </el-form-item>

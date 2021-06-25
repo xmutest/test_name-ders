@@ -6,7 +6,7 @@ const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 const meta = {
   auth: true,
-  project:true
+  project: true
 }
 
 export default {
@@ -33,6 +33,14 @@ export default {
       meta: {
         ...meta,
         title: '测评问题清单'
+      }
+    }, {
+      path: 'qingdang',
+      name: `${pre}qingdang`,
+      component: _import('demo/GlobalAssessment/qingdang'),
+      meta: {
+        ...meta,
+        title: '测评问题清单（盖章）'
       }
     },
     {

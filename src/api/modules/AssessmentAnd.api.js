@@ -11,7 +11,7 @@ export default ({
   mock,
   faker,
   tools
-}) => ({ 
+}) => ({
   // 获取信息
   async get_info() {
     const xmu_info = await store.dispatch('d2admin/db/get', {
@@ -29,12 +29,16 @@ export default ({
       return xmu_info.projectId;
     }
   },
-    /**
+  /**
    * @description 获取项目总分数
    * @param {Object} data 携带的信息
    */
   async CalculateFractionTotalFraction(data = {}) {
+    data.fractionVersion = window.sessionStorage.getItem("radiomstjisfen") ?
+      Number(window.sessionStorage.getItem("radiomstjisfen")) :
+      1;
     data.projectId = await this.get_info();
+    // console.log(window.sessionStorage.getItem('radiomstjisfen'));
     let res = await request({
       url: '/calculateFraction/totalFraction',
       method: 'get',
@@ -188,7 +192,7 @@ export default ({
     return request({
       url: '/risk/delRiskKnowledge',
       method: 'post',
-      params:data
+      params: data
     })
   },
 })

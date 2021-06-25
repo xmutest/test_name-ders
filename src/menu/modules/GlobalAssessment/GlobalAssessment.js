@@ -3,8 +3,7 @@ export default {
   path: '/demo/GlobalAssessment',
   title: '整体测评',
   icon: 'sliders',
-  children: (pre => [
-    {
+  children: (pre => [{
       path: `${pre}ztcp`,
       title: '整体测评结果汇总',
       icon: '  iconfont icon-jieguohuizong'
@@ -12,6 +11,10 @@ export default {
     {
       path: `${pre}issuelist`,
       title: '测评问题清单',
+      icon: '  iconfont icon-jieguohuizong'
+    }, {
+      path: `${pre}qingdang`,
+      title: '测评问题清单（盖章）',
       icon: '  iconfont icon-jieguohuizong'
     },
     {

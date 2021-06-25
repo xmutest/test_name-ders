@@ -82,8 +82,12 @@
                   :content="xmu_info.name"
                   placement="right-end"
                 >
-                  <el-button v-if="xmu_info.name" style="color: red" size="mini">
-                    <span  v-if="xmu_info.name.length > 50"
+                  <el-button
+                    v-if="xmu_info.name"
+                    style="color: red"
+                    size="mini"
+                  >
+                    <span v-if="xmu_info.name.length > 50"
                       >{{ xmu_info.name.substring(0, 50) }}....</span
                     >
                     <span v-else>{{ xmu_info.name }}</span>
@@ -99,6 +103,16 @@
                     ></span
                   >
                   <span v-else>无</span>
+                </span>
+                <span style="margin: 15px; font-size: 14px"
+                  >计分公式：
+                  <el-radio-group
+                    @change="xuanzheradiomstjisfen"
+                    v-model="radiomstjisfen"
+                  >
+                    <el-radio :label="0">2019版</el-radio>
+                    <el-radio :label="1">2021版</el-radio>
+                  </el-radio-group>
                 </span>
               </div>
               <div class="d2-theme-container-main-header" flex-box="0">
@@ -148,6 +162,9 @@ export default {
       asideWidth: "200px",
       // [侧边栏宽度] 折叠状态
       asideWidthCollapse: "65px",
+      radiomstjisfen: window.sessionStorage.getItem("radiomstjisfen")
+        ? Number(window.sessionStorage.getItem("radiomstjisfen"))
+        : 1,
     };
   },
   created() {},
@@ -185,6 +202,13 @@ export default {
     },
   },
   methods: {
+    xuanzheradiomstjisfen() {
+      window.sessionStorage.setItem(
+        "radiomstjisfen",
+        Number(this.radiomstjisfen)
+      );
+      this.$api.CalculateFractionTotalFraction();
+    },
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then((_) => {

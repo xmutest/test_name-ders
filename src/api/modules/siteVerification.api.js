@@ -50,6 +50,9 @@ export default ({
    * @param {Object} data 携带的信息
    */
   async CalculateFractionTotalFraction(data = {}) {
+    data.fractionVersion = window.sessionStorage.getItem("radiomstjisfen") ?
+      Number(window.sessionStorage.getItem("radiomstjisfen")) :
+      1;
     data.projectId = await this.get_info();
     let res = await request({
       url: '/calculateFraction/totalFraction',
@@ -136,7 +139,7 @@ export default ({
       data
     })
   },
-   /**
+  /**
    * @description 生成保护措施
    * @param {Object} data 携带的信息
    */

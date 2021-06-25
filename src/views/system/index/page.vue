@@ -1079,7 +1079,6 @@ export default {
     },
     // 新镇
     async dialogFormVisibleList() {
-      
       this.ua_cre = 0;
       this.selectGoodsByGroupId(this.xmform.level);
       this.ProjectfindAllList();

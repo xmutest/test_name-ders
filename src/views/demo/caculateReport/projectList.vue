@@ -295,7 +295,7 @@ export default {
             let link = document.createElement("a"); // 创建a标签
             link.style.display = "none";
             let objectUrl = URL.createObjectURL(blob);
-            link.download = this_.assessmentGroup.reportName;
+            link.download = `${this_.assessmentGroup.reportName}.docx`;
             link.href = objectUrl;
             link.click();
             URL.revokeObjectURL(objectUrl);

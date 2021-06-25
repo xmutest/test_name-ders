@@ -64,6 +64,7 @@ export default {
     //获取风险总数统计
     async dategetList() {
       let res = await this.$api.API_CalculateriskTotalNum();
+      console.log(res);
       if (res.code === 20000) {
         let riskMap = res.data;
         let lts = "";
