@@ -82,7 +82,7 @@ export default ({
     })
   },
   /**
-   * @description 模板导入
+   * @description 模板上传
    * @param {Object} data 
    */
   SYS_loudong_InputDoc(data = {}) {

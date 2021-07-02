@@ -25,7 +25,7 @@ export default {
       component: _import('demo/SystemComposition/import_data'),
       meta: {
         ...meta,
-        title: '导入测评调研表'
+        title: '上传测评调研表'
       }
     },
     {

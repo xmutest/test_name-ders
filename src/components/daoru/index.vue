@@ -12,7 +12,7 @@
       multiple
       accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
     >
-      <el-button type="primary">导入</el-button>
+      <el-button type="primary">上传</el-button>
     </el-upload>
   </div>
 </template>

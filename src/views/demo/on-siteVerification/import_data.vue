@@ -1,4 +1,4 @@
-<!--导入测评调研表-->
+<!--上传测评调研表-->
 <template>
   <d2-container>
     <div class="ks_to">
@@ -12,13 +12,13 @@
           <span>(3)"符合情况"只能填写：符合、部分符合、不符合、不适用</span>
           <div class="ks_buttm">
             <el-link @click="ks_toBummt" icon="el-icon-download"
-              >下载导入模板</el-link
+              >下载上传模板</el-link
             >
           </div>
         </div>
       </div>
       <div>
-        <div class="ks_to_name">2.导入数据</div>
+        <div class="ks_to_name">2.上传数据</div>
         <el-upload
           class="upload-demo"
           drag

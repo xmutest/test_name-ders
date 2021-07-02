@@ -5,7 +5,7 @@ export default {
   icon: 'book',
   children: (pre => [{
       path: `${pre}import_data`,
-      title: '导入测评调研表'
+      title: '上传测评调研表'
     },
     {
       path: `${pre}jf`,

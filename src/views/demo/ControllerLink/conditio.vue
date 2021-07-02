@@ -187,15 +187,14 @@
             >
             </el-input>
           </div>
-          <div class="tijiaobaoc">
-            <el-button type="primary" @click="submitReport">保存</el-button>
-          </div>
+
           <div class="mude_text_item">
             <div class="descTItle">前次测评情况</div>
-            <div>
+            <div v-if="isPr == 1">
               <span style="font-size: 14px; margin-right: 15px"
                 >是否为首次测评</span
               >
+
               <el-radio-group
                 v-model="fromdata.firstTime"
                 @change="xuanzhesFlist"
@@ -203,59 +202,75 @@
                 <el-radio :label="1">是</el-radio>
                 <el-radio :label="2">否</el-radio>
               </el-radio-group>
+
+              <div v-if="fromdata.firstTime == 1" class="to_tim">
+                <div style="height: 50px">
+                  <!-- <el-input
+                    type="textarea"
+                    style="min-height: 200px; margin-bottom: 20px"
+                    :autosize="{ minRows: 10, maxRows: 15 }"
+                    placeholder="请输入内容"
+                    v-model="fromdata.lastEvaluationSituation"
+                  >
+                  </el-input> -->
+                </div>
+              </div>
+              <div v-else class="to_tim">
+                <div class="tijiaobaoc">
+                  <el-button type="primary" @click="xingzhengList" size="mini"
+                    >新增</el-button
+                  >
+                </div>
+                <div>
+                  <el-table :data="tabaleList" style="width: 100%">
+                    <el-table-column label="安全问题">
+                      <template slot-scope="scope">
+                        {{ scope.row.safetyProblem }}
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="整改结果" width="100">
+                      <template slot-scope="scope">
+                        {{ scope.row.result == 1 ? "已整改" : "未整改" }}
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="情况说明">
+                      <template slot-scope="scope">
+                        {{ scope.row.situation }}
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="150">
+                      <template slot-scope="scope">
+                        <el-button
+                          size="mini"
+                          @click="handleEdit(scope.$index, scope.row)"
+                          >修改</el-button
+                        >
+                        <el-button
+                          size="mini"
+                          type="danger"
+                          @click="handleDelete(scope.$index, scope.row)"
+                          >删除</el-button
+                        >
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </div>
             </div>
-            <div v-if="fromdata.firstTime == 1" class="to_tim">
-              <div style="height: 50px">
-                <!-- <el-input
+            <div v-else>
+              <div>
+                <el-input
                   type="textarea"
                   style="min-height: 200px; margin-bottom: 20px"
                   :autosize="{ minRows: 10, maxRows: 15 }"
                   placeholder="请输入内容"
                   v-model="fromdata.lastEvaluationSituation"
                 >
-                </el-input> -->
+                </el-input>
               </div>
             </div>
-            <div v-else class="to_tim">
-              <div class="tijiaobaoc">
-                <el-button type="primary" @click="xingzhengList" size="mini"
-                  >新增</el-button
-                >
-              </div>
-              <div>
-                <el-table :data="tabaleList" style="width: 100%">
-                  <el-table-column label="安全问题">
-                    <template slot-scope="scope">
-                      {{ scope.row.safetyProblem }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="整改结果" width="100">
-                    <template slot-scope="scope">
-                      {{ scope.row.result == 1 ? "已整改" : "未整改" }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="情况说明">
-                    <template slot-scope="scope">
-                      {{ scope.row.situation }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="操作" width="150">
-                    <template slot-scope="scope">
-                      <el-button
-                        size="mini"
-                        @click="handleEdit(scope.$index, scope.row)"
-                        >修改</el-button
-                      >
-                      <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handleDelete(scope.$index, scope.row)"
-                        >删除</el-button
-                      >
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
+            <div class="tijiaobaoc">
+              <el-button type="primary" @click="submitReport">保存</el-button>
             </div>
           </div>
         </el-card>
@@ -318,9 +333,10 @@ export default {
         businessSituation: "",
         id: "",
       },
+      isPr: 0,
       fromdata: {
         systemSituation: "",
-        lastEvaluationSituation: "",
+        lastEvaluationSituation: "本次测评为被测对象的首次测评。",
         id: "",
         firstTime: 2,
       },
@@ -502,6 +518,7 @@ export default {
     };
   },
   created() {
+    this.isPr = window.sessionStorage.getItem("radiomstjisfen");
     this.getEtlist();
   },
   destroyed: function () {
@@ -651,7 +668,7 @@ export default {
       }
     },
     async submitReport(it) {
-      // this.fromdata.lastEvaluationSituation = `    ${this.fromdata.lastEvaluationSituation.trim()}`;
+      this.fromdata.lastEvaluationSituation = `    ${this.fromdata.lastEvaluationSituation.trim()}`;
       this.fromdata.systemSituation = `    ${this.fromdata.systemSituation.trim()}`;
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       this.PassiveCompanyUpdate(it);

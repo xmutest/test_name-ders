@@ -26,7 +26,7 @@ export default ({
     }
   },
   /**
-   * @description 模板导入
+   * @description 模板上传
    * @param {Object} data 
    */
   SYS_USER_InputDoc(data = {}) {

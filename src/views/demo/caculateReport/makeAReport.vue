@@ -1115,6 +1115,9 @@ export default {
       this.$refs["assessmentGroup"].validate(async (valid) => {
         if (!valid) return;
         // TODO 提交表单
+        let versions =
+          window.sessionStorage.getItem("radiomstjisfen") == 0 ? 2019 : 2021;
+        this.assessmentGroup.versions = versions;
         let res = await this.$api.API_wordGenerGate(this.assessmentGroup);
         if (res.code === 20000) {
           this.getEtlist();

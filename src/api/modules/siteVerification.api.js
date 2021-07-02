@@ -82,6 +82,9 @@ export default ({
    */
   async SYS_FieldSurveyFindAssetsList(data = {}) {
     data.projectId = await this.get_info();
+    let versions =
+      window.sessionStorage.getItem("radiomstjisfen") == 0 ? 2019 : 2021;
+    data.versions = versions;
     this.CalculateFractionTotalFraction();
     // 安全物理环境
     // 接口请求
@@ -144,6 +147,9 @@ export default ({
    * @param {Object} data 携带的信息
    */
   async SYS_fieldSurveySyncProtective(data = {}) {
+    let versions =
+      window.sessionStorage.getItem("radiomstjisfen") == 0 ? 2019 : 2021;
+    data.versions = versions;
     return request({
       url: '/fieldSurvey/syncProtective',
       method: 'get',

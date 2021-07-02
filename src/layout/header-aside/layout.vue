@@ -104,14 +104,17 @@
                   >
                   <span v-else>无</span>
                 </span>
-                <span style="margin: 15px; font-size: 14px"
-                  >计分公式：
+                <span
+                  class="er_ms_name"
+                  style="margin: 15px; font-size: 14px; color: purple"
+                >
+                  <span style="font-weight: bold">报告模版：</span>
                   <el-radio-group
                     @change="xuanzheradiomstjisfen"
                     v-model="radiomstjisfen"
                   >
-                    <el-radio :label="0">2019版</el-radio>
-                    <el-radio :label="1">2021版</el-radio>
+                    <el-radio :label="0">2019年旧版</el-radio>
+                    <el-radio :label="1">2021年新版</el-radio>
                   </el-radio-group>
                 </span>
               </div>
@@ -203,6 +206,8 @@ export default {
   },
   methods: {
     xuanzheradiomstjisfen() {
+      if (!this.xmu_info.name)
+        return this.$message.error("请选择项目在进行操作");
       window.sessionStorage.setItem(
         "radiomstjisfen",
         Number(this.radiomstjisfen)
@@ -227,7 +232,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 // 注册主题
 @import "~@/assets/style/theme/register.scss";
 .d2-layout-header-aside-group
@@ -237,5 +242,15 @@ export default {
   .el-submenu
   .el-submenu__title {
   padding: 0 10px;
+}
+.er_ms_name {
+  // 添加颜色类
+  .el-radio__input.is-checked + .el-radio__label {
+    color: purple !important;
+  }
+  .el-radio__input.is-checked .el-radio__inner {
+    background: purple !important;
+    border-color: purple !important;
+  }
 }
 </style>

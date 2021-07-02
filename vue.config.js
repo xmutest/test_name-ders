@@ -55,7 +55,7 @@ module.exports = {
     // http://172.16.4.251:8080/evaluation/
     proxy: {
       '/api': {
-        target: 'http://192.168.137.1:8080/evaluation/',
+        target: 'http://192.168.7.156:8081/evaluation/',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

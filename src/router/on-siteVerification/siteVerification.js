@@ -23,7 +23,7 @@ export default {
       component: _import('demo/on-siteVerification/import_data'),
       meta: {
         ...meta,
-        title: '导入现场记录表'
+        title: '上传现场记录表'
       }
     },
     {
