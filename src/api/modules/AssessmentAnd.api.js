@@ -34,9 +34,10 @@ export default ({
    * @param {Object} data 携带的信息
    */
   async CalculateFractionTotalFraction(data = {}) {
-    data.fractionVersion = window.sessionStorage.getItem("radiomstjisfen") ?
-      Number(window.sessionStorage.getItem("radiomstjisfen")) :
-      1;
+    // data.fractionVersion = window.sessionStorage.getItem("radiomstjisfen") ?
+    //   Number(window.sessionStorage.getItem("radiomstjisfen")) :
+    //   1;
+    data.fractionVersion = 1;
     data.projectId = await this.get_info();
     // console.log(window.sessionStorage.getItem('radiomstjisfen'));
     let res = await request({

@@ -4,6 +4,27 @@
     <div class="mude_is">
       <!-- 富文本输入框 -->
       <div class="mude_is_left">
+        <div class="search_ls">
+          <div>
+            <span class="search_ls_name">用户名：</span>
+            <el-input
+              placeholder="请输入内容"
+              v-model="apiList.userName"
+              size="small"
+              @input="searchBi"
+              clearable
+            ></el-input>
+          </div>
+          <div>
+            <el-button
+              icon="el-icon-search"
+              type="primary"
+              size="small"
+              @click="searchBi"
+              circle
+            ></el-button>
+          </div>
+        </div>
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">用户列表</div>
@@ -17,7 +38,7 @@
             </div>
             <el-table :data="tableData" style="width: 100%">
               <!-- <el-table-column label="报告编号" width="200">
-                <template slot-scope="scope">
+                <template  slot-scope="scope">
                   <span style="margin-left: 10px">{{
                     scope.row.reportNum
                   }}</span>
@@ -365,6 +386,7 @@ export default {
         departmentId: 6,
         page: 1,
         pageSize: 10,
+        userName:''
       },
     };
   },
@@ -469,6 +491,18 @@ export default {
         }
       });
     },
+     // 搜索
+    searchBi() {
+      if (this.apiList.userName !== "" && this.apiList.userName !== undefined) {
+        this.apiList.pageNum = 1;
+        this.apiList.pageSize = this.total;
+      } else {
+        this.apiList.pageNum = 1;
+        this.apiList.pageSize = 10;
+      }
+
+      this.gettableData();
+    },
     // 修改
     async updatahandelConfirm() {
       if (this.xmform.userType == 2) {
@@ -476,11 +510,11 @@ export default {
       }
       let res = await this.$api.API_Userupdate(this.xmform);
       if (res.code === 20000) {
-         this.$message({
-            type: "success",
-            message: "修改成功！！",
-            duration: 1000
-          });
+        this.$message({
+          type: "success",
+          message: "修改成功！！",
+          duration: 1000,
+        });
         this.dialogVisibleupdata = false;
         this.gettableData();
         //查询列表
@@ -582,5 +616,26 @@ export default {
   .descTItle {
     @extend %unable-border-left;
   }
+}
+.search_ls {
+  display: flex;
+  align-items: center;
+  div {
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    .search_ls_name {
+      font-size: 14px !important;
+      font-family: "Courier New", Courier, monospace;
+    }
+  }
+  .el-input {
+    max-width: 180px;
+    margin-left: 5px;
+  }
+}
+.search_ls {
+  position: relative;
+  margin: 15px;
 }
 </style>

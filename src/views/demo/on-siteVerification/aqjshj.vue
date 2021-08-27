@@ -335,7 +335,9 @@
                           </div>
                         </el-popover>
                       </td>
-                      <td>{{ item2.weight }}</td>
+                      <td>
+                        {{ qvList(item2.weight) }}
+                      </td>
                     </tr>
                   </tbody>
                 </template>
@@ -402,7 +404,7 @@ export default {
         this.$message.error("错误，请联系管理员" + res.message);
       }
     },
-       // 获取
+    // 获取
     async submitReport(item, it) {
       let fractionModelList = [];
       fractionModelList.push(item);

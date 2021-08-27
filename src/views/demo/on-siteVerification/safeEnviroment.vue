@@ -308,7 +308,7 @@
                           </div>
                         </el-popover>
                       </td>
-                      <td>{{ item2.weight }}</td>
+                      <td> {{ qvList(item2.weight) }}</td>
                     </tr>
                   </tbody>
                 </template>

@@ -36,7 +36,20 @@ Vue.directive('throttle', {
 Vue.use(require('vue-easeljs'))
 Vue.use(fabric);
 // Vue.use(require('echarts'))
-
+function qvList(date) {
+  if (date == '' || date == undefined) {
+    return '----'
+  }
+  let k = date == 1 ?
+    "关键" :
+    date == 0.7 ?
+    "重要" :
+    date == 0.4 ?
+    "一般" :
+    "无";
+  return k;
+}
+Vue.prototype.qvList = qvList;
 // 核心插件
 Vue.use(d2Admin)
 

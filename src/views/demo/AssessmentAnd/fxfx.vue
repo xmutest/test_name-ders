@@ -456,7 +456,8 @@ export default {
       riskKnowledge.originalRisk = this.amendAnalysis.originalRisk;
       riskKnowledge.problemAnalysis = this.amendAnalysis.problemAnalysis;
       riskKnowledge.problemDescription = this.amendAnalysis.problemDescription;
-      riskKnowledge.rectificationSuggestions = this.amendAnalysis.rectificationSuggestions;
+      riskKnowledge.rectificationSuggestions =
+        this.amendAnalysis.rectificationSuggestions;
       if (
         riskKnowledge.originalRisk != "" &&
         riskKnowledge.originalRisk != "undefined"
@@ -547,8 +548,17 @@ export default {
       this.dialogVisible = false;
       // relationThreaten
       let ls = "";
+      console.log(this.relevanceWeiList, this.DataListPou);
       this.relevanceWeiList.forEach((item) => {
-        ls += this.DataListPou[item - 1].threatClassificationName + ",";
+        this.DataListPou.forEach((items) => {
+          if (item == items.id) {
+            ls += items.threatClassificationName + ",";
+          }
+        });
+        // console.log(this.DataListPou[item - 1]);
+        // if (this.DataListPou[item - 1]) {
+        //
+        // }
       });
       this.amendAnalysis.beforeDescription = this.beforeDescription;
       this.amendAnalysis.relationThreaten = ls.slice(0, ls.length - 1);
@@ -566,6 +576,7 @@ export default {
       this.amendAnalysisVO.userId = this.info.user_info.userId;
       // this.amendAnalysisVO.safetyControlRelationId = this.safetyControlRelationId;
       let res = await this.$api.API_RiskFindRiskKnowledge(this.amendAnalysisVO);
+      console.log(res);
       if (res.code == 20000) {
         this.relevanceList = res.data[0];
         if (res.data[0].length !== 0) {
@@ -576,7 +587,7 @@ export default {
         } else {
           this.relevanceWeiList = res.data[1];
         }
-
+        console.log(its, res.data[1]);
         this.DataListOp = res.data[2];
         this.fenxianList = res.data[3];
         if (this.fenxianList.length != 0) {
@@ -636,6 +647,8 @@ export default {
       let Listda = "";
       let DataList = cloneDeep(this.DataListPou);
       let WeiList = cloneDeep(this.relevanceWeiList);
+      console.log(DataList);
+      console.log(this.relevanceWeiList);
       DataList.forEach((item) => {
         WeiList.forEach((its) => {
           if (item.id === its) {

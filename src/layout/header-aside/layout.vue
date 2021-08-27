@@ -104,7 +104,7 @@
                   >
                   <span v-else>无</span>
                 </span>
-                <span
+                <!-- <span
                   class="er_ms_name"
                   style="margin: 15px; font-size: 14px; color: purple"
                 >
@@ -116,7 +116,7 @@
                     <el-radio :label="0">2019年旧版</el-radio>
                     <el-radio :label="1">2021年新版</el-radio>
                   </el-radio-group>
-                </span>
+                </span> -->
               </div>
               <div class="d2-theme-container-main-header" flex-box="0">
                 <d2-tabs />

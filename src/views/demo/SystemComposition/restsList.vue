@@ -437,7 +437,7 @@ export default {
           if (item.isEvaluationObj === true) {
             res = await this.$api.SYS_FieldSurveyActive(data);
           } else {
-            res = await this.$api.otherEquidel(data);
+            res = await this.$api.SYS_FieldSurveyDelete(data);
           }
           if (res.code === 20000) {
             this.schujiaodian({

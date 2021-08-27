@@ -591,7 +591,7 @@ export default {
       if (List.code === 20000) {
         this.fromdata = List.data;
         if (!List.data.accessPointDescribe) {
-          this.fromdata.accessPointDescribe = `    通过使用绿盟远程安全评估系统V6.0R03F01SP02对网络设备、安全设备、应用服务器、数据库服务器、应用系统等进行了漏洞扫描。
+          this.fromdata.accessPointDescribe = `    通过使用绿盟远程安全评估系统V6.0R04F00SP05对网络设备、安全设备、应用服务器、数据库服务器、应用系统等进行了漏洞扫描。
     针对被测系统的网络边界和抽查设备、主机和业务应用系统的情况，需要在被测系统及其互联网络中设置各测试工具接入点，如图3-1所示。
     接入点JA：在xxxx接入，主要目的是：模拟XX恶意用户发现操作系统、数据库、应用系统等安全漏洞的过程。`;
         }
@@ -662,6 +662,7 @@ export default {
       // 测试
       // bg.src = require("@/views/demo/GlobalAssessment/img/44444.png");
       let bili = 1;
+      console.log(bg.width, that.canvas.width, that.canvas.height, bg.height);
       if (bg.width > that.canvas.width) {
         if (bg.width > bg.height) {
           if (that.canvas.width <= bg.width) {
@@ -673,24 +674,22 @@ export default {
           } else {
             bili = bg.width / that.canvas.width;
           }
-        } else {
-          if (that.canvas.height <= bg.height) {
-            bili = that.canvas.height / bg.height;
-            if (bg.width * bili > that.canvas.width) {
-              bili = bili * 0.5;
-            }
-          } else {
-            bili = bg.height / that.canvas.height;
-          }
         }
       }
-
+      if (that.canvas.height <= bg.height) {
+        bili = that.canvas.height / bg.height;
+        console.log(bili);
+        if (bg.width * bili > that.canvas.width) {
+          bili = bili * 0.5;
+        }
+      } else {
+        bili = bg.height / that.canvas.height;
+      }
       this.bgPic = {
         width: bg.width,
         height: bg.height,
         bili: bili,
       };
-
       let Shape;
 
       bg.onload = function () {

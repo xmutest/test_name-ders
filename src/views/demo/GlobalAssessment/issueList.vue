@@ -161,7 +161,9 @@
                           </el-select>
                         </td>
                         <!-- 权重 -->
-                        <td>{{ item3.weight }}</td>
+                        <td>
+                          {{ qvList(item3.weight) }}
+                        </td>
                       </tr>
                     </template>
                   </tbody>
@@ -327,7 +329,9 @@
                           </el-select>
                         </td>
                         <!-- 权重 -->
-                        <td>{{ item3.weight }}</td>
+                        <td>
+                          {{ qvList(item3.weight) }}
+                        </td>
                       </tr>
                     </template>
                   </tbody>
@@ -370,7 +374,7 @@ export default {
   methods: {
     // 获取测评问题清单列表
     async getdataList() {
-       let loading = this.$loading({
+      let loading = this.$loading({
         lock: true,
         text: "拉取数据中，请稍候...",
         spinner: "el-icon-loading",
@@ -380,10 +384,10 @@ export default {
       if (res.code === 20000) {
         this.managementList = res.data.management;
         this.technologyList = res.data.technology;
-         loading.close();
+        loading.close();
       } else {
         this.$message.error(res.message);
-         loading.close();
+        loading.close();
       }
     },
     // 修改
@@ -427,8 +431,7 @@ export default {
         alert(res.message);
       } else {
         let blob = new Blob([res], {
-          type:
-            "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
+          type: "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
         });
 
         //浏览器兼容，Google和火狐支持a标签的download，IE不支持

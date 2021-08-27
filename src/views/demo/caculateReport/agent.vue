@@ -1179,6 +1179,7 @@ export default {
             projectId: this.xmu_info.projectId,
             userName: this.info.name,
             time: this.paymentOrderModel.reviewFirstTime,
+            uploadName:this.tabList[0].userName
           });
           this.close();
           this.userreviewFind();

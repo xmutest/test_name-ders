@@ -391,7 +391,7 @@ export default {
           } else {
             this.$message.error("错误，请联系管理员" + res.message);
           }
-        })
+        }) 
         .catch(() => {
           item.isEvaluationObj = !item.isEvaluationObj;
           this.$message({

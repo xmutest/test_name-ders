@@ -27,6 +27,7 @@
             v-model="projectModel.queryType"
             @change="searchBi"
             placeholder="请选择"
+            clearable
             size="small"
           >
             <el-option
@@ -527,7 +528,7 @@
             v-if="ua_cre == 0"
             :label-width="formLabelWidth"
           >
-            <el-select v-model="xmform.itemList" clearable placeholder="请选择">
+            <el-select v-model="xmform.itemList" filterable  clearable placeholder="请选择">
               <el-option
                 v-for="item in tableDataList"
                 :key="item.projectId"
@@ -736,6 +737,7 @@ export default {
         itemList: null,
       },
       optionStatus: [
+        { title: "请选择", value: 0 },
         { title: "进行中", value: 1 },
         { title: "我创建的项目", value: 2 },
         { title: "已完成", value: 3 },
@@ -749,7 +751,7 @@ export default {
         page: 1,
         pageSize: 10,
         projectName: "",
-        queryType: 1,
+        queryType: 0,
       },
       formLabelWidth: "120px",
       projectIdks: null,
@@ -802,22 +804,23 @@ export default {
       this.paidanFormVisible = true;
       this.ProjectQueryList();
     },
-    // 评审
+    // 评审 
     async pingshengList(row) {
-      let res = await this.Project_detail(row.projectId);
-      // 设置 vuex 用户信息
-      await this.$store.dispatch(
-        "d2admin/xmu/set",
-        {
-          name: row.projectName,
-          projectId: row.projectId,
-          reviewId: row.reviewId,
-          data: res,
-        },
-        {
-          root: true,
-        }
-      );
+      // let res = await this.Project_detail(row.projectId);
+      // // 设置 vuex 用户信息
+      // await this.$store.dispatch(
+      //   "d2admin/xmu/set",
+      //   {
+      //     name: row.projectName,
+      //     projectId: row.projectId,
+      //     reviewId: row.reviewId,
+      //     data: res,
+      //   }, 
+      //   {
+      //     root: true,
+      //   }
+      // ); 
+      this.optionTo(row)
       this.$router.push({ path: "demo/caculateReport/agent" });
     },
     // 派单提交

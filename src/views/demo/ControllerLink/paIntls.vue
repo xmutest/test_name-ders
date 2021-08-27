@@ -8,13 +8,13 @@
           <div class="mude_text_item">
             <div class="descTItle">接入点描述</div>
             <el-input
-                type="textarea"
-                style="min-height: 200px; margin-bottom: 20px"
-                :autosize="{ minRows: 10, maxRows: 15 }"
-                placeholder="请输入内容"
-                v-model="fromdata.accessPointDescribe"
-              >
-              </el-input>
+              type="textarea"
+              style="min-height: 200px; margin-bottom: 20px"
+              :autosize="{ minRows: 10, maxRows: 15 }"
+              placeholder="请输入内容"
+              v-model="fromdata.accessPointDescribe"
+            >
+            </el-input>
           </div>
           <div class="tijiaobaoc">
             <el-button type="primary" @click="submitReport">保存</el-button>
@@ -266,7 +266,7 @@ export default {
         this.fromdata = List.data;
         if (!List.data.accessPointDescribe) {
           this.fromdata.accessPointDescribe = `
-          通过使用绿盟远程安全评估系统V6.0R03F01SP02对网络设备、安全设备、应用服务器、数据库服务器、应用系统等进行了漏洞扫描。
+          通过使用绿盟远程安全评估系统V6.0R04F00SP05对网络设备、安全设备、应用服务器、数据库服务器、应用系统等进行了漏洞扫描。
 针对被测系统的网络边界和抽查设备、主机和业务应用系统的情况，需要在被测系统及其互联网络中设置各测试工具接入点，如图3-1所示。
 接入点JA：在<span style="color: rgb(230, 0, 0);">XXXXXX</span>接入，主要目的是：模拟内部恶意用户发现操作系统、数据库、应用系统等安全漏洞的过程。
           
@@ -280,18 +280,18 @@ export default {
     async submitReport() {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
-         this.$message({
-            type: "success",
-            message: "修改成功！！",
-            duration: 1000
-          });
+        this.$message({
+          type: "success",
+          message: "修改成功！！",
+          duration: 1000,
+        });
         this.getEtlist();
         //查询列表
       } else {
         this.$message.error("错误，请联系管理员" + res.message);
       }
     },
-    
+
     getStyle(obj, attr) {
       if (obj.currentStyle) {
         return obj.currentStyle[attr];

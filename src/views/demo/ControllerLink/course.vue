@@ -645,13 +645,14 @@ export default {
       for (let item of this.tableData) {
         if (item.hasOwnProperty("projectImplementNum")) {
           if (item.projectImplementNum != 17 && this.tableHead.indexOf(item.projectImplementNum) == -1) {
-            ItNumber += item["evaluationCycle"];
+            ItNumber += item["evaluationCycle"]*1000000;
+            console.log(item["evaluationCycle"],ItNumber);
           }
         }
       }
       this.tableData.forEach((el, index) => {
         if (el.projectImplementNum == 17) {
-          this.tableData[index].evaluationCycle = ItNumber;
+          this.tableData[index].evaluationCycle = ItNumber/1000000;
         }
         if(el.projectImplementNum == 18){
           this.tableData[index].evaluationCycle = this.tableData[1].evaluationCycle + this.tableData[2].evaluationCycle

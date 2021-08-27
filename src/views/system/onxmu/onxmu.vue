@@ -20,13 +20,14 @@
             @click="searchBi"
             circle
           ></el-button>
-        </div> -->
+        </div>  -->
         <div>
           <span class="search_ls_name"> 项目状态：</span>
           <el-select
             v-model="projectModel.queryType"
             @change="searchBi"
             placeholder="请选择"
+            clearable
             size="small"
           >
             <el-option
@@ -199,8 +200,12 @@
                       </p>
                     </template>
                   </el-table-column>
-                     <el-table-column
-                    v-if="info.user_info.userType == 1?true:info.userTypeId == 10 && info.user_info.userType == 3"
+                  <el-table-column
+                    v-if="
+                      info.user_info.userType == 1
+                        ? true
+                        : info.userTypeId == 10 && info.user_info.userType == 3
+                    "
                     label="审核人员"
                     width="100"
                   >
@@ -234,7 +239,7 @@
                       </p>
                     </template>
                   </el-table-column>
-               
+
                   <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
                       <div v-if="info.userTypeId !== 10">
@@ -303,6 +308,39 @@
         :visible.sync="dialogFormVisible"
       >
         <el-form :model="xmform" :rules="rules" ref="xmform">
+          <el-form-item label="选择项目" :label-width="formLabelWidth">
+            <el-select
+              style="width: 350px"
+              v-model="xmulistId"
+              filterable
+              @change="getList(xmulistId)"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in xmuListoptions"
+                :key="item.id"
+                :label="item.projectName"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="选择系统" :label-width="formLabelWidth">
+            <el-select
+              style="width: 350px"
+              v-model="xtUliId"
+              @change="getxtList(xtUliId)"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in xTListoptions"
+                :key="item.id"
+                :label="item.sysName"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item
             label="项目名称"
             :label-width="formLabelWidth"
@@ -490,7 +528,7 @@
             v-if="ua_cre == 0"
             :label-width="formLabelWidth"
           >
-            <el-select v-model="xmform.itemList" clearable placeholder="请选择">
+            <el-select v-model="xmform.itemList" filterable  clearable placeholder="请选择">
               <el-option
                 v-for="item in tableDataList"
                 :key="item.projectId"
@@ -602,6 +640,12 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      //合同 项目列表
+      xmulistId: "",
+      xmuListoptions: [],
+      // 系统
+      xtUliId: "",
+      xTListoptions: [],
       // 项目是否进行
       statusList: [
         { id: 1, value: "进行中" },
@@ -693,6 +737,7 @@ export default {
         itemList: null,
       },
       optionStatus: [
+        { title: "请选择", value: 0 },
         { title: "进行中", value: 1 },
         { title: "我创建的项目", value: 2 },
         { title: "已完成", value: 3 },
@@ -806,11 +851,11 @@ export default {
         this.projectModel.projectName !== "" &&
         this.projectModel.projectName !== undefined
       ) {
-        this.projectModel.page = 1;
-        this.projectModel.pageSize = this.total;
+        this.projectModel.pageNum = 1;
+        this.projectModel.pageSize > 20 ? this.total : 20;
       } else {
-        this.projectModel.page = 1;
-        this.projectModel.pageSize = 10;
+        this.projectModel.pageNum = 1;
+        this.projectModel.pageSize = 20;
       }
 
       this.ProjectQueryList();
@@ -928,7 +973,6 @@ export default {
     // 等级联动
     async selectGoodsByGroupId(enent, sag) {
       let is = enent - 1;
-      console.log(enent);
       let res = await this.$api.API_SagFindSagByLevel({ sagLevel: enent });
       if (res.code === 20000) {
         this.saglist = res.data;
@@ -964,6 +1008,11 @@ export default {
               this.$message.success("创建成功！！");
               this.dialogFormVisible = false;
               this.ProjectQueryList();
+              this.$api.API_findLisupdatem({
+                evaluateProjectId: res.data,
+                token: window.sessionStorage.getItem("ms_token"),
+                id: this.xtUliId,
+              });
               //查询列表
             } else {
               this.$message.error(res.message);
@@ -1031,14 +1080,53 @@ export default {
       }
     },
     // 新镇
-    dialogFormVisibleList() {
+    async dialogFormVisibleList() {
       this.ua_cre = 0;
       this.selectGoodsByGroupId(this.xmform.level);
       this.ProjectfindAllList();
       this.table_name_el = "新建项目";
       this.resetForm("xmform");
       this.datalog_list_rom();
+      this.xmulistId = "";
+      this.xtUliId = "";
+      let ms_token = window.sessionStorage.getItem("ms_token");
       this.dialogFormVisible = true;
+      if (ms_token) {
+        let ms = await this.$api.API_findListoFndList_men({
+          token: ms_token,
+        });
+        this.xmuListoptions = ms.data;
+      } else {
+        console.log("获取token失败，请重新登录获取");
+      }
+    },
+    // 获取系统
+    async getList(item) {
+      // console.log(item);
+      let res = await this.$api.API_findListofindSystem({
+        projectId: item,
+        token: window.sessionStorage.getItem("ms_token"),
+      });
+      this.xTListoptions = res.data;
+    },
+    getxtList(itemId) {
+      let xtList = [];
+      xtList = this.xTListoptions.filter((item) => item.id == itemId)[0];
+      let recordInformationModel = xtList.recordInformationModel;
+      this.xmform = {
+        projectName: xtList.projectName || "", //COMMENT '项目名称
+        systemName: xtList.sysName || "", //系统名称
+        evaluatedUnit: xtList.evaluatedUnit || "", //被测单位名称
+        recordSn: recordInformationModel.recordCertificateNo || "", //备案证明编号
+        standard: 3, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
+        standardVersion: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
+        standardExtends: "", //拓展标准
+        level: recordInformationModel.ggrade || 2, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
+        sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
+        membersIdList: [], //项目参与人
+        status: 1,
+      };
+      this.selectGoodsByGroupId(recordInformationModel.ggrade || 2);
     },
     async Project_detail(PeID) {
       if (!PeID && PeID == "undefined") {

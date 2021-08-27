@@ -158,7 +158,7 @@
                 <!-- 权重 -->
                 <td>
                   <div>
-                    {{ item3.weight }}
+                   {{ qvList(item3.weight) }}
                   </div>
                 </td>
               </tr>

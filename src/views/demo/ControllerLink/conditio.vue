@@ -316,7 +316,12 @@
             </el-form>
             <div class="tijiaobaoc">
               <el-button @click="dialogVisible = false">取消</el-button>
-              <el-button type="primary" @click="handelConfirm">确定</el-button>
+              <el-button
+                type="primary"
+                v-throttle
+                @click="handelConfirm"
+                >确定</el-button
+              >
             </div>
           </div>
         </el-dialog>
@@ -424,7 +429,6 @@ export default {
         { id: 5, value: "公众服务" },
         { id: 6, value: "其他" },
       ],
-
       resultOptions: [
         {
           label: "已整改",
@@ -658,7 +662,10 @@ export default {
       }
     },
     async submitReportation() {
-      this.fromdataation.businessSituation = `    ${this.fromdataation.businessSituation.trim()}`;
+      if (this.fromdataation.businessSituation) {
+        this.fromdataation.businessSituation = `    ${this.fromdataation.businessSituation.trim()}`;
+      }
+
       let res = await this.$api.API_evaluationBasis_updata(this.fromdataation);
       if (res.code === 20000) {
         this.getEtlistation();
@@ -668,8 +675,13 @@ export default {
       }
     },
     async submitReport(it) {
-      this.fromdata.lastEvaluationSituation = `    ${this.fromdata.lastEvaluationSituation.trim()}`;
-      this.fromdata.systemSituation = `    ${this.fromdata.systemSituation.trim()}`;
+      this.fromdata.lastEvaluationSituation = this.fromdata
+        .lastEvaluationSituation
+        ? `    ${this.fromdata.lastEvaluationSituation.trim()}`
+        : this.fromdata.lastEvaluationSituation;
+      this.fromdata.systemSituation = this.fromdata.systemSituation
+        ? `    ${this.fromdata.systemSituation.trim()}`
+        : this.fromdata.systemSituation;
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       this.PassiveCompanyUpdate(it);
       this.submitReportation();

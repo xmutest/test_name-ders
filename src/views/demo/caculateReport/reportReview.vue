@@ -243,13 +243,13 @@
         </el-form>
         <div class="tijiaobaoc">
           <el-button type="info" @click="kslistdatafy = false">取消</el-button>
-          <el-button type="success" @click="submitUpload">提交审核</el-button>
+          <el-button type="success" @click="sbchslllll">提交审核</el-button>
         </div>
       </el-dialog>
     </div>
   </d2-container>
 </template>
-
+ 
 <script>
 import { mapState } from "vuex";
 export default {
@@ -422,10 +422,7 @@ export default {
           message: "上传文件成功",
           type: "success",
         });
-        this.$api.API_reportFirstdatem({
-          projectId: thiz.xmu_info.projectId,
-          userName: this.info.name,
-        });
+
         this.formFileList = [];
         this.formpanFileList = [];
         this.projemList = "";
@@ -434,6 +431,20 @@ export default {
       } else {
       }
       loading.close();
+    },
+    async sbchslllll() {
+      let ins = this.info.user_info.departmentId;
+      if (ins >= 12 && ins <= 15) {
+        this.submitUpload();
+      } else {
+        let res = await this.$api.API_reportFirstdatem({
+          projectId: this.xmu_info.projectId,
+          userName: this.info.name,
+        });
+        if (res.code == 20000) {
+          this.submitUpload();
+        }
+      }
     },
     async submitReport(val, ids) {
       //  下载报告
