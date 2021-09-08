@@ -220,8 +220,8 @@
                   v-model="Ts_radio"
                   :label="index"
                 >
-                  <span v-show="item.userId === 0">{{ item.riskName }}</span>
-                  <span v-show="item.userId !== 0"
+                  <span v-if="item.userId === 0">{{ item.riskName }}</span>
+                  <span v-if="item.userId !== 0"
                     ><i class="el-icon-s-flag"></i>{{ item.riskName
                     }}<el-button
                       type="danger"
@@ -265,7 +265,7 @@
           <div>
             <p>
               问题描述：<span
-                v-show="this.itemName == '安全计算环境'"
+                v-if="this.itemName == '安全计算环境'"
                 class="Listiption"
                 >（相关资产会在报告里面自动生成，此处不需填资产）</span
               >
@@ -367,7 +367,7 @@
           <el-button type="primary" @click="Tolist()" v-throttle
             >确 定</el-button
           >
-          <el-button @click="(dialogVisible = false), getDataList()"
+          <el-button @click="(dialogVisible = false), (ksLismtop = true)"
             >取 消</el-button
           >
         </span>
@@ -386,6 +386,7 @@ export default {
       Toamount: 5,
       innerVisible: false,
       dialogVisible: false,
+      ksLismtop: true,
       itemsCoacr: [
         { color: "#fff" },
         { color: "#fff" },
@@ -449,7 +450,15 @@ export default {
       riskKnowledge.threatId = this.relevanceWeiList;
       let ls = "";
       this.relevanceWeiList.forEach((item) => {
-        ls += this.DataListPou[item - 1].threatClassificationName + ",";
+        this.DataListPou.forEach((items) => {
+          if (item == items.id) {
+            ls += items.threatClassificationName + ",";
+          }
+        });
+        // console.log(this.DataListPou[item - 1]);
+        // if (this.DataListPou[item - 1]) {
+        //
+        // }
       });
       riskKnowledge.relationThreaten = ls.slice(0, ls.length - 1);
       riskKnowledge.hazardAnalysis = this.amendAnalysis.hazardAnalysis;
@@ -541,6 +550,7 @@ export default {
       this.amendAnalysisVO = item3;
       //
       this.dialogVisible = true;
+      this.ksLismtop = false;
       this.getDaPuList();
       this.getDataListPou();
     },
@@ -603,6 +613,7 @@ export default {
       }
     },
     async getDataList() {
+      this.ksLismtop = true;
       // let its = dataLists;
       let loading = this.$loading({
         lock: true,
@@ -675,6 +686,7 @@ export default {
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then((_) => {
+          this.ksLismtop = true;
           done();
         })
         .catch((_) => {});

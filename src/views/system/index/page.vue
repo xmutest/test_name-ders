@@ -528,7 +528,12 @@
             v-if="ua_cre == 0"
             :label-width="formLabelWidth"
           >
-            <el-select v-model="xmform.itemList" filterable  clearable placeholder="请选择">
+            <el-select
+              v-model="xmform.itemList"
+              filterable
+              clearable
+              placeholder="请选择"
+            >
               <el-option
                 v-for="item in tableDataList"
                 :key="item.projectId"
@@ -804,7 +809,7 @@ export default {
       this.paidanFormVisible = true;
       this.ProjectQueryList();
     },
-    // 评审 
+    // 评审
     async pingshengList(row) {
       // let res = await this.Project_detail(row.projectId);
       // // 设置 vuex 用户信息
@@ -815,12 +820,28 @@ export default {
       //     projectId: row.projectId,
       //     reviewId: row.reviewId,
       //     data: res,
-      //   }, 
+      //   },
       //   {
       //     root: true,
       //   }
-      // ); 
-      this.optionTo(row)
+      // );
+      this.paidanginfo.reviewId = row.reviewId;
+      let res = await this.Project_detail(row.projectId);
+      // 设置 vuex 用户信息
+      await this.$store.dispatch(
+        "d2admin/xmu/set",
+        {
+          name: row.projectName,
+          projectId: row.projectId,
+          reviewId: row.reviewId,
+          data: res,
+          row,
+        },
+        {
+          root: true,
+        }
+      );
+      this.$api.CalculateFractionTotalFraction();
       this.$router.push({ path: "demo/caculateReport/agent" });
     },
     // 派单提交
@@ -935,6 +956,7 @@ export default {
           projectId: row.projectId,
           reviewId: row.reviewId,
           data: res,
+          row,
         },
         {
           root: true,
@@ -995,6 +1017,19 @@ export default {
           }
           // 创建
           if (ua_cre === 0) {
+            // if()
+            let msk =
+              this.info.user_info.departmentId == 3 ||
+              this.info.user_info.departmentId == 4 ||
+              this.info.user_info.departmentId == 5 ||
+              this.info.user_info.departmentId == 8 ||
+              this.info.user_info.departmentId == 9;
+            if (msk && (this.xmulistId == "" || this.xmulistId == undefined)) {
+              return this.$message({
+                message: "请选择CRM上对应的项目/系统",
+                type: "error",
+              });
+            }
             if (this.xmform.itemList !== undefined) {
               console.log(this.xmform);
               this.copyProjec.projectId1 = this.xmform.itemList;
@@ -1013,6 +1048,8 @@ export default {
                 evaluateProjectId: res.data,
                 token: window.sessionStorage.getItem("ms_token"),
                 id: this.xtUliId,
+                isPenetration: this.xmform.isPenetration,
+                childAmount: this.xmform.childAmount,
               });
               //查询列表
             } else {
@@ -1027,6 +1064,13 @@ export default {
                 type: "success",
                 message: "修改成功！！",
                 duration: 1000,
+              });
+              this.$api.API_findLisupdatem({
+                evaluateProjectId: this.projectIdks.projectId,
+                token: window.sessionStorage.getItem("ms_token"),
+                id: this.xtUliId,
+                isPenetration: this.xmform.isPenetration,
+                childAmount: this.xmform.childAmount,
               });
               this.dialogFormVisible = false;
               this.ProjectQueryList();
@@ -1126,6 +1170,8 @@ export default {
         sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         membersIdList: [], //项目参与人
         status: 1,
+        isPenetration: xtList.isPenetration,
+        childAmount: xtList.childAmount,
       };
       this.selectGoodsByGroupId(recordInformationModel.ggrade || 2);
     },
@@ -1144,10 +1190,11 @@ export default {
     },
     async xmuupdata(index, row) {
       this.ua_cre = 1;
+      this.xmulistId = "";
+      this.xtUliId = "";
       this.projectIdks = row;
       this.table_name_el = "更新项目";
       this.datalog_list_rom(row.creator);
-
       let res = await this.Project_detail(row.projectId);
       this.selectGoodsByGroupId(res.level, res.sag);
       this.xmform.projectId = row.projectId;
@@ -1161,6 +1208,15 @@ export default {
           nums[index] = parseInt(nums[index]);
         });
         this.xmform.standardExtends = nums;
+      }
+      let ms_token = window.sessionStorage.getItem("ms_token");
+      if (ms_token) {
+        let ms = await this.$api.API_findListoFndList_men({
+          token: ms_token,
+        });
+        this.xmuListoptions = ms.data;
+      } else {
+        console.log("获取token失败，请重新登录获取");
       }
       this.dialogFormVisible = true;
     },

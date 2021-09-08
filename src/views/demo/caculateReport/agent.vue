@@ -1117,6 +1117,7 @@ export default {
       };
       this.userpassiveCompany();
       this.pingcheji = item;
+      this.close();
       this.kslistdatafy = true;
     },
     // 新建提交
@@ -1177,9 +1178,11 @@ export default {
           this.$api.API_reporreviewFirst({
             type,
             projectId: this.xmu_info.projectId,
-            userName: this.info.name,
+            userName: this.xmu_info.row.approvedName
+              ? this.xmu_info.row.approvedName
+              : this.info.name,
             time: this.paymentOrderModel.reviewFirstTime,
-            uploadName:this.tabList[0].userName
+            uploadName: this.tabList[0].userName,
           });
           this.close();
           this.userreviewFind();
@@ -1235,7 +1238,10 @@ export default {
         });
     },
     close() {
-      this.$refs["paymentOrderModel"].resetFields();
+      if (this.$refs["paymentOrderModel"]) {
+        this.$refs["paymentOrderModel"].resetFields();
+      }
+
       this.paymentOrderModel = {
         reviewFirstTime: "",
         time: "",
