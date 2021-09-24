@@ -64,7 +64,7 @@ new Vue({
     let menuHeaderList = [];
     setTimeout(() => {
       let userType = store.state.d2admin.user.info.userTypeId
-      if (userType == 10) {
+      if (userType == 10 || userType == 16) {
         menuHeader.forEach(item => {
           if (item.typeid) {
             menuHeaderList.push(item)
@@ -121,6 +121,8 @@ new Vue({
                   }
                 })
               }
+              this.$store.commit('d2admin/menu/asideSet', _sideList.length > 0 ? _sideList : [])
+            } else if (userType == 16) {
               this.$store.commit('d2admin/menu/asideSet', _sideList.length > 0 ? _sideList : [])
             } else {
               if (_side.length != 0) {

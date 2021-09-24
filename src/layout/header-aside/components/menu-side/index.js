@@ -29,16 +29,21 @@ export default {
                <li>
                 华南信息测评中心
                </li>   
-               <el-menu-item index="/Jinxm"><d2-icon name="calendar-times-o items"/>进行中的项目</el-menu-item> 
+               {
+                   this.info.userTypeId?
+                   this.info.userTypeId == 16?null: <el-menu-item index="/Jinxm"><d2-icon name="calendar-times-o items"/>进行中的项目</el-menu-item> 
+                   :null
+                 }
+              
             
                {
                    this.info.userTypeId?
-                   this.info.userTypeId == 10?null:<el-menu-item  index="/woxmu"><d2-icon name="hourglass-o items1"/>我创建的项目</el-menu-item>
+                   this.info.userTypeId == 10?null:this.info.userTypeId == 16?null:<el-menu-item  index="/woxmu"><d2-icon name="hourglass-o items1"/>我创建的项目</el-menu-item>
                    :null
                  }
                   {
                    this.info.userTypeId?
-                   this.info.userTypeId == 10?null:<el-menu-item index="/onxmu"><d2-icon name="power-off items2"/>已完成的项目</el-menu-item>
+                   this.info.userTypeId == 10?null:this.info.userTypeId == 16?null:<el-menu-item index="/onxmu"><d2-icon name="power-off items2"/>已完成的项目</el-menu-item>
                    :null
                  }
                   {

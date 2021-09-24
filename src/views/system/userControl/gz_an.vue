@@ -421,12 +421,16 @@ export default {
           label: "合作四部",
           value: 15,
         },
+        {
+          label: "商务部",
+          value: 16,
+        },
       ],
       apiList: {
         departmentId: 2,
         page: 1,
         pageSize: 10,
-        userName:''
+        userName: "",
       },
     };
   },
@@ -490,6 +494,10 @@ export default {
           {
             label: "合作四部",
             value: 15,
+          },
+          {
+            label: "商务部",
+            value: 16,
           },
         ];
       }
@@ -582,6 +590,10 @@ export default {
         {
           label: "合作四部",
           value: 15,
+        },
+        {
+          label: "商务部",
+          value: 16,
         },
       ];
       departmentIdOptions.forEach((item) => {
@@ -684,9 +696,13 @@ export default {
           label: "合作四部",
           value: 15,
         },
+        {
+          label: "商务部",
+          value: 16,
+        },
       ];
     },
-      // 搜索
+    // 搜索
     searchBi() {
       if (this.apiList.userName !== "" && this.apiList.userName !== undefined) {
         this.apiList.pageNum = 1;

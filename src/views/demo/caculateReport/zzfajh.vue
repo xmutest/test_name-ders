@@ -285,6 +285,7 @@ export default {
   },
   created() {
     this.getEtlist();
+
   },
   mounted() {},
   computed: {
@@ -555,4 +556,5 @@ export default {
   max-height: 400px;
   overflow: auto;
 }
+
 </style>

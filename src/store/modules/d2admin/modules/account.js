@@ -33,7 +33,7 @@ export default {
       res = res.data;
       // 设置顶栏菜单
       let menuHeaderList = [];
-      if (res.departmentId == 10) {
+      if (res.departmentId == 10 || res.departmentId == 16) {
         menuHeader.forEach(item => {
           if (item.typeid) {
             menuHeaderList.push(item)

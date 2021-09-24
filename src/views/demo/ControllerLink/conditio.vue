@@ -521,8 +521,8 @@ export default {
       },
     };
   },
-  created() {
-    this.isPr = window.sessionStorage.getItem("radiomstjisfen");
+  created() { 
+    this.isPr = 1;
     this.getEtlist();
   },
   destroyed: function () {

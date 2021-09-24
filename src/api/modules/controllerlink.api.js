@@ -497,4 +497,67 @@ export default ({
       params: data
     })
   },
+  // 查询录入联盟
+  async GetfindInputUnion(data = {}) {
+    // 
+    if (!data.projectId) {
+      data.projectId = await this.get_info();
+    }
+    // 接口请求
+    return request({
+      url: '/inputUnion/findInputUnion',
+      method: 'get',
+      params: data
+    })
+  },
+  // 保存录入联盟
+  async GetfiinputUnionon(data = {}) {
+    // data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/inputUnion/save',
+      method: 'post',
+      data
+    })
+  },
+  // 修改录入联盟
+  async Geupdateionon(data = {}) {
+    // data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/inputUnion/update',
+      method: 'post',
+      data
+    })
+  },
+  // 上传录入联盟
+  async GeupduploadUnionImgon(data = {}) {
+    // data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/inputUnion/uploadUnionImg',
+      method: 'post',
+      data
+    })
+  },
+  // 删除录入联盟
+  async inputUniondUnionImgon(data = {}) {
+    // data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/inputUnion/del',
+      method: 'get',
+      params: data
+    })
+  },
+  // 删除录入联盟截图
+  async inpudelUnionImgImgon(data = {}) {
+    // data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/inputUnion/delUnionImg',
+      method: 'post',
+      data
+    })
+  }
 })

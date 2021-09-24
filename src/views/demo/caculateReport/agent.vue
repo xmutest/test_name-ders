@@ -7,23 +7,77 @@
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">项目基本信息</div>
-            <div class="jineginfo">
-              <div>
-                <span>项目名称：</span
-                ><span>{{ xmu_info.data.projectName }}</span>
+            <div class="descTListmu">
+              <div class="jineginfo">
+                <div>
+                  <span>项目名称：</span
+                  ><span>{{ xmu_info.data.projectName }}</span>
+                </div>
+                <div>
+                  <span>系统名称：</span
+                  ><span>{{ xmu_info.data.systemName }}</span>
+                </div>
+                <div>
+                  <span>被测单位：</span
+                  ><span>{{ xmu_info.data.evaluatedUnit }}</span>
+                </div>
+                <div>
+                  <span>备案证号码：</span
+                  ><span>{{ xmu_info.data.recordSn }}</span>
+                </div>
               </div>
               <div>
-                <span>系统名称：</span
-                ><span>{{ xmu_info.data.systemName }}</span>
+                <el-card class="box-card">
+                  <span class="luNameTop">录入联盟信息</span>
+                  <div>
+                    <div>
+                      <span>项目开始时间：</span
+                      ><span>
+                        {{
+                          UnionModel.projectBeginTime
+                            ? UnionModel.projectBeginTime
+                            : "----"
+                        }}</span
+                      >
+                    </div>
+                    <div>
+                      <span>项目结束时间：</span
+                      ><span>
+                        {{
+                          UnionModel.projectEndTime
+                            ? UnionModel.projectEndTime
+                            : "----"
+                        }}</span
+                      >
+                    </div>
+                    <div>
+                      <span>录入联盟时间：</span
+                      ><span>
+                        {{
+                          UnionModel.inputUnionTime
+                            ? UnionModel.inputUnionTime
+                            : "----"
+                        }}</span
+                      >
+                    </div>
+                    <div>
+                      <span>录入平台截图：</span
+                      ><span
+                        class="ksLismu"
+                        @click="fujiancalss(UnionModel.inputImgUrl)"
+                      >
+                        {{
+                          UnionModel.inputImgName
+                            ? UnionModel.inputImgName
+                            : "----"
+                        }}</span
+                      >
+                    </div>
+                  </div>
+                </el-card>
               </div>
-              <div>
-                <span>被测单位：</span
-                ><span>{{ xmu_info.data.evaluatedUnit }}</span>
-              </div>
-              <div>
-                <span>备案证号码：</span
-                ><span>{{ xmu_info.data.recordSn }}</span>
-              </div>
+
+              <div></div>
             </div>
           </div>
           <div class="mude_text_item">
@@ -35,7 +89,7 @@
                     {{ scope.row.fileType == 1 ? "报告" : "方案" }}
                   </template>
                 </el-table-column>
-                <el-table-column label="审核材料">
+                <el-table-column label="审核材料" width="280">
                   <template slot-scope="scope">
                     <span
                       class="xiazaiList"
@@ -47,7 +101,7 @@
                   </template>
                 </el-table-column>
 
-                <el-table-column label="备注" width="150">
+                <el-table-column label="备注">
                   <template slot-scope="scope">
                     {{ scope.row.remarks }}
                   </template>
@@ -57,7 +111,7 @@
                     {{ scope.row.userName }}
                   </template>
                 </el-table-column>
-                <el-table-column label="上传时间" width="180">
+                <el-table-column label="上传时间" width="150">
                   <template slot-scope="scope">
                     {{ scope.row.uploadTime }}
                   </template>
@@ -248,6 +302,10 @@
             <span>评审时间：</span
             ><span>{{ infopaymentOrderModel.reviewFirstTime }}</span>
           </div>
+          <div v-if="pingcheji == 1">
+            <span>实际评审时间：</span
+            ><span>{{ infopaymentOrderModel.reviewActualTime }}</span>
+          </div>
           <div v-if="pingcheji == 2">
             <span>评审时间：</span><span>{{ infopaymentOrderModel.time }}</span>
           </div>
@@ -372,7 +430,7 @@
             label-width="120px"
             label-position="left"
           >
-            <el-col :span="12">
+            <el-col :span="15">
               <el-form-item
                 v-if="pingcheji == 1"
                 label="评审时间"
@@ -391,6 +449,19 @@
               <el-form-item v-else label="评审时间" prop="time">
                 <el-date-picker
                   v-model="paymentOrderModel.time"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  :style="{ width: '100%' }"
+                  placeholder="请选择评审时间"
+                  clearable
+                >
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col v-if="pingcheji == 1" :span="15">
+              <el-form-item label="实际评审时间" prop="reviewActualTime">
+                <el-date-picker
+                  v-model="paymentOrderModel.reviewActualTime"
                   format="yyyy-MM-dd"
                   value-format="yyyy-MM-dd"
                   :style="{ width: '100%' }"
@@ -766,6 +837,7 @@ export default {
       infopaymentOrderModel: {},
       paymentOrderModel: {
         reviewFirstTime: "",
+        reviewActualTime: "",
         time: "",
         planA: null,
         planB: null,
@@ -785,6 +857,13 @@ export default {
         reviewRecord: null,
         reviewOpinion: null,
         reviewResult: null,
+      },
+      UnionModel: {
+        projectBeginTime: undefined,
+        projectEndTime: undefined,
+        inputUnionTime: undefined,
+        inputImgUrl: undefined,
+        inputImgName: undefined,
       },
       // 新建还是修改
       mustop: {
@@ -1050,6 +1129,7 @@ export default {
     this.revifindListok();
     // this.getEtlist();]
     this.userreviewfindAssessor();
+    this.geTlvTopks();
   },
   computed: {
     ...mapState("d2admin", {
@@ -1110,6 +1190,53 @@ export default {
     fileChangeformFileList(file) {
       this.formFileList.push(file.raw); //上传文件变化时将文件对象push进files数组
     },
+    // 下载附件
+    async fujiancalss(item) {
+      // let url = `${window.location.protocol}${item.url}`;
+      //
+      let url = item;
+      let Listname = url.split(".")[1];
+      const litrue =
+        Listname == "doc" ||
+        Listname == "docx" ||
+        Listname == "xlsx" ||
+        Listname == "xls";
+      if (!litrue) {
+        window.open(url);
+      } else {
+        let urlList = `https://view.officeapps.live.com/op/view.aspx?src=${
+          window.location.protocol + "//" + window.location.host + url
+        }`;
+        // window.open(urlList);
+        window.open(url);
+        // let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
+        // if (res.code == 500) {
+        //   alert(res.message);
+        // } else {
+        //   let blob = new Blob([res], {
+        //     type: "application/msword;charset=utf-8",
+        //   });
+
+        //   //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        //   if (window.navigator && window.navigator.msSaveBlob) {
+        //     //IE浏览器、微软浏览器
+        //     /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+        //       IE可不重命名，以防万一，所以都写上比较好 */
+        //     window.navigator.msSaveBlob(blob, reportName);
+        //   } else {
+        //     //其他浏览器
+        //     let link = document.createElement("a"); // 创建a标签
+        //     link.style.display = "none";
+        //     let objectUrl = URL.createObjectURL(blob);
+        //     link.download = reportName;
+        //     link.href = objectUrl;
+        //     link.click();
+        //     URL.revokeObjectURL(objectUrl);
+        //   }
+        // }
+      }
+      // console.log(item);
+    },
     addListks(item) {
       this.mustop = {
         title: "新建",
@@ -1119,6 +1246,23 @@ export default {
       this.pingcheji = item;
       this.close();
       this.kslistdatafy = true;
+    },
+    async geTlvTopks() {
+      let res = await this.$api.GetfindInputUnion();
+      if (res.code === 20000) {
+        if (res.data) {
+          this.UnionModel = res.data;
+        } else {
+          this.UnionModel = {
+            projectBeginTime: undefined,
+            projectEndTime: undefined,
+            inputUnionTime: undefined,
+            inputImgUrl: undefined,
+            inputImgName: undefined,
+          };
+        }
+      }
+      console.log(res);
     },
     // 新建提交
     handelConfirm() {
@@ -1244,6 +1388,7 @@ export default {
 
       this.paymentOrderModel = {
         reviewFirstTime: "",
+        reviewActualTime: "",
         time: "",
         planA: null,
         planB: null,
@@ -1468,6 +1613,29 @@ pre {
 }
 ::v-deep .el-dialog {
   margin-top: 5vh !important;
+}
+.ksLismu {
+  font-size: 14px;
+  cursor: pointer;
+}
+.ksLismu:hover {
+  color: red;
+}
+.page_test_xx {
+  .el-col {
+    line-height: 35px;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+}
+.descTListmu {
+  display: flex;
+  justify-content: space-between;
+}
+.luNameTop {
+  color: red;
+  line-height: 40px;
+  height: 40px;
 }
 </style>
 

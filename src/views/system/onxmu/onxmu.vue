@@ -39,7 +39,10 @@
             </el-option>
           </el-select>
         </div>
-        <div v-if="info.userTypeId != 10" class="die_roift">
+        <div
+          v-if="info.userTypeId != 10 && info.userTypeId != 16"
+          class="die_roift"
+        >
           <el-button @click="dialogFormVisibleList" type="primary"
             ><i class="el-icon--left el-icon-circle-plus-outline"></i
             >新增</el-button
@@ -239,7 +242,20 @@
                       </p>
                     </template>
                   </el-table-column>
-
+                  <el-table-column label="是否录入联盟" v-if="info.userTypeId == 16" width="80">
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span v-if="scope.row.isInputUnion == 1">否</span>
+                        <span v-else>是</span>
+                      </p>
+                    </template>
+                  </el-table-column>
                   <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
                       <div v-if="info.userTypeId !== 10">
@@ -528,7 +544,12 @@
             v-if="ua_cre == 0"
             :label-width="formLabelWidth"
           >
-            <el-select v-model="xmform.itemList" filterable  clearable placeholder="请选择">
+            <el-select
+              v-model="xmform.itemList"
+              filterable
+              clearable
+              placeholder="请选择"
+            >
               <el-option
                 v-for="item in tableDataList"
                 :key="item.projectId"

@@ -15,7 +15,7 @@
                   placeholder="请输入"
                   v-model="BeingMeasured.companyName"
                   size="small"
-                >
+                > 
                 </el-input>
               </div> 
               <div>
@@ -297,6 +297,60 @@
               </el-row>
             </div>
           </div> -->
+          <div class="mude_text_item">
+            <div class="descTItle">录入联盟信息</div>
+            <div class="pc_gonjv">
+              <div class="jineginfo">
+                <div>
+                  <div>
+                    <span>项目开始时间：</span
+                    ><span>
+                      {{
+                        UnionModel.projectBeginTime
+                          ? UnionModel.projectBeginTime
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                  <div>
+                    <span>项目结束时间：</span
+                    ><span>
+                      {{
+                        UnionModel.projectEndTime
+                          ? UnionModel.projectEndTime
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <span>录入联盟时间：</span
+                    ><span>
+                      {{
+                        UnionModel.inputUnionTime
+                          ? UnionModel.inputUnionTime
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                  <div>
+                    <span>录入平台截图：</span
+                    ><span
+                      class="ksLismu"
+                      @click="fujiancalss(UnionModel.inputImgUrl)"
+                    >
+                      {{
+                        UnionModel.inputImgName
+                          ? UnionModel.inputImgName
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="mude_text_item">
             <div class="descTItle">制作报告</div>
 
@@ -854,6 +908,13 @@ export default {
         businessType: "",
       },
 
+      UnionModel: {
+        projectBeginTime: undefined,
+        projectEndTime: undefined,
+        inputUnionTime: undefined,
+        inputImgUrl: undefined,
+        inputImgName: undefined,
+      },
       industryTypes: [
         { id: 1, value: "电信" },
         { id: 2, value: "广电" },
@@ -1011,6 +1072,7 @@ export default {
   },
   created() {
     this.getEtlist();
+    this.geTlvTopks();
   },
   computed: {
     ...mapState("d2admin", {
@@ -1019,6 +1081,70 @@ export default {
     }),
   },
   methods: {
+    // 下载附件
+    async fujiancalss(item) {
+      // let url = `${window.location.protocol}${item.url}`;
+      //
+      let url = item;
+      let Listname = url.split(".")[1];
+      const litrue =
+        Listname == "doc" ||
+        Listname == "docx" ||
+        Listname == "xlsx" ||
+        Listname == "xls";
+      if (!litrue) {
+        window.open(url);
+      } else {
+        let urlList = `https://view.officeapps.live.com/op/view.aspx?src=${
+          window.location.protocol + "//" + window.location.host + url
+        }`;
+        // window.open(urlList);
+        window.open(url);
+        // let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
+        // if (res.code == 500) {
+        //   alert(res.message);
+        // } else {
+        //   let blob = new Blob([res], {
+        //     type: "application/msword;charset=utf-8",
+        //   });
+
+        //   //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        //   if (window.navigator && window.navigator.msSaveBlob) {
+        //     //IE浏览器、微软浏览器
+        //     /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+        //       IE可不重命名，以防万一，所以都写上比较好 */
+        //     window.navigator.msSaveBlob(blob, reportName);
+        //   } else {
+        //     //其他浏览器
+        //     let link = document.createElement("a"); // 创建a标签
+        //     link.style.display = "none";
+        //     let objectUrl = URL.createObjectURL(blob);
+        //     link.download = reportName;
+        //     link.href = objectUrl;
+        //     link.click();
+        //     URL.revokeObjectURL(objectUrl);
+        //   }
+        // }
+      }
+      // console.log(item);
+    },
+    async geTlvTopks() {
+      let res = await this.$api.GetfindInputUnion();
+      if (res.code === 20000) {
+        if (res.data) {
+          this.UnionModel = res.data;
+        } else {
+          this.UnionModel = {
+            projectBeginTime: undefined,
+            projectEndTime: undefined,
+            inputUnionTime: undefined,
+            inputImgUrl: undefined,
+            inputImgName: undefined,
+          };
+        }
+      }
+      console.log(res);
+    },
     formattime(item) {
       let date = new Date(parseInt(item));
       let Y = date.getFullYear() + "-";
@@ -1259,7 +1385,18 @@ export default {
     @extend %unable-border-left;
   }
 }
-
+.jineginfo {
+  margin-left: 10px;
+  display: flex;
+  // justify-content: space-around;
+  align-items: center;
+  font-size: 14px;
+  color: #606266;
+  div {
+    flex: 1;
+    margin: 15px 0;
+  }
+}
 .lisT1 {
   min-width: 250px;
   display: inline-block;
