@@ -78,6 +78,7 @@ new Vue({
             }
           }
         });
+
       } else {
         menuHeader.forEach(item => {
           if (item.title == "统计和报告") {
@@ -85,6 +86,9 @@ new Vue({
           }
         })
         menuHeaderList = menuHeader
+      }
+      if (userType == 16) {
+        menuHeaderList = [menuHeaderList[0]]
       }
       // 设置顶栏菜单
       this.$store.commit('d2admin/menu/headerSet', menuHeaderList)
@@ -112,6 +116,7 @@ new Vue({
           let userType = store.state.d2admin.user.info.userTypeId
           if (matched.length > 0) {
             const _side = menuAside.filter(menu => menu.path === matched[0].path);
+            console.log(userType);
             let _sideList = [];
             if (userType == 10) {
               if (_side.length !== 0) {
@@ -121,10 +126,13 @@ new Vue({
                   }
                 })
               }
+              console.log(11111);
               this.$store.commit('d2admin/menu/asideSet', _sideList.length > 0 ? _sideList : [])
             } else if (userType == 16) {
+              console.log(_sideList, 333);
               this.$store.commit('d2admin/menu/asideSet', _sideList.length > 0 ? _sideList : [])
             } else {
+              console.log(2222);
               if (_side.length != 0) {
                 if (_side[0].title == "统计和报告") {
                   _side[0].children = _side[0].children.filter(item => item.title != "评审记录")

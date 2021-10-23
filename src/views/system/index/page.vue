@@ -39,6 +39,25 @@
             </el-option>
           </el-select>
         </div>
+        <div>
+          <span class="search_ls_name"> 是否录入联盟：</span>
+          <el-select
+            v-model="projectModel.isInputUnion"
+            @change="searchBi"
+            v-if="info.user_info.userType == 1 || info.userTypeId == 16"
+            placeholder="请选择"
+            clearable
+            size="small"
+          >
+            <el-option
+              v-for="item in isInputUnionopTlist"
+              :key="item.id"
+              :label="item.value"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </div>
         <div
           v-if="info.userTypeId != 10 && info.userTypeId != 16"
           class="die_roift"
@@ -975,11 +994,16 @@ export default {
         { title: "完成初审", value: 7 },
         { title: "完成终审", value: 8 },
       ],
+      isInputUnionopTlist: [
+        { id: 1, value: "否" },
+        { id: 2, value: "是" },
+      ],
       projectModel: {
         page: 1,
         pageSize: 20,
         projectName: "",
         queryType: 0,
+        isInputUnion: "",
       },
       formLabelWidth: "120px",
       projectIdks: null,
@@ -1407,12 +1431,15 @@ export default {
               this.info.user_info.departmentId == 5 ||
               this.info.user_info.departmentId == 8 ||
               this.info.user_info.departmentId == 9;
-            if (msk && (this.xmulistId == "" || this.xmulistId == undefined)) {
-              return this.$message({
-                message: "请选择CRM上对应的项目/系统",
-                type: "error",
-              });
+            if (this.info.user_info.departmentId != 7) {
+              if (this.xmulistId == "" || this.xmulistId == undefined) {
+                return this.$message({
+                  message: "请选择CRM上对应的项目/系统",
+                  type: "error",
+                });
+              }
             }
+
             if (this.xmform.itemList !== undefined) {
               console.log(this.xmform);
               this.copyProjec.projectId1 = this.xmform.itemList;
@@ -1678,7 +1705,18 @@ export default {
     },
     // 提交联盟
     async ListxiaoMlit() {
-      this.$refs.doctypeCrfile.submit();
+      if (this.$refs.doctypeCrfile.uploadFiles.length > 0) {
+        console.log(this.$refs.doctypeCrfile.uploadFiles);
+        if (this.$refs.doctypeCrfile.uploadFiles[0].raw) {
+          this.$refs.doctypeCrfile.submit();
+        } else {
+          console.log(55);
+          this.TopLiuiPO();
+        }
+      } else {
+        this.TopLiuiPO();
+      }
+
       //
     },
     async TopLiuiPO() {
@@ -1687,6 +1725,7 @@ export default {
         let res = await this.$api.GetfiinputUnionon(this.inputUnionModel);
         if (res.code === 20000) {
           this.$message.success("录入成功！！");
+          this.ProjectQueryList();
           this.geTlvTopks(this.lianmList);
           this.lurudialogVisible = false;
         }
@@ -1695,6 +1734,7 @@ export default {
         let res = await this.$api.Geupdateionon(this.inputUnionModel);
         if (res.code === 20000) {
           this.$message.success("修改录入成功！！");
+          this.ProjectQueryList();
           this.geTlvTopks(this.lianmList);
           this.lurudialogVisible = false;
         }

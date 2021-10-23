@@ -25,6 +25,7 @@
                     <th style="width: 120px">符合情况</th>
                     <th>整改建议</th>
                     <th style="width: 150px">风险</th>
+                    <th style="width: 150px">整改为符合加分</th>
                     <th style="width: 50px">权重</th>
                   </tr>
                 </thead>
@@ -160,6 +161,9 @@
                             </el-option>
                           </el-select>
                         </td>
+                        <td>
+                          {{ item3.fractionDisparity }}
+                        </td>
                         <!-- 权重 -->
                         <td>
                           {{ qvList(item3.weight) }}
@@ -193,6 +197,7 @@
                     <th style="width: 120px">符合情况</th>
                     <th>整改建议</th>
                     <th style="width: 150px">风险</th>
+                    <th style="width: 120px">整改为符合加分</th>
                     <th style="width: 50px">权重</th>
                   </tr>
                 </thead>
@@ -327,6 +332,9 @@
                             >
                             </el-option>
                           </el-select>
+                        </td>
+                        <td>
+                          {{ item3.fractionDisparity }}
                         </td>
                         <!-- 权重 -->
                         <td>

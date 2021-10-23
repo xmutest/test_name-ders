@@ -13,16 +13,16 @@
               :autosize="{ minRows: 20, maxRows: 35 }"
               placeholder="【填写说明：根据实际测评情况简要描述被测对象的整体安全状况，包括最主要的中高风险安全问题及数量和等级结论，建议不超过400字】"
               v-model="fromdata.safetyStatusDescription"
-            > 
+            >
             </el-input>
-            <!-- <div>
+            <div>
               <p class="textLidateget">
-                以下测评结论会在报告的总体评价的最后一段自动加上
+                以下测评结论会在报告的安全状况描述的最后一段自动加上
               </p>
               <p class="dateget">
                 {{ dateget }}
               </p>
-            </div> -->
+            </div>
           </div>
           <div class="tijiaobaoc">
             <el-button type="primary" @click="submitReport">保存</el-button>
@@ -78,19 +78,28 @@ export default {
             lts = "低";
           }
         }
-        this.dateget = `${
+        this.dateget = `根据本次测评结果分析，${
           this.xmu_info.data.systemName
-        }中存在不符合项或部分符合项，系统面临${lts}安全风险，本次测评的等级测评结论为${
-          riskMap.fractionResult == undefined ? "无" : riskMap.fractionResult
-        }，综合得分为${
+        }中存在${riskMap.highRiskNum}个高风险安全问题，${
+          riskMap.middleRiskNum
+        }个中风险安全问题，${riskMap.lowRiskNum}个低风险安全问题， 综合得分为${
           riskMap.totalFraction == undefined ? "无" : riskMap.totalFraction
-        }分。`;
+        }，等级测评结论为${
+          riskMap.fractionResult == undefined ? "无" : riskMap.fractionResult
+        }。`;
+        // this.dateget = `${
+        //   this.xmu_info.data.systemName
+        // }中存在不符合项或部分符合项，系统面临${lts}安全风险，本次测评的等级测评结论为${
+        //   riskMap.fractionResult == undefined ? "无" : riskMap.fractionResult
+        // }，综合得分为${
+        //   riskMap.totalFraction == undefined ? "无" : riskMap.totalFraction
+        // }分。`;
       }
     },
     async getEtlist() {
       let List = await this.$api.updafindSafetyStatusDescriptioniongeFile();
       if (List.code === 20000) {
-        // this.dategetList();
+        this.dategetList();
         // if (List.data == null || List.data.safetyStatusDescription == null) {
         //   this.fromdata.safetyStatusDescription = `    `;
         // } else {
