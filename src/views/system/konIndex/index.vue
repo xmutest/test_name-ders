@@ -859,6 +859,10 @@
 <script>
 import { mapState, mapActions } from "vuex";
 export default {
+  props: {
+    projectModel: {},
+    type: Object,
+  },
   data() {
     return {
       lvru: {
@@ -998,13 +1002,13 @@ export default {
         { id: 1, value: "否" },
         { id: 2, value: "是" },
       ],
-      projectModel: {
-        page: 1,
-        pageSize: 20,
-        projectName: "",
-        queryType: 0,
-        isInputUnion: "",
-      },
+      //   projectModel: {
+      //     page: 1,
+      //     pageSize: 20,
+      //     projectName: "",
+      //     queryType: 1,
+      //     isInputUnion: "",
+      //   },
       formLabelWidth: "120px",
       projectIdks: null,
       // 录入联盟

@@ -29,7 +29,7 @@ export default {
     },
     {
       path: `${pre}aqkzjaqcp`,
-      title: '安全控制间安全测评',
+      title: '安全控制点间安全测评',
       icon: '  iconfont icon-ceping'
     },
     {

@@ -67,7 +67,7 @@ export default {
       component: _import('demo/GlobalAssessment/aqkzjaqcp'),
       meta: {
         ...meta,
-        title: '安全控制间安全测评'
+        title: '安全控制点间安全测评'
       }
     },
     {

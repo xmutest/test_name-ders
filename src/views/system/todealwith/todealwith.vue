@@ -20,13 +20,14 @@
             @click="searchBi"
             circle
           ></el-button>
-        </div> -->
+        </div>  -->
         <div>
           <span class="search_ls_name"> 项目状态：</span>
           <el-select
             v-model="projectModel.queryType"
             @change="searchBi"
             placeholder="请选择"
+            clearable
             size="small"
           >
             <el-option
@@ -38,7 +39,29 @@
             </el-option>
           </el-select>
         </div>
-        <div v-if="info.userTypeId != 10" class="die_roift">
+        <div>
+          <span class="search_ls_name"> 是否录入联盟：</span>
+          <el-select
+            v-model="projectModel.isInputUnion"
+            @change="searchBi"
+            v-if="info.user_info.userType == 1 || info.userTypeId == 16"
+            placeholder="请选择"
+            clearable
+            size="small"
+          >
+            <el-option
+              v-for="item in isInputUnionopTlist"
+              :key="item.id"
+              :label="item.value"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div
+          v-if="info.userTypeId != 10 && info.userTypeId != 16"
+          class="die_roift"
+        >
           <el-button @click="dialogFormVisibleList" type="primary"
             ><i class="el-icon--left el-icon-circle-plus-outline"></i
             >新增</el-button
@@ -199,8 +222,12 @@
                       </p>
                     </template>
                   </el-table-column>
-                     <el-table-column
-                    v-if="info.user_info.userType == 1?true:info.userTypeId == 10 && info.user_info.userType == 3"
+                  <el-table-column
+                    v-if="
+                      info.user_info.userType == 1
+                        ? true
+                        : info.userTypeId == 10 && info.user_info.userType == 3
+                    "
                     label="审核人员"
                     width="100"
                   >
@@ -234,10 +261,29 @@
                       </p>
                     </template>
                   </el-table-column>
-               
+                  <el-table-column
+                    label="是否录入联盟"
+                    v-if="info.userTypeId == 16"
+                    width="80"
+                  >
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span v-if="scope.row.isInputUnion == 1">否</span>
+                        <span v-else>是</span>
+                      </p>
+                    </template>
+                  </el-table-column>
                   <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
-                      <div v-if="info.userTypeId !== 10">
+                      <div
+                        v-if="info.userTypeId !== 10 && info.userTypeId !== 16"
+                      >
                         <el-button
                           size="mini"
                           type="primary"
@@ -251,7 +297,7 @@
                           >删除</el-button
                         >
                       </div>
-                      <div v-else>
+                      <div v-if="info.userTypeId == 10">
                         <el-button
                           v-if="info.user_info.userType == 3"
                           size="mini"
@@ -264,6 +310,14 @@
                           @click="pingshengList(scope.row)"
                           type="primary"
                           >评审</el-button
+                        >
+                      </div>
+                      <div v-if="info.userTypeId == 16">
+                        <el-button
+                          size="mini"
+                          type="primary"
+                          @click="lvTopks(scope.row)"
+                          >录入联盟</el-button
                         >
                       </div>
                       <!-- <el-button size="mini" @click="truexmuList(scope.row)"
@@ -303,6 +357,39 @@
         :visible.sync="dialogFormVisible"
       >
         <el-form :model="xmform" :rules="rules" ref="xmform">
+          <el-form-item label="选择项目" :label-width="formLabelWidth">
+            <el-select
+              style="width: 350px"
+              v-model="xmulistId"
+              filterable
+              @change="getList(xmulistId)"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in xmuListoptions"
+                :key="item.id"
+                :label="item.projectName"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="选择系统" :label-width="formLabelWidth">
+            <el-select
+              style="width: 350px"
+              v-model="xtUliId"
+              @change="getxtList(xtUliId)"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in xTListoptions"
+                :key="item.id"
+                :label="item.sysName"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item
             label="项目名称"
             :label-width="formLabelWidth"
@@ -490,7 +577,12 @@
             v-if="ua_cre == 0"
             :label-width="formLabelWidth"
           >
-            <el-select v-model="xmform.itemList" clearable placeholder="请选择">
+            <el-select
+              v-model="xmform.itemList"
+              filterable
+              clearable
+              placeholder="请选择"
+            >
               <el-option
                 v-for="item in tableDataList"
                 :key="item.projectId"
@@ -594,6 +686,173 @@
         </div>
       </el-dialog>
     </div>
+    <!-- 录入联盟 -->
+    <el-drawer
+      title="录入联盟"
+      :visible.sync="drawer"
+      :direction="direction"
+      size="50%"
+      :before-close="handleClose"
+    >
+      <div class="ruList">
+        <div class="page_name" style="padding: 0 20px 20px 20px">
+          <el-row :gutter="10">
+            <div class="page_test page_test_xx">
+              <el-row>
+                <el-col :span="5"
+                  ><div class="renwuName">项目开始时间</div></el-col
+                >
+                <el-col :span="19"
+                  ><div>
+                    {{
+                      UnionModel.projectBeginTime
+                        ? UnionModel.projectBeginTime
+                        : "----"
+                    }}
+                  </div></el-col
+                >
+              </el-row>
+              <el-row>
+                <el-col :span="5"
+                  ><div class="renwuName">项目结束时间</div></el-col
+                >
+                <el-col :span="19"
+                  ><div>
+                    {{
+                      UnionModel.projectEndTime
+                        ? UnionModel.projectEndTime
+                        : "----"
+                    }}
+                  </div></el-col
+                >
+              </el-row>
+              <el-row>
+                <el-col :span="5"
+                  ><div class="renwuName">录入联盟时间</div></el-col
+                >
+                <el-col :span="19"
+                  ><div>
+                    {{
+                      UnionModel.inputUnionTime
+                        ? UnionModel.inputUnionTime
+                        : "----"
+                    }}
+                  </div></el-col
+                >
+              </el-row>
+              <el-row>
+                <el-col :span="5"
+                  ><div class="renwuName">录入平台截图</div></el-col
+                >
+                <el-col :span="19"
+                  ><div
+                    class="ksLismu"
+                    @click="fujiancalss(UnionModel.inputImgUrl)"
+                  >
+                    {{
+                      UnionModel.inputImgName ? UnionModel.inputImgName : "----"
+                    }}
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+          </el-row>
+          <div class="buLitop">
+            <div>
+              <el-button size="mini" @click="resetFormlv">取消</el-button>
+              <template>
+                <el-button size="mini" type="info" @click="updatabmitForm"
+                  >修改</el-button
+                >
+                <el-button size="mini" type="primary" @click="luformsList"
+                  >新建</el-button
+                >
+                <el-button size="mini" type="danger" @click="deleTlist"
+                  >删除</el-button
+                >
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-drawer>
+    <div>
+      <el-dialog
+        :title="lvru.name"
+        :visible.sync="lurudialogVisible"
+        width="50%"
+      >
+        <el-row>
+          <el-form
+            ref="inputUnionModel"
+            :model="inputUnionModel"
+            size="medium"
+            label-width="180px"
+            label-position="left"
+          >
+            <el-col :span="18">
+              <el-form-item label="项目开始时间" prop="projectBeginTime">
+                <el-date-picker
+                  v-model="inputUnionModel.projectBeginTime"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  :style="{ width: '100%' }"
+                  placeholder="请选择项目开始时间"
+                  clearable
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="18">
+              <el-form-item label="项目结束时间" prop="projectEndTime">
+                <el-date-picker
+                  v-model="inputUnionModel.projectEndTime"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  :style="{ width: '100%' }"
+                  placeholder="请选择结束开始时间"
+                  clearable
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="18">
+              <el-form-item label="录入联盟时间" prop="inputUnionTime">
+                <el-date-picker
+                  v-model="inputUnionModel.inputUnionTime"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  :style="{ width: '100%' }"
+                  placeholder="请选择录入联盟时间"
+                  clearable
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="录入平台截图">
+                <el-upload
+                  class="upload-demo"
+                  action
+                  ref="doctypeCrfile"
+                  :limit="1"
+                  :file-list="formFileList"
+                  :http-request="handleUploadForm"
+                  :on-exceed="formHandleExceed"
+                  :on-remove="formHandleRemove"
+                  :before-upload="beforeUploadForm"
+                  :before-remove="beforeRemove"
+                  :auto-upload="false"
+                >
+                  <el-button type="primary">上传</el-button>
+                </el-upload>
+              </el-form-item>
+            </el-col>
+          </el-form>
+        </el-row>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="lurudialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="ListxiaoMlit">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
   </d2-container>
 </template>
 
@@ -602,11 +861,43 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      lvru: {
+        name: "新建录入联盟",
+        id: 1,
+      },
+      UnionModel: {
+        projectBeginTime: undefined,
+        projectEndTime: undefined,
+        inputUnionTime: undefined,
+        inputImgUrl: undefined,
+        inputImgName: undefined,
+      },
+      formMaxSize: 10, // 上传文件大小
+      formFileList: [], // 显示上传文件
+      uploadFormFileList: [], // 确定上传文件
+      lianmList: "",
+      lurudialogVisible: false,
+      //合同 项目列表
+      xmulistId: "",
+      xmuListoptions: [],
+      // 系统
+      xtUliId: "",
+      drawer: false,
+      direction: "rtl",
+      xTListoptions: [],
       // 项目是否进行
       statusList: [
         { id: 1, value: "进行中" },
         { id: 2, value: "已完成" },
       ],
+      inputUnionModel: {
+        projectBeginTime: undefined,
+        projectEndTime: undefined,
+        inputUnionTime: undefined,
+        inputImgUrl: undefined,
+        inputImgName: undefined,
+      },
+      rulesinputUnionModel: {},
       radio_projectId: 0,
       total: 0,
       ua_cre: 0, //0创建 1更新
@@ -693,6 +984,7 @@ export default {
         itemList: null,
       },
       optionStatus: [
+        { title: "请选择", value: 0 },
         { title: "进行中", value: 1 },
         { title: "我创建的项目", value: 2 },
         { title: "已完成", value: 3 },
@@ -702,14 +994,21 @@ export default {
         { title: "完成初审", value: 7 },
         { title: "完成终审", value: 8 },
       ],
+      isInputUnionopTlist: [
+        { id: 1, value: "否" },
+        { id: 2, value: "是" },
+      ],
       projectModel: {
         page: 1,
-        pageSize: 10,
+        pageSize: 20,
         projectName: "",
         queryType: 4,
+        isInputUnion: "",
       },
       formLabelWidth: "120px",
       projectIdks: null,
+      // 录入联盟
+
       // 复制
       copyProjec: {
         copyname: "",
@@ -737,6 +1036,7 @@ export default {
         reviewId: "",
       },
       radio_projectId: 0,
+      isTtop: true,
     };
   },
   computed: {
@@ -751,6 +1051,163 @@ export default {
     this.ProjectQueryList();
   },
   methods: {
+    // 下载附件
+    async fujiancalss(item) {
+      // let url = `${window.location.protocol}${item.url}`;
+      //
+      let url = item;
+      let Listname = url.split(".")[1];
+      const litrue =
+        Listname == "doc" ||
+        Listname == "docx" ||
+        Listname == "xlsx" ||
+        Listname == "xls";
+      if (!litrue) {
+        window.open(url);
+      } else {
+        let urlList = `https://view.officeapps.live.com/op/view.aspx?src=${
+          window.location.protocol + "//" + window.location.host + url
+        }`;
+        // window.open(urlList);
+        window.open(url);
+        // let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });
+        // if (res.code == 500) {
+        //   alert(res.message);
+        // } else {
+        //   let blob = new Blob([res], {
+        //     type: "application/msword;charset=utf-8",
+        //   });
+
+        //   //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+        //   if (window.navigator && window.navigator.msSaveBlob) {
+        //     //IE浏览器、微软浏览器
+        //     /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+        //       IE可不重命名，以防万一，所以都写上比较好 */
+        //     window.navigator.msSaveBlob(blob, reportName);
+        //   } else {
+        //     //其他浏览器
+        //     let link = document.createElement("a"); // 创建a标签
+        //     link.style.display = "none";
+        //     let objectUrl = URL.createObjectURL(blob);
+        //     link.download = reportName;
+        //     link.href = objectUrl;
+        //     link.click();
+        //     URL.revokeObjectURL(objectUrl);
+        //   }
+        // }
+      }
+      // console.log(item);
+    },
+    // 开始上传前验证
+    beforeUploadForm(file) {
+      // 验证文件大小
+      if (file.size / 1024 / 1024 > this.formMaxSize) {
+        this.$message({
+          message: `上传文件大小不能超过${this.formMaxSize}M!`,
+          type: "warning",
+        });
+        return false;
+      }
+      // 中文乱码处理
+      if (file.raw) {
+        let reader = new FileReader(); // 读取文件内容
+        reader.readAsText(file.raw, "gb2312"); // 防止中文乱码问题，不加reader.onload方法都不会触发
+        reader.onload = function (e) {
+          this.contentHtml = e.target.result; // txt文本内容，接下来就可以对其进行校验处理了
+        };
+      }
+      // 验证文件类型;
+      var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const extension = true;
+      // testmsg === "xlsx" || testmsg === "xls" || testmsg === "csv";
+      if (!extension) {
+        this.$message({
+          message: "上传文件只能是xlsx/xls/csv格式!",
+          type: "warning",
+        });
+      }
+      return extension;
+    },
+    // 移除上传列表中文件
+    async formHandleRemove(file, formFileList) {
+      if (!file.raw) {
+        let res = await this.$api.inpudelUnionImgImgon({
+          fileName: file.name,
+          projectId: this.lianmList.projectId,
+        });
+        if (res.code === 20000) {
+          this.$message.success("删除成功！！");
+          //查询列表
+        } else {
+          this.$message.error(res.message);
+        }
+      }
+      let thiz = this;
+      for (let i = 0; i < thiz.uploadFormFileList.length; i++) {
+        if (thiz.uploadFormFileList[i].pname === file.name) {
+          thiz.uploadFormFileList.splice(i, 1);
+          break;
+        }
+      }
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    // 允许上传文件个数验证
+    formHandleExceed(files, formFileList) {
+      this.$message.warning(
+        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + formFileList.length
+        } 个文件`
+      );
+    },
+    // 上传文件
+    handleUploadForm(param) {
+      let thiz = this;
+      let formData = new FormData();
+      formData.append("projectId", this.lianmList.projectId); // 额外参数
+      formData.append("files", param.file);
+      let loading = thiz.$loading({
+        lock: true,
+        text: "上传中，请稍候...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+
+      // thiz.$http.post("/api/import/check/upload", formData)
+      this.$api.GeupduploadUnionImgon(formData).then((data) => {
+        if (data.code === 20000) {
+          thiz.$message({
+            message: "上传文件成功，" + data.message,
+            type: "success",
+          });
+          if (data.data) {
+            this.inputUnionModel.inputImgName =
+              data.data[Object.keys(data.data)[0]];
+            this.inputUnionModel.inputImgUrl = `${Object.keys(data.data)[0]}${
+              data.data[Object.keys(data.data)[0]]
+            }`;
+          }
+          this.TopLiuiPO();
+
+          thiz.formFileList = [];
+          thiz.uploadFormFileList = [];
+          thiz.ifsTo = true;
+        } else {
+          thiz.formFileList = [];
+          thiz.uploadFormFileList = [];
+          thiz.$message("上传文件失败，" + data.message);
+        }
+      });
+      loading.close();
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
     // 派单
     async Listpaidan(row) {
       this.optionTo(row);
@@ -761,6 +1218,21 @@ export default {
     },
     // 评审
     async pingshengList(row) {
+      // let res = await this.Project_detail(row.projectId);
+      // // 设置 vuex 用户信息
+      // await this.$store.dispatch(
+      //   "d2admin/xmu/set",
+      //   {
+      //     name: row.projectName,
+      //     projectId: row.projectId,
+      //     reviewId: row.reviewId,
+      //     data: res,
+      //   },
+      //   {
+      //     root: true,
+      //   }
+      // );
+      this.paidanginfo.reviewId = row.reviewId;
       let res = await this.Project_detail(row.projectId);
       // 设置 vuex 用户信息
       await this.$store.dispatch(
@@ -770,11 +1242,13 @@ export default {
           projectId: row.projectId,
           reviewId: row.reviewId,
           data: res,
+          row,
         },
         {
           root: true,
         }
       );
+      this.$api.CalculateFractionTotalFraction();
       this.$router.push({ path: "demo/caculateReport/agent" });
     },
     // 派单提交
@@ -806,11 +1280,11 @@ export default {
         this.projectModel.projectName !== "" &&
         this.projectModel.projectName !== undefined
       ) {
-        this.projectModel.page = 1;
-        this.projectModel.pageSize = this.total;
+        this.projectModel.pageNum = 1;
+        this.projectModel.pageSize > 20 ? this.total : 20;
       } else {
-        this.projectModel.page = 1;
-        this.projectModel.pageSize = 10;
+        this.projectModel.pageNum = 1;
+        this.projectModel.pageSize = 20;
       }
 
       this.ProjectQueryList();
@@ -889,6 +1363,7 @@ export default {
           projectId: row.projectId,
           reviewId: row.reviewId,
           data: res,
+          row,
         },
         {
           root: true,
@@ -928,7 +1403,6 @@ export default {
     // 等级联动
     async selectGoodsByGroupId(enent, sag) {
       let is = enent - 1;
-      console.log(enent);
       let res = await this.$api.API_SagFindSagByLevel({ sagLevel: enent });
       if (res.code === 20000) {
         this.saglist = res.data;
@@ -940,7 +1414,8 @@ export default {
       }
     },
     // 提交
-    submitForm(formName, ua_cre) {
+    submitForm(formName, ua_cre) { 
+      
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           if (this.xmform.standardExtends.length == 0) {
@@ -950,6 +1425,22 @@ export default {
           }
           // 创建
           if (ua_cre === 0) {
+            // if()
+            let msk =
+              this.info.user_info.departmentId == 3 ||
+              this.info.user_info.departmentId == 4 ||
+              this.info.user_info.departmentId == 5 ||
+              this.info.user_info.departmentId == 8 ||
+              this.info.user_info.departmentId == 9;
+            if (this.info.user_info.departmentId != 7) {
+              if (this.xmulistId == "" || this.xmulistId == undefined) {
+                return this.$message({
+                  message: "请选择CRM上对应的项目/系统",
+                  type: "error",
+                });
+              }
+            }
+
             if (this.xmform.itemList !== undefined) {
               console.log(this.xmform);
               this.copyProjec.projectId1 = this.xmform.itemList;
@@ -964,6 +1455,13 @@ export default {
               this.$message.success("创建成功！！");
               this.dialogFormVisible = false;
               this.ProjectQueryList();
+              this.$api.API_findLisupdatem({
+                evaluateProjectId: res.data,
+                token: window.sessionStorage.getItem("ms_token"),
+                id: this.xtUliId,
+                isPenetration: this.xmform.isPenetration,
+                childAmount: this.xmform.childAmount,
+              });
               //查询列表
             } else {
               this.$message.error(res.message);
@@ -977,6 +1475,13 @@ export default {
                 type: "success",
                 message: "修改成功！！",
                 duration: 1000,
+              });
+              this.$api.API_findLisupdatem({
+                evaluateProjectId: this.projectIdks.projectId,
+                token: window.sessionStorage.getItem("ms_token"),
+                id: this.xtUliId,
+                isPenetration: this.xmform.isPenetration,
+                childAmount: this.xmform.childAmount,
               });
               this.dialogFormVisible = false;
               this.ProjectQueryList();
@@ -1031,14 +1536,55 @@ export default {
       }
     },
     // 新镇
-    dialogFormVisibleList() {
+    async dialogFormVisibleList() {
       this.ua_cre = 0;
       this.selectGoodsByGroupId(this.xmform.level);
       this.ProjectfindAllList();
       this.table_name_el = "新建项目";
       this.resetForm("xmform");
       this.datalog_list_rom();
+      this.xmulistId = "";
+      this.xtUliId = "";
+      let ms_token = window.sessionStorage.getItem("ms_token");
       this.dialogFormVisible = true;
+      if (ms_token) {
+        let ms = await this.$api.API_findListoFndList_men({
+          token: ms_token,
+        });
+        this.xmuListoptions = ms.data;
+      } else {
+        console.log("获取token失败，请重新登录获取");
+      }
+    },
+    // 获取系统
+    async getList(item) {
+      // console.log(item);
+      let res = await this.$api.API_findListofindSystem({
+        projectId: item,
+        token: window.sessionStorage.getItem("ms_token"),
+      });
+      this.xTListoptions = res.data;
+    },
+    getxtList(itemId) {
+      let xtList = [];
+      xtList = this.xTListoptions.filter((item) => item.id == itemId)[0];
+      let recordInformationModel = xtList.recordInformationModel;
+      this.xmform = {
+        projectName: xtList.projectName || "", //COMMENT '项目名称
+        systemName: xtList.sysName || "", //系统名称
+        evaluatedUnit: xtList.evaluatedUnit || "", //被测单位名称
+        recordSn: recordInformationModel.recordCertificateNo || "", //备案证明编号
+        standard: 3, //标准体系.1：老国标，2：新国标（2017试行版），3：新国标
+        standardVersion: 1, // '拓展版本.1：默认，2：电力(生产控制信息系统类)，3：电力(管理信息系统)，4：证券期货行业，5：金融行业，6：云计算，7：税务(试行)(平行权重)，8：烟草，9：征信(上海),10：试行稿(2017-10-26)，11：GBT22239-2019',
+        standardExtends: "", //拓展标准
+        level: recordInformationModel.ggrade || 2, //等保等级.1：第一级，2：第二级，3：第三级，4：第四级
+        sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
+        membersIdList: [], //项目参与人
+        status: 1,
+        isPenetration: xtList.isPenetration,
+        childAmount: xtList.childAmount,
+      };
+      this.selectGoodsByGroupId(recordInformationModel.ggrade || 2);
     },
     async Project_detail(PeID) {
       if (!PeID && PeID == "undefined") {
@@ -1055,10 +1601,11 @@ export default {
     },
     async xmuupdata(index, row) {
       this.ua_cre = 1;
+      this.xmulistId = "";
+      this.xtUliId = "";
       this.projectIdks = row;
       this.table_name_el = "更新项目";
       this.datalog_list_rom(row.creator);
-
       let res = await this.Project_detail(row.projectId);
       this.selectGoodsByGroupId(res.level, res.sag);
       this.xmform.projectId = row.projectId;
@@ -1072,6 +1619,15 @@ export default {
           nums[index] = parseInt(nums[index]);
         });
         this.xmform.standardExtends = nums;
+      }
+      let ms_token = window.sessionStorage.getItem("ms_token");
+      if (ms_token) {
+        let ms = await this.$api.API_findListoFndList_men({
+          token: ms_token,
+        });
+        this.xmuListoptions = ms.data;
+      } else {
+        console.log("获取token失败，请重新登录获取");
       }
       this.dialogFormVisible = true;
     },
@@ -1091,6 +1647,133 @@ export default {
         status: 1,
       };
     },
+    // 录入联盟
+    lvTopks(row) {
+      this.drawer = true;
+      this.lianmList = row;
+      this.geTlvTopks(row);
+    },
+    // 查询录入联盟
+    async geTlvTopks(row) {
+      let data = {
+        projectId: row.projectId,
+      };
+      let res = await this.$api.GetfindInputUnion(data);
+      if (res.code === 20000) {
+        if (res.data) {
+          this.UnionModel = res.data;
+        } else {
+          this.UnionModel = {
+            projectBeginTime: undefined,
+            projectEndTime: undefined,
+            inputUnionTime: undefined,
+            inputImgUrl: undefined,
+            inputImgName: undefined,
+          };
+        }
+      }
+      console.log(res);
+    },
+    updatabmitForm() {
+      this.lvru = {
+        name: "修改录入联盟",
+        id: 2,
+      };
+      this.inputUnionModel = this.UnionModel;
+      this.formFileList = [];
+      if (this.UnionModel.inputImgName) {
+        this.formFileList.push({
+          name: this.UnionModel.inputImgName,
+          id: this.UnionModel.id,
+        });
+      }
+      this.lurudialogVisible = true;
+    },
+    luformsList() {
+      this.lvru = {
+        name: "新建录入联盟",
+        id: 1,
+      };
+      this.formFileList = [];
+      this.inputUnionModel = {
+        projectBeginTime: undefined,
+        projectEndTime: undefined,
+        inputUnionTime: undefined,
+        inputImgUrl: undefined,
+        inputImgName: undefined,
+      };
+      this.lurudialogVisible = true;
+    },
+    // 提交联盟
+    async ListxiaoMlit() {
+      if (this.$refs.doctypeCrfile.uploadFiles.length > 0) {
+        console.log(this.$refs.doctypeCrfile.uploadFiles);
+        if (this.$refs.doctypeCrfile.uploadFiles[0].raw) {
+          this.$refs.doctypeCrfile.submit();
+        } else {
+          console.log(55);
+          this.TopLiuiPO();
+        }
+      } else {
+        this.TopLiuiPO();
+      }
+
+      //
+    },
+    async TopLiuiPO() {
+      this.inputUnionModel.projectId = this.lianmList.projectId;
+      if (this.lvru.id == 1) {
+        let res = await this.$api.GetfiinputUnionon(this.inputUnionModel);
+        if (res.code === 20000) {
+          this.$message.success("录入成功！！");
+          this.ProjectQueryList();
+          this.geTlvTopks(this.lianmList);
+          this.lurudialogVisible = false;
+        }
+      }
+      if (this.lvru.id == 2) {
+        let res = await this.$api.Geupdateionon(this.inputUnionModel);
+        if (res.code === 20000) {
+          this.$message.success("修改录入成功！！");
+          this.ProjectQueryList();
+          this.geTlvTopks(this.lianmList);
+          this.lurudialogVisible = false;
+        }
+      }
+    },
+    // 删除
+    async deleTlist() {
+      this.$confirm("确定删除此记录", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          if (!this.UnionModel.id) {
+            return this.$message.error("当前项目无录入联盟！");
+          }
+          let res = await this.$api.inputUniondUnionImgon({
+            id: this.UnionModel.id,
+          });
+          if (res.code === 20000) {
+            this.$message.success("删除成功！！");
+            this.geTlvTopks(this.lianmList);
+            //查询列表
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    resetFormlv() {
+      this.drawer = false;
+      this.isTtop = false;
+    },
     // 复制
     truexmuList(item) {
       this.diaprojectName = true;
@@ -1100,7 +1783,15 @@ export default {
     async openList() {
       this.copyProjec.userId = this.info.user_info.userId;
       let res = await this.$api.APICopyCopyProject(this.copyProjec);
+
       if (res.code === 20000) {
+        this.$api.API_findLisupdatem({
+          evaluateProjectId: res.data,
+          token: window.sessionStorage.getItem("ms_token"),
+          id: this.xtUliId,
+          isPenetration: this.xmform.isPenetration,
+          childAmount: this.xmform.childAmount,
+        });
         this.ProjectQueryList();
       }
     },
@@ -1225,6 +1916,13 @@ export default {
 .optionTo_name {
   cursor: pointer;
 }
+.ksLismu {
+  font-size: 14px;
+  cursor: pointer;
+}
+.ksLismu:hover {
+  color: red;
+}
 .search_ls {
   display: flex;
   align-items: center;
@@ -1251,5 +1949,23 @@ export default {
 }
 .blue-class {
   color: #409eff;
+}
+.buLitop {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  line-height: 55px;
+  div {
+    margin-left: 15px;
+  }
+}
+.page_test_xx {
+  .el-col {
+    line-height: 35px;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
 }
 </style>
