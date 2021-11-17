@@ -430,4 +430,13 @@ export default ({
       data
     })
   },
+  findTelListfindPlan(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/department/findTelList',
+      method: 'get',
+      params: data
+    })
+  },
 })

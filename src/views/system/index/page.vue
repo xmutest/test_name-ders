@@ -44,7 +44,6 @@
           <el-select
             v-model="projectModel.isInputUnion"
             @change="searchBi"
-            v-if="info.user_info.userType == 1 || info.userTypeId == 16"
             placeholder="请选择"
             clearable
             size="small"
@@ -96,7 +95,142 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="项目名称">
+                  <el-table-column label="优先级" width="60">
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <el-tooltip
+                          class="item"
+                          effect="light"
+                          content="正常"
+                          placement="top-start"
+                          v-if="scope.row.projectPriority == 0"
+                        >
+                          <span style="color: #58d68d; font-size: 20px">
+                            <d2-icon name="exclamation-triangle" />
+                          </span>
+                        </el-tooltip>
+                        <el-tooltip
+                          class="item"
+                          effect="light"
+                          content="紧急"
+                          placement="top-start"
+                          v-if="scope.row.projectPriority == 1"
+                        >
+                          <span style="color: #f4d03f; font-size: 20px">
+                            <d2-icon name="exclamation-triangle" />
+                          </span>
+                        </el-tooltip>
+                        <el-tooltip
+                          class="item"
+                          effect="light"
+                          content="特批加急"
+                          placement="top-start"
+                          v-if="scope.row.projectPriority == 2"
+                        >
+                          <span style="color: red; font-size: 20px">
+                            <d2-icon name="exclamation-triangle" />
+                          </span>
+                        </el-tooltip>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="报告优先级" width="80">
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <el-tooltip
+                          class="item"
+                          effect="light"
+                          content="正常"
+                          placement="top-start"
+                          v-if="scope.row.reportPriority == 1"
+                        >
+                          <span style="color: #58d68d; font-size: 20px">
+                            <d2-icon name="exclamation-triangle" />
+                          </span>
+                        </el-tooltip>
+                        <el-tooltip
+                          class="item"
+                          effect="light"
+                          content="紧急"
+                          placement="top-start"
+                          v-if="scope.row.reportPriority == 2"
+                        >
+                          <span style="color: #f4d03f; font-size: 20px">
+                            <d2-icon name="exclamation-triangle" />
+                          </span>
+                        </el-tooltip>
+                        <el-tooltip
+                          class="item"
+                          effect="light"
+                          content="特批加急"
+                          placement="top-start"
+                          v-if="scope.row.reportPriority == 3"
+                        >
+                          <span style="color: red; font-size: 20px">
+                            <d2-icon name="exclamation-triangle" />
+                          </span>
+                        </el-tooltip>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="方案优先级" width="80">
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <el-tooltip
+                          class="item"
+                          effect="light"
+                          content="正常"
+                          placement="top-start"
+                          v-if="scope.row.planPriority == 1"
+                        >
+                          <span style="color: #58d68d; font-size: 20px">
+                            <d2-icon name="exclamation-triangle" />
+                          </span>
+                        </el-tooltip>
+                        <el-tooltip
+                          class="item"
+                          effect="light"
+                          content="紧急"
+                          placement="top-start"
+                          v-if="scope.row.planPriority == 2"
+                        >
+                          <span style="color: #f4d03f; font-size: 20px">
+                            <d2-icon name="exclamation-triangle" />
+                          </span>
+                        </el-tooltip>
+                        <el-tooltip
+                          class="item"
+                          effect="light"
+                          content="特批加急"
+                          placement="top-start"
+                          v-if="scope.row.planPriority == 3"
+                        >
+                          <span style="color: red; font-size: 20px">
+                            <d2-icon name="exclamation-triangle" />
+                          </span>
+                        </el-tooltip>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="项目名称" min-width="250px">
                     <template slot-scope="scope">
                       <p
                         :class="
@@ -111,7 +245,7 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="系统名称">
+                  <el-table-column label="系统名称" min-width="200px">
                     <template slot-scope="scope">
                       <p
                         :class="
@@ -226,6 +360,8 @@
                     v-if="
                       info.user_info.userType == 1
                         ? true
+                        : info.user_info.userType == 2
+                        ? true
                         : info.userTypeId == 10 && info.user_info.userType == 3
                     "
                     label="审核人员"
@@ -261,11 +397,8 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column
-                    label="是否录入联盟"
-                    v-if="info.userTypeId == 16"
-                    width="80"
-                  >
+                  <!-- v-if="info.userTypeId == 16" -->
+                  <el-table-column label="是否录入联盟" width="80">
                     <template slot-scope="scope">
                       <p
                         :class="
@@ -276,6 +409,19 @@
                       >
                         <span v-if="scope.row.isInputUnion == 1">否</span>
                         <span v-else>是</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="联盟通过时间" width="120">
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{ scope.row.unionPassTime }}</span>
                       </p>
                     </template>
                   </el-table-column>
@@ -389,6 +535,36 @@
               >
               </el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item
+            label="优先级"
+            :label-width="formLabelWidth"
+            prop="projectPriority"
+          >
+            <el-select
+              v-model="xmform.projectPriority"
+              placeholder="请选择优先级"
+              clearable
+            >
+              <el-option
+                v-for="(item, index) in projectPriorityOptions"
+                :key="index"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="项目编号"
+            :label-width="formLabelWidth"
+            prop="contractSn"
+          >
+            <el-input
+              v-model="xmform.contractSn"
+              clearable
+              autocomplete="off"
+            ></el-input>
           </el-form-item>
           <el-form-item
             label="项目名称"
@@ -742,7 +918,21 @@
               </el-row>
               <el-row>
                 <el-col :span="5"
-                  ><div class="renwuName">录入平台截图</div></el-col
+                  ><div class="renwuName">联盟通过时间</div></el-col
+                >
+                <el-col :span="19"
+                  ><div>
+                    {{
+                      UnionModel.unionPassTime
+                        ? UnionModel.unionPassTime
+                        : "----"
+                    }}
+                  </div></el-col
+                >
+              </el-row>
+              <el-row>
+                <el-col :span="5"
+                  ><div class="renwuName">联盟平台通过截图</div></el-col
                 >
                 <el-col :span="19"
                   ><div
@@ -764,9 +954,9 @@
                 <el-button size="mini" type="info" @click="updatabmitForm"
                   >修改</el-button
                 >
-                <el-button size="mini" type="primary" @click="luformsList"
+                <!-- <el-button size="mini" type="primary" @click="luformsList"
                   >新建</el-button
-                >
+                > -->
                 <el-button size="mini" type="danger" @click="deleTlist"
                   >删除</el-button
                 >
@@ -826,8 +1016,20 @@
                 ></el-date-picker>
               </el-form-item>
             </el-col>
+            <el-col :span="18">
+              <el-form-item label="联盟通过时间" prop="unionPassTime">
+                <el-date-picker
+                  v-model="inputUnionModel.unionPassTime"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  :style="{ width: '100%' }"
+                  placeholder="请选择录入联盟时间"
+                  clearable
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
             <el-col :span="24">
-              <el-form-item label="录入平台截图">
+              <el-form-item label="联盟平台通过截图">
                 <el-upload
                   class="upload-demo"
                   action
@@ -871,6 +1073,7 @@ export default {
         inputUnionTime: undefined,
         inputImgUrl: undefined,
         inputImgName: undefined,
+        unionPassTime: undefined,
       },
       formMaxSize: 10, // 上传文件大小
       formFileList: [], // 显示上传文件
@@ -896,6 +1099,7 @@ export default {
         inputUnionTime: undefined,
         inputImgUrl: undefined,
         inputImgName: undefined,
+        unionPassTime: undefined,
       },
       rulesinputUnionModel: {},
       radio_projectId: 0,
@@ -965,6 +1169,7 @@ export default {
         { label: "工业控制系统安全扩展要求", value: 5 },
         { label: "大数据安全扩展要求", value: 6 },
       ],
+      xmudan: {},
       membersIdLists: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -982,7 +1187,39 @@ export default {
         membersIdList: [], //项目参与人
         status: 1,
         itemList: null,
+        projectPriority: "",
+        contractSn: "",
       },
+      ptPriorityOptions: [
+        // 正常，紧急，特批加急 （默认：正常）
+        {
+          label: "正常",
+          value: 1,
+        },
+        {
+          label: "紧急",
+          value: 2,
+        },
+        {
+          label: "特批加急",
+          value: 3,
+        },
+      ],
+      projectPriorityOptions: [
+        // 正常，紧急，特批加急 （默认：正常）
+        {
+          label: "正常",
+          value: 0,
+        },
+        {
+          label: "紧急",
+          value: 1,
+        },
+        {
+          label: "特批加急",
+          value: 2,
+        },
+      ],
       optionStatus: [
         { title: "请选择", value: 0 },
         { title: "进行中", value: 1 },
@@ -1118,11 +1355,16 @@ export default {
       }
       // 验证文件类型;
       var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
-      const extension = true;
-      // testmsg === "xlsx" || testmsg === "xls" || testmsg === "csv";
+      const extension =
+        testmsg === "JPG" ||
+        testmsg === "jpg" ||
+        testmsg === "jpeg" ||
+        testmsg === "png" ||
+        testmsg === "PNG" ||
+        testmsg === "gif";
       if (!extension) {
         this.$message({
-          message: "上传文件只能是xlsx/xls/csv格式!",
+          message: "请上传jpg、jpeg、png或gif",
           type: "warning",
         });
       }
@@ -1563,6 +1805,13 @@ export default {
         token: window.sessionStorage.getItem("ms_token"),
       });
       this.xTListoptions = res.data;
+      this.xmudan = this.xmuListoptions.filter((ite) => ite.id == item);
+      this.resetForm();
+      this.xtUliId = "";
+      // console.log(ks[0]);
+      // this.xmform.projectPriority = ks[0].projectPriority;
+      // this.xmform.contractSn = ks[0].contractSn;
+      // console.log();
     },
     getxtList(itemId) {
       let xtList = [];
@@ -1582,6 +1831,8 @@ export default {
         status: 1,
         isPenetration: xtList.isPenetration,
         childAmount: xtList.childAmount,
+        projectPriority: this.xmudan[0].projectPriority,
+        contractSn: this.xmudan[0].contractSn,
       };
       this.selectGoodsByGroupId(recordInformationModel.ggrade || 2);
     },
@@ -1644,6 +1895,8 @@ export default {
         sag: 1, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         membersIdList: [], //项目参与人
         status: 1,
+        projectPriority: "",
+        contractSn: "",
       };
     },
     // 录入联盟
@@ -1668,6 +1921,7 @@ export default {
             inputUnionTime: undefined,
             inputImgUrl: undefined,
             inputImgName: undefined,
+            unionPassTime: undefined,
           };
         }
       }
@@ -1700,6 +1954,7 @@ export default {
         inputUnionTime: undefined,
         inputImgUrl: undefined,
         inputImgName: undefined,
+        unionPassTime: undefined,
       };
       this.lurudialogVisible = true;
     },
@@ -1721,23 +1976,24 @@ export default {
     },
     async TopLiuiPO() {
       this.inputUnionModel.projectId = this.lianmList.projectId;
-      if (this.lvru.id == 1) {
-        let res = await this.$api.GetfiinputUnionon(this.inputUnionModel);
-        if (res.code === 20000) {
-          this.$message.success("录入成功！！");
-          this.ProjectQueryList();
-          this.geTlvTopks(this.lianmList);
-          this.lurudialogVisible = false;
-        }
-      }
-      if (this.lvru.id == 2) {
-        let res = await this.$api.Geupdateionon(this.inputUnionModel);
-        if (res.code === 20000) {
-          this.$message.success("修改录入成功！！");
-          this.ProjectQueryList();
-          this.geTlvTopks(this.lianmList);
-          this.lurudialogVisible = false;
-        }
+      // if (this.lvru.id == 1) {
+      //   let res = await this.$api.GetfiinputUnionon(this.inputUnionModel);
+      //   if (res.code === 20000) {
+      //     this.$message.success("录入成功！！");
+      //     this.ProjectQueryList();
+      //     this.geTlvTopks(this.lianmList);
+      //     this.lurudialogVisible = false;
+      //   }
+      // }
+      // if (this.lvru.id == 2) {
+
+      // }
+      let res = await this.$api.GetfiinputUnionon(this.inputUnionModel);
+      if (res.code === 20000) {
+        this.$message.success("录入成功！！");
+        this.ProjectQueryList();
+        this.geTlvTopks(this.lianmList);
+        this.lurudialogVisible = false;
       }
     },
     // 删除
@@ -1809,6 +2065,8 @@ export default {
         sag: 2, //SAG等级.1：S1A3G3，2：S2A3G3，3：S3A3G3，4：S3A2G3，5：S3A1G3
         membersIdList: [], //项目参与人
         status: 1,
+        projectPriority: "",
+        contractSn: "",
       };
     },
     getNowDate() {

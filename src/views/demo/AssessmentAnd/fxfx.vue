@@ -233,6 +233,28 @@
                 </el-radio>
               </div>
             </el-tab-pane>
+            <el-tab-pane label="部长知识库">
+              <div class="xuna xunaListbu">
+                <el-radio
+                  @change="Listdatamis(item)"
+                  v-for="(item, index) in zskbuz"
+                  :key="index"
+                  v-model="bz_radio"
+                  :label="index"
+                >
+                  <span v-if="item.userId === 0">{{ item.riskName }}</span>
+                  <span v-if="item.userId !== 0"
+                    ><i class="el-icon-s-flag"></i>{{ item.riskName
+                    }}<el-button
+                      type="danger"
+                      icon="el-icon-delete"
+                      @click="deletefenis(item)"
+                      circle
+                    ></el-button
+                  ></span>
+                </el-radio>
+              </div>
+            </el-tab-pane>
             <el-tab-pane label="高风险判例" v-if="fenxianList.length != 0">
               <div class="xuna">
                 <div v-for="(item, index) in fenxianList" :key="index">
@@ -413,6 +435,7 @@ export default {
         safetyControlId: 136,
       },
       fenxianList: [],
+      zskbuz: [],
       amendAnalysisVO: {},
       tsAmlist: {},
       amendAnalysis: {
@@ -425,6 +448,7 @@ export default {
         highRiskJudge: "",
       },
       Ts_radio: "",
+      bz_radio: "",
       beforeModificationSeverity: "",
       DataListOp: [],
       lust: {},
@@ -578,6 +602,7 @@ export default {
       if (res.code == 20000) {
         this.getDataList();
         this.Ts_radio = "";
+        this.bz_radio = "";
       } else {
         this.$message.error("保存出错");
       }
@@ -600,6 +625,7 @@ export default {
         console.log(its, res.data[1]);
         this.DataListOp = res.data[2];
         this.fenxianList = res.data[3];
+        this.zskbuz = res.data[4];
         if (this.fenxianList.length != 0) {
           let toriginalRisk =
             this.amendAnalysis["originalRisk"] ||
@@ -627,6 +653,7 @@ export default {
         this.dataList = res.data.pageData;
         this.Toamount = res.data.count + 5;
         this.Ts_radio = "";
+        this.bz_radio = "";
         loading.close();
       } else {
         this.$message.error("信息加载出错");
@@ -887,7 +914,7 @@ export default {
   color: red;
 }
 ::v-deep .el-tabs--border-card > .el-tabs__header {
-  #tab-1 {
+  #tab-2 {
     color: red;
   }
 }

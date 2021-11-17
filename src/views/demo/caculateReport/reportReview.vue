@@ -41,9 +41,19 @@
                     {{ scope.row.remarks }}
                   </template>
                 </el-table-column>
+                <el-table-column label="加急详细" width="150">
+                  <template slot-scope="scope">
+                    {{ scope.row.reason }}
+                  </template>
+                </el-table-column>
                 <el-table-column label="上传人姓名" width="150">
                   <template slot-scope="scope">
                     {{ scope.row.userName }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="技术审核人" width="150">
+                  <template slot-scope="scope">
+                    {{ scope.row.technologyName }}
                   </template>
                 </el-table-column>
                 <el-table-column label="上传时间" width="180">
@@ -212,6 +222,60 @@
               <el-radio :label="3">方案</el-radio>
             </el-radio-group>
           </el-form-item>
+
+          <el-form-item v-if="formsendType.sendType == 1" label="技术审核人">
+            <el-select
+              v-model="formsendType.technologyId"
+              size="small"
+              filterable
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in jsuoptions"
+                :key="item.userId"
+                :label="item.userName"
+                :value="item.userId"
+              >
+              </el-option>
+            </el-select>
+            <div>
+              <span style="color: red; font-size: 12px"
+                >报告提交给质控部前，请本部门的中级测评师先预审技术部分（附录D和相关章节），并把技术部分的评审记录作为审核材料一起上传。</span
+              >
+            </div>
+          </el-form-item>
+          <el-form-item
+            label="优先级"
+            :label-width="formLabelWidth"
+            prop="projectPriority"
+            size="small"
+          >
+            <el-select
+              v-model="formsendType.priority"
+              placeholder="请选择优先级"
+              clearable
+            >
+              <el-option
+                v-for="(item, index) in projectPriorityOptions"
+                :key="index"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            v-if="formsendType.priority == 3 || formsendType.priority == 2"
+            label="加急详细"
+          >
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 4, maxRows: 12 }"
+              placeholder="请输入内容"
+              v-model="formsendType.reason"
+            >
+            </el-input>
+          </el-form-item>
           <el-form-item label="审核材料">
             <el-upload
               class="upload-demo"
@@ -236,7 +300,7 @@
               type="textarea"
               :autosize="{ minRows: 4, maxRows: 12 }"
               placeholder="请输入内容"
-              v-model="formsendType.projemList"
+              v-model="formsendType.remarks"
             >
             </el-input>
           </el-form-item>
@@ -266,13 +330,33 @@ export default {
       // 文件类型
       formsendType: {
         sendType: 1,
-        projemList: "",
+        remarks: "",
+        technologyId: "",
+        priority: 1,
+        reason: "",
       },
+      jsuoptions: [],
       fanganfotabList: [],
+      projectPriorityOptions: [
+        // 正常，紧急，特批加急 （默认：正常）
+        {
+          label: "正常",
+          value: 1,
+        },
+        {
+          label: "紧急",
+          value: 2,
+        },
+        {
+          label: "特批加急",
+          value: 3,
+        },
+      ],
     };
   },
   created() {
     this.revifindListok();
+    this.findTelListfindPlan();
   },
   computed: {
     ...mapState("d2admin", {
@@ -291,6 +375,13 @@ export default {
         projectId: this.xmu_info.projectId,
       });
       this.fanganfotabList = refangan.data;
+    },
+    // 获取本部门技术人员
+    async findTelListfindPlan() {
+      let res = await this.$api.findTelListfindPlan();
+      if (res.code === 20000) {
+        this.jsuoptions = res.data;
+      }
     },
     // 获取列表
     async revifindListok() {
@@ -411,10 +502,21 @@ export default {
           formData.append("file", file);
         });
       }
+
       formData.append("projectId", thiz.xmu_info.projectId);
-      formData.append("remarks", thiz.formsendType.projemList);
       formData.append("userName", thiz.info.name);
-      formData.append("sendType", thiz.formsendType.sendType);
+      for (const key in thiz.formsendType) {
+        if (key == "technologyId") {
+          thiz.formsendType[key] = thiz.formsendType[key]
+            ? thiz.formsendType[key]
+            : 0;
+        }
+
+        formData.append(key, thiz.formsendType[key]);
+      }
+      // formData.append("remarks", thiz.formsendType.remarks);
+      // formData.append("technologyId", thiz.formsendType.technologyId);
+      // formData.append("sendType", thiz.formsendType.sendType);
       let res = await thiz.$api.reviewloadBook(formData);
       if (res.code == 20000) {
         loading.close();
@@ -425,7 +527,7 @@ export default {
 
         this.formFileList = [];
         this.formpanFileList = [];
-        this.projemList = "";
+        this.remarks = "";
         this.kslistdatafy = false;
         this.revifindListok();
       } else {
@@ -433,6 +535,11 @@ export default {
       loading.close();
     },
     async sbchslllll() {
+      // this.submitUpload();
+      if (this.formsendType.sendType == 1) {
+        if (!this.formsendType.technologyId)
+          return this.$message.error("请选择技术审核人");
+      }
       let ins = this.info.user_info.departmentId;
       if (ins >= 12 && ins <= 15) {
         this.submitUpload();

@@ -422,6 +422,10 @@ export default {
           value: 15,
         },
         {
+          label: "合作五部",
+          value: 17,
+        },
+        {
           label: "商务部",
           value: 16,
         },
@@ -494,6 +498,10 @@ export default {
           {
             label: "合作四部",
             value: 15,
+          },
+          {
+            label: "合作五部",
+            value: 17,
           },
           {
             label: "商务部",
@@ -590,6 +598,10 @@ export default {
         {
           label: "合作四部",
           value: 15,
+        },
+        {
+          label: "合作五部",
+          value: 17,
         },
         {
           label: "商务部",
@@ -695,6 +707,10 @@ export default {
         {
           label: "合作四部",
           value: 15,
+        },
+        {
+          label: "合作五部",
+          value: 17,
         },
         {
           label: "商务部",

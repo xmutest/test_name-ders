@@ -335,8 +335,18 @@
                     >
                   </div>
                   <div>
-                    <span>录入平台截图：</span
-                    ><span
+                    <span>联盟通过时间：</span
+                    ><span>
+                      {{
+                        UnionModel.unionPassTime
+                          ? UnionModel.unionPassTime
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                  <div>
+                    <span>联盟平台通过截图：</span>
+                    <!-- <span
                       class="ksLismu"
                       @click="fujiancalss(UnionModel.inputImgUrl)"
                     >
@@ -345,7 +355,16 @@
                           ? UnionModel.inputImgName
                           : "----"
                       }}</span
-                    >
+                    > -->
+                    <div v-if="url" class="demo-image__preview">
+                      <el-image
+                        style="width: 100px; height: 100px"
+                        :src="url"
+                        :preview-src-list="srcList"
+                      >
+                      </el-image>
+                    </div>
+                    <span v-else> ---- </span>
                   </div>
                 </div>
               </div>
@@ -1058,6 +1077,8 @@ export default {
           },
         ],
       },
+      url: "",
+      srcList: [],
       field108Options: [
         {
           label: "第一次",
@@ -1133,6 +1154,13 @@ export default {
       if (res.code === 20000) {
         if (res.data) {
           this.UnionModel = res.data;
+          this.url = `${
+            window.location.protocol +
+            "//" +
+            window.location.host +
+            res.data.inputImgUrl
+          }`;
+          this.srcList.push(this.url);
         } else {
           this.UnionModel = {
             projectBeginTime: undefined,
@@ -1141,6 +1169,8 @@ export default {
             inputImgUrl: undefined,
             inputImgName: undefined,
           };
+          this.url = "";
+          this.srcList = [];
         }
       }
       console.log(res);
@@ -1375,6 +1405,13 @@ export default {
       width: 220px;
     }
   }
+}
+.ksLismu {
+  cursor: pointer;
+}
+.ksLismu:hover {
+  color: blue;
+  border-bottom: red 1px solid;
 }
 .baseofUnits {
   width: 1200px;

@@ -557,7 +557,8 @@ export default ({
     return request({
       url: '/inputUnion/delUnionImg',
       method: 'post',
-      data
+      data,
+      params:data
     })
   }
 })
