@@ -95,4 +95,19 @@ export default ({
       base: 'VUE_APP_manage'
     })
   },
+  /**
+   * @description 合同完成规定
+   * @param {Object} data 携带的信息
+   */
+   async updateDocewFirst(data = {}) {
+    // 接口请求
+    return request({
+      url: 'task/updateDoc',
+      method: 'post',
+      data,
+      params: data,
+      token: data.token || window.sessionStorage.getItem('ms_token'),
+      base: 'VUE_APP_manage'
+    })
+  },
 })

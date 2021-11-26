@@ -89,6 +89,12 @@
               </div>
             </div>
             <el-table :data="fanganfotabList" border style="width: 100%">
+              <el-table-column label="审核环节" width="80">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.link == 1">初审</span>
+                  <span v-if="scope.row.link == 2">终审</span>
+                </template>
+              </el-table-column>
               <el-table-column label="评审过程记录">
                 <template slot-scope="scope">
                   <!-- <el-input
@@ -142,6 +148,12 @@
               <div>报告评审记录列表</div>
             </div>
             <el-table :data="pcLinfotabList" border style="width: 100%">
+              <el-table-column label="审核环节" width="80">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.link == 1">初审</span>
+                  <span v-if="scope.row.link == 2">终审</span>
+                </template>
+              </el-table-column>
               <el-table-column label="评审过程记录">
                 <template slot-scope="scope">
                   <pre>{{ scope.row.reviewRecord }}</pre>

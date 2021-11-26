@@ -841,4 +841,17 @@ export default ({
       params: data,
     })
   },
+  /**
+   * @param {Object} data 
+   * POST 
+删除和重新生成安全管理文档
+   */
+  async deleteAndGenerateusDescriptioniongeFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/securityManageFile/deleteAndGenerate',
+      method: 'get',
+      params: data,
+    })
+  },
 })

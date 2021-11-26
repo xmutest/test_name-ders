@@ -206,6 +206,30 @@
             </el-select>
           </template>
         </el-table-column>
+        <el-table-column label="测评指导书" width="150">
+          <template slot-scope="scope">
+            <el-select
+              
+              @change="
+                schujiaodian({
+                  id: scope.row.id,
+                  evaluationInstructionBookId:
+                    scope.row.evaluationInstructionBookId,
+                })
+              "
+              v-model="scope.row.evaluationInstructionBookId"
+              filterable
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in evaluationBookNameList"
+                :key="item.id"
+                :label="item.label"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
         <el-table-column label="测评对象" width="80">
           <template slot-scope="scope">
             <el-checkbox
@@ -273,7 +297,12 @@ export default {
           isEvaluationObj: false,
           sortNum: 1,
           show: false,
+          evaluationInstructionBookId: 30,
         },
+      ],
+      evaluationBookNameList: [
+        { id: 37, label: "mongoDB" },
+        { id: 30, label: "默认数据库" },
       ],
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -374,6 +403,7 @@ export default {
               isEvaluationObj: false,
               sortNum: 1,
               show: false,
+              evaluationInstructionBookId: 30,
             },
           ];
         }
@@ -462,6 +492,7 @@ export default {
         isEvaluationObj: false,
         sortNum,
         show: false,
+        evaluationInstructionBookId: 30,
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

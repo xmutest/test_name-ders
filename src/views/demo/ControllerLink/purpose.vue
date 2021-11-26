@@ -93,7 +93,15 @@ export default {
         if (List.data.evaluationObjective != null) {
           data = List.data.evaluationObjective;
         } else {
-          data=`    为进一步提高信息系统的保障能力，贯彻落实《中华人民共和国网络安全法》、《信息安全等级保护管理办法》（公通字2007【43】号）等法律和文件的要求，${this.xmu_info.data.evaluatedUnit}委托${this.info.user_info.companyName}（${this.info.user_info.companyCode}）对${this.xmu_info.data.systemName}实施等级测评，以期发现信息系统和等级保护标准的差距以及存在的安全隐患，为后续的安全整改工作提供参考依据。`;
+          data = `    为进一步提高信息系统的保障能力，贯彻落实《中华人民共和国网络安全法》、《信息安全等级保护管理办法》（公通字2007【43】号）等法律和文件的要求，${
+            this.xmu_info.data.evaluatedUnit
+          }委托${this.info.user_info.companyName}（${
+            this.info.user_info.companyId == 6
+              ? "SC202127130010050"
+              : "SC202127130010160"
+          }）对${
+            this.xmu_info.data.systemName
+          }实施等级测评，以期发现信息系统和等级保护标准的差距以及存在的安全隐患，为后续的安全整改工作提供参考依据。`;
         }
         if (List.data.evaluationBasis != null) {
           this.fromdata.evaluationBasis = List.data.evaluationBasis.split(",");
@@ -148,10 +156,10 @@ export default {
       let res = await this.$api.API_evaluationBasis_updata(this.fromdata);
       if (res.code === 20000) {
         if (it !== 1) {
-           this.$message({
+          this.$message({
             type: "success",
             message: "修改成功！！",
-            duration: 1000
+            duration: 1000,
           });
           this.getEtlist();
         }

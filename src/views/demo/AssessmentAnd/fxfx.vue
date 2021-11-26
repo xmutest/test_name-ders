@@ -242,16 +242,7 @@
                   v-model="bz_radio"
                   :label="index"
                 >
-                  <span v-if="item.userId === 0">{{ item.riskName }}</span>
-                  <span v-if="item.userId !== 0"
-                    ><i class="el-icon-s-flag"></i>{{ item.riskName
-                    }}<el-button
-                      type="danger"
-                      icon="el-icon-delete"
-                      @click="deletefenis(item)"
-                      circle
-                    ></el-button
-                  ></span>
+                  <span>{{ item.riskName }}</span>
                 </el-radio>
               </div>
             </el-tab-pane>

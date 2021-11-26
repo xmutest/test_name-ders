@@ -425,7 +425,36 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="操作" width="150">
+                   <el-table-column label="打卡到达时间" width="120">
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{ scope.row.arriveTime }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                   <el-table-column label="打卡离开时间" width="120">
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{ scope.row.leaveTime }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    label="操作"
+                    :width="info.userTypeId == 16 ? '250' : '150'"
+                  >
                     <template slot-scope="scope">
                       <div
                         v-if="info.userTypeId !== 10 && info.userTypeId !== 16"
@@ -464,6 +493,12 @@
                           type="primary"
                           @click="lvTopks(scope.row)"
                           >录入联盟</el-button
+                        >
+                        <el-button
+                          size="mini"
+                          type="primary"
+                          @click="lvdaka(scope.row)"
+                          >录入打卡</el-button
                         >
                       </div>
                       <!-- <el-button size="mini" @click="truexmuList(scope.row)"
@@ -864,7 +899,7 @@
     </div>
     <!-- 录入联盟 -->
     <el-drawer
-      title="录入联盟"
+      :title="drawertitle.name"
       :visible.sync="drawer"
       :direction="direction"
       size="50%"
@@ -872,7 +907,7 @@
     >
       <div class="ruList">
         <div class="page_name" style="padding: 0 20px 20px 20px">
-          <el-row :gutter="10">
+          <el-row v-if="drawertitle.id == 1" :gutter="10">
             <div class="page_test page_test_xx">
               <el-row>
                 <el-col :span="5"
@@ -947,17 +982,87 @@
               </el-row>
             </div>
           </el-row>
+           <el-row v-if="drawertitle.id == 2" :gutter="10">
+            <div class="page_test page_test_xx">
+              <el-row>
+                <el-col :span="5"
+                  ><div class="renwuName">打卡到达时间</div></el-col
+                >
+                <el-col :span="19"
+                  ><div>
+                    {{
+                      inpuniondel.arriveTime
+                        ? inpuniondel.arriveTime
+                        : "----"
+                    }}
+                  </div></el-col
+                >
+              </el-row>
+              <el-row>
+                <el-col :span="5"
+                  ><div class="renwuName">打卡离开时间</div></el-col
+                >
+                <el-col :span="19"
+                  ><div>
+                    {{
+                      inpuniondel.leaveTime
+                        ? inpuniondel.leaveTime
+                        : "----"
+                    }}
+                  </div></el-col
+                >
+              </el-row>
+              <el-row>
+                <el-col :span="5"
+                  ><div class="renwuName">打卡人员</div></el-col
+                >
+                <el-col :span="19"
+                  ><div v-for="(it,index) in inpuniondel.clockPeopleStr" :key="index">
+                    {{it}}
+                  </div></el-col
+                >
+              </el-row>
+              <el-row>
+                <el-col :span="6"
+                  ><div class="renwuName">打卡上传附件</div></el-col
+                >
+                <el-col :span="17"
+                  >
+                  <div v-for="it in inpuniondel.fileList" :key="it.fileId">
+                    <span class="ksLismu" @click="fujiancalss(it.fileUrl)">{{it.fileName}}</span>
+                  </div>
+                  
+                  
+                </el-col>
+              </el-row>
+            </div>
+          </el-row>
           <div class="buLitop">
             <div>
               <el-button size="mini" @click="resetFormlv">取消</el-button>
               <template>
-                <el-button size="mini" type="info" @click="updatabmitForm"
+                <el-button
+                  size="mini"
+                  v-if="drawertitle.id == 1"
+                  type="info"
+                  @click="updatabmitForm"
+                  >修改</el-button
+                >
+                <el-button
+                  size="mini"
+                  v-if="drawertitle.id == 2"
+                  type="info"
+                  @click="databmitdak"
                   >修改</el-button
                 >
                 <!-- <el-button size="mini" type="primary" @click="luformsList"
                   >新建</el-button
                 > -->
-                <el-button size="mini" type="danger" @click="deleTlist"
+                <el-button
+                  size="mini"
+                  v-if="drawertitle.id == 1"
+                  type="danger"
+                  @click="deleTlist"
                   >删除</el-button
                 >
               </template>
@@ -1055,6 +1160,85 @@
         </span>
       </el-dialog>
     </div>
+    <!-- 打卡 -->
+    <el-dialog
+      title="录入打卡"
+      :visible.sync="dakaiVisible"
+      width="50%"
+      :before-close="handleClose"
+    >
+      <div>
+        <el-form
+          ref="inpuniondel"
+          :model="inpuniondel"
+          :rules="rules"
+          size="medium"
+          label-width="140px"
+          label-position="left"
+        >
+          <el-form-item label="打卡到达时间" prop="arriveTime">
+            <el-date-picker
+              v-model="inpuniondel.arriveTime"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              :style="{ width: '100%' }"
+              placeholder="请选择打卡离开时间"
+              clearable
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="打卡离开时间" prop="leaveTime">
+            <el-date-picker
+              v-model="inpuniondel.leaveTime"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              :style="{ width: '100%' }"
+              placeholder="请选择打卡离开时间"
+              clearable
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="打卡人员" prop="clockPeople">
+            <el-select
+              v-model="inpuniondel.clockPeople"
+              placeholder="请选择打卡人员"
+              multiple
+              clearable
+              :style="{ width: '100%' }"
+            >
+              <el-option
+                v-for="(item, index) in clockPeopleOptions"
+                :key="index"
+                :label="item.userName"
+                :value="item.userId"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="打卡平台截图">
+            <el-upload
+              class="upload-demo"
+              action
+              ref="dakahandleUp"
+              :limit="10"
+              :file-list="formFileList"
+              :http-request="dakahandleUploadForm"
+              :on-exceed="formHandleExceed"
+              :on-remove="formHandleRemove"
+              :before-upload="beforeUploadForm"
+              :before-remove="beforeRemove"
+              :on-change="fileChange"
+              :auto-upload="false"
+            >
+              <el-button type="primary">上传</el-button>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dakaiVisible = false">取 消</el-button>
+        <el-button type="primary" @click="ddleUploadForm">确 定</el-button>
+      </span>
+    </el-dialog>
   </d2-container>
 </template>
 
@@ -1063,6 +1247,11 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
+      dakaiVisible: false,
+      drawertitle: {
+        id: 1,
+        name: "录入联盟",
+      },
       lvru: {
         name: "新建录入联盟",
         id: 1,
@@ -1075,8 +1264,14 @@ export default {
         inputImgName: undefined,
         unionPassTime: undefined,
       },
+      inpuniondel: {
+        arriveTime: null,
+        leaveTime: null,
+        clockPeople: [],
+      },
       formMaxSize: 10, // 上传文件大小
       formFileList: [], // 显示上传文件
+      dakformFileList: [],
       uploadFormFileList: [], // 确定上传文件
       lianmList: "",
       lurudialogVisible: false,
@@ -1261,10 +1456,42 @@ export default {
         systemName: [
           { required: true, message: "请输入系统名称", trigger: "blur" },
         ],
+        arriveTime: [
+          {
+            required: true,
+            message: "请选择时间选择打卡到达时间",
+            trigger: "change",
+          },
+        ],
+        leaveTime: [
+          {
+            required: true,
+            message: "请选择打卡离开时间",
+            trigger: "change",
+          },
+        ],
+        clockPeople: [
+          {
+            required: true,
+            type: "array",
+            message: "请至少选择一个打卡人员",
+            trigger: "change",
+          },
+        ],
         // membersIdList: [
         //   { required: true, message: "请选择项目参与人", trigger: "blur" },
         // ],
       },
+      clockPeopleOptions: [
+        {
+          label: "选项一",
+          value: 1,
+        },
+        {
+          label: "选项二",
+          value: 2,
+        },
+      ],
       // 派单
       paidanFormVisible: false,
       paidanFormList: [],
@@ -1373,11 +1600,23 @@ export default {
     // 移除上传列表中文件
     async formHandleRemove(file, formFileList) {
       if (!file.raw) {
-        let res = await this.$api.inpudelUnionImgImgon({
-          fileName: file.name,
-          projectId: this.lianmList.projectId,
-        });
+        let res = "";
+        if (this.drawertitle.id == 1) {
+          res = await this.$api.inpudelUnionImgImgon({
+            fileName: file.name,
+            projectId: this.lianmList.projectId,
+          });
+        }
+        if (this.drawertitle.id == 2) {
+          console.log(file);
+          res = await this.$api.deleteFileImgImgon({
+            id: file.id,
+            projectId: this.lianmList.projectId,
+          });
+        }
         if (res.code === 20000) {
+          // this.inputUnionModel.inputImgName=""
+          // this.inputUnionModel.inputImgUrl = "";
           this.$message.success("删除成功！！");
           //查询列表
         } else {
@@ -1441,6 +1680,7 @@ export default {
           thiz.$message("上传文件失败，" + data.message);
         }
       });
+
       loading.close();
     },
     handleClose(done) {
@@ -1899,33 +2139,80 @@ export default {
         contractSn: "",
       };
     },
-    // 录入联盟
-    lvTopks(row) {
+    // 录入打卡
+    lvdaka(row) {
+      this.drawertitle = {
+        id: 2,
+        name: "录入打卡",
+      };
       this.drawer = true;
       this.lianmList = row;
-      this.geTlvTopks(row);
+      this.geTlvTopks(row, 2);
     },
-    // 查询录入联盟
-    async geTlvTopks(row) {
+    // 录入联盟
+    lvTopks(row) {
+      this.drawertitle = {
+        id: 1,
+        name: "录入联盟",
+      };
+      this.drawer = true;
+      this.lianmList = row;
+      this.geTlvTopks(row, 1);
+    },
+
+    async geTlvTopks(row, itsId) {
       let data = {
         projectId: row.projectId,
       };
-      let res = await this.$api.GetfindInputUnion(data);
+      let res = "";
+      // 查询录入联盟
+      if (itsId == 1) {
+        res = await this.$api.GetfindInputUnion(data);
+      }
+      // 查询打卡联盟
+      if (itsId == 2) {
+        res = await this.$api.findClockputUnion(data);
+      }
+
       if (res.code === 20000) {
-        if (res.data) {
-          this.UnionModel = res.data;
-        } else {
-          this.UnionModel = {
-            projectBeginTime: undefined,
-            projectEndTime: undefined,
-            inputUnionTime: undefined,
-            inputImgUrl: undefined,
-            inputImgName: undefined,
-            unionPassTime: undefined,
-          };
+        switch (itsId) {
+          case 1:
+            if (res.data) {
+              this.UnionModel = res.data;
+            } else {
+              this.UnionModel = {
+                projectBeginTime: undefined,
+                projectEndTime: undefined,
+                inputUnionTime: undefined,
+                inputImgUrl: undefined,
+                inputImgName: undefined,
+                unionPassTime: undefined,
+              };
+            }
+            break;
+          case 2:
+            if (res.data) {
+              this.files = [];
+              this.inpuniondel = res.data;
+            } else {
+              this.inpuniondel = {
+                arriveTime: null,
+                leaveTime: null,
+                clockPeople: [],
+              };
+            }
+            break;
+          default:
+            break;
         }
       }
-      console.log(res);
+      // console.log(res);
+    },
+    async findTelListfindPlan() {
+      let res = await this.$api.findTelListfindPlan();
+      if (res.code === 20000) {
+        this.clockPeopleOptions = res.data;
+      }
     },
     updatabmitForm() {
       this.lvru = {
@@ -1941,6 +2228,65 @@ export default {
         });
       }
       this.lurudialogVisible = true;
+    },
+    databmitdak() {
+      this.findTelListfindPlan();
+      this.formFileList = [];
+      if (this.inpuniondel.fileList) {
+        this.inpuniondel.fileList.forEach((item) => {
+          let ks = {
+            name: item.fileName,
+            id: item.fileId,
+          };
+          this.formFileList.push(ks);
+        });
+      }
+      this.dakaiVisible = true;
+    },
+    ddleUploadForm() {
+      this.dakahandleUploadForm();
+    },
+    fileChange(file) {
+      this.files.push(file.raw); //上传文件变化时将文件对象push进files数组
+    },
+    dakahandleUploadForm() {
+      let thiz = this;
+      let formData = new FormData();
+      formData.append("projectId", this.lianmList.projectId); // 额外参数
+      thiz.files.forEach((file) => {
+        formData.append("files", file);
+      });
+      formData.append("arriveTime", thiz.inpuniondel.arriveTime);
+      formData.append("leaveTime", thiz.inpuniondel.leaveTime);
+      formData.append("clockPeople", thiz.inpuniondel.clockPeople);
+      let loading = thiz.$loading({
+        lock: true,
+        text: "上传中，请稍候...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+
+      // thiz.$http.post("/api/import/check/upload", formData)
+      this.$api.uploadClockUnionon(formData).then((data) => {
+        if (data.code === 20000) {
+          thiz.$message({
+            message: "录入打卡成功，" + data.message,
+            type: "success",
+          });
+          this.dakaiVisible = false;
+          this.ProjectQueryList();
+          this.geTlvTopks(this.lianmList, 2);
+          thiz.formFileList = [];
+          thiz.uploadFormFileList = [];
+          thiz.files = [];
+        } else {
+          thiz.formFileList = [];
+          thiz.uploadFormFileList = [];
+          thiz.files = [];
+          thiz.$message("上传文件失败，" + data.message);
+        }
+      });
+      loading.close();
     },
     luformsList() {
       this.lvru = {
@@ -1974,6 +2320,7 @@ export default {
 
       //
     },
+
     async TopLiuiPO() {
       this.inputUnionModel.projectId = this.lianmList.projectId;
       // if (this.lvru.id == 1) {
@@ -1992,7 +2339,7 @@ export default {
       if (res.code === 20000) {
         this.$message.success("录入成功！！");
         this.ProjectQueryList();
-        this.geTlvTopks(this.lianmList);
+        this.geTlvTopks(this.lianmList, 1);
         this.lurudialogVisible = false;
       }
     },
@@ -2012,7 +2359,7 @@ export default {
           });
           if (res.code === 20000) {
             this.$message.success("删除成功！！");
-            this.geTlvTopks(this.lianmList);
+            this.geTlvTopks(this.lianmList, 1);
             //查询列表
           } else {
             this.$message.error(res.message);

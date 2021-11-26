@@ -8,6 +8,17 @@
           <div class="mude_text_item">
             <div class="descTItle">报告评审记录列表</div>
             <el-table :data="pcLinfotabList" border style="width: 100%">
+              <el-table-column label="审核环节" width="100">
+                <template slot-scope="scope">
+                  <span>{{
+                    scope.row.link == 1
+                      ? "初审"
+                      : scope.row.link == 2
+                      ? "终审"
+                      : ""
+                  }}</span>
+                </template>
+              </el-table-column>
               <el-table-column label="评审意见">
                 <template slot-scope="scope">
                   <el-input
@@ -34,12 +45,14 @@
                   <el-button
                     type="primary"
                     size="mini"
+                    v-if="scope.row.link == 1"
                     @click="submitReport(scope.row, 1)"
                     >导出初审</el-button
                   >
                   <el-button
                     type="primary"
                     size="mini"
+                    v-if="scope.row.link == 2"
                     @click="submitReport(scope.row, 2)"
                     >导出终审</el-button
                   >
@@ -52,6 +65,17 @@
               <div>方案评审记录列表</div>
             </div>
             <el-table :data="fanganfotabList" border style="width: 100%">
+              <el-table-column label="审核环节" width="100">
+                <template slot-scope="scope">
+                  <span>{{
+                    scope.row.link == 1
+                      ? "初审"
+                      : scope.row.link == 2
+                      ? "终审"
+                      : ""
+                  }}</span>
+                </template>
+              </el-table-column>
               <el-table-column label="评审意见">
                 <template slot-scope="scope">
                   <el-input
@@ -79,12 +103,14 @@
                   <el-button
                     type="primary"
                     size="mini"
+                    v-if="scope.row.link == 1"
                     @click="fansubmitReport(scope.row, 1)"
                     >导出初审</el-button
                   >
                   <el-button
                     type="primary"
                     size="mini"
+                    v-if="scope.row.link == 2"
                     @click="fansubmitReport(scope.row, 2)"
                     >导出终审</el-button
                   >
@@ -169,8 +195,7 @@ export default {
         alert(res.message);
       } else {
         let blob = new Blob([res], {
-          type:
-            "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
+          type: "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
         });
 
         //浏览器兼容，Google和火狐支持a标签的download，IE不支持
@@ -205,8 +230,7 @@ export default {
         alert(res.message);
       } else {
         let blob = new Blob([res], {
-          type:
-            "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
+          type: "application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8",
         });
 
         //浏览器兼容，Google和火狐支持a标签的download，IE不支持

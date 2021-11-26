@@ -147,7 +147,6 @@
       <el-table-column label="测评指导书">
         <template slot-scope="scope">
           <el-select
-            disabled
             @change="
               schujiaodian({
                 id: scope.row.id,
@@ -212,7 +211,7 @@
       </div>
     </div> -->
   </d2-container>
-</template>
+</template> 
 
 <script>
 import { mapState } from "vuex";
@@ -221,13 +220,16 @@ export default {
     return {
       Itzm: false,
       evaluationBookNameList: [
+        { id: 20, label: "Tomcat" },
+        { id: 21, label: "Nginx" },
         { id: 24, label: "业务应用系统" },
-        { id: 25, label: "云管理平台（扩展）" },
-        { id: 26, label: "移动管理平台（扩展）" },
-        { id: 27, label: "物联管理平台（扩展）" },
-        { id: 28, label: "工控管理平台（扩展）" },
-        { id: 29, label: "大数据管理平台（扩展）" },
-      ],
+
+        // { id: 25, label: "云管理平台（扩展）" },
+        // { id: 26, label: "移动管理平台（扩展）" },
+        // { id: 27, label: "物联管理平台（扩展）" },
+        // { id: 28, label: "工控管理平台（扩展）" },
+        // { id: 29, label: "大数据管理平台（扩展）" },
+      ], 
       //  		重要程度	测评对象	排序号
       importance_list: [
         { value: 5, label: "关键" },

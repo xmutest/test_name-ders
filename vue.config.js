@@ -54,9 +54,10 @@ module.exports = {
     // http://192.168.7.104:8080/evaluation/
     // http://172.16.4.251:8080/evaluation/
     // http://192.168.7.104:8081/evaluation/
+    // https://survey.iscn.org.cn/evaluate/
     proxy: {
       '/api': {
-        target: 'http://192.168.7.61:8080/evaluation/',
+        target: 'http://192.168.7.104:8082/evaluation/',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
@@ -64,7 +65,7 @@ module.exports = {
         }
       },
     }
-  }, 
+  },
   css: {
     loaderOptions: {
       // 设置 scss 公用变量文件

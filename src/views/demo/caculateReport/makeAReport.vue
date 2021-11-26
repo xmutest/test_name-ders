@@ -322,8 +322,6 @@
                       }}</span
                     >
                   </div>
-                </div>
-                <div>
                   <div>
                     <span>录入联盟时间：</span
                     ><span>
@@ -344,6 +342,8 @@
                       }}</span
                     >
                   </div>
+                </div>
+                <div>
                   <div>
                     <span>联盟平台通过截图：</span>
                     <!-- <span
@@ -365,6 +365,56 @@
                       </el-image>
                     </div>
                     <span v-else> ---- </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mude_text_item">
+            <div class="descTItle">录入打卡信息</div>
+            <div class="pc_gonjv">
+              <div class="jineginfo">
+                <div>
+                  <div>
+                    <span>打卡到达时间：</span
+                    ><span>
+                      {{
+                        inpuniondel.arriveTime ? inpuniondel.arriveTime : "----"
+                      }}</span
+                    >
+                  </div>
+                  <div>
+                    <span>打卡离开时间：</span
+                    ><span>
+                      {{
+                        inpuniondel.leaveTime ? inpuniondel.leaveTime : "----"
+                      }}</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <span>打卡人员：</span
+                    ><span>
+                      <div
+                        v-for="(it, index) in inpuniondel.clockPeopleStr"
+                        :key="index"
+                      >
+                        {{ it }}
+                      </div></span
+                    >
+                  </div>
+                  <div>
+                    <span>打卡上传附件：</span
+                    ><span>
+                      <div v-for="it in inpuniondel.fileList" :key="it.fileId">
+                        <span
+                          class="ksLismu"
+                          @click="fujiancalss(it.fileUrl)"
+                          >{{ it.fileName }}</span
+                        >
+                      </div></span
+                    >
                   </div>
                 </div>
               </div>
@@ -424,6 +474,7 @@
                   v-model="assessmentGroup.reportTime"
                   type="date"
                   format="yyyy - MM - dd"
+                  @change="textChangeHandler"
                   value-format="timestamp"
                   :style="{ width: '150px' }"
                   placeholder="请选择日期"
@@ -1089,11 +1140,14 @@ export default {
           value: 2,
         },
       ],
+      inpuniondel: {},
     };
   },
-  created() {
+  async created() {
+    this.tuopRtime();
     this.getEtlist();
     this.geTlvTopks();
+    this.gedakavTopks();
   },
   computed: {
     ...mapState("d2admin", {
@@ -1102,6 +1156,22 @@ export default {
     }),
   },
   methods: {
+    async gedakavTopks() {
+      let res = await this.$api.findClockputUnion();
+      if (res.code === 20000) {
+        this.inpuniondel = res.data;
+      }
+    },
+    async tuopRtime() {
+      let res = await this.$api.API_reportTimepdate({
+        projectId: this.xmu_info.projectId,
+      });
+      if (res.data.reportTime !== 0 && res.data.reportTime !== null) {
+        this.assessmentGroup.reportTime = res.data.reportTime;
+      }
+      console.log(8588);
+      this.textChangeHandler();
+    },
     // 下载附件
     async fujiancalss(item) {
       // let url = `${window.location.protocol}${item.url}`;
@@ -1211,32 +1281,34 @@ export default {
     },
     // 生成默认值
     textChangeHandler() {
+      this.reportTimepdate();
+
+      // console.log(date.getTime());
+    },
+    async reportTimepdate() {
       var date = new Date();
-      console.log(this.xmu_info.data);
       let dataTs = date.getFullYear() + "";
+      // console.log(this.info.user_info.companyCode);
       if (this.info.user_info.companyCode != null) {
+        let ks = "";
+        let formatDate1 = new Date(this.assessmentGroup.reportTime);
+        let formatDate2 = new Date("2021-11-24 00:00:00");
+        console.log(formatDate1, formatDate2);
+        if (formatDate1 >= formatDate2) {
+          ks = this.info.user_info.companyId == 2 ? "0160" : "0050";
+        } else {
+          ks = `${this.info.user_info.companyCode.substring(
+            this.info.user_info.companyCode.length - 6
+          )}`;
+        }
         let lst = `${this.xmu_info.data.recordSn}-${dataTs.substring(
           2,
           4
-        )}-${this.info.user_info.companyCode.substring(
-          this.info.user_info.companyCode.length - 6
-        )}-0${this.assessmentGroup.annualReview}`;
+        )}-${ks}-0${this.assessmentGroup.annualReview}`;
         let Nmas = `${this.xmu_info.data.evaluatedUnit}_${this.xmu_info.data.systemName}_测评报告`;
         this.assessmentGroup.reportNum = lst;
         this.assessmentGroup.recordSn = this.xmu_info.data.recordSn;
         this.assessmentGroup.reportName = Nmas;
-      }
-
-      // console.log(date.getTime());
-      this.assessmentGroup.reportTime = date.getTime();
-      this.reportTimepdate();
-    },
-    async reportTimepdate() {
-      let res = await this.$api.API_reportTimepdate({
-        projectId: this.xmu_info.projectId,
-      });
-      if (res.data.reportTime !== 0 && res.data.reportTime !== null) {
-        this.assessmentGroup.reportTime = res.data.reportTime;
       }
     },
     selectChange(provinceName, cityNmae) {
@@ -1250,7 +1322,6 @@ export default {
       let timeout = "";
       clearTimeout(timeout);
       if (res.code === 20000) {
-        this.textChangeHandler();
         this.reportGeneratingRecords = res.data;
         res.data.forEach((item) => {
           if (item.status !== 1 && item.status !== 2) {
@@ -1374,9 +1445,9 @@ export default {
 
 <style lang="scss" scoped>
 .mude_is {
-  margin: 20px 0;
+  margin: 10px 0;
   .mude_is_left {
-    margin: 20px 0;
+    margin: 10px 0;
   }
   .to_tim {
     margin-top: 5px;
@@ -1426,12 +1497,12 @@ export default {
   margin-left: 10px;
   display: flex;
   // justify-content: space-around;
-  align-items: center;
+  // align-items: center;
   font-size: 14px;
   color: #606266;
   div {
     flex: 1;
-    margin: 15px 0;
+    margin: 0 0 15px 0;
   }
 }
 .lisT1 {

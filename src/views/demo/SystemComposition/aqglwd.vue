@@ -1,6 +1,11 @@
 <!--安全管理文档-->
 <template>
   <d2-container>
+    <div class="Bomms_ks">
+      <el-button size="small" @click="deleteAndGenerateus" type="primary"
+        >删除全部并更新</el-button
+      >
+    </div>
     <el-table
       :data="tabledatas"
       border
@@ -147,9 +152,7 @@ export default {
       this.getlistdata();
     },
     async getlistdata() {
-      let res = await this.$api.APISecurityManageFileFindSecurityManageFile(
-       
-      );
+      let res = await this.$api.APISecurityManageFileFindSecurityManageFile();
       if (res.code === 20000) {
         // this.total = res.data.total;
         let List = res.data;
@@ -178,6 +181,29 @@ export default {
         this.$message.error("错误，数据查询失败" + res.message);
       }
     },
+    deleteAndGenerateus() {
+      this.$confirm("确定删除全部管理文档并从现场记录表更新？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.deleteAndGenerateusDescriptioniongeFile();
+          if (res.code === 20000) {
+            this.$message({
+              type: "success",
+              message: "操作成功!",
+            });
+            this.getlistdata();
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     is_compile(item, index, itname) {
       if (this.indexs == index || this.indexs == "") {
         item.show = true;
@@ -201,9 +227,10 @@ export default {
           );
         } else {
           if (item.fileName != "") {
-            res = await this.$api.API_SecurityManageFileUpdateSecurityManageFile(
-              item
-            );
+            res =
+              await this.$api.API_SecurityManageFileUpdateSecurityManageFile(
+                item
+              );
           }
         }
       } else {
@@ -215,7 +242,7 @@ export default {
         this.getlistdata();
         this.Itzm = false;
         //查询列表
-      } 
+      }
       this.Itzm = false;
     },
     is_preserve(item, Itzm, sortNum) {
@@ -273,5 +300,9 @@ export default {
   height: 100%;
   top: 0;
   left: 0;
+}
+.Bomms_ks {
+  margin: 10px 0;
+  text-align: right;
 }
 </style>

@@ -158,7 +158,7 @@ export default {
     async ks_toBummt(item) {
       //localhost:8080/api/output/sceneCheck?projectId=8
       // console.log();
-      let reportName = `${this.xmu_info.data.systemName}_现场记录表`;
+      let reportName = `${this.xmu_info.data.systemName}_现场记录表.zip`;
       let url = "";
       if (item == 2) {
         url = `${window.location.protocol}${process.env.VUE_APP_API}/output/allSceneCheck?projectId=${this.xmu_info.projectId}`;
@@ -193,7 +193,7 @@ export default {
           let link = document.createElement("a"); // 创建a标签
           link.style.display = "none";
           let objectUrl = URL.createObjectURL(blob);
-          link.download = `${reportName}`;
+          link.download = reportName;
           link.href = objectUrl;
           link.click();
           URL.revokeObjectURL(objectUrl);

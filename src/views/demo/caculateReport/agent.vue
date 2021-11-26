@@ -26,70 +26,93 @@
                   ><span>{{ xmu_info.data.recordSn }}</span>
                 </div>
               </div>
-              <div>
-                <el-card class="box-card">
-                  <span class="luNameTop">录入联盟信息</span>
-                  <div>
-                    <div>
-                      <span>项目开始时间：</span
-                      ><span>
-                        {{
-                          UnionModel.projectBeginTime
-                            ? UnionModel.projectBeginTime
-                            : "----"
-                        }}</span
-                      >
-                    </div>
-                    <div>
-                      <span>项目结束时间：</span
-                      ><span>
-                        {{
-                          UnionModel.projectEndTime
-                            ? UnionModel.projectEndTime
-                            : "----"
-                        }}</span
-                      >
-                    </div>
-                    <div>
-                      <span>录入联盟时间：</span
-                      ><span>
-                        {{
-                          UnionModel.inputUnionTime
-                            ? UnionModel.inputUnionTime
-                            : "----"
-                        }}</span
-                      >
-                    </div>
-                    <div>
-                      <span>录入平台截图：</span
-                      ><span
-                        class="ksLismu"
-                        @click="fujiancalss(UnionModel.inputImgUrl)"
-                      >
-                        {{
-                          UnionModel.inputImgName
-                            ? UnionModel.inputImgName
-                            : "----"
-                        }}</span
-                      >
-                    </div>
-                  </div>
-                </el-card>
-              </div>
 
               <div></div>
+            </div>
+          </div>
+          <div class="mude_text_item">
+            <div class="descTItle">录入联盟信息</div>
+            <div class="pc_gonjv">
+              <div class="jineginfos">
+                <div>
+                  <div>
+                    <span>项目开始时间：</span
+                    ><span>
+                      {{
+                        UnionModel.projectBeginTime
+                          ? UnionModel.projectBeginTime
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                  <div>
+                    <span>项目结束时间：</span
+                    ><span>
+                      {{
+                        UnionModel.projectEndTime
+                          ? UnionModel.projectEndTime
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                  <div>
+                    <span>录入联盟时间：</span
+                    ><span>
+                      {{
+                        UnionModel.inputUnionTime
+                          ? UnionModel.inputUnionTime
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                  <div>
+                    <span>联盟通过时间：</span
+                    ><span>
+                      {{
+                        UnionModel.unionPassTime
+                          ? UnionModel.unionPassTime
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <span>联盟平台通过截图：</span>
+                    <!-- <span
+                      class="ksLismu"
+                      @click="fujiancalss(UnionModel.inputImgUrl)"
+                    >
+                      {{
+                        UnionModel.inputImgName
+                          ? UnionModel.inputImgName
+                          : "----"
+                      }}</span
+                    > -->
+                    <div v-if="url" class="demo-image__preview">
+                      <el-image
+                        style="width: 100px; height: 100px"
+                        :src="url"
+                        :preview-src-list="srcList"
+                      >
+                      </el-image>
+                    </div>
+                    <span v-else> ---- </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="mude_text_item">
             <div class="descTItle">审核列表</div>
             <div class="jineginfo">
               <el-table :data="tabList" border style="width: 100%">
-                <el-table-column label="类型" width="80">
+                <el-table-column label="类型" width="100">
                   <template slot-scope="scope">
-                    {{ scope.row.fileType == 1 ? "报告" : "方案" }}
+                    <span>{{ scope.row.fileType == 1 ? "报告" : "方案" }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="审核材料" width="280">
+                <el-table-column label="审核材料">
                   <template slot-scope="scope">
                     <span
                       class="xiazaiList"
@@ -101,21 +124,33 @@
                   </template>
                 </el-table-column>
 
-                <el-table-column label="备注">
+                <el-table-column label="备注" width="150">
                   <template slot-scope="scope">
                     {{ scope.row.remarks }}
                   </template>
                 </el-table-column>
-                <el-table-column label="上传人姓名" width="100">
+                <el-table-column label="加急详细" width="150">
+                  <template slot-scope="scope">
+                    {{ scope.row.reason }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="上传人姓名" width="150">
                   <template slot-scope="scope">
                     {{ scope.row.userName }}
                   </template>
                 </el-table-column>
-                <el-table-column label="上传时间" width="150">
+                <el-table-column label="技术审核人" width="150">
+                  <template slot-scope="scope">
+                    {{ scope.row.technologyName }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="上传时间" width="180">
                   <template slot-scope="scope">
                     {{ scope.row.uploadTime }}
                   </template>
                 </el-table-column>
+
+                <!-- <el-table-column label="操作"> </el-table-column> -->
               </el-table>
             </div>
           </div>
@@ -133,6 +168,19 @@
               </div>
             </div>
             <el-table :data="fanganfotabList" border style="width: 100%">
+              <el-table-column label="审核环节">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.link == 1">初审</span>
+                  <span v-if="scope.row.link == 2">终审</span>
+                  <!-- <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6 }"
+                    readonly
+                    v-model="scope.row.reviewRecord"
+                  >
+                  </el-input> -->
+                </template>
+              </el-table-column>
               <el-table-column label="评审过程记录">
                 <template slot-scope="scope">
                   <pre>{{ scope.row.reviewRecord }}</pre>
@@ -174,9 +222,15 @@
                   {{ scope.row.userName }}
                 </template>
               </el-table-column>
+
               <el-table-column label="时间" width="150">
                 <template slot-scope="scope">
                   {{ scope.row.time }}
+                </template>
+              </el-table-column>
+              <el-table-column label="实际评审时间" width="150">
+                <template slot-scope="scope">
+                  {{ scope.row.reviewActualTime }}
                 </template>
               </el-table-column>
               <el-table-column label="操作" width="150">
@@ -211,6 +265,19 @@
               </div>
             </div>
             <el-table :data="pcLinfotabList" border style="width: 100%">
+              <el-table-column label="审核环节">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.link == 1">初审</span>
+                  <span v-if="scope.row.link == 2">终审</span>
+                  <!-- <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 2, maxRows: 6 }"
+                    readonly
+                    v-model="scope.row.reviewRecord"
+                  >
+                  </el-input> -->
+                </template>
+              </el-table-column>
               <el-table-column label="评审过程记录">
                 <template slot-scope="scope">
                   <pre>{{ scope.row.reviewRecord }}</pre>
@@ -255,6 +322,11 @@
               <el-table-column label="时间" width="150">
                 <template slot-scope="scope">
                   {{ scope.row.reviewFirstTime }}
+                </template>
+              </el-table-column>
+              <el-table-column label="实际评审时间" width="150">
+                <template slot-scope="scope">
+                  {{ scope.row.reviewActualTime }}
                 </template>
               </el-table-column>
               <el-table-column label="操作" width="150">
@@ -302,12 +374,12 @@
             <span>评审时间：</span
             ><span>{{ infopaymentOrderModel.reviewFirstTime }}</span>
           </div>
-          <div v-if="pingcheji == 1">
-            <span>实际评审时间：</span
-            ><span>{{ infopaymentOrderModel.reviewActualTime }}</span>
-          </div>
           <div v-if="pingcheji == 2">
             <span>评审时间：</span><span>{{ infopaymentOrderModel.time }}</span>
+          </div>
+          <div>
+            <span>实际评审时间：</span
+            ><span>{{ infopaymentOrderModel.reviewActualTime }}</span>
           </div>
           <div>
             <span>评审参加人员：</span
@@ -431,6 +503,16 @@
             label-position="left"
           >
             <el-col :span="15">
+              <el-form-item label="审核环节" prop="link">
+                <el-radio v-model="paymentOrderModel.link" :label="1"
+                  >初审</el-radio
+                >
+                <el-radio v-model="paymentOrderModel.link" :label="2"
+                  >终审</el-radio
+                >
+              </el-form-item>
+            </el-col>
+            <el-col :span="15">
               <el-form-item
                 v-if="pingcheji == 1"
                 label="评审时间"
@@ -458,7 +540,7 @@
                 </el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col v-if="pingcheji == 1" :span="15">
+            <el-col :span="15">
               <el-form-item label="实际评审时间" prop="reviewActualTime">
                 <el-date-picker
                   v-model="paymentOrderModel.reviewActualTime"
@@ -828,6 +910,8 @@ import { cloneDeep } from "lodash";
 export default {
   data() {
     return {
+      url: "",
+      srcList: [],
       pingcheji: 1,
       tabList: [],
       pcLinfotabList: [],
@@ -836,6 +920,7 @@ export default {
       kslistdatafyinfo: false,
       infopaymentOrderModel: {},
       paymentOrderModel: {
+        link: 1,
         reviewFirstTime: "",
         reviewActualTime: "",
         time: "",
@@ -1252,6 +1337,13 @@ export default {
       if (res.code === 20000) {
         if (res.data) {
           this.UnionModel = res.data;
+          this.url = `${
+            window.location.protocol +
+            "//" +
+            window.location.host +
+            res.data.inputImgUrl
+          }`;
+          this.srcList.push(this.url);
         } else {
           this.UnionModel = {
             projectBeginTime: undefined,
@@ -1319,6 +1411,8 @@ export default {
             message: "创建成功",
             type: "success",
           });
+          let baokao = this.tabList.filter((item) => item.fileType == 1);
+          let fanan = this.tabList.filter((item) => item.fileType != 1);
           this.$api.API_reporreviewFirst({
             type,
             projectId: this.xmu_info.projectId,
@@ -1326,8 +1420,27 @@ export default {
               ? this.xmu_info.row.approvedName
               : this.info.name,
             time: this.paymentOrderModel.reviewFirstTime,
-            uploadName: this.tabList[0].userName,
+            uploadName: baokao[0].userName,
           });
+          let fileName = [];
+          let fileUrl = [];
+          fanan[0].reportReviewModels.forEach((iis) => {
+            fileName.push(iis.fileName);
+            fileUrl.push(iis.fileUrl);
+          });
+          if (this.pingcheji == 2 && this.paymentOrderModel.link == 2) {
+            this.$api.updateDocewFirst({
+              type,
+              projectId: this.xmu_info.projectId,
+              userName: this.xmu_info.row.approvedName
+                ? this.xmu_info.row.approvedName
+                : this.info.name,
+              uploadTime: fanan[0].uploadTime,
+              uploadName: fanan[0].userName,
+              fileName,
+              fileUrl,
+            });
+          }
           this.close();
           this.userreviewFind();
         }
@@ -1387,6 +1500,7 @@ export default {
       }
 
       this.paymentOrderModel = {
+        link: 1,
         reviewFirstTime: "",
         reviewActualTime: "",
         time: "",
@@ -1636,6 +1750,18 @@ pre {
   color: red;
   line-height: 40px;
   height: 40px;
+}
+.jineginfos {
+  margin-left: 10px;
+  display: flex;
+  // justify-content: space-around;
+  // align-items: center;
+  font-size: 14px;
+  color: #606266;
+  div {
+    flex: 1;
+    margin: 0 0 15px 0;
+  }
 }
 </style>
 

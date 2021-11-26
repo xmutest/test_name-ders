@@ -510,6 +510,29 @@ export default ({
       params: data
     })
   },
+  // 查询录入打卡
+  async findClockputUnion(data = {}) {
+    // 
+    if (!data.projectId) {
+      data.projectId = await this.get_info();
+    }
+    // 接口请求
+    return request({
+      url: 'project/findClock',
+      method: 'get',
+      params: data
+    })
+  },
+  // 保存录入打卡
+  async uploadClockUnionon(data = {}) {
+    // data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: 'project/uploadClock',
+      method: 'post',
+      data
+    })
+  },
   // 保存录入联盟
   async GetfiinputUnionon(data = {}) {
     // data.projectId = await this.get_info();
@@ -517,7 +540,7 @@ export default ({
     return request({
       url: '/inputUnion/save',
       method: 'post',
-      data
+      data: JSON.stringify(data)
     })
   },
   // 修改录入联盟
@@ -558,7 +581,18 @@ export default ({
       url: '/inputUnion/delUnionImg',
       method: 'post',
       data,
-      params:data
+      params: data
+    })
+  },
+   // 删除打卡
+   async deleteFileImgImgon(data = {}) {
+    // data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: 'project/deleteFile',
+      method: 'get',
+      data,
+      params: data
     })
   }
 })
