@@ -17,7 +17,7 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 process.env.VUE_APP_BUILD_TIME = require('dayjs')().format('YYYY-M-D HH:mm:ss')
 
 // 基础路径 注意发布之前要先修改这里
-const publicPath = process.env.VUE_APP_PUBLIC_PATH || '/'
+const publicPath = process.env.VUE_APP_PUBLIC_PATH 
 
 // 设置不参与构建的库
 const externals = {}
@@ -57,7 +57,7 @@ module.exports = {
     // https://survey.iscn.org.cn/evaluate/
     proxy: {
       '/api': {
-        target: 'http://192.168.7.104:8082/evaluation/',
+        target: 'http://192.168.7.104:8081/evaluation/',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

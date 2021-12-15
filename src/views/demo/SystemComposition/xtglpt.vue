@@ -15,10 +15,7 @@
           <el-input
             :ref="'platformExtendName' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                platformExtendName: scope.row.platformExtendName,
-              })
+              schujiaodian(scope.row)
             "
             v-show="scope.row.show"
             v-model="scope.row.platformExtendName"
@@ -38,10 +35,7 @@
           <el-input
             :ref="'inEquipmentName' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                inEquipmentName: scope.row.inEquipmentName,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -62,10 +56,7 @@
           <el-input
             :ref="'platformExtendEdition' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                platformExtendEdition: scope.row.platformExtendEdition,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -86,10 +77,7 @@
           <el-input
             :ref="'majorFunction' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                majorFunction: scope.row.majorFunction,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -108,10 +96,7 @@
           <el-input
             :ref="'remarks' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                remarks: scope.row.remarks,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -125,10 +110,7 @@
         <template slot-scope="scope">
           <el-select
             @change="
-              schujiaodian({
-                id: scope.row.id,
-                importantDegree: scope.row.importantDegree,
-              })
+              schujiaodian(scope.row)
             "
             v-model="scope.row.importantDegree"
             filterable
@@ -148,11 +130,7 @@
         <template slot-scope="scope">
           <el-select
             @change="
-              schujiaodian({
-                id: scope.row.id,
-                evaluationInstructionBookId:
-                  scope.row.evaluationInstructionBookId,
-              })
+              schujiaodian(scope.row)
             "
             v-model="scope.row.evaluationInstructionBookId"
             filterable
@@ -229,7 +207,7 @@ export default {
         // { id: 27, label: "物联管理平台（扩展）" },
         // { id: 28, label: "工控管理平台（扩展）" },
         // { id: 29, label: "大数据管理平台（扩展）" },
-      ], 
+      ],
       //  		重要程度	测评对象	排序号
       importance_list: [
         { value: 5, label: "关键" },
@@ -355,13 +333,12 @@ export default {
       }, 1);
     },
     async schujiaodian(item) {
-      if (typeof item.isEvaluationObj == "boolean") {
-        if (item.isEvaluationObj == true) {
-          item.isEvaluationObj = 1;
-        } else {
-          item.isEvaluationObj = 0;
-        }
+      if (item.isEvaluationObj == true) {
+        item.isEvaluationObj = 1;
+      } else {
+        item.isEvaluationObj = 0;
       }
+
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {

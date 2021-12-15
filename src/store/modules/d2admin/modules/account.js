@@ -114,6 +114,7 @@ export default {
             commit('d2admin/gray/set', false, {
               root: true
             })
+            window.sessionStorage.clear();
             logout()
           })
           .catch(() => {

@@ -323,6 +323,21 @@
                     >
                   </div>
                   <div>
+                    <span>联盟平台通过截图：</span>
+                    <span
+                      class="ksLismu"
+                      @click="fujiancalss(UnionModel.inputImgUrl)"
+                    >
+                      {{
+                        UnionModel.inputImgName
+                          ? UnionModel.inputImgName
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <div>
                     <span>录入联盟时间：</span
                     ><span>
                       {{
@@ -341,30 +356,6 @@
                           : "----"
                       }}</span
                     >
-                  </div>
-                </div>
-                <div>
-                  <div>
-                    <span>联盟平台通过截图：</span>
-                    <!-- <span
-                      class="ksLismu"
-                      @click="fujiancalss(UnionModel.inputImgUrl)"
-                    >
-                      {{
-                        UnionModel.inputImgName
-                          ? UnionModel.inputImgName
-                          : "----"
-                      }}</span
-                    > -->
-                    <div v-if="url" class="demo-image__preview">
-                      <el-image
-                        style="width: 100px; height: 100px"
-                        :src="url"
-                        :preview-src-list="srcList"
-                      >
-                      </el-image>
-                    </div>
-                    <span v-else> ---- </span>
                   </div>
                 </div>
               </div>
@@ -396,24 +387,24 @@
                   <div>
                     <span>打卡人员：</span
                     ><span>
-                      <div
+                      <span
                         v-for="(it, index) in inpuniondel.clockPeopleStr"
                         :key="index"
                       >
                         {{ it }}
-                      </div></span
+                      </span></span
                     >
                   </div>
                   <div>
                     <span>打卡上传附件：</span
                     ><span>
-                      <div v-for="it in inpuniondel.fileList" :key="it.fileId">
+                      <span v-for="it in inpuniondel.fileList" :key="it.fileId">
                         <span
                           class="ksLismu"
                           @click="fujiancalss(it.fileUrl)"
                           >{{ it.fileName }}</span
                         >
-                      </div></span
+                      </span></span
                     >
                   </div>
                 </div>
@@ -1177,7 +1168,7 @@ export default {
       // let url = `${window.location.protocol}${item.url}`;
       //
       let url = item;
-      let Listname = url.split(".")[1];
+      let Listname = url.split(".").pop();
       const litrue =
         Listname == "doc" ||
         Listname == "docx" ||

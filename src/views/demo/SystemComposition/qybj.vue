@@ -15,10 +15,7 @@
           <el-input
             :ref="'boundaryName' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                boundaryName: scope.row.boundaryName,
-              })
+              schujiaodian(scope.row)
             "
             v-show="scope.row.show"
             v-model="scope.row.boundaryName"
@@ -36,10 +33,7 @@
           <el-input
             :ref="'accessMode' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                accessMode: scope.row.accessMode,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -58,10 +52,7 @@
           <el-input
             :ref="'mainBusiness' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                mainBusiness: scope.row.mainBusiness,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -76,10 +67,7 @@
           <el-select
             v-model="scope.row.importantDegree"
             @change="
-              schujiaodian({
-                id: scope.row.id,
-                importantDegree: scope.row.importantDegree,
-              })
+              schujiaodian(scope.row)
             "
             filterable
             placeholder="请选择"
@@ -285,14 +273,12 @@ export default {
       }, 1);
     },
     async schujiaodian(item) {
-      if (typeof item.isEvaluationObj == "boolean") {
-        if (item.isEvaluationObj == true) {
-          item.isEvaluationObj = 1;
-        } else {
-          item.isEvaluationObj = 0;
-        }
+      if (item.isEvaluationObj == true) {
+        item.isEvaluationObj = 1;
+      } else {
+        item.isEvaluationObj = 0;
       }
-      // item.show = false;
+
       let res = "";
       if (item.id && item.id != "undefined") {
         if (this.Itzm == true) {
@@ -391,7 +377,7 @@ export default {
           } else {
             this.$message.error("错误，请联系管理员" + res.message);
           }
-        }) 
+        })
         .catch(() => {
           item.isEvaluationObj = !item.isEvaluationObj;
           this.$message({

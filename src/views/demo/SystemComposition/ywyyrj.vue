@@ -15,10 +15,7 @@
           <el-input
             :ref="'softwarePlatformName' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                softwarePlatformName: scope.row.softwarePlatformName,
-              })
+              schujiaodian(scope.row)
             "
             v-show="scope.row.show"
             v-model="scope.row.softwarePlatformName"
@@ -38,10 +35,7 @@
           <el-input
             :ref="'majorFunction' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                majorFunction: scope.row.majorFunction,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -60,10 +54,7 @@
           <el-input
             :ref="'softwareEdition' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                softwareEdition: scope.row.softwareEdition,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -82,10 +73,7 @@
           <el-input
             :ref="'developManufacturers' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                developManufacturers: scope.row.developManufacturers,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -101,10 +89,7 @@
         <template slot-scope="scope">
           <el-select
             @change="
-              schujiaodian({
-                id: scope.row.id,
-                importantDegree: scope.row.importantDegree,
-              })
+              schujiaodian(scope.row)
             "
             v-model="scope.row.importantDegree"
             filterable
@@ -159,10 +144,7 @@
           <el-input
             :ref="'remarks' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                remarks: scope.row.remarks,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -341,12 +323,10 @@ export default {
       }, 1);
     },
     async schujiaodian(item) {
-      if (typeof item.isEvaluationObj == "boolean") {
-        if (item.isEvaluationObj == true) {
-          item.isEvaluationObj = 1;
-        } else {
-          item.isEvaluationObj = 0;
-        }
+      if (item.isEvaluationObj == true) {
+        item.isEvaluationObj = 1;
+      } else {
+        item.isEvaluationObj = 0;
       }
       let res = "";
       if (item.id && item.id != "undefined") {

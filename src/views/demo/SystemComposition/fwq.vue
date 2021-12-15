@@ -16,10 +16,7 @@
             <el-input
               :ref="'equipmentName' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  equipmentName: scope.row.equipmentName,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.equipmentName"
@@ -31,10 +28,7 @@
           <template slot-scope="scope">
             <el-checkbox
               @change="
-                schujiaodian({
-                  id: scope.row.id,
-                  isFictitiousEquipment: scope.row.isFictitiousEquipment,
-                })
+                schujiaodian(scope.row)
               "
               v-model="scope.row.isFictitiousEquipment"
             ></el-checkbox>
@@ -51,10 +45,7 @@
             <el-input
               :ref="'operatingSysEdition' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  operatingSysEdition: scope.row.operatingSysEdition,
-                })
+                schujiaodian(scope.row)
               "
               placeholder="请输入内容"
               v-show="scope.row.show"
@@ -77,10 +68,7 @@
               placeholder="请输入内容"
               :ref="'softwarePlatformName' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  softwarePlatformName: scope.row.softwarePlatformName,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.softwarePlatformName"
@@ -100,10 +88,7 @@
               placeholder="请输入内容"
               :ref="'dbManageSys' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  dbManageSys: scope.row.dbManageSys,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.dbManageSys"
@@ -122,10 +107,7 @@
               placeholder="请输入内容"
               :ref="'middlewareEdition' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  middlewareEdition: scope.row.middlewareEdition,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.middlewareEdition"
@@ -146,10 +128,7 @@
               placeholder="请输入内容"
               :ref="'remarks' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  remarks: scope.row.remarks,
-                })
+               schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.remarks"
@@ -167,10 +146,7 @@
               placeholder="请输入内容"
               :ref="'equipmentNum' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  equipmentNum: scope.row.equipmentNum,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.equipmentNum"
@@ -184,10 +160,7 @@
               v-model="scope.row.importantDegree"
               filterable
               @change="
-                schujiaodian({
-                  id: scope.row.id,
-                  importantDegree: scope.row.importantDegree,
-                })
+                schujiaodian(scope.row)
               "
               placeholder="请选择"
             >
@@ -391,13 +364,12 @@ export default {
       }
     },
     async schujiaodian(item) {
-      if (typeof item.isEvaluationObj == "boolean") {
-        if (item.isEvaluationObj == true) {
-          item.isEvaluationObj = 1;
-        } else {
-          item.isEvaluationObj = 0;
-        }
+      if (item.isEvaluationObj == true) {
+        item.isEvaluationObj = 1;
+      } else {
+        item.isEvaluationObj = 0;
       }
+
       if (typeof item.isFictitiousEquipment == "boolean") {
         if (item.isFictitiousEquipment == true) {
           item.isFictitiousEquipment = 1;

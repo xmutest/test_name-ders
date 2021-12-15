@@ -1056,7 +1056,7 @@ export default {
       // let url = `${window.location.protocol}${item.url}`;
       //
       let url = item;
-      let Listname = url.split(".")[1];
+      let Listname = url.split(".").pop();
       const litrue =
         Listname == "doc" ||
         Listname == "docx" ||

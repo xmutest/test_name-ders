@@ -80,6 +80,28 @@
           ></el-checkbox>
         </template>
       </el-table-column>
+      <el-table-column label="是否使用新指导书" width="130">
+        <template slot-scope="scope">
+          <el-select
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                isNewBook: scope.row.isNewBook,
+              })
+            "
+            v-model="scope.row.isNewBook"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in isNewBook_list"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
       <el-table-column label="备注">
         <template slot-scope="scope">
           <div
@@ -149,7 +171,10 @@ export default {
         { value: 4, label: "重要" },
         { value: 3, label: "一般" },
       ],
-      
+      isNewBook_list: [
+        { value: 2, label: "是" },
+        { value: 1, label: "否" },
+      ],
       tabledatas: [
         {
           computerRoomName: "",
@@ -159,6 +184,7 @@ export default {
           sortNum: 1,
           show: false,
           remarks: "",
+          isNewBook: 1,
         },
       ],
       formPage: {
@@ -277,6 +303,7 @@ export default {
               sortNum: 1,
               show: false,
               remarks: "",
+              isNewBook: 1,
             },
           ];
         }
@@ -351,6 +378,7 @@ export default {
         show: false,
         sortNum: sortNum,
         remarks: "",
+        isNewBook: 1,
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

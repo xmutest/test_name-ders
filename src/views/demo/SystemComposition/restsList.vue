@@ -15,10 +15,7 @@
           <el-input
             :ref="'terminalName' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                terminalName: scope.row.terminalName,
-              })
+              schujiaodian(scope.row)
             "
             v-show="scope.row.show"
             v-model="scope.row.terminalName"
@@ -31,10 +28,7 @@
         <template slot-scope="scope">
           <el-checkbox
             @change="
-              schujiaodian({
-                id: scope.row.id,
-                isFictitiousEquipment: scope.row.isFictitiousEquipment,
-              })
+              schujiaodian(scope.row)
             "
             v-model="scope.row.isFictitiousEquipment"
           ></el-checkbox>
@@ -50,10 +44,7 @@
           <el-input
             :ref="'operatingSystem' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                operatingSystem: scope.row.operatingSystem,
-              })
+              schujiaodian(scope.row)
             "
             v-show="scope.row.show"
             v-model="scope.row.operatingSystem"
@@ -71,10 +62,7 @@
           <el-input
             :ref="'terminalTypePurpose' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                terminalTypePurpose: scope.row.terminalTypePurpose,
-              })
+              schujiaodian(scope.row)
             "
             v-show="scope.row.show"
             v-model="scope.row.terminalTypePurpose"
@@ -94,10 +82,7 @@
           <el-input
             :ref="'remarks' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                remarks: scope.row.remarks,
-              })
+              schujiaodian(scope.row)
             "
             v-show="scope.row.show"
             v-model="scope.row.remarks"
@@ -115,10 +100,7 @@
           <el-input
             :ref="'equipmentNum' + scope.$index"
             @blur="
-              schujiaodian({
-                id: scope.row.id,
-                equipmentNum: scope.row.equipmentNum,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请输入内容"
             v-show="scope.row.show"
@@ -133,10 +115,7 @@
             v-model="scope.row.importantDegree"
             filterable
             @change="
-              schujiaodian({
-                id: scope.row.id,
-                importantDegree: scope.row.importantDegree,
-              })
+              schujiaodian(scope.row)
             "
             placeholder="请选择"
           >
@@ -277,7 +256,7 @@ export default {
       if (res.code === 20000) {
         let List = res.data;
         // this.total = res.data.total;
-        if (res.data.length>0) {
+        if (res.data.length > 0) {
           List.forEach((element) => {
             if (element.isEvaluationObj == 1) {
               element.isEvaluationObj = true;
@@ -334,13 +313,12 @@ export default {
       }, 1);
     },
     async schujiaodian(item) {
-      if (typeof item.isEvaluationObj == "boolean") {
-        if (item.isEvaluationObj == true) {
-          item.isEvaluationObj = 1;
-        } else {
-          item.isEvaluationObj = 0;
-        }
+      if (item.isEvaluationObj == true) {
+        item.isEvaluationObj = 1;
+      } else {
+        item.isEvaluationObj = 0;
       }
+
       if (typeof item.isFictitiousEquipment == "boolean") {
         if (item.isFictitiousEquipment == true) {
           item.isFictitiousEquipment = 1;

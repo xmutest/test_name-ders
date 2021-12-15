@@ -507,7 +507,7 @@ export default {
     async updatahandelConfirm() {
       if (this.xmform.userType == 2) {
         this.xmform.departmentId = 6;
-      }
+      } 
       let res = await this.$api.API_Userupdate(this.xmform);
       if (res.code === 20000) {
         this.$message({

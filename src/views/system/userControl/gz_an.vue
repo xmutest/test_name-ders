@@ -305,7 +305,7 @@ export default {
       dialogVisibleupdata: false,
       dialogVisible: false,
       tableData: [],
-      total: 0,
+      total: 0, 
       xmform: {
         loginName: null,
         userName: null,
@@ -638,9 +638,9 @@ export default {
     },
     // 修改
     async updatahandelConfirm() {
-      if (this.xmform.userType == 2) {
-        this.xmform.departmentId = 6;
-      }
+      // if (this.xmform.userType == 2) {
+      //   this.xmform.departmentId = 6;
+      // }
       let res = await this.$api.API_Userupdate(this.xmform);
       if (res.code === 20000) {
         this.$message({

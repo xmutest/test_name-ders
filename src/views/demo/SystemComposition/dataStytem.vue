@@ -16,10 +16,7 @@
             <el-input
               :ref="'equipmentName' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  equipmentName: scope.row.equipmentName,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.equipmentName"
@@ -31,10 +28,7 @@
           <template slot-scope="scope">
             <el-checkbox
               @change="
-                schujiaodian({
-                  id: scope.row.id,
-                  isFictitiousEquipment: scope.row.isFictitiousEquipment,
-                })
+                schujiaodian(scope.row)
               "
               v-model="scope.row.isFictitiousEquipment"
             ></el-checkbox>
@@ -49,10 +43,7 @@
             <el-input
               :ref="'manageSysEdition' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  manageSysEdition: scope.row.manageSysEdition,
-                })
+                schujiaodian(scope.row)
               "
               placeholder="请输入内容"
               v-show="scope.row.show"
@@ -76,10 +67,7 @@
               placeholder="请输入内容"
               :ref="'softwarePlatformName' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  softwarePlatformName: scope.row.softwarePlatformName,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.softwarePlatformName"
@@ -101,10 +89,7 @@
               placeholder="请输入内容"
               :ref="'operatingSysEdition' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  operatingSysEdition: scope.row.operatingSysEdition,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.operatingSysEdition"
@@ -124,10 +109,7 @@
               placeholder="请输入内容"
               :ref="'middlewareEdition' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  middlewareEdition: scope.row.middlewareEdition,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.middlewareEdition"
@@ -148,10 +130,7 @@
               placeholder="请输入内容"
               :ref="'inEquipmentName' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  inEquipmentName: scope.row.inEquipmentName,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.inEquipmentName"
@@ -172,10 +151,7 @@
               placeholder="请输入内容"
               :ref="'majorFunction' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  majorFunction: scope.row.majorFunction,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.majorFunction"
@@ -188,10 +164,7 @@
           <template slot-scope="scope">
             <el-select
               @change="
-                schujiaodian({
-                  id: scope.row.id,
-                  importantDegree: scope.row.importantDegree,
-                })
+                schujiaodian(scope.row)
               "
               v-model="scope.row.importantDegree"
               filterable
@@ -209,13 +182,8 @@
         <el-table-column label="测评指导书" width="150">
           <template slot-scope="scope">
             <el-select
-              
               @change="
-                schujiaodian({
-                  id: scope.row.id,
-                  evaluationInstructionBookId:
-                    scope.row.evaluationInstructionBookId,
-                })
+               schujiaodian(scope.row)
               "
               v-model="scope.row.evaluationInstructionBookId"
               filterable
@@ -415,13 +383,12 @@ export default {
       }
     },
     async schujiaodian(item) {
-      if (typeof item.isEvaluationObj == "boolean") {
-        if (item.isEvaluationObj == true) {
-          item.isEvaluationObj = 1;
-        } else {
-          item.isEvaluationObj = 0;
-        }
+      if (item.isEvaluationObj == true) {
+        item.isEvaluationObj = 1;
+      } else {
+        item.isEvaluationObj = 0;
       }
+
       if (typeof item.isFictitiousEquipment == "boolean") {
         if (item.isFictitiousEquipment == true) {
           item.isFictitiousEquipment = 1;
