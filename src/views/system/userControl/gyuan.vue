@@ -378,15 +378,19 @@ export default {
       ],
       departmentIdOptions: [
         {
-          label: "技术一部",
+          label: "北京技术一部",
           value: 7,
+        },
+        {
+          label: "天津技术一部",
+          value: 18,
         },
       ],
       apiList: {
         departmentId: 6,
         page: 1,
         pageSize: 10,
-        userName:''
+        userName: "",
       },
     };
   },
@@ -408,8 +412,12 @@ export default {
       } else {
         this.departmentIdOptions = [
           {
-            label: "技术一部",
+            label: "北京技术一部",
             value: 7,
+          },
+          {
+            label: "天津技术一部",
+            value: 18,
           },
         ];
       }
@@ -455,8 +463,12 @@ export default {
       let ls = "";
       let departmentIdOptions = [
         {
-          label: "技术一部",
+          label: "北京技术一部",
           value: 7,
+        },
+        {
+          label: "天津技术一部",
+          value: 18,
         },
         {
           label: "国源天顺安全服务有限公司",
@@ -491,7 +503,7 @@ export default {
         }
       });
     },
-     // 搜索
+    // 搜索
     searchBi() {
       if (this.apiList.userName !== "" && this.apiList.userName !== undefined) {
         this.apiList.pageNum = 1;
@@ -507,7 +519,7 @@ export default {
     async updatahandelConfirm() {
       if (this.xmform.userType == 2) {
         this.xmform.departmentId = 6;
-      } 
+      }
       let res = await this.$api.API_Userupdate(this.xmform);
       if (res.code === 20000) {
         this.$message({
@@ -528,8 +540,12 @@ export default {
       this.xmform = row;
       this.departmentIdOptions = [
         {
-          label: "技术一部",
+          label: "北京技术一部",
           value: 7,
+        },
+        {
+          label: "天津技术一部",
+          value: 18,
         },
         {
           label: "国源天顺安全服务有限公司",
