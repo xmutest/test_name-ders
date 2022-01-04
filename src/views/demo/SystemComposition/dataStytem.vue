@@ -15,9 +15,7 @@
             ></div>
             <el-input
               :ref="'equipmentName' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.equipmentName"
             ></el-input>
@@ -27,9 +25,7 @@
         <el-table-column label="是否虚拟设备" width="80">
           <template slot-scope="scope">
             <el-checkbox
-              @change="
-                schujiaodian(scope.row)
-              "
+              @change="schujiaodian(scope.row)"
               v-model="scope.row.isFictitiousEquipment"
             ></el-checkbox>
           </template>
@@ -42,9 +38,7 @@
             ></div>
             <el-input
               :ref="'manageSysEdition' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               placeholder="请输入内容"
               v-show="scope.row.show"
               v-model="scope.row.manageSysEdition"
@@ -66,9 +60,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'softwarePlatformName' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.softwarePlatformName"
             ></el-input>
@@ -88,9 +80,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'operatingSysEdition' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.operatingSysEdition"
             ></el-input>
@@ -108,9 +98,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'middlewareEdition' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.middlewareEdition"
             ></el-input>
@@ -129,9 +117,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'inEquipmentName' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.inEquipmentName"
             ></el-input>
@@ -150,9 +136,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'majorFunction' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.majorFunction"
             ></el-input>
@@ -163,9 +147,7 @@
         <el-table-column label="重要程度" width="130">
           <template slot-scope="scope">
             <el-select
-              @change="
-                schujiaodian(scope.row)
-              "
+              @change="schujiaodian(scope.row)"
               v-model="scope.row.importantDegree"
               filterable
               placeholder="请选择"
@@ -182,9 +164,7 @@
         <el-table-column label="测评指导书" width="150">
           <template slot-scope="scope">
             <el-select
-              @change="
-               schujiaodian(scope.row)
-              "
+              @change="schujiaodian(scope.row)"
               v-model="scope.row.evaluationInstructionBookId"
               filterable
               placeholder="请选择"
@@ -205,6 +185,23 @@
               @change="schujiaodianTm(scope.row)"
               v-model="scope.row.isEvaluationObj"
             ></el-checkbox>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="备注" width="150">
+          <template slot-scope="scope">
+            <div
+              @click="is_compile(scope.row, scope.$index, 'remark')"
+              class="itsz"
+            ></div>
+            <el-input
+              placeholder="请输入内容"
+              :ref="'remark' + scope.$index"
+              @blur="schujiaodian(scope.row)"
+              v-show="scope.row.show"
+              v-model="scope.row.remark"
+            ></el-input>
+            <span v-show="!scope.row.show">{{ scope.row.remark }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150">
@@ -266,6 +263,7 @@ export default {
           sortNum: 1,
           show: false,
           evaluationInstructionBookId: 30,
+          remark: "",
         },
       ],
       evaluationBookNameList: [
@@ -372,6 +370,7 @@ export default {
               sortNum: 1,
               show: false,
               evaluationInstructionBookId: 30,
+              remark: "",
             },
           ];
         }
@@ -460,6 +459,7 @@ export default {
         sortNum,
         show: false,
         evaluationInstructionBookId: 30,
+        remark: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

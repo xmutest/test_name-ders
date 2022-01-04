@@ -55,7 +55,7 @@ module.exports = {
     // http://172.16.4.251:8080/evaluation/
     // http://192.168.7.104:8081/evaluation/
     // https://survey.iscn.org.cn/evaluate/
-    proxy: {
+    proxy: { 
       '/api': {
         target: 'http://192.168.7.104:8081/evaluation/',
         ws: true,

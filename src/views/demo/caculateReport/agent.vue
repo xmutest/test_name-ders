@@ -1411,17 +1411,17 @@ export default {
             message: "创建成功",
             type: "success",
           });
-          let baokao = this.tabList.filter((item) => item.fileType == 1);
+          // let baokao = this.tabList.filter((item) => item.fileType == 1);
           let fanan = this.tabList.filter((item) => item.fileType != 1);
-          this.$api.API_reporreviewFirst({
-            type,
-            projectId: this.xmu_info.projectId,
-            userName: this.xmu_info.row.approvedName
-              ? this.xmu_info.row.approvedName
-              : this.info.name,
-            time: this.paymentOrderModel.reviewFirstTime,
-            uploadName: baokao[0].userName,
-          });
+          // this.$api.API_reporreviewFirst({
+          //   type,
+          //   projectId: this.xmu_info.projectId,
+          //   userName: this.xmu_info.row.approvedName
+          //     ? this.xmu_info.row.approvedName
+          //     : this.info.name,
+          //   time: this.paymentOrderModel.reviewFirstTime,
+          //   uploadName: baokao[0].userName,
+          // });
           let fileName = [];
           let fileUrl = [];
           fanan[0].reportReviewModels.forEach((iis) => {

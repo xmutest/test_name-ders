@@ -103,10 +103,7 @@
               placeholder="请输入内容"
               :ref="'remarks' + scope.$index"
               @blur="
-                schujiaodian({
-                  id: scope.row.id,
-                  remarks: scope.row.remarks,
-                })
+                schujiaodian(scope.row)
               "
               v-show="scope.row.show"
               v-model="scope.row.remarks"

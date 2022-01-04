@@ -1,31 +1,20 @@
 <template>
-  <Kston :projectModel="projectModel"></Kston>
+  <Kston :queryType="queryType"></Kston>
 </template>
 
 <script>
-import Kston from '../konIndex/index.vue'
+import Kston from "../konIndex/index.vue";
 export default {
   data() {
     return {
-      projectModel: {
-        page: 1,
-        pageSize: 20,
-        projectName: "",
-        queryType: 1,
-        isInputUnion: "",
-      },
+      queryType: 1,
     };
   },
-  computed: {
-   
-  },
+  computed: {},
   components: {
-    Kston
+    Kston,
   },
-  created() {
-
-  },
- 
+  created() {},
 };
 </script>
 

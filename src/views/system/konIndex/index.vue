@@ -57,11 +57,27 @@
             </el-option>
           </el-select>
         </div>
-        <div
-          v-if="info.userTypeId != 10 && info.userTypeId != 16"
-          class="die_roift"
-        >
-          <el-button @click="dialogFormVisibleList" type="primary"
+        <div>
+          <span class="search_ls_name">创建人：</span>
+          <el-select
+            v-model="projectModel.creator"
+            @change="searchBi"
+            placeholder="请选择"
+            clearable
+            filterable
+            size="small"
+          >
+            <el-option
+              v-for="item in ksrenyuanList"
+              :key="item.value"
+              :label="item.userName"
+              :value="item.userId"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div v-if="info.userTypeId != 10 && info.userTypeId != 16">
+          <el-button size="small" @click="dialogFormVisibleList" type="primary"
             ><i class="el-icon--left el-icon-circle-plus-outline"></i
             >新增</el-button
           >
@@ -472,20 +488,36 @@
                           >删除</el-button
                         >
                       </div>
-                      <div v-if="info.userTypeId == 10">
-                        <el-button
-                          v-if="info.user_info.userType == 3"
-                          size="mini"
-                          type="primary"
-                          @click="Listpaidan(scope.row)"
-                          >派单</el-button
-                        >
-                        <el-button
-                          size="mini"
-                          @click="pingshengList(scope.row)"
-                          type="primary"
-                          >评审</el-button
-                        >
+                      <div class="ms_zk_bomm_css" v-if="info.userTypeId == 10">
+                        <div>
+                          <el-button
+                            v-if="info.user_info.userType == 3"
+                            size="mini"
+                            type="primary"
+                            @click="Listpaidan(scope.row)"
+                            >派单</el-button
+                          >
+                          <el-button
+                            size="mini"
+                            @click="pingshengList(scope.row)"
+                            type="primary"
+                            >评审</el-button
+                          >
+                        </div>
+                        <div>
+                          <el-button
+                            size="mini"
+                            @click="piengList(scope.row, 0)"
+                            type="primary"
+                            >初审</el-button
+                          >
+                          <el-button
+                            size="mini"
+                            @click="piengList(scope.row, 1)"
+                            type="primary"
+                            >终审</el-button
+                          >
+                        </div>
                       </div>
                       <div v-if="info.userTypeId == 16">
                         <el-button
@@ -1256,8 +1288,7 @@
 import { mapState, mapActions } from "vuex";
 export default {
   props: {
-    projectModel: {},
-    type: Object,
+    queryType: "",
   },
   data() {
     return {
@@ -1283,6 +1314,7 @@ export default {
         leaveTime: null,
         clockPeople: [],
       },
+      ksrenyuanList: [],
       formMaxSize: 10, // 上传文件大小
       formFileList: [], // 显示上传文件
       dakformFileList: [],
@@ -1351,6 +1383,7 @@ export default {
           id: 3,
           value: [
             { label: "GBT22239-2019", value: 1 },
+            { label: "广电行业", value: 12 },
             { label: "金融行业", value: 5 },
           ],
         },
@@ -1445,13 +1478,14 @@ export default {
         { id: 1, value: "否" },
         { id: 2, value: "是" },
       ],
-      // projectModel: {
-      //   page: 1,
-      //   pageSize: 20,
-      //   projectName: "",
-      //   queryType: 0,
-      //   isInputUnion: "",
-      // },
+      projectModel: {
+        page: 1,
+        pageSize: 20,
+        projectName: "",
+        queryType: "",
+        isInputUnion: "",
+        creator: "",
+      },
       formLabelWidth: "120px",
       projectIdks: null,
       // 录入联盟
@@ -1526,10 +1560,51 @@ export default {
   },
   components: {},
   created() {
-    // console.log(this.info);
+    this.projectModel.queryType = this.queryType;
     this.ProjectQueryList();
+    this.gEtksrenyuanList();
   },
   methods: {
+    // 初审终深
+    piengList(row, type) {
+      this.$confirm(`确定完成${type == 0 ? "初审" : "终审"}？`, {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.revifindListok({
+            projectId: row.projectId,
+          });
+          if (res.code == 20000) {
+            // this.tabList = ;
+            let baokao = res.data.filter((item) => item.fileType == 1);
+            this.$api
+              .API_reporreviewFirst({
+                type,
+                projectId: row.projectId,
+                userName: this.info.name,
+                uploadName: baokao[0].userName,
+              })
+              .then(async () => {
+                let ms = await this.$api.nishReviewdate({
+                  type,
+                  projectId: row.projectId,
+                });
+                if (ms.code == 20000) {
+                  this.$message.success("确认成功");
+                  this.ProjectQueryList();
+                }
+              });
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     // 下载附件
     async fujiancalss(item) {
       // let url = `${window.location.protocol}${item.url}`;
@@ -2036,6 +2111,7 @@ export default {
       this.selectGoodsByGroupId(this.xmform.level);
       this.ProjectfindAllList();
       this.table_name_el = "新建项目";
+      this.projectIdks = "";
       this.resetForm("xmform");
       this.datalog_list_rom();
       this.xmulistId = "";
@@ -2089,6 +2165,13 @@ export default {
         contractSn: this.xmudan[0].contractSn,
         isNewBook: 1,
       };
+      if (this.projectIdks.standardExtends) {
+        let nums = this.projectIdks.standardExtends.split("┋");
+        nums.forEach((item, index) => {
+          nums[index] = parseInt(nums[index]);
+        });
+        this.xmform.standardExtends = nums;
+      }
       this.selectGoodsByGroupId(recordInformationModel.ggrade || 2);
     },
     async Project_detail(PeID) {
@@ -2244,6 +2327,13 @@ export default {
         });
       }
       this.lurudialogVisible = true;
+    },
+    // 获取创建人员
+    async gEtksrenyuanList() {
+      let res = await this.$api.findTechnologypdate();
+      if (res.code === 20000) {
+        this.ksrenyuanList = res.data;
+      }
     },
     databmitdak() {
       this.findTelListfindPlan();
@@ -2547,17 +2637,24 @@ export default {
 .search_ls {
   display: flex;
   align-items: center;
+  // width: 800px;
+  flex-wrap: wrap;
   div {
+    margin-top: 5px;
     margin-right: 5px;
     display: flex;
     align-items: center;
     .search_ls_name {
       font-size: 14px !important;
+      min-width: 75px;
       font-family: "Courier New", Courier, monospace;
+    }
+    .el-select {
+      width: 130px;
     }
   }
   .el-input {
-    max-width: 180px;
+    max-width: 200px;
     margin-left: 5px;
   }
 }
@@ -2587,6 +2684,11 @@ export default {
     line-height: 35px;
     font-size: 14px;
     margin-bottom: 15px;
+  }
+}
+.ms_zk_bomm_css {
+  div {
+    margin: 5px 0;
   }
 }
 </style>

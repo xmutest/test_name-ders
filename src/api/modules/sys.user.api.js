@@ -74,7 +74,7 @@ export default ({
       }
     })
   },
-   /**
+  /**
    * @description 项目查询
    * @param {Object} data 项目创建携带的信息
    */
@@ -136,7 +136,7 @@ export default ({
     return request({
       url: '/copy/copyProject',
       method: 'post',
-      params:data
+      params: data
     })
   },
   /**
@@ -163,7 +163,7 @@ export default ({
       params: data
     })
   },
-   /**
+  /**
    * @description 用户列表获取
    * @param {Object} data 
    */
@@ -187,7 +187,7 @@ export default ({
       data
     })
   },
- /**
+  /**
    * @description 用户删除
    * @param {Object} data 
    */
@@ -196,11 +196,11 @@ export default ({
     return request({
       url: '/user/delete',
       method: 'get',
-      params:data
+      params: data
     })
   },
-  
- /**
+
+  /**
    * @description 用户编辑
    * @param {Object} data 
    */
@@ -216,12 +216,36 @@ export default ({
    * @description 时间设置保存
    * @param {Object} data 
    */
-   API_reportTimepdate(data = {}) {
+  API_reportTimepdate(data = {}) {
     // 接口请求
     return request({
       url: '/reportTime/detail',
       method: 'get',
-      params:data
+      params: data
+    })
+  },
+  // 获取人员
+  /**
+   * @param {Object} data 
+   */
+  findTechnologypdate(data = {}) {
+    // 接口请求
+    return request({
+      url: '/user/findTechnology',
+      method: 'post',
+      data
+    })
+  },
+  // 初终审刷新
+  /**
+   * @param {Object} data 
+   */
+  nishReviewdate(data = {}) {
+    // 接口请求
+    return request({
+      url: 'review/finishReview',
+      method: 'post',
+      data
     })
   },
 })

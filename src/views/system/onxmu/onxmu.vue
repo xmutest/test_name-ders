@@ -1,5 +1,5 @@
 <template>
-  <Kston :projectModel="projectModel"></Kston>
+  <Kston :queryType="queryType"></Kston>
 </template>
 
 <script>
@@ -7,13 +7,7 @@ import Kston from "../konIndex/index.vue";
 export default {
   data() {
     return {
-      projectModel: {
-        page: 1,
-        pageSize: 20,
-        projectName: "",
-        queryType: 3,
-        isInputUnion: "",
-      },
+      queryType: 3,
     };
   },
   computed: {},

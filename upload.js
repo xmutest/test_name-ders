@@ -1,5 +1,5 @@
 'use strict'
-// 正式服：evaluate  测试management
+// 正式服：evaluate  测试testerHelper
 const xmName='evaluate';
 // 引入scp2
 var client = require('scp2');
