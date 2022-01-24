@@ -142,7 +142,7 @@ export default ({
       data
     })
   },
-    // 漏洞删除单个
+  // 漏洞删除单个
   // 
   async ParsingHtmlDelSingleVulnerbility(data = {}) {
     // 模拟数据
@@ -151,7 +151,19 @@ export default ({
     return request({
       url: '/parsingHtml/delSingleVulnerbility',
       method: 'delete',
-      params:data
+      params: data
+    })
+  },
+  // 删除单个
+  // 
+  async PardelIpAndBugeVulnerbility(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: 'parsingHtml/delIpAndBug',
+      method: 'post',
+      data
     })
   },
   //  获取测评问题清单列表
@@ -251,10 +263,10 @@ export default ({
     return request({
       url: 'user/findPenetrationUser',
       method: 'post',
-      params:data
+      params: data
     })
   },
-//  删除渗透授权书
+  //  删除渗透授权书
   //
   async SYSParsinationDelBook(data = {}) {
     // 模拟数据
@@ -267,16 +279,16 @@ export default ({
     })
   },
   //  
-   ///查询渗透统计表
+  ///查询渗透统计表
 
-   async SYSParsifindfindTotalk(data = {}) {
+  async SYSParsifindfindTotalk(data = {}) {
     // 模拟数据
     data.projectId = await this.get_info();
     // 接口请求
     return request({
       url: '/penetration/findTotal',
       method: 'get',
-      params:data
+      params: data
     })
   },
   //  删除渗透报告

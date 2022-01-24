@@ -110,12 +110,18 @@
                             }}</span>
                           </template>
                         </el-table-column>
-                        <el-table-column label="操作" width="80">
+                        <el-table-column label="操作" width="180">
                           <template slot-scope="scope">
                             <el-button
                               size="mini"
                               @click="handleEditdt(scope.row)"
                               >编辑</el-button
+                            >
+                            <el-button
+                              size="mini"
+                              type="danger"
+                              @click="hdeleteEditdt(scope.row)"
+                              >删除</el-button
                             >
                           </template>
                         </el-table-column>
@@ -806,6 +812,32 @@ export default {
         }
       });
     },
+    // 删除
+    hdeleteEditdt(row) {
+      this.$confirm("确定删除此记录", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$api.PardelIpAndBugeVulnerbility({
+            hostOrUrl: row.hostOrUrl,
+          });
+          if (res.code === 20000) {
+            this.$message.success("删除成功！！");
+            this.HtmlFindHost();
+            //查询列表
+          } else {
+            this.$message.error(res.message);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     // 分页
     handleSizeChange(val) {
       this.pageList.pageSize = val;
@@ -915,7 +947,6 @@ export default {
   font-size: 14px;
   font-family: cursive;
   .arktitle {
-  
     font-weight: bold;
 
     background: linear-gradient(to right, red, blue);

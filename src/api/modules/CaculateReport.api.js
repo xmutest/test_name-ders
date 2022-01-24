@@ -217,12 +217,27 @@ export default ({
    */
   async API_problemConfirm(data = {}) {
     // 接口请求
-    data.projectId = await this.get_info();
+    // data.projectId = await this.get_info();
     // data.projectId = 5;
     return request({
       url: '/word/problemConfirm',
       method: 'get',
-      params: data,
+      params: data.data,
+      responseType: 'blob',
+    })
+  },
+  /**
+   * @description 导出漏洞扫描报告
+   * @param {Object} data 携带的信息
+   */
+  async AvulnerabilitymConfirm(data = {}) {
+    // 接口请求
+    // data.projectId = await this.get_info();
+    // data.projectId = 5;
+    return request({
+      url: '/word/vulnerability',
+      method: 'post',
+      data,
       responseType: 'blob',
     })
   },

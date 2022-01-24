@@ -22,7 +22,10 @@ export default {
         {
           path: `${pre}daochupinfsheng`,
           title: '导出评审记录'
-        }
+        }, {
+          path: `${pre}vulnerability`,
+          title: '漏洞扫描报告'
+        },
       ]
     },
     {

@@ -33,7 +33,7 @@
           <div class="mude_text_item">
             <div class="descTItle">录入联盟信息</div>
             <div class="pc_gonjv">
-              <div class="jineginfos">
+              <div class="jinnfos">
                 <div>
                   <div>
                     <span>项目开始时间：</span
@@ -56,6 +56,21 @@
                     >
                   </div>
                   <div>
+                    <span>联盟平台通过截图：</span>
+                    <span
+                      class="ksLismu"
+                      @click="fujiancalss(UnionModel.inputImgUrl)"
+                    >
+                      {{
+                        UnionModel.inputImgName
+                          ? UnionModel.inputImgName
+                          : "----"
+                      }}</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <div>
                     <span>录入联盟时间：</span
                     ><span>
                       {{
@@ -76,28 +91,54 @@
                     >
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="mude_text_item">
+            <div class="descTItle">录入打卡信息</div>
+            <div class="pc_gonjv">
+              <div class="jinnfos">
                 <div>
                   <div>
-                    <span>联盟平台通过截图：</span>
-                    <!-- <span
-                      class="ksLismu"
-                      @click="fujiancalss(UnionModel.inputImgUrl)"
-                    >
+                    <span>打卡到达时间：</span
+                    ><span>
                       {{
-                        UnionModel.inputImgName
-                          ? UnionModel.inputImgName
-                          : "----"
+                        inpuniondel.arriveTime ? inpuniondel.arriveTime : "----"
                       }}</span
-                    > -->
-                    <div v-if="url" class="demo-image__preview">
-                      <el-image
-                        style="width: 100px; height: 100px"
-                        :src="url"
-                        :preview-src-list="srcList"
+                    >
+                  </div>
+                  <div>
+                    <span>打卡离开时间：</span
+                    ><span>
+                      {{
+                        inpuniondel.leaveTime ? inpuniondel.leaveTime : "----"
+                      }}</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <span>打卡人员：</span
+                    ><span>
+                      <span
+                        v-for="(it, index) in inpuniondel.clockPeopleStr"
+                        :key="index"
                       >
-                      </el-image>
-                    </div>
-                    <span v-else> ---- </span>
+                        {{ it }}
+                      </span></span
+                    >
+                  </div>
+                  <div>
+                    <span>打卡上传附件：</span
+                    ><span>
+                      <span v-for="it in inpuniondel.fileList" :key="it.fileId">
+                        <span
+                          class="ksLismu"
+                          @click="fujiancalss(it.fileUrl)"
+                          >{{ it.fileName }}</span
+                        >
+                      </span></span
+                    >
                   </div>
                 </div>
               </div>
@@ -950,6 +991,7 @@ export default {
         inputImgUrl: undefined,
         inputImgName: undefined,
       },
+      inpuniondel: {},
       // 新建还是修改
       mustop: {
         title: "新建",
@@ -1215,6 +1257,7 @@ export default {
     // this.getEtlist();]
     this.userreviewfindAssessor();
     this.geTlvTopks();
+    this.gedakavTopks();
   },
   computed: {
     ...mapState("d2admin", {
@@ -1223,6 +1266,12 @@ export default {
     }),
   },
   methods: {
+    async gedakavTopks() {
+      let res = await this.$api.findClockputUnion();
+      if (res.code === 20000) {
+        this.inpuniondel = res.data;
+      }
+    },
     // 附件
     // 开始上传前验证
     beforeUploadForm(file) {
@@ -1638,6 +1687,18 @@ span {
   margin-left: 10px;
   div {
     margin: 15px 0;
+  }
+}
+.jinnfos {
+  margin-left: 10px;
+  display: flex;
+  // justify-content: space-around;
+  // align-items: center;
+  font-size: 14px;
+  color: #606266;
+  div {
+    flex: 1;
+    margin: 0 0 15px 0;
   }
 }
 pre {

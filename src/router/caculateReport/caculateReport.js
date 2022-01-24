@@ -90,6 +90,15 @@ export default {
       }
     },
     {
+      path: 'vulnerability',
+      name: `${pre}vulnerability`,
+      component: _import('demo/caculateReport/vulnerability'),
+      meta: {
+        ...meta,
+        title: '漏洞扫描报告'
+      }
+    },
+    {
       path: 'agent',
       name: `${pre}agent`,
       component: _import('demo/caculateReport/agent'),

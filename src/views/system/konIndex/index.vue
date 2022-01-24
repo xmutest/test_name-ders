@@ -508,13 +508,13 @@
                           <el-button
                             size="mini"
                             @click="piengList(scope.row, 0)"
-                            type="primary"
+                            type="warning"
                             >初审</el-button
                           >
                           <el-button
                             size="mini"
                             @click="piengList(scope.row, 1)"
-                            type="primary"
+                            type="warning"
                             >终审</el-button
                           >
                         </div>
@@ -840,10 +840,12 @@
               v-model="xmform.itemList"
               filterable
               clearable
+              :filter-method="filterList"
+              @change="xuanmufuzList()"
               placeholder="请选择"
             >
               <el-option
-                v-for="item in tableDataList"
+                v-for="item in tableDataListfenduan"
                 :key="item.projectId"
                 :label="item.projectName"
                 :value="item.projectId"
@@ -1243,6 +1245,7 @@
               v-model="inpuniondel.clockPeople"
               placeholder="请选择打卡人员"
               multiple
+              filterable
               clearable
               :style="{ width: '100%' }"
             >
@@ -1351,6 +1354,7 @@ export default {
       getTimeDate: "",
       its_id_to: 2,
       tableDataList: [],
+      tableDataListfenduan: [],
       tableData: [],
       // 标准体系列表
       standardlist: [
@@ -1565,6 +1569,17 @@ export default {
     this.gEtksrenyuanList();
   },
   methods: {
+    // 项目复制分段
+    filterList(query = "") {
+      let arr = this.tableDataList.filter((item) => {
+        return item.projectName.includes(query);
+      });
+      if (arr.length > 20) {
+        this.tableDataListfenduan = arr.slice(0, 20);
+      } else {
+        this.tableDataListfenduan = arr;
+      }
+    },
     // 初审终深
     piengList(row, type) {
       this.$confirm(`确定完成${type == 0 ? "初审" : "终审"}？`, {
@@ -2086,6 +2101,7 @@ export default {
       let res = await this.$api.API_Project_findAllList(this.projectModel);
       if (res.code === 20000) {
         this.tableDataList = res.data;
+        this.tableDataListfenduan = this.tableDataList.slice(0, 50);
       } else {
         this.$message.error(res.message);
       }
@@ -2502,6 +2518,16 @@ export default {
         });
         this.ProjectQueryList();
       }
+    },
+    xuanmufuzList() {
+      let ks = this.tableDataList.filter(
+        (item) => item.projectId == this.xmform.itemList
+      )[0];
+      if (this.xmform.standardVersion != ks.standardVersion) {
+        this.$message.error("错误，标准版本不一致");
+        this.xmform.itemList = "";
+      }
+      // console.log(this.xmform.standardVersion, ks.standardVersion);
     },
     // 取消
     dialogFormVisib() {
