@@ -227,7 +227,19 @@ export default ({
     })
   },
   //  
-
+  //  获取应用扫描统计
+  //
+  async SupdateByIplFindApp(data = {}) {
+    // 模拟数据
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/parsingHtml/updateByIp',
+      method: 'post',
+      data,
+      params: data
+    })
+  },
   //查询渗透授权书
   async SYSParsingHfindBook(data = {}) {
     // 模拟数据

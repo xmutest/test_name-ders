@@ -6,7 +6,7 @@
       border
       :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
     >
-      <el-table-column label="管理软件/平台名称">
+      <el-table-column label="管理软件/平台名称" width="120">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'platformExtendName')"
@@ -26,7 +26,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="所在设备名称">
+      <el-table-column label="所在设备名称" width="150">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'inEquipmentName')"
@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="版本">
+      <el-table-column label="版本" width="100">
         <template slot-scope="scope">
           <div
             @click="
@@ -68,7 +68,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="主要功能">
+      <el-table-column label="主要功能" width="180">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'majorFunction')"
@@ -87,7 +87,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="备注">
+      <el-table-column label="备注" width="150">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'remarks')"
@@ -114,6 +114,7 @@
             "
             v-model="scope.row.importantDegree"
             filterable
+            size="small"
             placeholder="请选择"
           >
             <el-option
@@ -126,7 +127,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="测评指导书">
+      <el-table-column label="测评指导书" width="150">
         <template slot-scope="scope">
           <el-select
             @change="

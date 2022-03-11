@@ -552,6 +552,9 @@ export default {
         if (!this.formsendType.technologyId)
           return this.$message.error("请选择技术审核人");
       }
+      if (this.formFileList.length <= 0) {
+        return this.$message.error("请上传审核材料");
+      }
       let ins = this.info.user_info.departmentId;
       if (ins >= 12 && ins <= 15) {
         this.submitUpload();

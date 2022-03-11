@@ -239,6 +239,18 @@ export default {
       if (amendAnalysis.afterAmendRisk == "") {
         amendAnalysis.afterAmendRisk = null;
       }
+      if (amendAnalysis.correctFactor < 1 && !amendAnalysis.correctReason) {
+        this.getDataList();
+        return this.$message.error("请填写修正理由");
+      }
+      if (
+        amendAnalysis.originalRisk == "高" &&
+        amendAnalysis.afterAmendRisk != "中"
+      ) {
+        this.getDataList();
+        return this.$message.error("“高”只能修正为“中”");
+      }
+      console.log(item);
       // let fractionModelList = [];
       // fractionModelList.push(item);
       let res = await this.$api.API_RiskUpdateAfterAmendRisk(amendAnalysis);

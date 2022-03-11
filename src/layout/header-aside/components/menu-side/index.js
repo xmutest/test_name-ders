@@ -56,7 +56,11 @@ export default {
                    this.info.user_info.userType===1?<el-menu-item index="/usercontrol"><d2-icon name="address-book-o item2"/>用户管理</el-menu-item>:null
                    :null
                  }
-                 
+                  {
+                   this.info.user_info?
+                   this.info.user_info.userType===1?<el-menu-item index="/deptanage"><d2-icon name="address-book-o item2"/>部门管理</el-menu-item>:null
+                   :null
+                 }
              </ul>
           
           </el-menu>

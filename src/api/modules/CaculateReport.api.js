@@ -140,6 +140,21 @@ export default ({
     })
   },
   /**
+   * @description 安全文档下载
+   * @param {Object} data 携带的信息
+   */
+  async API_woutPutModel(data = {}) {
+    // 接口请求
+    data.projectId = await this.get_info();
+    // data.projectId = 5;
+    return request({
+      url: '/securityManageFile/outPut',
+      method: 'post',
+      params: data,
+      responseType: 'blob',
+    })
+  },
+  /**
    * @description 模板下载
    * @param {Object} data  
    */
@@ -451,6 +466,17 @@ export default ({
     return request({
       url: '/department/findTelList',
       method: 'get',
+      params: data
+    })
+  },
+  async reportGenEdit(data = {}) {
+    data.projectId = await this.get_info();
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/risk/trip',
+      method: 'post',
+      data,
       params: data
     })
   },

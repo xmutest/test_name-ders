@@ -505,7 +505,7 @@
                   >检查内容</el-button
                 >
                 <!-- <el-button type="primary" size="small">保存配置</el-button> -->
-                <el-button type="primary" size="small" @click="submitReport"
+                <el-button type="primary" size="small" @click="reportGenerriskrip"
                   >制作报告</el-button
                 >
               </div>
@@ -550,9 +550,7 @@
               </el-table-column>
               <el-table-column label="操作" width="250">
                 <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    @click="reportGeneratingEdit(scope.row)"
+                  <el-button size="mini" @click="reportGeneratingEdit(scope.row)"
                     >下载</el-button
                   >
                   <el-button
@@ -902,6 +900,7 @@
 </template>
 
 <script>
+import log from "@/libs/util.log";
 import { mapState } from "vuex";
 export default {
   data() {
@@ -1388,6 +1387,31 @@ export default {
             message: "已取消删除",
           });
         });
+    },
+    async reportGenerriskrip() {
+      let res = await this.$api.reportGenEdit();
+      if (res.data) {
+        this.submitReport();
+      } else {
+        this.$confirm(
+          "有不符合的高风险测评项没有进行修正，确定导出报告？",
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          }
+        )
+          .then(() => { 
+            this.submitReport();
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消",
+            });
+          });
+      }
     },
     //生成报告
     async reportGeneratingEdit(val) {

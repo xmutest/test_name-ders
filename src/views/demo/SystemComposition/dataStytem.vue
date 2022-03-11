@@ -69,45 +69,6 @@
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作系统版本" width="120">
-          <template slot-scope="scope">
-            <div
-              @click="
-                is_compile(scope.row, scope.$index, 'operatingSysEdition')
-              "
-              class="itsz"
-            ></div>
-            <el-input
-              placeholder="请输入内容"
-              :ref="'operatingSysEdition' + scope.$index"
-              @blur="schujiaodian(scope.row)"
-              v-show="scope.row.show"
-              v-model="scope.row.operatingSysEdition"
-            ></el-input>
-            <span v-show="!scope.row.show">{{
-              scope.row.operatingSysEdition
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="中间件及版本" width="110">
-          <template slot-scope="scope">
-            <div
-              @click="is_compile(scope.row, scope.$index, 'middlewareEdition')"
-              class="itsz"
-            ></div>
-            <el-input
-              placeholder="请输入内容"
-              :ref="'middlewareEdition' + scope.$index"
-              @blur="schujiaodian(scope.row)"
-              v-show="scope.row.show"
-              v-model="scope.row.middlewareEdition"
-            ></el-input>
-            <span v-show="!scope.row.show">{{
-              scope.row.middlewareEdition
-            }}</span>
-          </template>
-        </el-table-column>
-
         <el-table-column label="所在设备名称" width="110">
           <template slot-scope="scope">
             <div
@@ -127,7 +88,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="主要功能" width="110">
+        <el-table-column label="主要功能" width="180">
           <template slot-scope="scope">
             <div
               @click="is_compile(scope.row, scope.$index, 'majorFunction')"

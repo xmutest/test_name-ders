@@ -21,6 +21,19 @@ export default ({
       data
     })
   },
+   /**
+   * @description 安全文档上传
+   * @param {Object} data 携带的信息
+   */
+    securityManageFileUpload(data = {}) {
+      // 模拟数据
+      // 接口请求
+      return request({
+        url: '/securityManageFile/upload',
+        method: 'post',
+        data
+      })
+    },
   /**
    * @description 登录
    * @param {Object} data 登录携带的信息
@@ -244,6 +257,28 @@ export default ({
     // 接口请求
     return request({
       url: 'review/finishReview',
+      method: 'post',
+      data
+    })
+  },
+  // 查询部门树
+  /**
+   * @param {Object} data 
+   */
+  departmentewdate(data = {}) {
+    // 接口请求
+    return request({
+      url: '/department/tree',
+      method: 'get',
+      params: data
+    })
+  },
+  /**
+   * @description 部门新增或修改
+   */
+  API_deptSave(data = {}) {
+    return request({
+      url: '/department/save',
       method: 'post',
       data
     })

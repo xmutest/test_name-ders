@@ -1,8 +1,8 @@
 <!--风险分析和评价-->
 <template>
   <d2-container>
-    <div class="ts_table">
-      <table>
+    <div class="ts_table ">
+      <table class="list-wrap" ref="listWrap">
         <thead>
           <tr>
             <th style="width: 120px">安全层面</th>
@@ -12,7 +12,7 @@
             <th style="width: 120px">问题描述</th>
             <th>问题分析</th>
             <th>关联威胁</th>
-            <th style="width: 100px">原始风险值</th>
+            <th style="widtshishiclickh: 100px">原始风险值</th>
             <th>危害分析</th>
             <th>整改建议</th>
           </tr>
@@ -326,6 +326,7 @@
           <div>
             <el-button
               @click="FmeListo('高')"
+              :disabled="isGosL"
               :style="
                 amendAnalysis.originalRisk == '高' ||
                 amendAnalysis.riskGrade == 1
@@ -340,6 +341,7 @@
           <div>
             <el-button
               @click="FmeListo('中')"
+              :disabled="isGosL"
               :style="
                 amendAnalysis.originalRisk == '中' ||
                 amendAnalysis.riskGrade == 2
@@ -353,6 +355,7 @@
           <div>
             <el-button
               slot="reference"
+              :disabled="isGosL"
               @click="FmeListo('低')"
               :style="
                 amendAnalysis.originalRisk == '低' ||
@@ -392,7 +395,6 @@
 <script>
 import { cloneDeep } from "lodash";
 import { mapState } from "vuex";
-import log from "@/libs/util.log";
 export default {
   data() {
     return {
@@ -400,6 +402,8 @@ export default {
       innerVisible: false,
       dialogVisible: false,
       ksLismtop: true,
+      // 是否有高风险叛逆
+      isGosL: false,
       itemsCoacr: [
         { color: "#fff" },
         { color: "#fff" },
@@ -448,6 +452,11 @@ export default {
       // 关联id
       safetyControlRelationId: "",
       beforeDescription: "",
+      // 查询是否符合
+      dopList_nme: {
+        assetIds: [],
+        safetyControlId: "",
+      },
     };
   },
   created() {
@@ -546,7 +555,12 @@ export default {
       });
     },
     shishiClick(item3s, itemName) {
+      // console.log(item3s, itemName);
       let item3 = cloneDeep(item3s);
+      this.dopList_nme = cloneDeep({
+        assetIds: item3.assetsIds,
+        safetyControlId: item3.safetyControlId,
+      });
       if (itemName != "") {
         this.itemName = itemName;
       }
@@ -602,7 +616,6 @@ export default {
       this.amendAnalysisVO.userId = this.info.user_info.userId;
       // this.amendAnalysisVO.safetyControlRelationId = this.safetyControlRelationId;
       let res = await this.$api.API_RiskFindRiskKnowledge(this.amendAnalysisVO);
-      console.log(res);
       if (res.code == 20000) {
         this.relevanceList = res.data[0];
         if (res.data[0].length !== 0) {
@@ -624,9 +637,21 @@ export default {
           if (toriginalRisk == undefined) {
             this.$set(this.amendAnalysis, "originalRisk", "高");
           }
+          this.accordSitopation();
+        } else {
+          this.isGosL = false;
         }
       } else {
         this.$message.error("信息加载出错");
+      }
+    },
+    async accordSitopation() {
+      let res = await this.$api.APIfindAccordSituationkKnowledge(
+        this.dopList_nme
+      );
+      if (res.code === 20000) {
+        // this.isGosL = res.data;
+        this.isGosL = false;
       }
     },
     async getDataList() {

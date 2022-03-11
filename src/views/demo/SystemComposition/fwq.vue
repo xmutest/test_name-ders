@@ -15,21 +15,31 @@
             ></div>
             <el-input
               :ref="'equipmentName' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.equipmentName"
             ></el-input>
             <span v-show="!scope.row.show">{{ scope.row.equipmentName }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="物理/逻辑区域" width="130">
+          <template slot-scope="scope">
+            <el-select
+              size="small"
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.area"
+              filterable
+              placeholder="请选择"
+            >
+              <el-option label="物理区域" value="物理区域"></el-option>
+              <el-option label="逻辑区域" value="逻辑区域"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
         <el-table-column label="是否虚拟设备" width="80">
           <template slot-scope="scope">
             <el-checkbox
-              @change="
-                schujiaodian(scope.row)
-              "
+              @change="schujiaodian(scope.row)"
               v-model="scope.row.isFictitiousEquipment"
             ></el-checkbox>
           </template>
@@ -44,9 +54,7 @@
             ></div>
             <el-input
               :ref="'operatingSysEdition' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               placeholder="请输入内容"
               v-show="scope.row.show"
               v-model="scope.row.operatingSysEdition"
@@ -67,9 +75,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'softwarePlatformName' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.softwarePlatformName"
             ></el-input>
@@ -87,9 +93,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'dbManageSys' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.dbManageSys"
             ></el-input>
@@ -106,9 +110,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'middlewareEdition' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.middlewareEdition"
             ></el-input>
@@ -127,9 +129,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'remarks' + scope.$index"
-              @blur="
-               schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.remarks"
             ></el-input>
@@ -145,13 +145,27 @@
             <el-input
               placeholder="请输入内容"
               :ref="'equipmentNum' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.equipmentNum"
             ></el-input>
             <span v-show="!scope.row.show">{{ scope.row.equipmentNum }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="ip地址" width="120">
+          <template slot-scope="scope">
+            <div
+              @click="is_compile(scope.row, scope.$index, 'ip')"
+              class="itsz"
+            ></div>
+            <el-input
+              placeholder="请输入内容"
+              :ref="'ip' + scope.$index"
+              @blur="schujiaodian(scope.row)"
+              v-show="scope.row.show"
+              v-model="scope.row.ip"
+            ></el-input>
+            <span v-show="!scope.row.show">{{ scope.row.ip }}</span>
           </template>
         </el-table-column>
         <el-table-column label="重要程度" width="130">
@@ -159,9 +173,8 @@
             <el-select
               v-model="scope.row.importantDegree"
               filterable
-              @change="
-                schujiaodian(scope.row)
-              "
+              size="small"
+              @change="schujiaodian(scope.row)"
               placeholder="请选择"
             >
               <el-option
@@ -170,6 +183,20 @@
                 :label="item.label"
                 :value="item.value"
               ></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否热备" width="120">
+          <template slot-scope="scope">
+            <el-select
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isHot"
+              size="small"
+              filterable
+              placeholder="请选择"
+            >
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="2"></el-option>
             </el-select>
           </template>
         </el-table-column>
@@ -240,6 +267,9 @@ export default {
           isEvaluationObj: false,
           show: false,
           sortNum: 1,
+          area: "",
+          ip: "",
+          isHot: "",
         },
       ],
       dialogTableVisible: false,
@@ -259,6 +289,9 @@ export default {
         equipmentNum: 1,
         importantDegree: 5,
         isEvaluationObj: false,
+        area: "",
+        ip: "",
+        isHot: "",
       },
       formLabelWidth: "120px",
       rules: {},
@@ -353,6 +386,9 @@ export default {
               isEvaluationObj: false,
               sortNum: 1,
               show: false,
+              area: "",
+              ip: "",
+              isHot: "",
             },
           ];
         }
@@ -440,6 +476,9 @@ export default {
         isEvaluationObj: false,
         sortNum,
         show: false,
+        area: "",
+        ip: "",
+        isHot: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

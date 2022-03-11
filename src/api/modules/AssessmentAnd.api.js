@@ -196,4 +196,19 @@ export default ({
       params: data
     })
   },
+  /**
+   * @description 删除风险知识库
+   * POST 
+   * @param {Object} data 携带的信息
+   */
+  async APIfindAccordSituationkKnowledge(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: 'risk/findAccordSituation',
+      method: 'post',
+      params: data,
+      data
+    })
+  },
 })

@@ -2,14 +2,8 @@
   <div class="page-login">
     <div class="page-login--layer page-login--layer-area">
       <ul class="circles">
-        <li v-for="n in 10" :key="n"></li>
+        <li v-for="n in 20" :key="n"></li>
       </ul>
-    </div>
-    <div
-      class="page-login--layer page-login--layer-time"
-      flex="main:center cross:center"
-    >
-      {{ time }}
     </div>
     <div class="page-login--layer">
       <div
@@ -270,9 +264,8 @@ export default {
     },
     makeCode(o, l) {
       for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[
-          this.randomNum(0, this.identifyCodes.length)
-        ];
+        this.identifyCode +=
+          this.identifyCodes[this.randomNum(0, this.identifyCodes.length)];
       }
     },
     nopassword() {
@@ -434,6 +427,7 @@ export default {
     // 卡片
     .el-card {
       margin-bottom: 15px;
+      border-radius: 8%;
     }
     // 登录按钮
     .button-login {

@@ -2,6 +2,9 @@
 import Vue from 'vue'
 import i18n from './i18n'
 import App from './App'
+// import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
+// import VueVirtualScroller from "vue-virtual-scroller";
+// Vue.use(VueVirtualScroller);
 // 核心插件
 import d2Admin from '@/plugin/d2admin'
 // store

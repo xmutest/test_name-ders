@@ -156,6 +156,19 @@
                       </p>
                     </template>
                   </el-table-column>
+                  <el-table-column label="重点抽查项目" width="60">
+                    <template slot-scope="scope">
+                      <p
+                        :class="
+                          radio_projectId == scope.row.projectId
+                            ? 'blue-class'
+                            : ''
+                        "
+                      >
+                        <span>{{ scope.row.important==1?'是':'否' }}</span>
+                      </p>
+                    </template>
+                  </el-table-column>
                   <el-table-column label="报告优先级" width="80">
                     <template slot-scope="scope">
                       <p
@@ -1867,10 +1880,10 @@ export default {
         this.projectModel.projectName !== "" &&
         this.projectModel.projectName !== undefined
       ) {
-        this.projectModel.pageNum = 1;
+        this.projectModel.page = 1;
         this.projectModel.pageSize > 20 ? this.total : 20;
       } else {
-        this.projectModel.pageNum = 1;
+        this.projectModel.page = 1;
         this.projectModel.pageSize = 20;
       }
 
@@ -2032,9 +2045,11 @@ export default {
               this.copyProjec.projectName = this.xmform.projectName;
               this.copyProjec.systemName = this.xmform.systemName;
               this.copyProjec.recordSn = this.xmform.recordSn;
+              this.copyProjec.standardExtends = this.xmform.standardExtends;
               this.dialogFormVisible = false;
               return this.openList();
             }
+            // console.log(this.xmform)
             const res = await this.$api.API_Project_Creation(this.xmform);
             if (res.code === 20000) {
               this.$message.success("创建成功！！");
@@ -2180,6 +2195,7 @@ export default {
         projectPriority: this.xmudan[0].projectPriority,
         contractSn: this.xmudan[0].contractSn,
         isNewBook: 1,
+        important: xtList.important,
       };
       if (this.projectIdks.standardExtends) {
         let nums = this.projectIdks.standardExtends.split("┋");

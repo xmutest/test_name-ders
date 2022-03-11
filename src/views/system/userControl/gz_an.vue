@@ -16,6 +16,26 @@
             ></el-input>
           </div>
           <div>
+            <div>
+              <span class="search_ls_name">部门：</span>
+              <el-select
+                clearable
+                size="small"
+                @change="gettableData"
+                v-model="apiList.departmentId"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="(item, index) in gzHuList['childrenList']"
+                  :key="index"
+                  :label="item.departmentName"
+                  :value="item.departmentId"
+                >
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+          <div>
             <el-button
               icon="el-icon-search"
               type="primary"
@@ -183,20 +203,19 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="部门" prop="departmentId">
-              <el-select
+              <el-cascader
                 v-model="xmform.departmentId"
                 placeholder="请选择部门"
                 clearable
+                :props="{
+                  value: 'departmentId',
+                  label: 'departmentName',
+                  children: 'childrenList',
+                  checkStrictly: true,
+                }"
                 :style="{ width: '100%' }"
-              >
-                <el-option
-                  v-for="(item, index) in departmentIdOptions"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                  :disabled="item.disabled"
-                ></el-option>
-              </el-select>
+                :options="[gzHuList]"
+              ></el-cascader>
             </el-form-item>
           </el-col>
         </el-form>
@@ -261,20 +280,19 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="部门" prop="departmentId">
-              <el-select
+              <el-cascader
                 v-model="xmform.departmentId"
                 placeholder="请选择部门"
                 clearable
+                :props="{
+                  value: 'departmentId',
+                  label: 'departmentName',
+                  children: 'childrenList',
+                  checkStrictly: true,
+                }"
                 :style="{ width: '100%' }"
-              >
-                <el-option
-                  v-for="(item, index) in departmentIdOptions"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                  :disabled="item.disabled"
-                ></el-option>
-              </el-select>
+                :options="[gzHuList]"
+              ></el-cascader>
             </el-form-item>
           </el-col>
         </el-form>
@@ -290,7 +308,13 @@
 </template>
 
 <script>
+import { number } from "echarts/lib/export";
 export default {
+  props: {
+    gzHuList: {
+      default: [],
+    },
+  },
   data() {
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
@@ -301,11 +325,12 @@ export default {
         callback();
       }
     };
+
     return {
       dialogVisibleupdata: false,
       dialogVisible: false,
       tableData: [],
-      total: 0, 
+      total: 0,
       xmform: {
         loginName: null,
         userName: null,
@@ -431,10 +456,11 @@ export default {
         },
       ],
       apiList: {
-        departmentId: 2,
+        departmentId: "",
         page: 1,
         pageSize: 10,
         userName: "",
+        companyId: 2,
       },
     };
   },
@@ -455,6 +481,10 @@ export default {
         ];
       } else {
         this.departmentIdOptions = [
+          {
+            label: "广州华南信息安全测评中心",
+            value: 2,
+          },
           {
             label: "技术一部",
             value: 3,
@@ -550,72 +580,17 @@ export default {
     },
     departmentIdOp(depar) {
       let ls = "";
-      let departmentIdOptions = [
-        {
-          label: "广州华南信息安全测评中心",
-          value: 2,
-        },
-        {
-          label: "技术一部",
-          value: 3,
-        },
-        {
-          label: "技术二部",
-          value: 4,
-        },
-        {
-          label: "技术三部",
-          value: 5,
-        },
-        {
-          label: "技术四部",
-          value: 8,
-        },
-        {
-          label: "技术五部",
-          value: 9,
-        },
-        {
-          label: "质控部",
-          value: 10,
-        },
-        {
-          label: "渗透部",
-          value: 11,
-        },
-        {
-          label: "合作一部",
-          value: 12,
-        },
-        {
-          label: "合作二部",
-          value: 13,
-        },
-        {
-          label: "合作三部",
-          value: 14,
-        },
-        {
-          label: "合作四部",
-          value: 15,
-        },
-        {
-          label: "合作五部",
-          value: 17,
-        },
-        {
-          label: "商务部",
-          value: 16,
-        },
-      ];
+      // console.log(this.gzHuList)
+      let departmentIdOptions = this.gzHuList["childrenList"];
       departmentIdOptions.forEach((item) => {
-        if (item.value === depar) {
-          ls = item.label;
+        if (item.departmentId === depar) {
+          ls = item.departmentName;
         }
       });
       return ls;
     },
     async gettableData() {
+      console.log(this.apiList);
       let res = await this.$api.API_DepartmentFindListe(this.apiList);
       if (res.code === 20000) {
         this.tableData = res.data.list;
@@ -629,6 +604,7 @@ export default {
         if (this.xmform.userType == 2) {
           this.xmform.departmentId = 2;
         }
+        this.xmform.departmentId = this.xmform.departmentId.pop();
         let res = await this.$api.API_UserSave(this.xmform);
         if (res.code === 20000) {
           this.gettableData();
@@ -641,6 +617,10 @@ export default {
       // if (this.xmform.userType == 2) {
       //   this.xmform.departmentId = 6;
       // }
+      if (typeof this.xmform.departmentId != "number") {
+        this.xmform.departmentId = this.xmform.departmentId.pop();
+      } 
+      // console.log(typeof this.xmform.departmentId)
       let res = await this.$api.API_Userupdate(this.xmform);
       if (res.code === 20000) {
         this.$message({

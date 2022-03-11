@@ -18,9 +18,7 @@
             ></div>
             <el-input
               :ref="'equipmentName' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.equipmentName"
             ></el-input>
@@ -30,9 +28,7 @@
         <el-table-column label="是否虚拟设备" width="80">
           <template slot-scope="scope">
             <el-checkbox
-              @change="
-                schujiaodian(scope.row)
-              "
+              @change="schujiaodian(scope.row)"
               v-model="scope.row.isFictitiousEquipment"
             ></el-checkbox>
           </template>
@@ -45,9 +41,7 @@
             ></div>
             <el-input
               :ref="'systemAndEdition' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               placeholder="请输入内容"
               v-show="scope.row.show"
               v-model="scope.row.systemAndEdition"
@@ -66,16 +60,14 @@
             <el-input
               placeholder="请输入内容"
               :ref="'brandAndModel' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.brandAndModel"
             ></el-input>
             <span v-show="!scope.row.show">{{ scope.row.brandAndModel }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="用途" width="120">
+        <el-table-column label="用途" width="150">
           <template slot-scope="scope">
             <div
               @click="is_compile(scope.row, scope.$index, 'purpose')"
@@ -84,13 +76,27 @@
             <el-input
               placeholder="请输入内容"
               :ref="'purpose' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.purpose"
             ></el-input>
             <span v-show="!scope.row.show">{{ scope.row.purpose }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="ip输入" width="120">
+          <template slot-scope="scope">
+            <div
+              @click="is_compile(scope.row, scope.$index, 'ip')"
+              class="itsz"
+            ></div>
+            <el-input
+              placeholder="请输入内容"
+              :ref="'ip' + scope.$index"
+              @blur="schujiaodian(scope.row)"
+              v-show="scope.row.show"
+              v-model="scope.row.ip"
+            ></el-input>
+            <span v-show="!scope.row.show">{{ scope.row.ip }}</span>
           </template>
         </el-table-column>
         <el-table-column label="备注" width="150">
@@ -102,9 +108,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'remarks' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.remarks"
             ></el-input>
@@ -120,9 +124,7 @@
             <el-input
               placeholder="请输入内容"
               :ref="'equipmentNum' + scope.$index"
-              @blur="
-                schujiaodian(scope.row)
-              "
+              @blur="schujiaodian(scope.row)"
               v-show="scope.row.show"
               v-model="scope.row.equipmentNum"
             ></el-input>
@@ -132,9 +134,7 @@
         <el-table-column label="重要程度" width="130">
           <template slot-scope="scope">
             <el-select
-              @change="
-                schujiaodian(scope.row)
-              "
+              @change="schujiaodian(scope.row)"
               v-model="scope.row.importantDegree"
               filterable
               placeholder="请选择"
@@ -145,6 +145,19 @@
                 :label="item.label"
                 :value="item.value"
               ></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否热备" width="130">
+          <template slot-scope="scope">
+            <el-select
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.isHot"
+              filterable
+              placeholder="请选择"
+            >
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="2"></el-option>
             </el-select>
           </template>
         </el-table-column>
@@ -329,7 +342,9 @@ export default {
           importantDegree: 5,
           isEvaluationObj: false,
           sortNum: 1,
+          isHot: "",
           show: false,
+          ip: "",
         },
       ],
       dialogTableVisible: false,
@@ -348,6 +363,8 @@ export default {
         remarks: "",
         equipmentNum: 5,
         importantDegree: 5,
+        ip: "",
+        isHot: "",
         isEvaluationObj: false,
       },
       formLabelWidth: "120px",
@@ -439,6 +456,8 @@ export default {
               brandAndModel: "",
               purpose: "",
               remarks: "",
+              ip: "",
+              isHot: "",
               equipmentNum: 1,
               sortNum: 1,
               importantDegree: 5,
@@ -526,6 +545,8 @@ export default {
         systemAndEdition: "",
         brandAndModel: "",
         purpose: "",
+        ip: "",
+        isHot: "",
         remarks: "",
         equipmentNum: 1,
         sortNum,

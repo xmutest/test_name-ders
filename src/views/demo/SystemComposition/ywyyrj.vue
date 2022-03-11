@@ -6,7 +6,7 @@
       border
       :header-cell-style="{ 'background-color': 'rgba(238, 238, 238,1.0)' }"
     >
-      <el-table-column label="应用系统/平台名称">
+      <el-table-column label="应用系统/平台名称" width="120">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'softwarePlatformName')"
@@ -14,9 +14,7 @@
           ></div>
           <el-input
             :ref="'softwarePlatformName' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.softwarePlatformName"
           ></el-input>
@@ -26,7 +24,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="主要功能">
+      <el-table-column label="主要功能" width="180">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'majorFunction')"
@@ -34,9 +32,7 @@
           ></div>
           <el-input
             :ref="'majorFunction' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.majorFunction"
@@ -45,7 +41,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="应用软件及版本">
+      <el-table-column label="应用软件及版本" width="120">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'softwareEdition')"
@@ -53,9 +49,7 @@
           ></div>
           <el-input
             :ref="'softwareEdition' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.softwareEdition"
@@ -63,8 +57,65 @@
           <span v-show="!scope.row.show">{{ scope.row.softwareEdition }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column label="开发厂商">
+      <el-table-column label="应用模式（B/S或C/S）" width="130">
+        <template slot-scope="scope">
+          <el-select
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.model"
+            filterable
+            size="small"
+            placeholder="请选择"
+          >
+            <el-option label="B/S" value="B/S"></el-option>
+            <el-option label="C/S" value="C/S"></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="硬件/软件平台" width="130">
+        <template slot-scope="scope">
+          <el-select
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.platform"
+            size="small"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option label="硬件" value="硬件"></el-option>
+            <el-option label="软件" value="软件"></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="自行开发/外包开发" width="130">
+        <template slot-scope="scope">
+          <el-select
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.develop"
+            filterable
+            size="small"
+            placeholder="请选择"
+          >
+            <el-option label="自行开发" value="自行开发"></el-option>
+            <el-option label="外包开发" value="外包开发"></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="ip地址" width="120">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'ip')"
+            class="itsz"
+          ></div>
+          <el-input
+            placeholder="请输入内容"
+            :ref="'ip' + scope.$index"
+            @blur="schujiaodian(scope.row)"
+            v-show="scope.row.show"
+            v-model="scope.row.ip"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.ip }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="开发厂商" width="150">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'developManufacturers')"
@@ -72,9 +123,7 @@
           ></div>
           <el-input
             :ref="'developManufacturers' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.developManufacturers"
@@ -84,15 +133,29 @@
           }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column label="用户类别及数量" width="120">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'userTypeAndNum')"
+            class="itsz"
+          ></div>
+          <el-input
+            :ref="'userTypeAndNum' + scope.$index"
+            @blur="schujiaodian(scope.row)"
+            placeholder="请输入内容"
+            v-show="scope.row.show"
+            v-model="scope.row.userTypeAndNum"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.userTypeAndNum }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="重要程度" width="130">
         <template slot-scope="scope">
           <el-select
-            @change="
-              schujiaodian(scope.row)
-            "
+            @change="schujiaodian(scope.row)"
             v-model="scope.row.importantDegree"
             filterable
+            size="small"
             placeholder="请选择"
           >
             <el-option
@@ -135,7 +198,7 @@
           ></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column label="备注">
+      <el-table-column label="备注" width="180">
         <template slot-scope="scope">
           <div
             @click="is_compile(scope.row, scope.$index, 'remarks')"
@@ -143,9 +206,7 @@
           ></div>
           <el-input
             :ref="'remarks' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.remarks"
@@ -211,6 +272,11 @@ export default {
           sortNum: 1,
           show: false,
           remarks: "",
+          platform: "",
+          develop: "",
+          model: "",
+          userTypeAndNum: "",
+          ip: "",
         },
       ],
       formPage: {
@@ -297,6 +363,11 @@ export default {
               sortNum: 1,
               show: false,
               remarks: "",
+              platform: "",
+              develop: "",
+              model: "",
+              userTypeAndNum: "",
+              ip: "",
             },
           ];
         }
@@ -362,6 +433,11 @@ export default {
         sortNum,
         show: false,
         remarks: "",
+        platform: "",
+        develop: "",
+        model: "",
+        userTypeAndNum: "",
+        ip: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

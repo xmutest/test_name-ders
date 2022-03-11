@@ -14,22 +14,31 @@
           ></div>
           <el-input
             :ref="'terminalName' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.terminalName"
           ></el-input>
           <span v-show="!scope.row.show">{{ scope.row.terminalName }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column label="物理/逻辑区域" width="130">
+        <template slot-scope="scope">
+          <el-select
+            size="small"
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.area"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option label="物理区域" value="物理区域"></el-option>
+            <el-option label="逻辑区域" value="逻辑区域"></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
       <el-table-column label="是否虚拟设备" width="80">
         <template slot-scope="scope">
           <el-checkbox
-            @change="
-              schujiaodian(scope.row)
-            "
+            @change="schujiaodian(scope.row)"
             v-model="scope.row.isFictitiousEquipment"
           ></el-checkbox>
         </template>
@@ -43,9 +52,7 @@
           ></div>
           <el-input
             :ref="'operatingSystem' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.operatingSystem"
           ></el-input>
@@ -61,9 +68,7 @@
           ></div>
           <el-input
             :ref="'terminalTypePurpose' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.terminalTypePurpose"
           ></el-input>
@@ -81,9 +86,7 @@
           ></div>
           <el-input
             :ref="'remarks' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.remarks"
           ></el-input>
@@ -99,9 +102,7 @@
           ></div>
           <el-input
             :ref="'equipmentNum' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.equipmentNum"
@@ -109,14 +110,29 @@
           <span v-show="!scope.row.show">{{ scope.row.equipmentNum }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="ip地址" width="120">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'ip')"
+            class="itsz"
+          ></div>
+          <el-input
+            placeholder="请输入内容"
+            :ref="'ip' + scope.$index"
+            @blur="schujiaodian(scope.row)"
+            v-show="scope.row.show"
+            v-model="scope.row.ip"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.ip }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="重要程度" width="130">
         <template slot-scope="scope">
           <el-select
             v-model="scope.row.importantDegree"
             filterable
-            @change="
-              schujiaodian(scope.row)
-            "
+            size="small"
+            @change="schujiaodian(scope.row)"
             placeholder="请选择"
           >
             <el-option
@@ -197,6 +213,8 @@ export default {
           isEvaluationObj: false,
           sortNum: 1,
           show: false,
+          area: "",
+          ip: "",
         },
       ],
       formPage: {
@@ -287,6 +305,8 @@ export default {
               isEvaluationObj: false,
               sortNum: 1,
               show: false,
+              area: "",
+              ip: "",
             },
           ];
         }
@@ -359,6 +379,8 @@ export default {
         isEvaluationObj: false,
         sortNum,
         show: false,
+        area: "",
+        ip: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

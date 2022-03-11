@@ -143,7 +143,7 @@ import d2MenuSide from "./components/menu-side";
 import d2MenuHeader from "./components/menu-header";
 import d2Tabs from "./components/tabs";
 import d2HeaderFullscreen from "./components/header-fullscreen";
-
+import WaterMark from "./waterMark";
 import d2HeaderUser from "./components/header-user";
 
 import { mapState, mapGetters, mapActions } from "vuex";
@@ -171,6 +171,11 @@ export default {
     };
   },
   created() {},
+  mounted() {
+    let user_info = this.$store.state.d2admin.user.info.user_info;
+    console.log(this.$store.state.d2admin)
+    WaterMark(`${user_info.userName}`);
+  },
   computed: {
     ...mapState("d2admin", {
       keepAlive: (state) => state.page.keepAlive,
@@ -252,5 +257,26 @@ export default {
     background: purple !important;
     border-color: purple !important;
   }
+}
+.water-mark-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  display: flex;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+.water-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: rgba(8, 8, 8, 0.1);
+  transform: rotate(-45deg);
+  user-select: none;
 }
 </style>

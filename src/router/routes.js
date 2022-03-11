@@ -65,6 +65,15 @@ const frameIn = [{
         },
         component: _import('system/userControl/index')
       },
+      {
+        path: 'deptanage',
+        name: 'deptanage',
+        meta: {
+          auth: true,
+          title: '部门管理'
+        },
+        component: _import('system/deptanage/index')
+      },
       // 演示页面
       // 系统 前端日志
       {
@@ -98,7 +107,7 @@ const frameIn = [{
           title: '待我处理'
         },
         component: _import('system/todealwith/todealwith')
-      },
+      }
     ]
   },
   controllerlink,

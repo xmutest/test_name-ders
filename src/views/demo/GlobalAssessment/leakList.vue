@@ -729,6 +729,7 @@ export default {
     },
     toFatherData(ifsTo) {
       if (ifsTo === true) {
+        this.$api.SupdateByIplFindApp();
         this.getListts();
       }
     },
