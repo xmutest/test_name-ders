@@ -1,7 +1,7 @@
 <!--风险分析和评价-->
 <template>
   <d2-container>
-    <div class="ts_table ">
+    <div class="ts_table">
       <table class="list-wrap" ref="listWrap">
         <thead>
           <tr>
@@ -513,9 +513,15 @@ export default {
       ) {
         riskKnowledge.safetyControlRelationId = this.safetyControlRelationId;
       } else {
-        return this.$message.error("获取关联id出错，请重新打开");
+        let ret = await this.$api.rolRelationIdedge({
+          safetyControlId: this.api_data.safetyControlId,
+        });
+        if (ret.code === 20000) {
+          riskKnowledge.safetyControlRelationId = ret.data;
+        } else {
+          return this.$message.error("获取关联id出错，请重新打开");
+        }
       }
-      console.log(this.safetyControlRelationId);
       let res = await this.$api.API_saveRiskKnowledge(riskKnowledge);
       if (res.code === 20000) {
         this.$message.success("纳入风险知识库成功");
@@ -587,7 +593,6 @@ export default {
       this.dialogVisible = false;
       // relationThreaten
       let ls = "";
-      console.log(this.relevanceWeiList, this.DataListPou);
       this.relevanceWeiList.forEach((item) => {
         this.DataListPou.forEach((items) => {
           if (item == items.id) {

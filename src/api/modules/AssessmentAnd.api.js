@@ -183,6 +183,20 @@ export default ({
     })
   },
   /**
+   * @description 纳入自定义风险知识库关联id
+   * POST 
+   * @param {Object} data 携带的信息
+   */
+  async rolRelationIdedge(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/risk/findSafetyControlRelationId',
+      method: 'get',
+      params:data
+    })
+  },
+  /**
    * @description 删除风险知识库
    * POST 
    * @param {Object} data 携带的信息
