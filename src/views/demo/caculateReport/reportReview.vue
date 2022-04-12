@@ -11,7 +11,14 @@
               <div class="boot_an">
                 <el-button
                   type="primary"
-                  @click="kslistdatafy = true"
+                  v-if="isOplis()"
+                  @click="kslistdata('部门内部审核', 1)"
+                  size="mini"
+                  >部门内部审核</el-button
+                >
+                <el-button
+                  type="primary"
+                  @click="kslistdata('提交审核', 2)"
                   size="mini"
                   >提交审核</el-button
                 >
@@ -24,7 +31,7 @@
                     <span>{{ scope.row.fileType == 1 ? "报告" : "方案" }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="审核材料">
+                <el-table-column label="审核材料" width="280">
                   <template slot-scope="scope">
                     <span
                       class="xiazaiList"
@@ -46,17 +53,22 @@
                     {{ scope.row.reason }}
                   </template>
                 </el-table-column>
-                <el-table-column label="上传人姓名" width="150">
+                <el-table-column label="上传人姓名" width="100">
                   <template slot-scope="scope">
                     {{ scope.row.userName }}
                   </template>
                 </el-table-column>
-                <el-table-column label="技术审核人" width="150">
+                <el-table-column label="技术审核人" width="100">
                   <template slot-scope="scope">
                     {{ scope.row.technologyName }}
                   </template>
                 </el-table-column>
-                <el-table-column label="上传时间" width="180">
+                <el-table-column label="非技术审核人" width="100">
+                  <template slot-scope="scope">
+                    {{ scope.row.untechnologyName }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="上传时间" width="80">
                   <template slot-scope="scope">
                     {{ scope.row.uploadTime }}
                   </template>
@@ -146,6 +158,11 @@
           <div class="mude_text_item">
             <div class="descTItle">
               <div>报告评审记录列表</div>
+              <div class="boot_an">
+                <el-button type="primary" @click="addListks(1)" size="mini"
+                  >新建报告评审记录</el-button
+                >
+              </div>
             </div>
             <el-table :data="pcLinfotabList" border style="width: 100%">
               <el-table-column label="审核环节" width="80">
@@ -215,9 +232,421 @@
           </div>
         </el-card>
       </div>
-
+      <!-- 新建 -->
       <el-dialog
-        title="新建审核"
+        :title="mustop.title + '评审记录'"
+        :visible.sync="kslsssy"
+        :close-on-click-modal="false"
+      >
+        <el-row :gutter="10">
+          <el-form
+            ref="paymentOrderModel"
+            :model="paymentOrderModel"
+            :rules="rules"
+            size="medium"
+            label-width="120px"
+            label-position="left"
+          >
+            <el-col :span="15">
+              <el-form-item label="审核环节" prop="link">
+                <el-radio v-model="paymentOrderModel.link" :label="1"
+                  >初审</el-radio
+                >
+                <el-radio v-model="paymentOrderModel.link" :label="2"
+                  >终审</el-radio
+                >
+              </el-form-item>
+            </el-col>
+            <el-col :span="15">
+              <el-form-item
+                v-if="pingcheji == 1"
+                label="评审时间"
+                prop="reviewFirstTime"
+              >
+                <el-date-picker
+                  v-model="paymentOrderModel.reviewFirstTime"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  :style="{ width: '100%' }"
+                  placeholder="请选择评审时间"
+                  clearable
+                >
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item v-else label="评审时间" prop="time">
+                <el-date-picker
+                  v-model="paymentOrderModel.time"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  :style="{ width: '100%' }"
+                  placeholder="请选择评审时间"
+                  clearable
+                >
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="15">
+              <el-form-item label="实际评审时间" prop="reviewActualTime">
+                <el-date-picker
+                  v-model="paymentOrderModel.reviewActualTime"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  :style="{ width: '100%' }"
+                  placeholder="请选择评审时间"
+                  clearable
+                >
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="评审参加人员" prop="assessor">
+                <el-select
+                  v-model="paymentOrderModel.assessor"
+                  placeholder="请选择评审参加人员"
+                  clearable
+                  :style="{ width: '100%' }"
+                >
+                  <el-option
+                    v-for="(item, index) in assessorOptions"
+                    :key="index"
+                    :label="item"
+                    :value="item"
+                    :disabled="item.disabled"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="被测单位部门" prop="department">
+                <el-input
+                  v-model="paymentOrderModel.department"
+                  placeholder="请输入被测单位部门"
+                  clearable
+                  :style="{ width: '100%' }"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="被测单位联系人" prop="contact">
+                <el-input
+                  v-model="paymentOrderModel.contact"
+                  placeholder="请输入被测单位联系人"
+                  clearable
+                  :style="{ width: '100%' }"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <!-- 报告 -->
+            <div v-if="pingcheji == 1">
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="测评报告对被测系统和抽选对象的描述是否与测评方案一致？"
+                  prop="reviewA"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.reviewA"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in reviewAOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="测评记录是否清晰、详实？"
+                  prop="reviewB"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.reviewB"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in reviewBOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="测评项的符合情况判断是否准确？"
+                  prop="reviewC"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.reviewC"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in reviewCOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="测评报告中具有工具扫描和渗透测试的结果？（★）"
+                  prop="reviewD"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.reviewD"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in reviewDOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="安全问题的描述与评判是否准确？"
+                  prop="reviewE"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.reviewE"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in reviewEOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="整改建议是否完整、准确、合理？"
+                  prop="reviewF"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.reviewF"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in reviewFOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="测评结论是否具准确？"
+                  prop="reviewG"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.reviewG"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in reviewGOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+            </div>
+            <!-- 方案 -->
+            <div v-if="pingcheji == 2">
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="测评方案对被测系统和调查对象的描述是否与调查表一致？"
+                  prop="planA"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.planA"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in planOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="测评方案是否具有项目基本信息？"
+                  prop="planB"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.planB"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in planOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="测评方案是否具有抽选的被测对象的信息？"
+                  prop="planC"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.planC"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in planOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="测评方案是否具有工具扫描和渗透测试内容？（★）"
+                  prop="planD"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.planD"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in planOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item
+                  label-width="430px"
+                  label="测评方案关键内容是否准确？"
+                  prop="planE"
+                >
+                  <el-radio-group
+                    v-model="paymentOrderModel.planE"
+                    size="medium"
+                  >
+                    <el-radio
+                      v-for="(item, index) in planOptions"
+                      :key="index"
+                      :label="item.value"
+                      :disabled="item.disabled"
+                      >{{ item.label }}</el-radio
+                    >
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+            </div>
+            <el-col :span="24">
+              <el-form-item label="评审过程记录" prop="reviewRecord ">
+                <el-input
+                  v-model="paymentOrderModel.reviewRecord"
+                  type="textarea"
+                  placeholder="请输入评审过程记录"
+                  :autosize="{ minRows: 4, maxRows: 10 }"
+                  :style="{ width: '100%' }"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="评审意见" prop="reviewOpinion ">
+                <el-input
+                  v-model="paymentOrderModel.reviewOpinion"
+                  type="textarea"
+                  placeholder="请输入评审意见"
+                  :autosize="{ minRows: 4, maxRows: 10 }"
+                  :style="{ width: '100%' }"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="评审结论" prop="reviewResult">
+                <el-radio-group
+                  v-model="paymentOrderModel.reviewResult"
+                  size="medium"
+                >
+                  <el-radio
+                    v-for="(item, index) in reviewResultOptions"
+                    :key="index"
+                    :label="item.value"
+                    :disabled="item.disabled"
+                    >{{ item.label }}</el-radio
+                  >
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+            <!-- <el-col v-if="this.mustop.id == 1" :span="24">
+              <el-form-item label="附件">
+                <el-upload
+                  class="upload-demo"
+                  action
+                  :limit="10"
+                  :file-list="formFileList"
+                  :on-exceed="formHandleExceed"
+                  :on-remove="formFileListRemove"
+                  :before-upload="beforeUploadForm"
+                  :auto-upload="false"
+                  :on-change="fileChangeformFileList"
+                  multiple
+                >
+                  <el-button size="mini" type="primary">上传附件</el-button>
+                </el-upload>
+              </el-form-item>
+            </el-col> -->
+          </el-form>
+        </el-row>
+        <div slot="footer">
+          <el-button @click="kslsssy = false">取消</el-button>
+          <el-button type="primary" @click="handelConfirm">确定</el-button>
+        </div>
+      </el-dialog>
+      <el-dialog
+        :title="kslitafy.name"
         :visible.sync="kslistdatafy"
         :close-on-click-modal="false"
         width="800px"
@@ -256,12 +685,28 @@
               >
             </div>
           </el-form-item>
+
           <el-form-item
-            label="优先级"
-            :label-width="formLabelWidth"
-            prop="projectPriority"
-            size="small"
+            v-if="formsendType.sendType == 1 && kslitafy.type == 1"
+            label="非技术审核人"
           >
+            <el-select
+              v-model="formsendType.untechnologyId"
+              size="small"
+              filterable
+              multiple
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in zkLiRenLIst"
+                :key="item.userId"
+                :label="item.userName"
+                :value="item.userId"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="优先级" prop="projectPriority" size="small">
             <el-select
               v-model="formsendType.priority"
               placeholder="请选择优先级"
@@ -332,13 +777,22 @@ export default {
   data() {
     return {
       kslistdatafy: false,
+      kslsssy: false,
       formMaxSize: 10, // 上传文件大小
       formFileList: [], // 显示评测上传文件
       uploadFormFileList: [], // 确定上传文件，
       formpanFileList: [], // 显示备案证上传文件
-
+      zkLiRenLIst: [],
       tabList: [],
       pcLinfotabList: [],
+      kslitafy: {
+        name: "",
+        type: 1,
+      },
+      mustop: {
+        title: "新建",
+        id: 1,
+      },
       // 文件类型
       formsendType: {
         sendType: 1,
@@ -346,9 +800,283 @@ export default {
         technologyId: "",
         priority: 1,
         reason: "",
+        untechnologyId: null,
       },
+      pingcheji: 1,
+      paymentOrderModel: {
+        link: 1,
+        reviewFirstTime: "",
+        reviewActualTime: "",
+        time: "",
+        planA: null,
+        planB: null,
+        planC: null,
+        planD: null,
+        planE: null,
+        assessor: null,
+        department: null,
+        contact: null,
+        reviewA: null,
+        reviewB: null,
+        reviewC: null,
+        reviewD: null,
+        reviewE: null,
+        reviewF: null,
+        reviewG: null,
+        reviewRecord: null,
+        reviewOpinion: null,
+        reviewResult: null,
+      },
+      assessorOptions: [
+        {
+          label: "选项一",
+          value: 1,
+        },
+        {
+          label: "选项二",
+          value: 2,
+        },
+      ],
       jsuoptions: [],
+      rules: {
+        planA: [
+          {
+            required: true,
+            message:
+              "测评方案对被测系统和调查对象的描述是否与调查表一致？不能为空",
+            trigger: "change",
+          },
+        ],
+        planB: [
+          {
+            required: true,
+            message: "测评方案是否具有项目基本信息？不能为空",
+            trigger: "change",
+          },
+        ],
+        planC: [
+          {
+            required: true,
+            message: "测评方案是否具有抽选的被测对象的信息？不能为空",
+            trigger: "change",
+          },
+        ],
+        planD: [
+          {
+            required: true,
+            message: "测评方案是否具有工具扫描和渗透测试内容？（★）不能为空",
+            trigger: "change",
+          },
+        ],
+        planE: [
+          {
+            required: true,
+            message: "测评方案关键内容是否准确？不能为空",
+            trigger: "change",
+          },
+        ],
+        reviewFirstTime: [
+          {
+            required: true,
+            message: "请选择评审时间",
+            trigger: "change",
+          },
+        ],
+        time: [
+          {
+            required: true,
+            message: "请选择评审时间",
+            trigger: "change",
+          },
+        ],
+        assessor: [
+          {
+            required: true,
+            message: "请选择评审参加人员",
+            trigger: "change",
+          },
+        ],
+        department: [
+          {
+            required: true,
+            message: "请输入被测单位部门",
+            trigger: "blur",
+          },
+        ],
+        contact: [
+          {
+            required: true,
+            message: "请输入被测单位联系人",
+            trigger: "blur",
+          },
+        ],
+        reviewA: [
+          {
+            required: true,
+            message:
+              "测评报告对被测系统和抽选对象的描述是否与测评方案一致？不能为空",
+            trigger: "change",
+          },
+        ],
+        reviewB: [
+          {
+            required: true,
+            message: "测评记录是否清晰、详实？不能为空",
+            trigger: "change",
+          },
+        ],
+        reviewC: [
+          {
+            required: true,
+            message: "测评项的符合情况判断是否准确？不能为空",
+            trigger: "change",
+          },
+        ],
+        reviewD: [
+          {
+            required: true,
+            message: "测评报告中具有工具扫描和渗透测试的结果？（★）不能为空",
+            trigger: "change",
+          },
+        ],
+        reviewE: [
+          {
+            required: true,
+            message: "安全问题的描述与评判是否准确？不能为空",
+            trigger: "change",
+          },
+        ],
+        reviewF: [
+          {
+            required: true,
+            message: "整改建议是否完整、准确、合理？不能为空",
+            trigger: "change",
+          },
+        ],
+        reviewG: [
+          {
+            required: true,
+            message: "测评结论是否具准确？不能为空",
+            trigger: "change",
+          },
+        ],
+        reviewRecord: [
+          {
+            required: true,
+            message: "请输入评审过程记录",
+            trigger: "blur",
+          },
+        ],
+        reviewOpinion: [
+          {
+            required: true,
+            message: "请输入评审意见",
+            trigger: "blur",
+          },
+        ],
+        reviewResult: [
+          {
+            required: true,
+            message: "评审结论不能为空",
+            trigger: "change",
+          },
+        ],
+      },
       fanganfotabList: [],
+      reviewAOptions: [
+        {
+          label: "是",
+          value: 1,
+        },
+        {
+          label: "否",
+          value: 0,
+        },
+      ],
+      reviewBOptions: [
+        {
+          label: "是",
+          value: 1,
+        },
+        {
+          label: "否",
+          value: 0,
+        },
+      ],
+      reviewCOptions: [
+        {
+          label: "是",
+          value: 1,
+        },
+        {
+          label: "否",
+          value: 0,
+        },
+      ],
+      planOptions: [
+        {
+          label: "是",
+          value: 1,
+        },
+        {
+          label: "否",
+          value: 0,
+        },
+      ],
+      reviewDOptions: [
+        {
+          label: "是",
+          value: 1,
+        },
+        {
+          label: "否",
+          value: 0,
+        },
+      ],
+      reviewEOptions: [
+        {
+          label: "是",
+          value: 1,
+        },
+        {
+          label: "否",
+          value: 0,
+        },
+      ],
+      reviewFOptions: [
+        {
+          label: "是",
+          value: 1,
+        },
+        {
+          label: "否",
+          value: 0,
+        },
+      ],
+      reviewGOptions: [
+        {
+          label: "是",
+          value: 1,
+        },
+        {
+          label: "否",
+          value: 0,
+        },
+      ],
+      reviewResultOptions: [
+        {
+          label: "合格",
+          value: 1,
+        },
+        {
+          label: "基本合格",
+          value: 2,
+        },
+        {
+          label: "不合格",
+          value: 3,
+        },
+      ],
       projectPriorityOptions: [
         // 正常，紧急，特批加急 （默认：正常）
         {
@@ -369,6 +1097,8 @@ export default {
   created() {
     this.revifindListok();
     this.findTelListfindPlan();
+    this.userFindReview();
+    this.userreviewfindAssessor();
   },
   computed: {
     ...mapState("d2admin", {
@@ -377,6 +1107,126 @@ export default {
     }),
   },
   methods: {
+    // 获取测评师
+    async userreviewfindAssessor() {
+      let res = await this.$api.userreviewfindAssessor({ level: 2 });
+      this.assessorOptions = res.data;
+    },
+    kslistdata(name, type) {
+      this.kslitafy = {
+        name: name,
+        type: type,
+      };
+      this.kslistdatafy = true;
+    },
+    addListks(item) {
+      this.mustop = {
+        title: "新建",
+        id: 1,
+      };
+      this.userpassiveCompany();
+      this.pingcheji = item;
+      this.kslsssy = true;
+    },
+    // 查询被测单位信息
+    async userpassiveCompany() {
+      let res = await this.$api.userpassiveCompany({
+        projectId: this.xmu_info.projectId,
+      });
+      this.paymentOrderModel.department = res.data.department;
+      this.paymentOrderModel.contact = res.data.contacts;
+    },
+    // 新建提交
+    handelConfirm() {
+      this.$refs["paymentOrderModel"].validate(async (valid) => {
+        if (!valid) {
+          setTimeout(() => {
+            const isError = document.getElementsByClassName("is-error");
+            isError[0].querySelector("input").focus();
+          }, 100);
+          return false;
+        }
+        let loading = this.$loading({
+          lock: true,
+          text: "上传中，请稍候...",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.7)",
+        });
+        let formData = new FormData();
+        if (this.formFileList.length !== 0) {
+          this.formFileList.forEach((file) => {
+            formData.append("files", file);
+          });
+        }
+        if (this.mustop.id == 1) {
+          this.paymentOrderModel.projectId = this.xmu_info.projectId;
+          this.paymentOrderModel.id = this.xmu_info.reviewId;
+          for (const key in this.paymentOrderModel) {
+            formData.append(key, this.paymentOrderModel[key]);
+          }
+        }
+        let res = "";
+        if (this.pingcheji == 1) {
+          if (this.mustop.id == 1) {
+            res = await this.$api.userreviewSave(formData);
+          } else {
+            res = await this.$api.updateReviewReview(this.paymentOrderModel);
+          }
+        } else if (this.pingcheji == 2) {
+          if (this.mustop.id == 1) {
+            res = await this.$api.userresavePlan(formData);
+          } else {
+            res = await this.$api.updatePlanReview(this.paymentOrderModel);
+          }
+        }
+        let type;
+        if (this.paymentOrderModel.reviewResult == 1) {
+          type = 1;
+        } else {
+          type = 0;
+        }
+        if (res.code === 20000) {
+          loading.close();
+          this.$message({
+            message: "创建成功",
+            type: "success",
+          });
+          // let baokao = this.tabList.filter((item) => item.fileType == 1);
+          let fanan = this.tabList.filter((item) => item.fileType != 1);
+          // this.$api.API_reporreviewFirst({
+          //   type,
+          //   projectId: this.xmu_info.projectId,
+          //   userName: this.xmu_info.row.approvedName
+          //     ? this.xmu_info.row.approvedName
+          //     : this.info.name,
+          //   time: this.paymentOrderModel.reviewFirstTime,
+          //   uploadName: baokao[0].userName,
+          // });
+          let fileName = [];
+          let fileUrl = [];
+          fanan[0].reportReviewModels.forEach((iis) => {
+            fileName.push(iis.fileName);
+            fileUrl.push(iis.fileUrl);
+          });
+          if (this.pingcheji == 2 && this.paymentOrderModel.link == 2) {
+            this.$api.updateDocewFirst({
+              type,
+              projectId: this.xmu_info.projectId,
+              userName: this.xmu_info.row.approvedName
+                ? this.xmu_info.row.approvedName
+                : this.info.name,
+              uploadTime: fanan[0].uploadTime,
+              uploadName: fanan[0].userName,
+              fileName,
+              fileUrl,
+            });
+          }
+          this.close();
+          this.userreviewFind();
+        }
+        loading.close();
+      });
+    },
     // 查询评审记录列表
     async userreviewFind() {
       let res = await this.$api.userreviewFind({
@@ -387,6 +1237,28 @@ export default {
         projectId: this.xmu_info.projectId,
       });
       this.fanganfotabList = refangan.data;
+    },
+    async userFindReview() {
+      let res = await this.$api.findTechnologypdate();
+      if (res.code === 20000) {
+        this.zkLiRenLIst = res.data;
+      }
+    },
+    // 权限
+    isOplis() {
+      if (
+        (this.info.user_info.departmentId >= 3 &&
+          this.info.user_info.departmentId <= 5) ||
+        this.info.user_info.departmentId == 8 ||
+        this.info.user_info.departmentId == 9 ||
+        (this.info.user_info.departmentId >= 19 &&
+          this.info.user_info.departmentId <= 22) ||
+        this.info.user_info.userType == 1
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     },
     // 获取本部门技术人员
     async findTelListfindPlan() {
@@ -540,7 +1412,7 @@ export default {
         this.formFileList = [];
         this.formpanFileList = [];
         this.remarks = "";
-        this.kslistdatafy = false;
+        this.kslsssy = false;
         this.revifindListok();
       } else {
       }

@@ -88,7 +88,7 @@ export default {
       component: _import('demo/SystemComposition/fwq'),
       meta: {
         ...meta,
-        title: '服务器/存储设备'
+        title: '服务器'
       }
     },
     {
@@ -106,7 +106,7 @@ export default {
       component: _import('demo/SystemComposition/restsList'),
       meta: {
         ...meta,
-        title: '其他设备'
+        title: '其他系统或设备'
       }
     },
     {

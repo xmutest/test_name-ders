@@ -434,7 +434,8 @@ export default {
       fractionModelList.push(item);
       let res = await this.$api.SYS_FieldSurveYUpdate(fractionModelList);
       if (res.code === 20000) {
-        this.getDataList();
+        this.$message.success("成功");
+        // this.getDataList();
       }
     },
     async getDataList() {

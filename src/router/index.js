@@ -77,7 +77,12 @@ router.beforeEach(async (to, from, next) => {
           next()
         } else {
           Message.error("请选择项目在进行操作！！");
-          next(false);
+          next({
+            name: 'Jinxm',
+            query: {
+              // redirect: to.fullPath
+            }
+          })
         }
       } else {
         next()
@@ -89,7 +94,7 @@ router.beforeEach(async (to, from, next) => {
       next({
         name: 'login',
         query: {
-          redirect: to.fullPath
+          // redirect: to.fullPath
         }
       })
       // https://github.com/d2-projects/d2-admin/issues/138

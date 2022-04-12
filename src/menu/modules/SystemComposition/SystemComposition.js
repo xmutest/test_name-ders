@@ -44,7 +44,7 @@ export default {
     },
     {
       path: `${pre}fwq`,
-      title: '服务器/存储设备',
+      title: '服务器',
       icon: '  iconfont icon-fuwuqi'
     },
     {
@@ -54,7 +54,7 @@ export default {
     },
     {
       path: `${pre}restsList`,
-      title: '其他设备',
+      title: '其他系统或设备',
       icon: '  iconfont icon-xianchangshebei'
     },
     {

@@ -165,7 +165,9 @@
                             : ''
                         "
                       >
-                        <span>{{ scope.row.important==1?'是':'否' }}</span>
+                        <span>{{
+                          scope.row.important == 1 ? "是" : "否"
+                        }}</span>
                       </p>
                     </template>
                   </el-table-column>
@@ -935,20 +937,95 @@
         title="派单"
         :visible.sync="paidanFormVisible"
       >
-        <el-select
-          multiple
-          v-model="paidanginfo.sendId"
-          clearable
-          placeholder="请选择"
+        <el-form
+          ref="paidanginfo"
+          :model="paidanginfo"
+          :rules="rules"
+          size="medium"
+          label-width="140px"
+          label-position="left"
         >
-          <el-option
-            v-for="item in paidanFormList"
-            :key="item.userId"
-            :label="item.userName"
-            :value="item.userId"
-          >
-          </el-option>
-        </el-select>
+          <el-form-item label="报告来源" prop="out">
+            <el-radio-group v-model="paidanginfo.out" size="medium">
+              <el-radio
+                v-for="(item, index) in outOptions"
+                :key="index"
+                disabled
+                :label="item.value"
+                >{{ item.label }}</el-radio
+              >
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="技术部分审核" prop="technologyName">
+            <span>{{ paidanginfo.technologyName }}</span>
+            <!-- <el-input
+              v-model="paidanginfo.technologyName"
+              placeholder="请输入技术部分审核"
+              clearable
+              :style="{ width: '100%' }"
+            ></el-input> -->
+          </el-form-item>
+          <!-- <el-form-item label="质控人员" prop="sendId">
+            <el-select
+              v-model="paidanginfo.sendId"
+              placeholder="请选择下拉选择质控人员"
+              clearable
+              :style="{ width: '100%' }"
+            >
+              <el-option
+                v-for="(item, index) in sendIdOptions"
+                :key="index"
+                :label="item.userName"
+                :value="item.userId"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item> -->
+          <el-form-item label="重点抽查项目" prop="important">
+            <el-radio-group v-model="paidanginfo.important" size="medium">
+              <el-radio
+                v-for="(item, index) in importantOptions"
+                :key="index"
+                :label="item.value"
+                :disabled="item.disabled"
+                >{{ item.label }}</el-radio
+              >
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="技术部分审核员" prop="technologySendId">
+            <el-select
+              v-model="paidanginfo.technologySendId"
+              placeholder="请选择技术部分审核员"
+              clearable
+              multiple
+              :style="{ width: '100%' }"
+            >
+              <el-option
+                v-for="(item, index) in sendIdOptions"
+                :key="index"
+                :label="item.userName"
+                :value="item.userId"
+                :disabled="item.disabled"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="非技术部分审核员" prop="untechnologySendId">
+            <el-select
+              v-model="paidanginfo.untechnologySendId"
+              placeholder="请选择非技术部分审核员"
+              clearable
+              multiple
+              :style="{ width: '100%' }"
+            >
+              <el-option
+                v-for="(item, index) in sendIdOptions"
+                :key="index"
+                :label="item.userName"
+                :value="item.userId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
         <div class="dia-footer">
           <el-button type="primary" @click="paidangtijoap()" v-throttle
             >保存</el-button
@@ -1544,6 +1621,36 @@ export default {
             trigger: "change",
           },
         ],
+        out: [
+          {
+            required: true,
+            message: "报告来源不能为空",
+            trigger: "change",
+          },
+        ],
+        technologyName: [],
+        sendId: [
+          {
+            required: true,
+            message: "请选择下拉选择质控人员",
+            trigger: "change",
+          },
+        ],
+        important: [],
+        technologySendId: [
+          {
+            required: true,
+            message: "请选择技术部分审核员",
+            trigger: "change",
+          },
+        ],
+        untechnologySendId: [
+          {
+            required: true,
+            message: "请选择非技术部分审核员",
+            trigger: "change",
+          },
+        ],
         // membersIdList: [
         //   { required: true, message: "请选择项目参与人", trigger: "blur" },
         // ],
@@ -1560,13 +1667,66 @@ export default {
       ],
       // 派单
       paidanFormVisible: false,
-      paidanFormList: [],
       paidanginfo: {
-        sendId: "",
-        reviewId: "",
+        out: 0,
+        technologyName: null,
+        sendId: null,
+        important: null,
+        technologySendId: null,
+        untechnologySendId: null,
       },
       radio_projectId: 0,
       isTtop: true,
+      outOptions: [
+        {
+          label: "内部",
+          value: 0,
+        },
+        {
+          label: "外部",
+          value: 1,
+        },
+      ],
+      sendIdOptions: [
+        {
+          label: "选项一",
+          value: 1,
+        },
+        {
+          label: "选项二",
+          value: 2,
+        },
+      ],
+      importantOptions: [
+        {
+          label: "是",
+          value: 1,
+        },
+        {
+          label: "否",
+          value: 0,
+        },
+      ],
+      technologySendIdOptions: [
+        {
+          label: "选项一",
+          value: 1,
+        },
+        {
+          label: "选项二",
+          value: 2,
+        },
+      ],
+      untechnologySendIdOptions: [
+        {
+          label: "选项一",
+          value: 1,
+        },
+        {
+          label: "选项二",
+          value: 2,
+        },
+      ],
     };
   },
   computed: {
@@ -1580,6 +1740,7 @@ export default {
     this.projectModel.queryType = this.queryType;
     this.ProjectQueryList();
     this.gEtksrenyuanList();
+    this.findTelListfindPlan();
   },
   methods: {
     // 项目复制分段
@@ -1810,9 +1971,12 @@ export default {
     },
     // 派单
     async Listpaidan(row) {
+      Object.keys(this.paidanginfo).forEach((key) => {
+        this.paidanginfo[key] = row[key];
+      });
       this.optionTo(row);
       let res = await this.$api.userFindReviewok();
-      this.paidanFormList = res.data;
+      this.sendIdOptions = res.data;
       this.paidanFormVisible = true;
       this.ProjectQueryList();
     },
@@ -1853,26 +2017,27 @@ export default {
     },
     // 派单提交
     async paidangtijoap() {
-      if (
-        this.paidanginfo.sendId == "" ||
-        this.paidanginfo.sendId == undefined
-      ) {
-        return this.$message.error("请选择人员");
-      }
-      this.paidanginfo.projectId = this.xmu_info.projectId;
-      let res = await this.$api.userreviewSendReview(this.paidanginfo);
-      if (res.code === 20000) {
-        this.$message({
-          message: "派单成功！！",
-          type: "success",
-        });
-        this.paidanginfo = {
-          sendId: "",
-          reviewId: "",
-        };
-        this.paidanFormVisible = false;
-        this.ProjectQueryList();
-      }
+      this.$refs["paidanginfo"].validate(async (valid) => {
+        if (!valid) return;
+        this.paidanginfo.projectId = this.xmu_info.projectId;
+        let res = await this.$api.userreviewSendReview(this.paidanginfo);
+        if (res.code === 20000) {
+          this.$message({
+            message: "派单成功！！",
+            type: "success",
+          });
+          this.paidanginfo = {
+            out: 0,
+            technologyName: null,
+            sendId: null,
+            important: null,
+            technologySendId: null,
+            untechnologySendId: null,
+          };
+          this.paidanFormVisible = false;
+          this.ProjectQueryList();
+        }
+      });
     },
     // 搜索
     searchBi() {
@@ -2343,6 +2508,7 @@ export default {
       let res = await this.$api.findTelListfindPlan();
       if (res.code === 20000) {
         this.clockPeopleOptions = res.data;
+        // this.technologySendIdOptions = res.data;
       }
     },
     updatabmitForm() {
@@ -2365,10 +2531,10 @@ export default {
       let res = await this.$api.findTechnologypdate();
       if (res.code === 20000) {
         this.ksrenyuanList = res.data;
+        // this.untechnologySendIdOptions = res.data;
       }
     },
     databmitdak() {
-      this.findTelListfindPlan();
       this.formFileList = [];
       if (this.inpuniondel.fileList) {
         this.inpuniondel.fileList.forEach((item) => {
