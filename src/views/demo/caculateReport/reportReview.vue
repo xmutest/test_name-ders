@@ -800,7 +800,7 @@ export default {
         technologyId: "",
         priority: 1,
         reason: "",
-        untechnologyId: null,
+        untechnologyId: "",
       },
       pingcheji: 1,
       paymentOrderModel: {
@@ -1413,6 +1413,7 @@ export default {
         this.formpanFileList = [];
         this.remarks = "";
         this.kslsssy = false;
+        this.kslistdatafy = false;
         this.revifindListok();
       } else {
       }

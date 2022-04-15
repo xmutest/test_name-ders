@@ -88,7 +88,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item
-                  label="报告日期："
+                  label="计划书日期："
                   class="kstlis"
                   prop="reportTime"
                 >
@@ -110,7 +110,7 @@
                     :style="{ width: '100%' }"
                   ></el-input> </el-form-item
               ></el-col>
-              <el-col :span="24">
+              <!-- <el-col :span="24">
                 <el-form-item label="报告编号：" prop="reportNum">
                   <el-input
                     v-model="assessmentGroup.reportNum"
@@ -118,7 +118,7 @@
                     :style="{ width: '100%' }"
                   ></el-input>
                 </el-form-item>
-              </el-col>
+              </el-col> -->
             </el-form>
           </div>
           <div class="tijiaobaoc">
@@ -144,12 +144,12 @@ export default {
         manageEvaluationTeam: undefined,
         penetrationTestTeam: undefined,
         // 报告编号()
-        reportNum: "",
+        // reportNum: "",
         // 备案证明编号()
         recordSn: "",
         // 报告名称()
         reportName: "",
-        // 报告日期()
+        // 计划书日期()
         reportTime: "",
       },
       rules: {
@@ -160,13 +160,13 @@ export default {
             trigger: "blur",
           },
         ],
-        reportNum: [
-          {
-            required: true,
-            message: "请输入报告编号",
-            trigger: "blur",
-          },
-        ],
+        // reportNum: [
+        //   {
+        //     required: true,
+        //     message: "请输入报告编号",
+        //     trigger: "blur",
+        //   },
+        // ],
         reportName: [
           {
             required: true,
@@ -177,7 +177,7 @@ export default {
         reportTime: [
           {
             required: true,
-            message: "请选择报告日期",
+            message: "请选择计划书日期",
             trigger: "change",
           },
         ],
@@ -238,14 +238,14 @@ export default {
       }
       this.assessmentGroup.reportTime = date.getTime();
       if (this.info.user_info.companyCode != null) {
-        let lst = `${this.xmu_info.data.recordSn}-${dataTs.substring(
-          2,
-          4
-        )}-${this.info.user_info.companyCode.substring(
-          this.info.user_info.companyCode.length - 6
-        )}`;
+        // let lst = `${this.xmu_info.data.recordSn}-${dataTs.substring(
+        //   2,
+        //   4
+        // )}-${this.info.user_info.companyCode.substring(
+        //   this.info.user_info.companyCode.length - 6
+        // )}`;
         let Nmas = `${this.xmu_info.data.evaluatedUnit}_${this.xmu_info.data.systemName}项目计划书`;
-        this.assessmentGroup.reportNum = lst;
+        // this.assessmentGroup.reportNum = lst;
         this.assessmentGroup.recordSn = this.xmu_info.data.recordSn;
         this.assessmentGroup.reportName = Nmas;
       }

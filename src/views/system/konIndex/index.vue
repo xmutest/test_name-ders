@@ -1637,13 +1637,13 @@ export default {
           },
         ],
         important: [],
-        technologySendId: [
-          {
-            required: true,
-            message: "请选择技术部分审核员",
-            trigger: "change",
-          },
-        ],
+        // technologySendId: [
+        //   {
+        //     required: true,
+        //     message: "请选择技术部分审核员",
+        //     trigger: "change",
+        //   },
+        // ],
         untechnologySendId: [
           {
             required: true,
