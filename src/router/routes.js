@@ -4,17 +4,20 @@ import SystemComposition from './SystemComposition/SystemComposition';
 import siteVerification from './on-siteVerification/siteVerification';
 import GlobalAssessment from './GlobalAssessment/GlobalAssessment';
 import AssessmentAnd from './AssessmentAnd/AssessmentAnd';
+import caculateReport from './caculateReport/caculateReport';
 import OverallEvaluation from './OverallEvaluation/OverallEvaluation';
+// import projectlist from './projectlist/projectlist';
 // 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 /**
  * 在主框架内显示
- */ 
-const frameIn = [
-  {
+ */
+const frameIn = [{
     path: '/',
-    redirect: { name: 'index' },
+    redirect: {
+      name: 'index'
+    },
     component: layoutHeaderAside,
     children: [
       // 首页
@@ -25,6 +28,51 @@ const frameIn = [
           auth: true
         },
         component: _import('system/index')
+      },
+      {
+        path: 'Jinxm',
+        name: 'Jinxm',
+        meta: {
+          auth: true,
+          title: '进行中的项目'
+        },
+        component: _import('system/Jinxm/Jinxm')
+      },
+      {
+        path: 'onxmu',
+        name: 'onxmu',
+        meta: {
+          auth: true,
+          title: '已完成的项目'
+        },
+        component: _import('system/onxmu/onxmu')
+      },
+      {
+        path: 'woxmu',
+        name: 'woxmu',
+        meta: {
+          auth: true,
+          title: '我创建的项目'
+        },
+        component: _import('system/woxmu/woxmu')
+      },
+      {
+        path: 'usercontrol',
+        name: 'usercontrol',
+        meta: {
+          auth: true,
+          title: '用户管理'
+        },
+        component: _import('system/userControl/index')
+      },
+      {
+        path: 'deptanage',
+        name: 'deptanage',
+        meta: {
+          auth: true,
+          title: '部门管理'
+        },
+        component: _import('system/deptanage/index')
       },
       // 演示页面
       // 系统 前端日志
@@ -50,6 +98,15 @@ const frameIn = [
         name: 'redirect',
         hidden: true,
         component: _import('system/function/redirect')
+      },
+      {
+        path: 'todealwith',
+        name: 'todealwith',
+        meta: {
+          auth: true,
+          title: '待我处理'
+        },
+        component: _import('system/todealwith/todealwith')
       }
     ]
   },
@@ -58,7 +115,8 @@ const frameIn = [
   siteVerification,
   GlobalAssessment,
   AssessmentAnd,
-  OverallEvaluation
+  OverallEvaluation,
+  caculateReport
 ]
 
 /**
@@ -76,13 +134,11 @@ const frameOut = [
 /**
  * 错误页面
  */
-const errorPage = [
-  {
-    path: '*',
-    name: '404',
-    component: _import('system/error/404')
-  }
-]
+const errorPage = [{
+  path: '*',
+  name: '404',
+  component: _import('system/error/404')
+}]
 
 // 导出需要显示菜单的
 export const frameInRoutes = frameIn

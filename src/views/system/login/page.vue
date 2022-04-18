@@ -2,19 +2,32 @@
   <div class="page-login">
     <div class="page-login--layer page-login--layer-area">
       <ul class="circles">
-        <li v-for="n in 10" :key="n"></li>
+        <li v-for="n in 20" :key="n"></li>
       </ul>
     </div>
-    <div class="page-login--layer page-login--layer-time" flex="main:center cross:center">{{time}}</div>
     <div class="page-login--layer">
-      <div class="page-login--content" flex="dir:top main:justify cross:stretch box:justify">
+      <div
+        class="page-login--content"
+        flex="dir:top main:justify cross:stretch box:justify"
+      >
         <div class="page-login--content-header">
-          <p class="page-login--content-header-motto">时间是一切财富中最宝贵的财富</p>
+          <!-- <p class="page-login--content-header-motto">时间是一切财富中最宝贵的财富</p> -->
         </div>
-        <div class="page-login--content-main" flex="dir:top main:center cross:center">
+        <div
+          class="page-login--content-main"
+          flex="dir:top main:center cross:center"
+        >
           <!-- logo -->
-          <!-- <div style="font-size:1.58em;" class="page-login--logo">安全评测中心</div> -->
-          <img class="page-login--logo" src="./image/logo.png">
+          <div
+            style="font-size: 2.5em; font-weight: 700"
+            class="page-login-logo_item"
+          >
+            华南测评报告管理系统
+          </div>
+          <img
+            class="page-login--logo"
+            src="http://survey.iscn.org.cn/system/evaluate/img/logo2.c2ddc0ab.png"
+          />
           <!-- form -->
           <div class="page-login--form">
             <el-card shadow="never">
@@ -26,30 +39,57 @@
                 size="default"
               >
                 <el-form-item prop="username">
-                  <el-input type="text" v-model="formLogin.username" placeholder="用户名">
+                  <el-input
+                    type="text"
+                    v-model="formLogin.username"
+                    placeholder="用户名"
+                  >
                     <i slot="prepend" class="fa fa-user-circle-o"></i>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input type="password" v-model="formLogin.password" placeholder="密码">
+                  <el-input
+                    type="password"
+                    v-model="formLogin.password"
+                    placeholder="密码"
+                  >
                     <i slot="prepend" class="fa fa-keyboard-o"></i>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="code">
-                  <el-input type="text" v-model="formLogin.code" placeholder="验证码">
+                  <el-input
+                    type="text"
+                    v-model="formLogin.code"
+                    placeholder="验证码"
+                  >
                     <template slot="append">
-                      <img class="login-code" src="./image/login-code.png" />
+                      <div class="login-code" @click="refreshCode">
+                        <!--验证码组件-->
+                        <s-identify :identifyCode="identifyCode"></s-identify>
+                      </div>
+                      <!-- <img class="login-code" src="./image/login-code.png" /> -->
                     </template>
                   </el-input>
                 </el-form-item>
-                <el-button size="default" @click="submit" type="primary" class="button-login">登录</el-button>
+                <el-form-item style="margin-top: -15px; margin-bottom: 0px">
+                  <el-checkbox v-model="checked" style="color: #a0a0a0"
+                    >记住密码</el-checkbox
+                  >
+                </el-form-item>
+                <el-button
+                  size="default"
+                  @click="submit"
+                  type="primary"
+                  class="button-login"
+                  >登录</el-button
+                >
               </el-form>
             </el-card>
             <p class="page-login--options" flex="main:justify cross:center">
-              <span @click="nopassword">
+              <!-- <span @click="nopassword">
                 <d2-icon name="question-circle" />忘记密码
-              </span>
-              <span @click="register_add">注册用户</span>
+              </span> -->
+              <!-- <span @click="register_add">注册用户</span> -->
             </p>
             <!-- quick login -->
             <!-- <el-button class="page-login--quick" size="default" type="info" @click="dialogVisible = true">
@@ -58,36 +98,54 @@
           </div>
         </div>
         <div class="page-login--content-footer">
-          <p class="page-login--content-footer-locales">
-            <a
-              v-for="language in $languages"
-              :key="language.value"
-              @click="onChangeLocale(language.value)"
-            >{{ language.label }}</a>
-          </p>
+          <p class="page-login--content-footer-locales"></p>
           <p class="page-login--content-footer-copyright">
-            dengzehau
-            <d2-icon name="copyright" />2020 出品
-            <a href>@Fss</a>
-          </p>
-          <p class="page-login--content-footer-options">
-            <a href="#">帮助</a>
-            <a href="#">隐私</a>
-            <a href="#">条款</a>
+            <d2-icon name="copyright" />广州华南信息安全测评中心版权所有
+            <d2-icon name="copyright" />粤ICP备19011520号-1
+            <!-- <a href>@Fss</a> -->
           </p>
         </div>
       </div>
     </div>
-    <el-dialog title="快速选择用户" :visible.sync="dialogVisible" width="400px">
-      <el-row :gutter="10" style="margin: -20px 0px -10px 0px;">
-        <el-col v-for="(user, index) in users" :key="index" :span="8">
-          <div class="page-login--quick-user" @click="handleUserBtnClick(user)">
-            <d2-icon name="user-circle-o" />
-            <span>{{user.name}}</span>
-          </div>
-        </el-col>
-      </el-row>
-    </el-dialog>
+    <div class="NO_password">
+      <el-dialog
+        title="忘记密码"
+        :close-on-click-modal="false"
+        :visible.sync="dialogVisible"
+        width="150"
+      >
+        <el-form
+          :model="ruleForm"
+          status-icon
+          :rules="rules"
+          ref="ruleForm"
+          label-width="100px"
+          class="demo-ruleForm"
+        >
+          <el-form-item label="密码" prop="pass">
+            <el-input
+              type="password"
+              v-model="ruleForm.pass"
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="checkPass">
+            <el-input
+              type="password"
+              v-model="ruleForm.checkPass"
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submit_nopassword('ruleForm')"
+              >提交</el-button
+            >
+            <el-button @click="resetForm('ruleForm')">重置</el-button>
+            <el-button @click="dialogVisible = false">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -95,36 +153,61 @@
 import dayjs from "dayjs";
 import { mapActions } from "vuex";
 import localeMixin from "@/locales/mixin.js";
+
 export default {
   mixins: [localeMixin],
+
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.ruleForm.checkPass !== "") {
+          this.$refs.ruleForm.validateField("checkPass");
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
+    // 验证码
+    const validateCode = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入验证码"));
+      }
+      if (this.identifyCode !== value) {
+        // this.formLogin.code = "";
+        // this.refreshCode();
+        callback(new Error("请输入正确的验证码"));
+      } else {
+        callback();
+      }
+    };
     return {
+      // 记住密码
+      checked: true,
+      identifyCodes: "1234567890",
+      identifyCode: "",
       timeInterval: null,
       time: dayjs().format("HH:mm:ss"),
-      // 快速选择用户
       dialogVisible: false,
-      users: [
-        {
-          name: "Admin",
-          username: "admin",
-          password: "admin",
-        },
-        {
-          name: "Editor",
-          username: "editor",
-          password: "editor",
-        },
-        {
-          name: "User1",
-          username: "user1",
-          password: "user1",
-        },
-      ],
+      // 快速选择用户
+      ruleForm: {
+        pass: "",
+        checkPass: "",
+      },
       // 表单
       formLogin: {
-        username: "admin",
-        password: "admin",
-        code: "v9am",
+        username: "",
+        password: "",
+        code: "",
       },
       // 表单校验
       rules: {
@@ -142,34 +225,65 @@ export default {
             trigger: "blur",
           },
         ],
-        code: [
-          {
-            required: true,
-            message: "请输入验证码",
-            trigger: "blur",
-          },
-        ],
+        code: [{ validator: validateCode, trigger: "blur" }],
+        pass: [{ validator: validatePass, trigger: "blur" }],
+        checkPass: [{ validator: validatePass2, trigger: "blur" }],
       },
     };
+  },
+  created() {
+    this.refreshCode();
   },
   mounted() {
     this.timeInterval = setInterval(() => {
       this.refreshTime();
     }, 1000);
+    window.addEventListener("keydown", this.keyDown);
+    this.getCookie();
   },
   beforeDestroy() {
     clearInterval(this.timeInterval);
   },
   methods: {
+    keyDown(e) {
+      //如果是回车则执行登录方法
+      if (e.keyCode == 13) {
+        this.submit();
+      }
+    },
     ...mapActions("d2admin/account", ["login"]),
     refreshTime() {
       this.time = dayjs().format("HH:mm:ss");
     },
+    randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
+    },
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode +=
+          this.identifyCodes[this.randomNum(0, this.identifyCodes.length)];
+      }
+    },
     nopassword() {
-      this.$message({
-        message: "此功能未开放,如需请联系管理员",
-        type: "warning",
+      this.dialogVisible = true;
+    },
+    // 忘记密码
+    submit_nopassword(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
       });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     },
     register_add() {
       this.$message({
@@ -193,22 +307,67 @@ export default {
     submit() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          // 登录
-          // 注意 这里的演示没有传验证码
-          // 具体需要传递的数据请自行修改代码
-          
           this.login({
-            username: this.formLogin.username,
+            loginName: this.formLogin.username,
             password: this.formLogin.password,
-          }).then(() => { 
+          }).then(async () => {
+            let res = await this.$api.API_leadToAuthorize({ platformType: 3 });
+            if (res.code == 20000) {
+              window.sessionStorage.setItem("ms_token", res.data);
+            }
+            if (this.checked == true) {
+              //传入账号名，密码，和保存天数3个参数
+              this.setCookie(
+                this.formLogin.username,
+                this.formLogin.password,
+                7
+              );
+            } else {
+              console.log("清空Cookie");
+              //清空Cookie
+              this.clearCookie();
+            }
+            window.removeEventListener("keydown", this.keyDown, false);
             // 重定向对象不存在则返回顶层路径
             this.$router.replace(this.$route.query.redirect || "/");
           });
         } else {
           // 登录表单校验失败
-          this.$message.error("表单校验失败，请检查");
+          // this.$message.error("表单校验失败，请检查");
         }
       });
+    },
+    //设置cookie
+    setCookie(c_name, c_pwd, exdays) {
+      var exdate = new Date(); //获取时间
+      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
+      //字符串拼接cookie
+      window.document.cookie =
+        "userName" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
+      window.document.cookie =
+        "password" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
+    },
+    //读取cookie
+    getCookie: function () {
+      if (document.cookie.length > 0) {
+        var arr = document.cookie.split("; "); //这里显示的格式需要切割一下自己可输出看下
+        for (var i = 0; i < arr.length; i++) {
+          var arr2 = arr[i].split("="); //再次切割
+          //判断查找相对应的值
+          if (arr2[0] == "userName") {
+            //  console.log(arr2[1])
+            this.formLogin.username = arr2[1]; //保存到保存数据的地方
+          } else if (arr2[0] == "password") {
+            // console.log(arr2[1])
+            this.formLogin.password = arr2[1];
+          }
+        }
+        this.checked = true;
+      }
+    },
+    //清除cookie
+    clearCookie: function () {
+      this.setCookie("", "", -1); //修改2值都为空，天数为负1天就好了
     },
   },
 };
@@ -256,8 +415,11 @@ export default {
   // main
   .page-login--logo {
     width: 150px;
-    margin-bottom: 2em;
+    // margin-bottom: 2em;
     margin-top: -2em;
+  }
+  .page-login-logo_item {
+    margin-bottom: 35px;
   }
   // 登录表单
   .page-login--form {
@@ -265,6 +427,7 @@ export default {
     // 卡片
     .el-card {
       margin-bottom: 15px;
+      border-radius: 8%;
     }
     // 登录按钮
     .button-login {

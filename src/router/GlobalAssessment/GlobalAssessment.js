@@ -5,7 +5,8 @@ import layoutHeaderAside from '@/layout/header-aside'
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 const meta = {
-  auth: true
+  auth: true,
+  project: true
 }
 
 export default {
@@ -26,12 +27,47 @@ export default {
       }
     },
     {
+      path: 'issuelist',
+      name: `${pre}issuelist`,
+      component: _import('demo/GlobalAssessment/issueList'),
+      meta: {
+        ...meta,
+        title: '测评问题清单'
+      }
+    }, {
+      path: 'qingdang',
+      name: `${pre}qingdang`,
+      component: _import('demo/GlobalAssessment/qingdang'),
+      meta: {
+        ...meta,
+        title: '测评问题清单（盖章）'
+      }
+    },
+    {
+      path: 'difference',
+      name: `${pre}difference`,
+      component: _import('demo/GlobalAssessment/difference'),
+      meta: {
+        ...meta,
+        title: '差距分析报告'
+      }
+    },
+    {
+      path: 'kssueList',
+      name: `${pre}kssueList`,
+      component: _import('demo/GlobalAssessment/kssueList'),
+      meta: {
+        ...meta,
+        title: '现场测评结果记录'
+      }
+    },
+    {
       path: 'aqkzjaqcp',
       name: `${pre}aqkzjaqcp`,
       component: _import('demo/GlobalAssessment/aqkzjaqcp'),
       meta: {
         ...meta,
-        title: '安全控制间安全测评'
+        title: '安全控制点间安全测评'
       }
     },
     {
@@ -58,7 +94,25 @@ export default {
       component: _import('demo/GlobalAssessment/checkTest'),
       meta: {
         ...meta,
-        title: '验证测试'
+        title: '验证测试和接入点'
+      }
+    },
+    {
+      path: 'leakList',
+      name: `${pre}leakList`,
+      component: _import('demo/GlobalAssessment/leakList'),
+      meta: {
+        ...meta,
+        title: '漏洞扫描结果统计'
+      }
+    },
+    {
+      path: 'permeate',
+      name: `${pre}permeate`,
+      component: _import('demo/GlobalAssessment/permeate'),
+      meta: {
+        ...meta,
+        title: '渗透扫描结果统计'
       }
     }
   ])('demo-GlobalAssessment-')

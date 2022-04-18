@@ -1,8 +1,7 @@
-<!--总体评价-->
+<!--我创建的项目-->
 <template>
   <d2-container>
-    <template slot="header">总体评价</template>
-    总体评价
+    <template slot="header">我创建的项目</template>
   </d2-container>
 </template>
 

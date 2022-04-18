@@ -2,7 +2,7 @@
   <div
     class="d2-layout-header-aside-group"
     :style="styleLayoutMainGroup"
-    :class="{grayMode: grayActive}"
+    :class="{ grayMode: grayActive }"
   >
     <!-- 半透明遮罩 -->
     <div class="d2-layout-header-aside-mask"></div>
@@ -17,15 +17,18 @@
       >
         <router-link
           to="/index"
-          :class="{'logo-group': true, 'logo-transition': asideTransition}"
-          :style="{width: asideCollapse ? asideWidthCollapse : asideWidth}"
+          :class="{ 'logo-group': true, 'logo-transition': asideTransition }"
+          :style="{ width: asideCollapse ? asideWidthCollapse : asideWidth }"
           flex-box="0"
         >
           <img
             v-if="asideCollapse"
-            :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/icon-only.png`"
+            src="http://survey.iscn.org.cn/system/evaluate/img/logo2.c2ddc0ab.png"
           />
-          <img v-else :src="`${$baseUrl}image/theme/${themeActiveSetting.name}/logo/all1.png`" />
+          <img
+            v-else
+            src="http://survey.iscn.org.cn/system/evaluate/img/logo2.c2ddc0ab.png"
+          />
         </router-link>
         <div class="toggle-aside-btn" @click="handleToggleAside" flex-box="0">
           <d2-icon name="bars" />
@@ -34,46 +37,91 @@
         <!-- 顶栏右侧 -->
         <div class="d2-header-right" flex-box="0">
           <!-- 如果你只想在开发环境显示这个按钮请添加 v-if="$env === 'development'" -->
-          <d2-header-search @click="handleSearchClick" />
-          <d2-header-log />
           <d2-header-fullscreen />
-          <d2-header-theme />
-          <d2-header-size />
-          <d2-header-locales />
-          <d2-header-color />
           <d2-header-user />
         </div>
       </div>
       <!-- 下面 主体 -->
+
       <div class="d2-theme-container" flex-box="1" flex>
         <!-- 主体 侧边栏 -->
         <div
           flex-box="0"
           ref="aside"
-          :class="{'d2-theme-container-aside': true, 'd2-theme-container-transition': asideTransition}"
+          :class="{
+            'd2-theme-container-aside': true,
+            'd2-theme-container-transition': asideTransition,
+          }"
           :style="{
             width: asideCollapse ? asideWidthCollapse : asideWidth,
-            opacity: this.searchActive ? 0.5 : 1
+            opacity: this.searchActive ? 0.5 : 1,
           }"
         >
           <d2-menu-side />
         </div>
+
         <!-- 主体 -->
         <div class="d2-theme-container-main" flex-box="1" flex>
-          <!-- 搜索 -->
-          <transition name="fade-scale">
-            <div v-if="searchActive" class="d2-theme-container-main-layer" flex>
-              <d2-panel-search ref="panelSearch" @close="searchPanelClose" />
-            </div>
-          </transition>
           <!-- 内容 -->
+
           <transition name="fade-scale">
-            <div v-if="!searchActive" class="d2-theme-container-main-layer" flex="dir:top">
+            <div
+              v-if="!searchActive"
+              class="d2-theme-container-main-layer"
+              flex="dir:top"
+            >
               <!-- tab -->
+              <div style="margin: 10px 5px">
+                <span style="margin: 15px; font-size: 14px">
+                  当前测评项目：</span
+                >
+
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="xmu_info.name"
+                  placement="right-end"
+                >
+                  <el-button
+                    v-if="xmu_info.name"
+                    style="color: red"
+                    size="mini"
+                  >
+                    <span v-if="xmu_info.name.length > 50"
+                      >{{ xmu_info.name.substring(0, 50) }}....</span
+                    >
+                    <span v-else>{{ xmu_info.name }}</span>
+                  </el-button>
+                  <el-button v-else size="mini"> 当前无项目选择 </el-button>
+                </el-tooltip>
+                <span style="margin: 15px; font-size: 14px"
+                  >综合得分：<span
+                    v-if="totalscore && this.totalscore.projectId !== undefined"
+                    >{{ totalscore.totalFraction }}
+                    <span style="margin-left: 15px"
+                      >评级：{{ totalscore.fractionResult }}</span
+                    ></span
+                  >
+                  <span v-else>无</span>
+                </span>
+                <!-- <span
+                  class="er_ms_name"
+                  style="margin: 15px; font-size: 14px; color: purple"
+                >
+                  <span style="font-weight: bold">报告模版：</span>
+                  <el-radio-group
+                    @change="xuanzheradiomstjisfen"
+                    v-model="radiomstjisfen"
+                  >
+                    <el-radio :label="0">2019年旧版</el-radio>
+                    <el-radio :label="1">2021年新版</el-radio>
+                  </el-radio-group>
+                </span> -->
+              </div>
               <div class="d2-theme-container-main-header" flex-box="0">
                 <d2-tabs />
               </div>
-              <div style="margin: 10px 0;">当前评测项目：xxxxxx----xxxxx-xxxx</div>
+
               <!-- 页面 -->
               <div class="d2-theme-container-main-body" flex-box="1">
                 <transition :name="transitionActive ? 'fade-transverse' : ''">
@@ -87,21 +135,6 @@
         </div>
       </div>
     </div>
-    <el-dialog
-      title="警告!!!!!!!"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :close-on-click-modal="false"
-      :before-close="handleClose"
-    >
-      <span style="
-    color: red;
-    font-size: 18px;
-">评测过程中所有数据都需要按下方保存按钮才可保存,否则跳转数据将会丢失!!</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -110,13 +143,9 @@ import d2MenuSide from "./components/menu-side";
 import d2MenuHeader from "./components/menu-header";
 import d2Tabs from "./components/tabs";
 import d2HeaderFullscreen from "./components/header-fullscreen";
-import d2HeaderLocales from "./components/header-locales";
-import d2HeaderSearch from "./components/header-search";
-import d2HeaderSize from "./components/header-size";
-import d2HeaderTheme from "./components/header-theme";
+import WaterMark from "./waterMark";
 import d2HeaderUser from "./components/header-user";
-import d2HeaderLog from "./components/header-log";
-import d2HeaderColor from "./components/header-color";
+
 import { mapState, mapGetters, mapActions } from "vuex";
 import mixinSearch from "./mixins/search";
 export default {
@@ -127,25 +156,25 @@ export default {
     d2MenuHeader,
     d2Tabs,
     d2HeaderFullscreen,
-    d2HeaderLocales,
-    d2HeaderSearch,
-    d2HeaderSize,
-    d2HeaderTheme,
+
     d2HeaderUser,
-    d2HeaderLog,
-    d2HeaderColor,
   },
   data() {
     return {
-      dialogVisible: false,
       // [侧边栏宽度] 正常状态
       asideWidth: "200px",
       // [侧边栏宽度] 折叠状态
       asideWidthCollapse: "65px",
+      radiomstjisfen: window.sessionStorage.getItem("radiomstjisfen")
+        ? Number(window.sessionStorage.getItem("radiomstjisfen"))
+        : 1,
     };
   },
-  created() {
-    this.dialogVisible = true;
+  created() {},
+  mounted() {
+    let user_info = this.$store.state.d2admin.user.info.user_info;
+    console.log(this.$store.state.d2admin)
+    WaterMark(`${user_info.userName}`);
   },
   computed: {
     ...mapState("d2admin", {
@@ -154,6 +183,8 @@ export default {
       transitionActive: (state) => state.transition.active,
       asideCollapse: (state) => state.menu.asideCollapse,
       asideTransition: (state) => state.menu.asideTransition,
+      xmu_info: (state) => state.xmu.xmu_info,
+      totalscore: (state) => state.totalscore.totalscore.data,
     }),
     ...mapGetters("d2admin", {
       themeActiveSetting: "theme/activeSetting",
@@ -179,6 +210,15 @@ export default {
     },
   },
   methods: {
+    xuanzheradiomstjisfen() {
+      if (!this.xmu_info.name)
+        return this.$message.error("请选择项目在进行操作");
+      window.sessionStorage.setItem(
+        "radiomstjisfen",
+        Number(this.radiomstjisfen)
+      );
+      this.$api.CalculateFractionTotalFraction();
+    },
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then((_) => {
@@ -197,7 +237,46 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 // 注册主题
 @import "~@/assets/style/theme/register.scss";
+.d2-layout-header-aside-group
+  .d2-layout-header-aside-content
+  .d2-theme-header
+  .el-menu
+  .el-submenu
+  .el-submenu__title {
+  padding: 0 10px;
+}
+.er_ms_name {
+  // 添加颜色类
+  .el-radio__input.is-checked + .el-radio__label {
+    color: purple !important;
+  }
+  .el-radio__input.is-checked .el-radio__inner {
+    background: purple !important;
+    border-color: purple !important;
+  }
+}
+.water-mark-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  display: flex;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+.water-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: rgba(8, 8, 8, 0.1);
+  transform: rotate(-45deg);
+  user-select: none;
+}
 </style>

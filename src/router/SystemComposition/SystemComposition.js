@@ -5,25 +5,36 @@ import layoutHeaderAside from '@/layout/header-aside'
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 const meta = {
-  auth: true
+  auth: true,
+  project: true
 }
- 
+
 export default {
   path: '/demo/SystemComposition',
   name: 'demo-SystemComposition',
   meta,
   redirect: {
-    name: 'demo-SystemComposition-jf'
+    name: 'demo-SystemComposition-import_data'
   },
   component: layoutHeaderAside,
   children: (pre => [
+
+    {
+      path: 'import_data',
+      name: `${pre}import_data`,
+      component: _import('demo/SystemComposition/import_data'),
+      meta: {
+        ...meta,
+        title: '上传测评调研表'
+      }
+    },
     {
       path: 'jf',
       name: `${pre}jf`,
       component: _import('demo/SystemComposition/jf'),
       meta: {
         ...meta,
-        title: '机房'
+        title: '物理机房'
       }
     },
     {
@@ -68,7 +79,7 @@ export default {
       component: _import('demo/SystemComposition/xtglpt'),
       meta: {
         ...meta,
-        title: '系统管理平台/全局扩展'
+        title: '系统管理软件/平台'
       }
     },
     {
@@ -77,7 +88,7 @@ export default {
       component: _import('demo/SystemComposition/fwq'),
       meta: {
         ...meta,
-        title: '服务器/存储设备'
+        title: '服务器'
       }
     },
     {
@@ -86,7 +97,16 @@ export default {
       component: _import('demo/SystemComposition/zd'),
       meta: {
         ...meta,
-        title: '终端/ 感知设备/现场设备'
+        title: '终端设备'
+      }
+    }, ,
+    {
+      path: 'restsList',
+      name: `${pre}restsList`,
+      component: _import('demo/SystemComposition/restsList'),
+      meta: {
+        ...meta,
+        title: '其他系统或设备'
       }
     },
     {
@@ -104,7 +124,7 @@ export default {
       component: _import('demo/SystemComposition/keySort'),
       meta: {
         ...meta,
-        title: '关键数据类别'
+        title: '数据资源'
       }
     },
     {

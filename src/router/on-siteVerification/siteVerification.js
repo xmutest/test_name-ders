@@ -5,7 +5,8 @@ import layoutHeaderAside from '@/layout/header-aside'
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 const meta = {
-  auth: true
+  auth: true,
+  project: true
 }
 
 export default {
@@ -17,6 +18,15 @@ export default {
   },
   component: layoutHeaderAside,
   children: (pre => [{
+      path: 'import_data',
+      name: `${pre}import_data`,
+      component: _import('demo/on-siteVerification/import_data'),
+      meta: {
+        ...meta,
+        title: '上传现场记录表'
+      }
+    },
+    {
       path: 'safeEnviroment',
       name: `${pre}safeEnviroment`,
       component: _import('demo/on-siteVerification/safeEnviroment'),

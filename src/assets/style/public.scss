@@ -1,5 +1,5 @@
 @import '~@/assets/style/unit/color.scss';
-
+@import '~@/assets/style/al-incos/iconfont.css';
 // 工具类名统一前缀
 $prefix: d2;
 
@@ -7,6 +7,17 @@ $prefix: d2;
 %unable-select {
   user-select: none;
   cursor: pointer;
+}
+.tijiaobaoc{
+  text-align: right;
+ margin: 20px 0;
+}
+%unable-border-left {
+  border-left: 4px solid #007AF9;
+  padding: 8px 0px 8px 10px;
+  margin-bottom: 20px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 // 填满父元素
@@ -26,6 +37,7 @@ $prefix: d2;
   align-items: center;
   flex-direction: row;
 }
+
 %flex-center-col {
   display: flex;
   justify-content: center;

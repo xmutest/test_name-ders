@@ -5,7 +5,8 @@ import layoutHeaderAside from '@/layout/header-aside'
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 const meta = {
-  auth: true
+  auth: true,
+  project: true
 }
 
 export default {
@@ -42,15 +43,34 @@ export default {
         ...meta,
         title: '安全问题汇总'
       }
-    },
-    {
-      path: 'zgzt',
-      name: `${pre}zgzt`,
-      component: _import('demo/AssessmentAnd/zgzt'),
+    }, {
+      path: 'ztpj',
+      name: `${pre}ztpj`,
+      component: _import('demo/AssessmentAnd/ztpj'),
       meta: {
         ...meta,
-        title: '整改状态调整'
+        title: '总体评价'
       }
     },
+    {
+      path: 'company',
+      name: `${pre}company`,
+      component: _import('demo/AssessmentAnd/company'),
+      meta: {
+        ...meta,
+        title: '安全状况描述'
+      },
+
+    },
+    {
+      path: 'djcpjl',
+      name: `${pre}djcpjl`,
+      component: _import('demo/AssessmentAnd/djcpjl'),
+      meta: {
+        ...meta,
+        title: '等级测评结论'
+      },
+
+    }
   ])('demo-AssessmentAnd-')
 }

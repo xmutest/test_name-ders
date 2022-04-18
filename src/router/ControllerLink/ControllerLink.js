@@ -5,7 +5,8 @@ import layoutHeaderAside from '@/layout/header-aside'
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 
 const meta = {
-  auth: true
+  auth: true,
+  project:true
 }
 
 export default {
@@ -23,7 +24,7 @@ export default {
       component: _import('demo/ControllerLink/purpose'),
       meta: {
         ...meta,
-        title: '评测目的和依据'
+        title: '测评目的和依据'
       }
     },
     {
@@ -32,7 +33,7 @@ export default {
       component: _import('demo/ControllerLink/course'),
       meta: {
         ...meta,
-        title: '评测过程'
+        title: '测评过程'
       }
     },
     {
@@ -41,7 +42,7 @@ export default {
       component: _import('demo/ControllerLink/conditio'),
       meta: {
         ...meta,
-        title: '被测信息系统情况'
+        title: '被测单位信息'
       }
     }
     ,
