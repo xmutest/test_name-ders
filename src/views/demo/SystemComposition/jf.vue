@@ -80,7 +80,29 @@
           ></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column label="是否使用新指导书" width="130">
+      <el-table-column label="选择指导书" width="130">
+        <template slot-scope="scope">
+          <el-select
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                isNewBook: scope.row.resultBookId,
+              })
+            "
+            v-model="scope.row.resultBookId"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in iongeist"
+              :key="item.id"
+              :label="item.evaluationBookName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="是否使用新指导书" width="130">
         <template slot-scope="scope">
           <el-select
             @change="
@@ -101,7 +123,7 @@
             ></el-option>
           </el-select>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="备注">
         <template slot-scope="scope">
           <div
@@ -175,6 +197,7 @@ export default {
         { value: 2, label: "是" },
         { value: 1, label: "否" },
       ],
+      iongeist: [],
       tabledatas: [
         {
           computerRoomName: "",
@@ -185,6 +208,7 @@ export default {
           show: false,
           remarks: "",
           isNewBook: 1,
+          resultBookId: "",
         },
       ],
       formPage: {
@@ -197,6 +221,7 @@ export default {
   },
   created() {
     this.getlistdata();
+    this.compositiongeFile();
   },
   mounted() {
     var that = this;
@@ -224,6 +249,15 @@ export default {
     }),
   },
   methods: {
+    async compositiongeFile() {
+      let res = await this.$api.sysCompositiongeFile({
+        systemCompositionId: 1,
+      });
+      if (res.code === 20000) {
+        this.iongeist = res.data;
+      }
+      // console.log(res);
+    },
     changeInput(item) {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -304,6 +338,7 @@ export default {
               show: false,
               remarks: "",
               isNewBook: 1,
+              resultBookId: "",
             },
           ];
         }
@@ -379,6 +414,7 @@ export default {
         sortNum: sortNum,
         remarks: "",
         isNewBook: 1,
+        resultBookId: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

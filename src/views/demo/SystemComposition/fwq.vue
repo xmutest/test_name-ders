@@ -186,6 +186,24 @@
             </el-select>
           </template>
         </el-table-column>
+        <el-table-column label="选择指导书" width="130">
+          <template slot-scope="scope">
+            <el-select
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.resultBookId"
+              filterable
+              size="small"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in iongeist"
+                :key="item.id"
+                :label="item.evaluationBookName"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
         <el-table-column label="是否热备" width="120">
           <template slot-scope="scope">
             <el-select
@@ -270,8 +288,10 @@ export default {
           area: "",
           ip: "",
           isHot: "",
+          resultBookId: "",
         },
       ],
+      iongeist: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       importantDegree_list: [
@@ -292,6 +312,7 @@ export default {
         area: "",
         ip: "",
         isHot: "",
+        resultBookId: "",
       },
       formLabelWidth: "120px",
       rules: {},
@@ -306,6 +327,7 @@ export default {
   created() {
     // 设备名称	是否虚拟设备	系统及版本	品牌及型号	用途	备注	数量	重要程度	测评指导书	测评对象
     this.getlistdata();
+    this.compositiongeFile();
     // })
   },
   computed: {
@@ -332,6 +354,15 @@ export default {
     });
   },
   methods: {
+    async compositiongeFile() {
+      let res = await this.$api.sysCompositiongeFile({
+        systemCompositionId: 8,
+      });
+      if (res.code === 20000) {
+        this.iongeist = res.data;
+      }
+      // console.log(res);
+    },
     changeInput(item) {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -389,6 +420,7 @@ export default {
               area: "",
               ip: "",
               isHot: "",
+              resultBookId: "",
             },
           ];
         }
@@ -479,6 +511,7 @@ export default {
         area: "",
         ip: "",
         isHot: "",
+        resultBookId: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

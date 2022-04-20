@@ -14,9 +14,7 @@
           ></div>
           <el-input
             :ref="'boundaryName' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.boundaryName"
           ></el-input>
@@ -32,9 +30,7 @@
           ></div>
           <el-input
             :ref="'accessMode' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.accessMode"
@@ -51,9 +47,7 @@
           ></div>
           <el-input
             :ref="'mainBusiness' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.mainBusiness"
@@ -66,9 +60,7 @@
         <template slot-scope="scope">
           <el-select
             v-model="scope.row.importantDegree"
-            @change="
-              schujiaodian(scope.row)
-            "
+            @change="schujiaodian(scope.row)"
             filterable
             placeholder="请选择"
           >
@@ -81,7 +73,28 @@
           </el-select>
         </template>
       </el-table-column>
-
+      <el-table-column label="选择指导书" width="130">
+        <template slot-scope="scope">
+          <el-select
+            @change="
+              schujiaodian({
+                id: scope.row.id,
+                isNewBook: scope.row.resultBookId,
+              })
+            "
+            v-model="scope.row.resultBookId"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in iongeist"
+              :key="item.id"
+              :label="item.evaluationBookName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
       <!-- <el-table-column label="测评指导书">
         <template slot-scope="scope">
           <div
@@ -160,6 +173,7 @@ export default {
         { value: 4, label: "重要" },
         { value: 3, label: "一般" },
       ],
+      iongeist: [],
       tabledatas: [
         {
           boundaryName: "",
@@ -170,6 +184,7 @@ export default {
           isEvaluationObj: false,
           sortNum: 1,
           show: false,
+          resultBookId: "",
         },
       ],
       formPage: {
@@ -182,6 +197,7 @@ export default {
   },
   created() {
     this.getlistdata();
+    this.compositiongeFile();
   },
   mounted() {
     var that = this;
@@ -207,6 +223,15 @@ export default {
     }),
   },
   methods: {
+     async compositiongeFile() {
+      let res = await this.$api.sysCompositiongeFile({
+        systemCompositionId: 2,
+      });
+      if (res.code === 20000) {
+        this.iongeist = res.data;
+      }
+      // console.log(res);
+    },
     // 分页
     handleSizeChange(val) {
       this.formPage.pageSize = val;
@@ -248,6 +273,7 @@ export default {
               isEvaluationObj: false,
               show: false,
               sortNum: 1,
+              resultBookId: "",
             },
           ];
         }
@@ -310,6 +336,7 @@ export default {
         isEvaluationObj: false,
         show: false,
         sortNum,
+        resultBookId: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

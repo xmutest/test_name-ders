@@ -854,4 +854,17 @@ export default ({
       params: data,
     })
   },
+  /**
+   * @param {Object} data 
+   * POST 
+查询项目指导书
+   */
+  async sysCompositiongeFile(data = {}) {
+    data.projectId = await this.get_info();
+    return request({
+      url: '/sysComposition/findBook',
+      method: 'get',
+      params: data,
+    })
+  },
 })

@@ -156,5 +156,18 @@ export default ({
       params: data
     })
   },
-
+  /**
+   * @description 查询整体测评
+   * @param {Object} data 携带的信息
+   */
+  async findRecordResultson(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      //   url: '/project/findOverallEvaluation',
+      url: '/safetyControl/findRecordResults',
+      method: 'get',
+      params: data
+    })
+  },
 })

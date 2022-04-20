@@ -122,7 +122,24 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="测评指导书" width="150">
+        <el-table-column label="选择指导书" width="130">
+          <template slot-scope="scope">
+            <el-select
+              @change="schujiaodian(scope.row)"
+              v-model="scope.row.resultBookId"
+              filterable
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in iongeist"
+                :key="item.id"
+                :label="item.evaluationBookName"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column label="测评指导书" width="150">
           <template slot-scope="scope">
             <el-select
               @change="schujiaodian(scope.row)"
@@ -138,7 +155,7 @@
               ></el-option>
             </el-select>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="测评对象" width="80">
           <template slot-scope="scope">
             <el-checkbox
@@ -225,12 +242,14 @@ export default {
           show: false,
           evaluationInstructionBookId: 30,
           remark: "",
+          resultBookId: "",
         },
       ],
       evaluationBookNameList: [
         { id: 37, label: "mongoDB" },
         { id: 30, label: "默认数据库" },
       ],
+      iongeist: [],
       dialogTableVisible: false,
       dialogFormVisible: false,
       importance_list: [
@@ -250,6 +269,7 @@ export default {
   },
   created() {
     this.getlistdata();
+    this.compositiongeFile();
   },
   computed: {
     ...mapState("d2admin", {
@@ -275,6 +295,15 @@ export default {
     });
   },
   methods: {
+    async compositiongeFile() {
+      let res = await this.$api.sysCompositiongeFile({
+        systemCompositionId: 7,
+      });
+      if (res.code === 20000) {
+        this.iongeist = res.data;
+      }
+      // console.log(res);
+    },
     changeInput(item) {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -332,6 +361,7 @@ export default {
               show: false,
               evaluationInstructionBookId: 30,
               remark: "",
+              resultBookId: "",
             },
           ];
         }
@@ -421,6 +451,7 @@ export default {
         show: false,
         evaluationInstructionBookId: 30,
         remark: "",
+        resultBookId: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

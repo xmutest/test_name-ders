@@ -149,6 +149,23 @@
           <span v-show="!scope.row.show">{{ scope.row.userTypeAndNum }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="选择指导书" width="130">
+        <template slot-scope="scope">
+          <el-select
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.resultBookId"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in iongeist"
+              :key="item.id"
+              :label="item.evaluationBookName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
       <el-table-column label="重要程度" width="130">
         <template slot-scope="scope">
           <el-select
@@ -277,8 +294,10 @@ export default {
           model: "",
           userTypeAndNum: "",
           ip: "",
+          resultBookId: "",
         },
       ],
+      iongeist: [],
       formPage: {
         pageNum: 1,
         pageSize: 10,
@@ -289,6 +308,7 @@ export default {
   },
   created() {
     this.getlistdata();
+    this.compositiongeFile();
   },
   computed: {
     ...mapState("d2admin", {
@@ -314,6 +334,15 @@ export default {
     });
   },
   methods: {
+    async compositiongeFile() {
+      let res = await this.$api.sysCompositiongeFile({
+        systemCompositionId: 5,
+      });
+      if (res.code === 20000) {
+        this.iongeist = res.data;
+      }
+      // console.log(res);
+    },
     changeInput(item) {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -368,6 +397,7 @@ export default {
               model: "",
               userTypeAndNum: "",
               ip: "",
+              resultBookId: "",
             },
           ];
         }
@@ -438,6 +468,7 @@ export default {
         model: "",
         userTypeAndNum: "",
         ip: "",
+        resultBookId: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

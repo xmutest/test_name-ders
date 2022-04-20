@@ -14,9 +14,7 @@
           ></div>
           <el-input
             :ref="'terminalName' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.terminalName"
           ></el-input>
@@ -27,9 +25,7 @@
       <el-table-column label="是否虚拟设备" width="80">
         <template slot-scope="scope">
           <el-checkbox
-            @change="
-              schujiaodian(scope.row)
-            "
+            @change="schujiaodian(scope.row)"
             v-model="scope.row.isFictitiousEquipment"
           ></el-checkbox>
         </template>
@@ -43,9 +39,7 @@
           ></div>
           <el-input
             :ref="'operatingSystem' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.operatingSystem"
           ></el-input>
@@ -61,9 +55,7 @@
           ></div>
           <el-input
             :ref="'terminalTypePurpose' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.terminalTypePurpose"
           ></el-input>
@@ -81,9 +73,7 @@
           ></div>
           <el-input
             :ref="'remarks' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             v-show="scope.row.show"
             v-model="scope.row.remarks"
           ></el-input>
@@ -99,9 +89,7 @@
           ></div>
           <el-input
             :ref="'equipmentNum' + scope.$index"
-            @blur="
-              schujiaodian(scope.row)
-            "
+            @blur="schujiaodian(scope.row)"
             placeholder="请输入内容"
             v-show="scope.row.show"
             v-model="scope.row.equipmentNum"
@@ -114,9 +102,7 @@
           <el-select
             v-model="scope.row.importantDegree"
             filterable
-            @change="
-              schujiaodian(scope.row)
-            "
+            @change="schujiaodian(scope.row)"
             placeholder="请选择"
           >
             <el-option
@@ -124,6 +110,23 @@
               :key="item.value"
               :label="item.label"
               :value="item.value"
+            ></el-option>
+          </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="选择指导书" width="130">
+        <template slot-scope="scope">
+          <el-select
+            @change="schujiaodian(scope.row)"
+            v-model="scope.row.resultBookId"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in iongeist"
+              :key="item.id"
+              :label="item.evaluationBookName"
+              :value="item.id"
             ></el-option>
           </el-select>
         </template>
@@ -197,8 +200,10 @@ export default {
           isEvaluationObj: false,
           sortNum: 1,
           show: false,
+          resultBookId: "",
         },
       ],
+      iongeist: [],
       formPage: {
         pageNum: 1,
         pageSize: 10,
@@ -209,6 +214,7 @@ export default {
   },
   created() {
     this.getlistdata();
+    this.compositiongeFile();
   },
   computed: {
     ...mapState("d2admin", {
@@ -234,6 +240,15 @@ export default {
     });
   },
   methods: {
+    async compositiongeFile() {
+      let res = await this.$api.sysCompositiongeFile({
+        systemCompositionId: 10,
+      });
+      if (res.code === 20000) {
+        this.iongeist = res.data;
+      }
+      // console.log(res);
+    },
     changeInput(item) {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -287,6 +302,7 @@ export default {
               isEvaluationObj: false,
               sortNum: 1,
               show: false,
+              resultBookId: "",
             },
           ];
         }
@@ -359,6 +375,7 @@ export default {
         isEvaluationObj: false,
         sortNum,
         show: false,
+        resultBookId: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;
