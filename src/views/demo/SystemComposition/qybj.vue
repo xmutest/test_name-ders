@@ -75,15 +75,11 @@
       </el-table-column>
       <el-table-column label="选择指导书" width="130">
         <template slot-scope="scope">
-          <el-select
-            @change="
-              schujiaodian({
-                id: scope.row.id,
-                isNewBook: scope.row.resultBookId,
-              })
-            "
+           <el-select
+            @change="schujiaodian(scope.row)"
             v-model="scope.row.resultBookId"
             filterable
+            clearable
             placeholder="请选择"
           >
             <el-option

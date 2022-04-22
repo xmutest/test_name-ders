@@ -33,41 +33,41 @@ export default ({
    * @description 获取项目总分数
    * @param {Object} data 携带的信息
    */
-  async CalculateFractionTotalFraction(data = {}) {
-    // data.fractionVersion = window.sessionStorage.getItem("radiomstjisfen") ?
-    //   Number(window.sessionStorage.getItem("radiomstjisfen")) :
-    //   1;
-    data.fractionVersion = 1;
-    data.projectId = await this.get_info();
-    // console.log(window.sessionStorage.getItem('radiomstjisfen'));
-    let res = await request({
-      url: '/calculateFraction/totalFraction',
-      method: 'get',
-      params: data
-    });
-    if (res.code === 20000) {
-      await store.dispatch(
-        "d2admin/totalscore/set", {
-          data: res.data,
-        }, {
-          root: true,
-        }
-      );
-    } else {
-      ElementUI.Message({
-        title: '警告',
-        message: `请求总分数出错，请联系管理员`,
-        type: 'error'
-      });
-    }
-  },
+  // async CalculateFractionTotalFraction(data = {}) {
+  //   // data.fractionVersion = window.sessionStorage.getItem("radiomstjisfen") ?
+  //   //   Number(window.sessionStorage.getItem("radiomstjisfen")) :
+  //   //   1;
+  //   data.fractionVersion = 1;
+  //   data.projectId = await this.get_info();
+  //   // console.log(window.sessionStorage.getItem('radiomstjisfen'));
+  //   let res = await request({
+  //     url: '/calculateFraction/totalFraction',
+  //     method: 'get',
+  //     params: data
+  //   });
+  //   if (res.code === 20000) {
+  //     await store.dispatch(
+  //       "d2admin/totalscore/set", {
+  //         data: res.data,
+  //       }, {
+  //         root: true,
+  //       }
+  //     );
+  //   } else {
+  //     ElementUI.Message({
+  //       title: '警告',
+  //       message: `请求总分数出错，请联系管理员`,
+  //       type: 'error'
+  //     });
+  //   }
+  // },
   /**
    * @description 查询查看风险分析和评价
    * @param {Object} data 携带的信息
    */
   async API_RiskFindAmendAnalysis(data = {}) {
     data.projectId = await this.get_info();
-    this.CalculateFractionTotalFraction();
+    // this.CalculateFractionTotalFraction();
     // 接口请求
     return request({
       url: '/risk/findAmendAnalysis',
@@ -81,7 +81,7 @@ export default ({
    */
   async API_RiskFindRiskCorrections(data = {}) {
     data.projectId = await this.get_info();
-    this.CalculateFractionTotalFraction();
+    // this.CalculateFractionTotalFraction();
     // 接口请求
     return request({
       url: '/risk/findRiskCorrection',

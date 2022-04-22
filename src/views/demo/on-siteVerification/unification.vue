@@ -480,6 +480,7 @@ export default {
           this.resultBoovalue = "";
           // this.getDataList();
         }
+        this.$api.CalculateFractionTotalFraction();
         //
       }
     },
@@ -615,8 +616,8 @@ export default {
   padding: 5px 0px;
 }
 .regroupovalue {
-   max-height: 450px;
-   overflow-y: auto;
+  max-height: 450px;
+  overflow-y: auto;
   .el-radio-group {
     .el-radio {
       margin: 10px 0;

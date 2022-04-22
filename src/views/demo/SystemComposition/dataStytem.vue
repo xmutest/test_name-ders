@@ -128,6 +128,7 @@
               @change="schujiaodian(scope.row)"
               v-model="scope.row.resultBookId"
               filterable
+              clearable
               placeholder="请选择"
             >
               <el-option

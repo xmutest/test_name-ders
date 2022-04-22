@@ -192,6 +192,7 @@
               @change="schujiaodian(scope.row)"
               v-model="scope.row.resultBookId"
               filterable
+              clearable
               size="small"
               placeholder="请选择"
             >

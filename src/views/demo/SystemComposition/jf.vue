@@ -86,11 +86,12 @@
             @change="
               schujiaodian({
                 id: scope.row.id,
-                isNewBook: scope.row.resultBookId,
+                resultBookId: scope.row.resultBookId,
               })
             "
             v-model="scope.row.resultBookId"
             filterable
+            clearable
             placeholder="请选择"
           >
             <el-option

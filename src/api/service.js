@@ -15,7 +15,6 @@ import {
   MessageBox,
   Loading
 } from "element-ui";
-
 /**
  * @description 创建请求实例
  */
@@ -53,8 +52,10 @@ function createService() {
           switch (code) {
             case 0:
               // [ 示例 ] code === 0 代表没有错误
+              
               return dataAxios.data
             case 20000:
+              
               // [ 示例 ] code === 0 代表没有错误
               return dataAxios
             case 401:
