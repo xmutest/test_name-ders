@@ -355,6 +355,8 @@
         title="请选择结果记录"
         :visible.sync="dialogbleList"
         width="60%"
+        :close-on-click-modal="false"
+        :before-close="xuanzleClose"
       >
         <div class="regroupovalue">
           <el-radio-group v-model="resultBoovalue">
@@ -376,9 +378,7 @@
           </el-select> -->
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="(dialogbleList = false), (resultBoovalue = '')"
-            >取 消</el-button
-          >
+          <el-button @click="qxdialogist">取 消</el-button>
           <el-button type="primary" @click="dlogblefrom">确 定</el-button>
         </span>
       </el-dialog>
@@ -464,10 +464,21 @@ export default {
         })
         .catch((_) => {});
     },
+    xuanzleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          this.Totisadd(this.ultBooItem, true);
+          done();
+        })
+        .catch((_) => {});
+    },
     sendSonData(data) {
       if (data === true) {
         this.getDataList();
       }
+    },
+    qxdialogist() {
+      this.Totisadd(this.ultBooItem, true);
     },
     async Totisadd(item, bol) {
       let fractionModelList = [];

@@ -24,11 +24,15 @@ export default {
       dispatch
     }, {
       loginName = '',
-      password = ''
+      password = '',
+      verificationKey = '',
+      verificationCode = ''
     } = {}) {
       let res = await api.SYS_USER_LOGIN({
         loginName,
-        password
+        password,
+        verificationCode,
+        verificationKey
       })
       res = res.data;
       // 设置顶栏菜单

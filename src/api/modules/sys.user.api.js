@@ -21,19 +21,19 @@ export default ({
       data
     })
   },
-   /**
+  /**
    * @description 安全文档上传
    * @param {Object} data 携带的信息
    */
-    securityManageFileUpload(data = {}) {
-      // 模拟数据
-      // 接口请求
-      return request({
-        url: '/securityManageFile/upload',
-        method: 'post',
-        data
-      })
-    },
+  securityManageFileUpload(data = {}) {
+    // 模拟数据
+    // 接口请求
+    return request({
+      url: '/securityManageFile/upload',
+      method: 'post',
+      data
+    })
+  },
   /**
    * @description 登录
    * @param {Object} data 登录携带的信息
@@ -47,7 +47,18 @@ export default ({
       data
     })
   },
-
+  /**
+   * @description 获取登录验证码
+   * @param {Object} data
+   */
+  createImatMsg(data = {}) {
+    // 接口请求
+    return request({
+      url: '/user/createImageCode',
+      method: 'get',
+      params: data
+    })
+  },
   async SYS_USER_PASSWORD_CHANGE(data = {}) {
     // 模拟数据
     // 接口请求

@@ -2,9 +2,10 @@
   <div class="page-login">
     <div class="page-login--layer page-login--layer-area">
       <ul class="circles">
-        <li v-for="n in 20" :key="n"></li>
+        <li v-for="n in 10" :key="n"></li>
       </ul>
     </div>
+
     <div class="page-login--layer">
       <div
         class="page-login--content"
@@ -63,18 +64,18 @@
                     placeholder="验证码"
                   >
                     <template slot="append">
-                      <div class="login-code" @click="refreshCode">
+                      <div>
                         <!--验证码组件-->
-                        <s-identify :identifyCode="identifyCode"></s-identify>
+                        <img
+                          alt="验证码"
+                          @click="createImatMsg"
+                          class="login-code"
+                          :src="imgCode.imageBase64"
+                        />
+                        <!-- <s-identify :identifyCode="identifyCode"></s-identify> -->
                       </div>
-                      <!-- <img class="login-code" src="./image/login-code.png" /> -->
                     </template>
                   </el-input>
-                </el-form-item>
-                <el-form-item style="margin-top: -15px; margin-bottom: 0px">
-                  <el-checkbox v-model="checked" style="color: #a0a0a0"
-                    >记住密码</el-checkbox
-                  >
                 </el-form-item>
                 <el-button
                   size="default"
@@ -153,7 +154,6 @@
 import dayjs from "dayjs";
 import { mapActions } from "vuex";
 import localeMixin from "@/locales/mixin.js";
-
 export default {
   mixins: [localeMixin],
 
@@ -181,16 +181,13 @@ export default {
     const validateCode = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入验证码"));
-      }
-      if (this.identifyCode !== value) {
-        // this.formLogin.code = "";
-        // this.refreshCode();
-        callback(new Error("请输入正确的验证码"));
       } else {
         callback();
       }
     };
     return {
+      imgCode: "",
+      srcColde: "",
       // 记住密码
       checked: true,
       identifyCodes: "1234567890",
@@ -232,7 +229,9 @@ export default {
     };
   },
   created() {
-    this.refreshCode();
+    // this.refreshCode();
+    this.createImatMsg();
+    this.srcColde = process.env.VUE_APP_API;
   },
   mounted() {
     this.timeInterval = setInterval(() => {
@@ -271,7 +270,6 @@ export default {
     nopassword() {
       this.dialogVisible = true;
     },
-    // 忘记密码
     submit_nopassword(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -300,6 +298,13 @@ export default {
       this.formLogin.password = user.password;
       this.submit();
     },
+    async createImatMsg() {
+      let res = await this.$api.createImatMsg();
+      if (res.code === 20000) {
+        this.imgCode = res.data;
+        // this.imgCode.imageBase64 = `data:image/jpg;base64,${res.data.imageBase64}`;
+      }
+    },
     /**
      * @description 提交表单
      */
@@ -307,33 +312,40 @@ export default {
     submit() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
+          console.log(this.imgCode);
           this.login({
             loginName: this.formLogin.username,
             password: this.formLogin.password,
-          }).then(async () => {
-            let res = await this.$api.API_leadToAuthorize({ platformType: 3 });
-            if (res.code == 20000) {
-              window.sessionStorage.setItem("ms_token", res.data);
-            }
+            verificationCode: this.formLogin.code,
+            verificationKey: this.imgCode.verificationKey,
+          }).then(async (res) => {
             if (this.checked == true) {
-              //传入账号名，密码，和保存天数3个参数
-              this.setCookie(
-                this.formLogin.username,
-                this.formLogin.password,
-                7
-              );
-            } else {
-              console.log("清空Cookie");
-              //清空Cookie
-              this.clearCookie();
+              let res = await this.$api.API_leadToAuthorize({
+                platformType: 3,
+              });
+              if (res.code == 20000) {
+                window.sessionStorage.setItem("ms_token", res.data);
+              }
+              if (this.checked == true) {
+                //传入账号名，密码，和保存天数3个参数
+                this.setCookie(
+                  this.formLogin.username,
+                  this.formLogin.password,
+                  7
+                );
+              } else {
+                console.log("清空Cookie");
+                //清空Cookie
+                this.clearCookie();
+              }
+              window.removeEventListener("keydown", this.keyDown, false);
+              // 重定向对象不存在则返回顶层路径
+              this.$router.replace(this.$route.query.redirect || "/");
             }
-            window.removeEventListener("keydown", this.keyDown, false);
-            // 重定向对象不存在则返回顶层路径
-            this.$router.replace(this.$route.query.redirect || "/");
           });
         } else {
           // 登录表单校验失败
-          // this.$message.error("表单校验失败，请检查");
+          this.$message.error("表单校验失败，请检查");
         }
       });
     },
@@ -438,7 +450,8 @@ export default {
       padding: 0px 14px;
     }
     .login-code {
-      height: 40px - 2px;
+      height: 40px - 1px;
+      width: 120px;
       display: block;
       margin: 0px -20px;
       border-top-right-radius: 2px;
@@ -621,6 +634,15 @@ export default {
         animation-duration: 11s;
       }
     }
+  }
+}
+.wjmimaLis_top123 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .wjimima {
+    color: #409eff;
+    font-size: 14px;
   }
 }
 </style>
