@@ -18,5 +18,59 @@ export default {
   },
   component: layoutHeaderAside,
   children: (pre => [
+    {
+      path: 'summarize',
+      name: `${pre}summarize`,
+      component: _import('demo/OverallEvaluation/summarize'),
+      meta: {
+        ...meta,
+        title: '评估报告概述'
+      }
+    },
+    {
+      path: 'assetsList',
+      name: `${pre}assetsList`,
+      component: _import('demo/OverallEvaluation/assetsList'),
+      meta: {
+        ...meta,
+        title: '资产赋值表'
+      }
+    },
+    {
+      path: 'threatList',
+      name: `${pre}threatList`,
+      component: _import('demo/OverallEvaluation/threatList'),
+      meta: {
+        ...meta,
+        title: '威胁赋值表'
+      }
+    },
+    {
+      path: 'fragilityList',
+      name: `${pre}fragilityList`,
+      component: _import('demo/OverallEvaluation/fragilityList'),
+      meta: {
+        ...meta,
+        title: '脆弱性赋值表'
+      }
+    },
+    {
+      path: 'assetRiskList',
+      name: `${pre}assetRiskList`,
+      component: _import('demo/OverallEvaluation/assetRiskList'),
+      meta: {
+        ...meta,
+        title: '资产风险计算表'
+      }
+    },
+    {
+      path: 'riskReport',
+      name: `${pre}riskReport`,
+      component: _import('demo/OverallEvaluation/riskReport'),
+      meta: {
+        ...meta,
+        title: '制作风险评估报告'
+      }
+    },
   ])('demo-OverallEvaluation-')
 }
