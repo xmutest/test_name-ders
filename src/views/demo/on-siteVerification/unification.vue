@@ -104,9 +104,9 @@
                     <th style="width: 100px">安全控制点</th>
                     <th>控制项</th>
                     <th>检查内容</th>
-                    <th>检查方法</th>
+                    <!-- <th>检查方法</th> -->
                     <th>推荐值</th>
-                    <th>判断标准</th>
+                    <!-- <th>判断标准</th> -->
                     <th>结果记录</th>
                     <th style="width: 140px">符合情况</th>
                     <th>建议</th>
@@ -187,7 +187,7 @@
                           {{ item2.inspectionContents }}
                         </div>
                       </td>
-                      <td>
+                      <!-- <td>
                         <el-popover
                           title="检查方法"
                           trigger="click"
@@ -211,7 +211,7 @@
                         <div v-else>
                           {{ item2.inspectionMethod }}
                         </div>
-                      </td>
+                      </td> -->
                       <td>
                         <el-popover
                           title="推荐值"
@@ -220,24 +220,44 @@
                           placement="top"
                         >
                           <div>
-                            <p
-                              v-for="(
-                                item3, index3
-                              ) in item2.recommendedValue.split(';')"
-                              :key="index3"
-                            >
-                              {{ item3 }}
-                            </p>
+                            <div>
+                              <p
+                                v-for="(
+                                  item3, index3
+                                ) in item2.recommendedValue.split(';')"
+                                :key="index3"
+                              >
+                                {{ item3 }}
+                              </p>
+                            </div>
+                            <div>
+                              <p>判断标准</p>
+                              <p
+                                v-for="(
+                                  item3, index3
+                                ) in item2.judgmentCriteria.split(';')"
+                                :key="index3"
+                              >
+                                {{ item3 }}
+                              </p>
+                            </div>
                           </div>
                           <div slot="reference" class="name-wrapper">
-                            {{ item2.recommendedValue.substr(0, 35) }}
+                            <div>
+                              {{ item2.recommendedValue.substr(0, 35) }}
+                            </div>
+                            <div slot="reference" class="name-wrapper">
+                              {{ item2.judgmentCriteria.substr(0, 35) }}
+                            </div>
                           </div>
                         </el-popover>
                         <div v-else>
-                          {{ item2.recommendedValue }}
+                          <div>
+                            {{ item2.recommendedValue }}
+                          </div>
                         </div>
                       </td>
-                      <td>
+                      <!-- <td>
                         <el-popover
                           title="判断标准"
                           trigger="click"
@@ -261,8 +281,8 @@
                         <div v-else>
                           {{ item2.judgmentCriteria }}
                         </div>
-                      </td>
-                      <td>
+                      </td> -->
+                      <td style="width: 300px">
                         <el-popover trigger="click" placement="top">
                           <div>
                             <el-input
