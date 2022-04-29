@@ -45,7 +45,7 @@
             <el-input size="mini" v-model="scope.row.content" :disabled="!scope.row.isEdited"></el-input>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="180">
+        <el-table-column align="center" fixed="right" label="操作" width="150">
           <template slot="header" slot-scope="scope">
             <el-button @click="addRoleBtn(scope.row)" type="success" size="mini">新增</el-button>
           </template>
@@ -241,7 +241,7 @@ export default {
 .el-alert{
   margin-bottom: 20px;
 }
->>>.el-input__inner{
+::v-deep .el-input__inner{
   padding:0 5px;
   text-align: center;
 }

@@ -2,66 +2,85 @@
 <template>
   <d2-container>
     <el-alert title="威胁识别表" type="success" :closable="false"></el-alert>
-    <el-table
-      border
-      :data="threatIdentification"
-      style="width: 100%">
+    <el-table border :data="threatIdentification" style="width: 100%">
       <el-table-column label="序号" type="index" width="50"></el-table-column>
       <el-table-column prop="sign" label="资产编号" width="70"></el-table-column>
       <el-table-column prop="name" label="资产名称" width="150"></el-table-column>
       <el-table-column prop="thr1" label="THR-01软硬件故障" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr1"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr1" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="thr2" label="THR-02物理环境影响" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr2"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr2" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="thr3" label="THR-03无作为或操作失误" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr3"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr3" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="thr4" label="THR-04管理不到位" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr4"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr4" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="thr5" label="THR-05恶意代码" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr5"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr5" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="thr6" label="THR-06越权或滥用" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr6"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr6" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="thr7" label="THR-07网络攻击" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr7"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr7" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="thr8" label="THR-08物理攻击" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr8"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr8" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="thr9" label="THR-09泄密" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr9"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr9" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="thr10" label="THR-10篡改" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr10"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr10" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="thr11" label="THR-11抵赖" width="60">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.thr11"  maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.thr11" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
     </el-table>
@@ -73,6 +92,7 @@
 export default {
 	data(){
 		return{
+			numList:[1,2,3,4,5],
 			threatIdentification:[],
 			assetsSign:[
 				{type:'',sign:'',list:[]},
@@ -127,19 +147,23 @@ export default {
 		    event.currentTarget.select();
 		},
 	    async saveBtn(row,index){//保存按钮
-
+	    	var canSave = true;
 	    	for(var key in row){
 	    		if(key.indexOf('thr')==0&&key.length<=5){
-	    			if(!row[key]){return};
+	    			console.log(row[key])
+	    			if(!row[key]){canSave = false;break};
 	    		}
 	    	}
-	    	console.log('save')
-		    let res = await this.$api.rickReport_updateAssetsList(row);
-		    if(res.code==20000){
-		    	this.$message.success('保存成功！');
-		    }else{
-		      this.$message.error(res.messager);
-		    }
+	    	if(canSave){
+		    	console.log('save')
+			    let res = await this.$api.rickReport_updateAssetsList(row);
+			    if(res.code==20000){
+			    	this.$message.success('保存成功！');
+			    }else{
+			      this.$message.error(res.messager);
+			    }
+	    	}
+	    	
 	     
 	    },
 	    dClone(data){
@@ -151,8 +175,8 @@ export default {
 </script>
 
 <style scoped>
-	>>>.el-input__inner{
+	::v-deep .el-input__inner{
 	  padding:0 5px;
-	  text-align: center;
+	  text-align: left;
 	}
 </style>

@@ -2,8 +2,7 @@
 <template>
   <d2-container>
     <el-alert title="风险计算表" type="success" :closable="false"></el-alert>
-    <el-table ref="multipleTable" border :span-method="objectSpanMethod" :cell-class-name="tableRowClassName"
-      @cell-mouse-leave="cellMouseLeave"  @cell-mouse-enter="cellMouseEnter" :data="risk.tableData">
+    <el-table ref="multipleTable" border :span-method="objectSpanMethod" :data="risk.tableData">
       <el-table-column label="序号" type="index" width="50"></el-table-column>
       <el-table-column label="资产标识" align="center" prop="sign" width="90"></el-table-column>
       <el-table-column label="资产名称" align="center" prop="assetsName" width="90"></el-table-column>
@@ -155,32 +154,6 @@ export default {
 	        }
 	      }
 	    },
-	    tableRowClassName({row,rowIndex}) {//设置hover样式
-	      var table='risk'
-	      	      
-	      let arr = this[table].hoverOrderArr
-	      for (let i = 0; i < arr.length; i++) {
-	        if (rowIndex == arr[i]) {
-	          return 'hovered-row'
-	        }
-	      }
-	    },
-	    cellMouseEnter(row, column, cell, event) {//移进鼠标加上hover样式
-	      var table='risk'
-	      	      
-	      this[table].rowIndex = row.rowIndex;
-	      this[table].hoverOrderArr = [];
-	      this[table].mergeArr.forEach(item => {
-	          if (item.indexOf(this[table].rowIndex) >= 0) {
-	            this[table].hoverOrderArr = item
-	          }
-	      })
-	    },
-	    cellMouseLeave(row, column, cell, event) {//移开鼠标去掉hover样式
-	      var table='risk'
-	      this[table].rowIndex = '-1'
-	      this[table].hoverOrderArr = [];
-	    },
 	    // ===================表格合并及样式处理结束======================== //
 			
 	}
@@ -188,10 +161,10 @@ export default {
 </script>
 
 <style scoped>
-.el-table >>>.hovered-row {
-  background: #f5f7fa;
+::v-deep .el-table--enable-row-hover .el-table__body tr:hover>td{
+  background: none;
 }
->>>.el-input__inner{
+::v-deep .el-input__inner{
   padding:0 5px;
   text-align: center;
 }

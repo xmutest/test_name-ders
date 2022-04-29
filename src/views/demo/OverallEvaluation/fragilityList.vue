@@ -2,8 +2,7 @@
 <template>
   <d2-container>
     <el-alert title="脆弱性赋值表" type="success" :closable="false"></el-alert>
-    <el-table ref="multipleTable" border :span-method="objectSpanMethod" :cell-class-name="tableRowClassName"
-      @cell-mouse-leave="cellMouseLeave"  @cell-mouse-enter="cellMouseEnter" :data="fragility.tableData">
+    <el-table ref="multipleTable" border :span-method="objectSpanMethod" :data="fragility.tableData">
       <el-table-column label="序号" type="index" width="50"></el-table-column>
       <el-table-column label="资产标识" align="center" prop="sign" width="110"></el-table-column>
       <el-table-column label="资产名称" align="center" prop="assetsName" width="110"></el-table-column>
@@ -11,7 +10,9 @@
       <el-table-column label="脆弱性描述" align="center" prop="problemDescription"></el-table-column>
       <el-table-column label="赋值" align="center" prop="num"  width="70">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.weakGrade" maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.weakGrade" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
     </el-table>
@@ -22,6 +23,7 @@
 export default {
 	data(){
 		return{
+			numList:[1,2,3,4,5],
 			fragility:{
 			  tableData: [],
 			  mergeArr: [],
@@ -36,10 +38,6 @@ export default {
 		this.findReviseManifest();
 	},
 	methods: {
-		getInputFocus(event) {//点击input全选内容
-		   // console.log("event",event)
-		    event.currentTarget.select();
-		},
 		async findReviseManifest(){//获威胁识别
 	       let res = await this.$api.rickReport_findReviseManifest();
 	       // console.log(res);
@@ -177,43 +175,17 @@ export default {
 		    }
 		  }
 		},
-		tableRowClassName({row,rowIndex}) {//设置hover样式
-		  var table='fragility'
-		  	      
-		  let arr = this[table].hoverOrderArr
-		  for (let i = 0; i < arr.length; i++) {
-		    if (rowIndex == arr[i]) {
-		      return 'hovered-row'
-		    }
-		  }
-		},
-		cellMouseEnter(row, column, cell, event) {//移进鼠标加上hover样式
-		  var table='fragility'
-		  	      
-		  this[table].rowIndex = row.rowIndex;
-		  this[table].hoverOrderArr = [];
-		  this[table].mergeArr.forEach(item => {
-		      if (item.indexOf(this[table].rowIndex) >= 0) {
-		        this[table].hoverOrderArr = item
-		      }
-		  })
-		},
-		cellMouseLeave(row, column, cell, event) {//移开鼠标去掉hover样式
-		  var table='fragility'
-		  this[table].rowIndex = '-1'
-		  this[table].hoverOrderArr = [];
-		},
 		// ========================表格合并和样式设置结束======================= //
 	}
 }
 </script>
 
 <style scoped>
-.el-table >>>.hovered-row {
-  background: #f5f7fa;
+::v-deep .el-table--enable-row-hover .el-table__body tr:hover>td{
+  background: none;
 }
->>>.el-input__inner{
+::v-deep .el-input__inner{
   padding:0 5px;
-  text-align: center;
+  text-align: left;
 }
 </style>

@@ -2,34 +2,36 @@
 <template>
   <d2-container>
     <el-alert title="重要资产清单" type="success" :closable="false"></el-alert>
+      <!-- @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter"
+       :cell-class-name="tableRowClassName" -->
     <el-table
-      border style="width: 100%" :data="assetsData.tableData"
-      :span-method="objectSpanMethod" 
-      :cell-class-name="tableRowClassName"
-      @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter">
-      <el-table-column prop="assetsType" label="资产分类" width="150"></el-table-column>
+      border style="width: 100%" :data="assetsData.tableData" :span-method="objectSpanMethod">
+      <el-table-column prop="assetsTypeName" label="资产分类" width="150"></el-table-column>
       <el-table-column prop="sign" label="资产标识" width="70"></el-table-column>
       <el-table-column prop="name" label="资产名称" width="200"></el-table-column>
       <el-table-column prop="type"label="规格型号" width="200"></el-table-column>
       <el-table-column prop="ip" label="ip地址" width="120"></el-table-column>
       <el-table-column prop="principal" label="负责人" width="120">
-      	<!-- <template slot-scope="scope">
-      	  <el-input size="mini" v-model="scope.row.principal" ></el-input>
-      	</template> -->
       </el-table-column>
       <el-table-column prop="pointSecurity" label="保密性" width="70">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.pointSecurity" maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.pointSecurity" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="pointWhole" label="完整性" width="70">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.pointWhole" maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.pointWhole" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="pointUserful" label="可用性" width="70">
         <template slot-scope="scope">
-          <el-input size="mini" v-model="scope.row.pointUserful" maxlength="1" @blur="saveBtn(scope.row)" @focus="getInputFocus($event)" oninput="value=value.replace(/[^1-5]/g, '')"></el-input>
+          <el-select size="mini" v-model="scope.row.pointUserful" placeholder="请选择" @change="saveBtn(scope.row)">
+            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+          </el-select>
         </template>
       </el-table-column>
       <el-table-column prop="cost" label="资产价值" width="70">
@@ -54,6 +56,7 @@
 export default {
 	data() {
 		return {
+			numList:[1,2,3,4,5],
 			assetsData:{
 				tableData:[],
 				mergeArr: [],
@@ -75,10 +78,6 @@ export default {
 
 	},
 	methods: {
-		getInputFocus(event) {//点击input全选内容
-		   // console.log("event",event)
-		    event.currentTarget.select();
-		},
 		getMax(num1,num2,num3) {//获取最大值
 			if(num1&&num2&&num3){
 				var max = 0;
@@ -139,9 +138,9 @@ export default {
 	      this.assetsData.tableData[index].isEdited = 1;
 	    },
 	    async saveBtn(row,index){//保存按钮
-	    	console.log(row.pointSecurity+'_'+row.pointUserful+'_'+row.pointWhole)
+	    	// console.log(row.pointSecurity+'_'+row.pointUserful+'_'+row.pointWhole)
 	     if(row.pointSecurity&&row.pointUserful&&row.pointWhole){
-	     	console.log('save')
+	     	// console.log('save')
 	     	let res = await this.$api.rickReport_updateAssetsList(row);
 	     	if(res.code==20000){
 	     		this.$message.success('保存成功！');
@@ -200,32 +199,32 @@ export default {
 	        }
 	      }
 	    },
-	    tableRowClassName({row,rowIndex}) {//设置hover样式
-	      var table='assetsData'
+	    // tableRowClassName({row,rowIndex}) {//设置hover样式
+	    //   var table='assetsData'
 	      	      
-	      let arr = this[table].hoverOrderArr
-	      for (let i = 0; i < arr.length; i++) {
-	        if (rowIndex == arr[i]) {
-	          return 'hovered-row'
-	        }
-	      }
-	    },
-	    cellMouseEnter(row, column, cell, event) {//移进鼠标加上hover样式
-	      var table='assetsData'
+	    //   let arr = this[table].hoverOrderArr
+	    //   for (let i = 0; i < arr.length; i++) {
+	    //     if (rowIndex == arr[i]) {
+	    //       return 'hovered-row'
+	    //     }
+	    //   }
+	    // },
+	    // cellMouseEnter(row, column, cell, event) {//移进鼠标加上hover样式
+	    //   var table='assetsData'
 	      	      
-	      this[table].rowIndex = row.rowIndex;
-	      this[table].hoverOrderArr = [];
-	      this[table].mergeArr.forEach(item => {
-	          if (item.indexOf(this[table].rowIndex) >= 0) {
-	            this[table].hoverOrderArr = item
-	          }
-	      })
-	    },
-	    cellMouseLeave(row, column, cell, event) {//移开鼠标去掉hover样式
-	      var table='assetsData'
-	      this[table].rowIndex = '-1'
-	      this[table].hoverOrderArr = [];
-	    },
+	    //   this[table].rowIndex = row.rowIndex;
+	    //   this[table].hoverOrderArr = [];
+	    //   this[table].mergeArr.forEach(item => {
+	    //       if (item.indexOf(this[table].rowIndex) >= 0) {
+	    //         this[table].hoverOrderArr = item
+	    //       }
+	    //   })
+	    // },
+	    // cellMouseLeave(row, column, cell, event) {//移开鼠标去掉hover样式
+	    //   var table='assetsData'
+	    //   this[table].rowIndex = '-1'
+	    //   this[table].hoverOrderArr = [];
+	    // },
 	    // ===================表格合并及样式处理结束======================== //
 	}
 	 
@@ -234,11 +233,15 @@ export default {
 </script>
 
 <style scoped>
-.el-table >>>.hovered-row {
+/*.el-table >>>.hovered-row {
   background: #f5f7fa;
+}*/
+::v-deep .el-table--enable-row-hover .el-table__body tr:hover>td{
+  background: none;
 }
->>>.el-input__inner{
+::v-deep .el-input__inner{
   padding:0 5px;
-  text-align: center;
+  text-align: left;
 }
+
 </style>
