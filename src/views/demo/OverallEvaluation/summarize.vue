@@ -14,10 +14,10 @@
           </el-date-picker>
       </el-form-item>
       <el-form-item label="评估结论" prop="result">
-        <el-input size="medium" v-model="form.result" type="textarea" :rows="1"></el-input>
+        <el-input size="medium" v-model="form.result" type="textarea" :rows="12"></el-input>
       </el-form-item>
       <el-form-item label="评估概述" prop="summary">
-        <el-input size="medium" v-model="form.summary" type="textarea" :rows="1"></el-input>
+        <el-input size="medium" v-model="form.summary" type="textarea" :rows="12"></el-input>
       </el-form-item>
       <div class="btnBox">
         <el-button type="success" size="small" @click="submitForm('ruleForm')">保存</el-button>
@@ -34,10 +34,13 @@
           </template>
         </el-table-column>
         <el-table-column prop="role" label="项目角色" width="180">
-          <template slot-scope="scope">
+          <!-- <template slot-scope="scope">
             <el-select size="mini" v-model="scope.row.role" placeholder="选择角色" :disabled="!scope.row.isEdited">
               <el-option v-for="item in roleList" :label="item" :value="item" :key="item"></el-option>
             </el-select>
+          </template> -->
+          <template slot-scope="scope">
+            <el-input size="mini" v-model="scope.row.role" clearable :disabled="!scope.row.isEdited"></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="content" label="参与内容">
@@ -89,7 +92,16 @@ export default {
 	    	},
         riskAssessorSave:true,//true就执行save false就执行update
         riskAssessorTable:[],
-        roleList:['甲方项目负责人','乙方项目负责人','甲方项目联络人','项目经理','应用系统检测','文档管理','甲方相关人员',]
+        roleList:['甲方项目负责人','乙方项目负责人','甲方项目联络人','项目经理','应用系统检测','文档管理','甲方相关人员',],
+        oRiskAssessor:[
+          {name: '',role: '甲方项目负责人',content: '被评估机构项目负责人',isAdd:1,projectId:this.projectId,isEdited:1},
+          {name: '',role: '乙方项目负责人',content: '评估机构项目负责人',isAdd:1,projectId:this.projectId,isEdited:1},
+          {name: '',role: '甲方项目联络人',content: '负责甲方项目协调工作，配合整体调研工作。',isAdd:1,projectId:this.projectId,isEdited:1},
+          {name: '',role: '项目经理',content: '负责项目方案、计划、总结、报告起草；资产调研与分析、人员、组织、策略、数据存储、现有措施的调研；差距分析、脆弱点、威胁风险、风险值计算。',isAdd:1,projectId:this.projectId,isEdited:1},
+          {name: '',role: '应用系统检测',content: '应用系统和服务器操作系统、数据库系统的配置策略；账号、权限、日志审计策略的调研。',isAdd:1,projectId:this.projectId,isEdited:1},
+          {name: '',role: '文档管理',content: '现状调研及信息资产表的收集整理、统计；文档归档。',isAdd:1,projectId:this.projectId,isEdited:1},
+          {name: '',role: '甲方相关人员',content: '针对发现的安全漏洞，选择适当的攻击工具及方法，模拟入侵行为；汇总测试过程的安全漏洞。',isAdd:1,projectId:this.projectId,isEdited:1},
+        ],
       
 	   }
 	},
@@ -145,9 +157,9 @@ export default {
             item.isEdited = 0;
           })
           this.riskAssessorTable = res.data;
-          this.riskAssessorSave =false;
+          this.riskAssessorSave = false;
         }else{
-          this.riskAssessorTable.push({name: '',role: '',content: '',isAdd:1,projectId:this.projectId,isEdited:1})
+          this.riskAssessorTable = this.oRiskAssessor
         }
       }else{
         this.$message.error(res.messager);
