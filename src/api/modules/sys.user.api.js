@@ -35,6 +35,17 @@ export default ({
     })
   },
   /**
+   * @description 部门管理删除
+   */
+  API_deptDelete(data = {}) {
+    // 接口请求
+    return request({
+      url: '/department/delete',
+      method: 'get',
+      params: data
+    })
+  },
+  /**
    * @description 登录
    * @param {Object} data 登录携带的信息
    */

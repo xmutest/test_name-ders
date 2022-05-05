@@ -174,7 +174,7 @@ export default {
     handleSave() {
       this.configIndex = 0;
       this.dialogVisible = true;
-      this.department = { parentId: this.currDept.id };
+      this.department = { parentId: this.currDept.departmentId };
     },
     handleUpdate() {
       this.configIndex = 1;
@@ -207,7 +207,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       }).then(async () => {
-        let res = await this.$api.API_deptDelete({ id: this.currDept.id });
+        let res = await this.$api.API_deptDelete({ departmentId: this.currDept.departmentId });
         if (res.code === 20000) {
           this.$message.success("删除成功！！");
           this.currDept = undefined;
