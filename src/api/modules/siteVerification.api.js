@@ -95,6 +95,18 @@ export default ({
     })
   },
   /**
+   * @description 同类型资产结果记录复制
+   * @param {Object} data 携带的信息
+   */
+  async copyResultRecordy(data = {}) {
+    // 接口请求
+    return request({
+      url: '/fieldSurvey/copyResultRecord',
+      method: 'post',
+      data
+    })
+  },
+  /**
    * @description 删除现场核查控制项
    * @param {Object} data 携带的信息
    */

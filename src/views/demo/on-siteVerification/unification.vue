@@ -98,6 +98,11 @@
             :label="Its.name"
           >
             <div v-if="activeNameTabs == Its.name + Its.id">
+              <div class="fuary">
+                <el-button @click="fuzclk(Its)" size="small" type="primary"
+                  >复制到其他同类资产</el-button
+                >
+              </div>
               <table id="partnerTable">
                 <thead>
                   <tr>
@@ -370,6 +375,33 @@
     <div v-else>
       <upload-wushu></upload-wushu>
     </div>
+    <el-dialog
+      title="复制到其他同类资产"
+      :visible.sync="fuialosible"
+      width="600px"
+    >
+      <div>
+        <div class="list_fuz">
+          <el-checkbox-group v-model="fuckList">
+            <el-col :span="24" v-for="item in fuzactiTabs" :key="item.id">
+              <el-checkbox :label="item.id">{{ item.name }}</el-checkbox>
+            </el-col>
+          </el-checkbox-group>
+        </div>
+
+        <div>
+          <el-input placeholder="请输入内容" v-model="sourceAsset.assetsName">
+            <template slot="prepend">需要替换的关键字：</template>
+          </el-input>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="fuialosible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="fuzLtop"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <div>
       <el-dialog
         title="请选择结果记录"
@@ -408,6 +440,7 @@
 
 <script>
 import { cloneDeep } from "lodash";
+import { mapState } from "vuex";
 export default {
   props: {
     queryType: Object,
@@ -424,8 +457,17 @@ export default {
       inputactiveNameTabs: "",
       activeNameTabs: "",
       dialogVisible: false,
+      fuialosible: false,
       loading: true,
+      fuckList: [],
       // activeName: "",
+      fuzactiTabs: [],
+      sourceAsset: {
+        assetsId: "",
+        assetsName: "",
+        assetsNum: "",
+        projectId: "",
+      },
       itemsCoacr: [
         { color: "#fff" },
         { color: "#fff" },
@@ -447,6 +489,11 @@ export default {
       api_data: this.queryType,
       listTs: [],
     };
+  },
+  computed: {
+    ...mapState("d2admin", {
+      xmu_info: (state) => state.xmu.xmu_info,
+    }),
   },
   created() {
     this.getDataList();
@@ -535,6 +582,48 @@ export default {
           this.Totisadd(item);
           // this.$message.error("无符合项");
         }
+      }
+    },
+    fuzclk(its) {
+      this.fuialosible = true;
+      this.sourceAsset = {
+        assetsId: its.id,
+        assetsNum: its.assetsNum,
+        assetsName: its.name,
+        projectId: this.xmu_info.projectId,
+      };
+      this.fuzactiTabs = this.dataList.filter(
+        (item) => item.assetsNum == its.assetsNum && item.id != its.id
+      );
+    },
+    async fuzLtop() {
+      if (!this.sourceAsset.assetsName)
+        return this.$message.error("需要替换的关键字不能为空");
+      if (this.fuckList.length == 0)
+        return this.$message.error("请选择复制到的资产");
+      let targetAssetList = [];
+      this.dataList.forEach((item) => {
+        this.fuckList.forEach((id) => {
+          if (id == item.id) {
+            let sourceAsset = {
+              assetsId: item.id,
+              assetsNum: item.assetsNum,
+              assetsName: item.name,
+              projectId: this.xmu_info.projectId,
+            };
+            targetAssetList.push(sourceAsset);
+          }
+        });
+      });
+      let res = await this.$api.copyResultRecordy({
+        targetAssetList,
+        sourceAsset: this.sourceAsset,
+      });
+      if (res.code === 20000) {
+        this.$message.success("成功");
+        this.fuialosible = false;
+        this.fuckList = [];
+        this.getDataList();
       }
     },
     async dlogblefrom() {
@@ -660,6 +749,18 @@ export default {
     white-space: normal;
     line-height: 18px;
     // word-wrap: break-word !important;    无效
+  }
+}
+.fuary {
+  margin: 10px 0;
+  text-align: right;
+}
+.list_fuz {
+  max-height: 250px;
+  overflow: auto;
+  .el-col {
+    height: 30px;
+    line-height: 15px;
   }
 }
 </style>
