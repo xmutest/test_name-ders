@@ -30,36 +30,31 @@
         <el-table-column label="序号" type="index" width="50"></el-table-column>
         <el-table-column prop="name" label="姓名" width="180">
           <template slot-scope="scope">
-            <el-input size="mini" v-model="scope.row.name" clearable :disabled="!scope.row.isEdited"></el-input>
+            <el-input size="mini" v-model="scope.row.name" clearable></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="role" label="项目角色" width="180">
-          <!-- <template slot-scope="scope">
-            <el-select size="mini" v-model="scope.row.role" placeholder="选择角色" :disabled="!scope.row.isEdited">
-              <el-option v-for="item in roleList" :label="item" :value="item" :key="item"></el-option>
-            </el-select>
-          </template> -->
           <template slot-scope="scope">
-            <el-input size="mini" v-model="scope.row.role" clearable :disabled="!scope.row.isEdited"></el-input>
+            <el-input size="mini" v-model="scope.row.role" clearable></el-input>
           </template>
         </el-table-column>
         <el-table-column prop="content" label="参与内容">
           <template slot-scope="scope">
-            <el-input size="mini" v-model="scope.row.content" :disabled="!scope.row.isEdited"></el-input>
+            <el-input size="mini" v-model="scope.row.content"></el-input>
           </template>
         </el-table-column>
-        <el-table-column align="center" fixed="right" label="操作" width="150">
+        <el-table-column align="center" fixed="right" label="操作" width="80">
           <template slot="header" slot-scope="scope">
             <el-button @click="addRoleBtn(scope.row)" type="success" size="mini">新增</el-button>
           </template>
           <template slot-scope="scope">
-            <el-button v-if="!scope.row.isEdited" type="default" size="mini" @click="editRoleBtn(scope.row,scope.$index)">编辑</el-button>
-            <el-button v-if="scope.row.isEdited" type="default" size="mini" @click="saveRoleBtn(scope.row)">保存</el-button>
             <el-button @click="delRoleBtn(scope.row,scope.$index)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      
+      <div class="btnBox">
+        <el-button type="success" size="small" @click="saveRole">保存</el-button>
+      </div>
     </el-form>
   </d2-container>
 </template>
@@ -94,13 +89,13 @@ export default {
         riskAssessorTable:[],
         roleList:['甲方项目负责人','乙方项目负责人','甲方项目联络人','项目经理','应用系统检测','文档管理','甲方相关人员',],
         oRiskAssessor:[
-          {name: '',role: '甲方项目负责人',content: '被评估机构项目负责人',isAdd:1,projectId:this.projectId,isEdited:1},
-          {name: '',role: '乙方项目负责人',content: '评估机构项目负责人',isAdd:1,projectId:this.projectId,isEdited:1},
-          {name: '',role: '甲方项目联络人',content: '负责甲方项目协调工作，配合整体调研工作。',isAdd:1,projectId:this.projectId,isEdited:1},
-          {name: '',role: '项目经理',content: '负责项目方案、计划、总结、报告起草；资产调研与分析、人员、组织、策略、数据存储、现有措施的调研；差距分析、脆弱点、威胁风险、风险值计算。',isAdd:1,projectId:this.projectId,isEdited:1},
-          {name: '',role: '应用系统检测',content: '应用系统和服务器操作系统、数据库系统的配置策略；账号、权限、日志审计策略的调研。',isAdd:1,projectId:this.projectId,isEdited:1},
-          {name: '',role: '文档管理',content: '现状调研及信息资产表的收集整理、统计；文档归档。',isAdd:1,projectId:this.projectId,isEdited:1},
-          {name: '',role: '甲方相关人员',content: '针对发现的安全漏洞，选择适当的攻击工具及方法，模拟入侵行为；汇总测试过程的安全漏洞。',isAdd:1,projectId:this.projectId,isEdited:1},
+          {name: '',role: '甲方项目负责人',content: '被评估机构项目负责人',projectId:'',isAdd:1},
+          {name: '',role: '乙方项目负责人',content: '评估机构项目负责人',projectId:'',isAdd:1},
+          {name: '',role: '甲方项目联络人',content: '负责甲方项目协调工作，配合整体调研工作。',projectId:'',isAdd:1},
+          {name: '',role: '项目经理',content: '负责项目方案、计划、总结、报告起草；资产调研与分析、人员、组织、策略、数据存储、现有措施的调研；差距分析、脆弱点、威胁风险、风险值计算。',projectId:'',isAdd:1},
+          {name: '',role: '应用系统检测',content: '应用系统和服务器操作系统、数据库系统的配置策略；账号、权限、日志审计策略的调研。',projectId:'',isAdd:1},
+          {name: '',role: '文档管理',content: '现状调研及信息资产表的收集整理、统计；文档归档。',projectId:'',isAdd:1},
+          {name: '',role: '甲方相关人员',content: '针对发现的安全漏洞，选择适当的攻击工具及方法，模拟入侵行为；汇总测试过程的安全漏洞。',projectId:'',isAdd:1},
         ],
       
 	   }
@@ -125,10 +120,13 @@ export default {
       let res = await this.$api.rickReport_ProjectDetail();
       // console.log(res);
       if(res.code==20000){
-        res.data.time = [res.data.endTime,res.data.endTime]
+        
+        if(res.data.beginTime){
+          res.data.time = [res.data.beginTime,res.data.endTime]
+        }
         this.form = res.data;
       }else{
-        this.$message.error(res.messager);
+        this.$message.error(res.message);
       }
 
     },
@@ -143,9 +141,20 @@ export default {
         // this.form = res.data;
         this.$message.success('保存概述成功');
       }else{
-        this.$message.error(res.messager);
+        this.$message.error(res.message);
       }
 
+    },
+    submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+        if (valid) {
+
+          this.saveDetail();//保存概述
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     async getEvaluateUser() {//获取人员列表
       let res = await this.$api.rickReport_EvaluateUser();
@@ -153,52 +162,17 @@ export default {
       if(res.code==20000){
 
         if(res.data.length!=0){
-          res.data.forEach((item,index)=>{
-            item.isEdited = 0;
-          })
           this.riskAssessorTable = res.data;
           this.riskAssessorSave = false;
         }else{
-          this.riskAssessorTable = this.oRiskAssessor
+          this.riskAssessorTable = this.oRiskAssessor//列表为空就添加原始人员
         }
       }else{
-        this.$message.error(res.messager);
+        this.$message.error(res.message);
       }
     },
     addRoleBtn(){//新增人员按钮
       this.riskAssessorTable.push({name: '',role: '',content: '',isAdd:1,projectId:this.projectId,isEdited:1})
-    },
-    editRoleBtn(row,index){//编辑人员按钮
-      this.riskAssessorTable[index].isEdited = 1;
-      // console.log(this.riskAssessorTable)
-    },
-    saveRoleBtn(row,index){//保存人员按钮
-      console.log(row.isAdd)
-      if(row.isAdd){
-        this.saveRole(row,index)
-      }else{
-        this.updateRole(row,index)
-      }
-    },
-    async saveRole(row,index){//保存人员（单个）
-
-      let res = await this.$api.rickReport_EvaluateUserSave([row]);
-      if(res.code==20000){
-        this.$message.success('新增人员成功！');
-        this.getEvaluateUser();
-      }else{
-        this.$message.error(res.messager);
-      }
-    },
-    async updateRole(row,index){//更新人员信息（单个）
-      let res = await this.$api.rickReport_EvaluateUserUpdate(row);
-      // console.log(res);
-      if(res.code==20000){
-        this.$message.success('修改人员成功！');
-        this.getEvaluateUser();
-      }else{
-        this.$message.error(res.messager);
-      }
     },
     delRoleBtn(row,index){//删除人员按钮
       console.log(row)
@@ -225,20 +199,25 @@ export default {
         this.$message.success('删除成功！');
         this.riskAssessorTable.splice(index,1)
       }else{
-        this.$message.error(res.messager);
+        this.$message.error(res.message);
       }
     },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-      if (valid) {
+    async saveRole(){//保存人员（单个）
 
-        this.saveDetail();//保存概述
-      } else {
-        console.log('error submit!!');
-        return false;
+      this.riskAssessorTable.forEach((item,index)=>{
+        item.projectId = this.projectId;
+      })
+      console.log(this.riskAssessorTable)
+      // return
+      let res = await this.$api.rickReport_EvaluateUserSave(this.riskAssessorTable);
+      if(res.code==20000){
+        this.$message.success('保存成功！');
+        this.getEvaluateUser();
+      }else{
+        this.$message.error(res.message);
       }
-    });
-  },
+    },
+    
 	},
 
 }
