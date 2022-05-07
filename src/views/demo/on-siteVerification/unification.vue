@@ -597,8 +597,8 @@ export default {
       );
     },
     async fuzLtop() {
-      if (!this.sourceAsset.assetsName)
-        return this.$message.error("需要替换的关键字不能为空");
+      // if (!this.sourceAsset.assetsName)
+      //   return this.$message.error("需要替换的关键字不能为空");
       if (this.fuckList.length == 0)
         return this.$message.error("请选择复制到的资产");
       let targetAssetList = [];
