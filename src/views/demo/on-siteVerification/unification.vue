@@ -287,13 +287,14 @@
                           {{ item2.judgmentCriteria }}
                         </div>
                       </td> -->
-                      <td style="width: 300px">
+                      <td table="结果记录" style="width: 300px">
                         <el-popover trigger="click" placement="top">
                           <div>
                             <el-input
                               type="textarea"
                               :autosize="{ minRows: 8, maxRows: 12 }"
                               placeholder="请输入内容"
+                              @input="changerList($event)"
                               v-model="item2.recordResults"
                               @blur="Totisadd(item2)"
                             >
@@ -339,6 +340,7 @@
                               :autosize="{ minRows: 4, maxRows: 8 }"
                               placeholder="请输入内容"
                               v-model="item2.remark"
+                              @input="changerList($event)"
                               @blur="Totisadd(item2)"
                             >
                             </el-input>
@@ -584,6 +586,9 @@ export default {
         }
       }
     },
+    changerList(e) {
+      this.$forceUpdate();
+    },
     fuzclk(its) {
       this.fuialosible = true;
       this.sourceAsset = {
@@ -597,8 +602,8 @@ export default {
       );
     },
     async fuzLtop() {
-      if (!this.sourceAsset.assetsName)
-        return this.$message.error("需要替换的关键字不能为空");
+      // if (!this.sourceAsset.assetsName)
+      //   return this.$message.error("需要替换的关键字不能为空");
       if (this.fuckList.length == 0)
         return this.$message.error("请选择复制到的资产");
       let targetAssetList = [];

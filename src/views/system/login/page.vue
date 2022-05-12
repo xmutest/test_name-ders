@@ -27,7 +27,7 @@
           </div>
           <img
             class="page-login--logo"
-            src="http://survey.iscn.org.cn/system/evaluate/img/logo2.c2ddc0ab.png"
+            src="http://static.iscn.org.cn/system/evaluate/img/logo2.c2ddc0ab.png"
           />
           <!-- form -->
           <div class="page-login--form">

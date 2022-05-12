@@ -26,6 +26,7 @@ export default {
 <style lang="scss">
 @import "~@/assets/style/public-class.scss";
 .el-popover {
+  min-width: 400px !important;
   max-width: 600px;
   max-height: 600px;
   div {

@@ -544,6 +544,7 @@ export default {
             this.schujiaodian({
               id: item.id,
               isEvaluationObj: item.isEvaluationObj,
+              resultBookId: item.resultBookId,
             });
             //查询列表
           } else {

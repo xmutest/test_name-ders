@@ -158,7 +158,7 @@ export default {
       let res = await this.$api.SYS_USER_PASSWORD_CHANGE(data)
 
       // let res = request({
-      //   url:'http://survey.iscn.org.cn/evaluation/user/update',
+      //   url:'http://static.iscn.org.cn/evaluation/user/update',
       //   method:'post',
       //   password:'hezhi127'
       // })
