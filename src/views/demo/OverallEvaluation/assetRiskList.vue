@@ -4,7 +4,7 @@
     <el-alert title="风险计算表" type="success" :closable="false"></el-alert>
     <el-table ref="multipleTable" border :span-method="objectSpanMethod" :data="risk.tableData">
       <el-table-column label="序号" type="index" width="50"></el-table-column>
-      <el-table-column label="资产标识" align="center" prop="sign" width="90"></el-table-column>
+      <el-table-column label="资产标识" align="center" prop="assetMark" width="90"></el-table-column>
       <el-table-column label="资产名称" align="center" prop="assetsName" width="90"></el-table-column>
       <el-table-column label="威胁种类" align="center" prop="threatType" width="120"></el-table-column>
       <el-table-column label="脆弱性问题" align="center" prop="problemDescription" width="200"></el-table-column>
@@ -29,12 +29,6 @@ export default {
 		return{
 			risk:{
 			  tableData: [
-			    {id:'YJ03',name:'H3c交换机',menace:'THR-03无作为或操作失误',fragility:'交换机未采用身份鉴别措施，未配置密码复杂度和密码有效期策略。',a:'1',t:'2',v:'3',l:'6',f:'3',sum:'18',level:'一级',sign:'很低',accept:'是',suggest:'建议交换机采用身份鉴别措施，使用用户名+密码进行身份鉴别和标识，配置密码复杂度要求，要求密码8位以上且包含3种不同类型的字符；配置密码有效期180天，每180天更换一次密码。',
-			    },
-			    {id:'YJ03',name:'H3c交换机',menace:'THR-03无作为或操作失误',fragility:'交换机未配置登录失败处理功能。',a:'1',t:'2',v:'2',l:'4',f:'2',sum:'8',level:'一级',sign:'很低',accept:'是',suggest:'建议交换机配置登录失败超过3次后锁定账户10分钟；配置空闲15分钟后自动退出账户。',
-			    },
-			    {id:'YJ03',name:'H3c交换机',menace:'THR-03无作为或操作失误',fragility:'交换机未采取措施防止鉴别信息在传输过程中被窃听。',a:'1',t:'2',v:'4',l:'8',f:'4',sum:'32',level:'一级',sign:'很低',accept:'是',suggest:'建议交换机采用ssh协议进行远程管理，防止鉴别信息在传输过程中被窃听。',
-			    },
 			  ],
 			  mergeArr: [],
 			  hoverOrderArr: [],
@@ -88,21 +82,24 @@ export default {
 
     			for(var r=0;r<data[i].content.length;r++){
 
-    				var sign = data[i].content[r].assetMark;
+    				var assetMark = data[i].content[r].assetMark;
     				var assetsName = data[i].content[r].assetsName;
+
     				for(var k=0;k<data[i].content[r].assetsList.length;k++){
     					
     					for(var j=0;j<data[i].content[r].assetsList[k].spotList.length;j++){
     						var o = data[i].content[r].assetsList[k].spotList[j];
-    						o.sign = sign;
+    						data[i].content[r].assetsList[k].spotList[j].assetMark = assetMark;
+    						o.assetMark = assetMark;
     						o.assetsName = assetsName;
-    						// if(!o.weakGrade){o.weakGrade=''}
+    						console.log(data[i].content[r].assetsList[k].spotList.length)
     						arr.push(o)
     					}
     					
     				}
     			}
     		}
+    		console.log(data)
     		// console.log(arr)
     		this.risk.tableData = arr;
     		this.getSameArr();
@@ -116,11 +113,11 @@ export default {
 	      this[table].tableData.forEach((item, index) => {
 
 	          item.rowIndex = index
-	          if (o[item.id]) {
-	            o[item.id].push(index)
+	          if (o[item.assetMark]) {
+	            o[item.assetMark].push(index)
 	          } else {
-	            o[item.id] = []
-	            o[item.id].push(index)
+	            o[item.assetMark] = []
+	            o[item.assetMark].push(index)
 	          }
 	      })
 	      for (let k in o) {

@@ -1,54 +1,94 @@
 <!--资产赋值表-->
 <template>
   <d2-container>
-    <el-alert title="重要资产清单" type="success" :closable="false"></el-alert>
+    <!-- <el-alert title="重要资产清单" type="success" :closable="false"></el-alert> -->
       <!-- @cell-mouse-leave="cellMouseLeave" @cell-mouse-enter="cellMouseEnter"
        :cell-class-name="tableRowClassName" -->
-    <el-table
-      border style="width: 100%" :data="assetsData.tableData" :span-method="objectSpanMethod">
-      <el-table-column prop="assetsTypeName" label="资产分类" width="150"></el-table-column>
-      <el-table-column prop="sign" label="资产标识" width="70"></el-table-column>
-      <el-table-column prop="name" label="资产名称" width="200"></el-table-column>
-      <el-table-column prop="type"label="规格型号" width="200"></el-table-column>
-      <el-table-column prop="ip" label="ip地址" width="120"></el-table-column>
-      <el-table-column prop="principal" label="负责人" width="120">
-      </el-table-column>
-      <el-table-column prop="pointSecurity" label="保密性" width="70">
-        <template slot-scope="scope">
-          <el-select size="mini" v-model="scope.row.pointSecurity" placeholder="请选择" @change="saveBtn(scope.row)">
-            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
-          </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column prop="pointWhole" label="完整性" width="70">
-        <template slot-scope="scope">
-          <el-select size="mini" v-model="scope.row.pointWhole" placeholder="请选择" @change="saveBtn(scope.row)">
-            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
-          </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column prop="pointUserful" label="可用性" width="70">
-        <template slot-scope="scope">
-          <el-select size="mini" v-model="scope.row.pointUserful" placeholder="请选择" @change="saveBtn(scope.row)">
-            <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
-          </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column prop="cost" label="资产价值" width="70">
-        <template slot-scope="scope">
-          {{getMax(scope.row.pointSecurity,scope.row.pointWhole,scope.row.pointUserful)}}
-        </template>
-      </el-table-column>
-<!--       <el-table-column fixed="right" label="操作" width="100">
-        <template slot-scope="scope">
-          <el-button v-if="!scope.row.isEdited" type="default" size="mini" @click="editBtn(scope.row,scope.$index)">编辑</el-button>
-          <el-button v-if="scope.row.isEdited" type="default" size="mini" @click="saveBtn(scope.row)">保存</el-button>
-        </template>
-      </el-table-column> -->
-    </el-table>
-<!--     <div class="btnBox">
-      <el-button type="success" size="small" @click="saveTable">保存</el-button>
-    </div> -->
+    
+    <el-tabs v-model="tabAct" @tab-click="handleClick">
+        <el-tab-pane label="重要文档和数据资产" name="tab1">
+        	<div v-show="tableAct=='1'">
+        		<el-table ref="table"
+        		  border style="width: 100%" :data="assetsData1.tableData" :span-method="objectSpanMethod1">
+        		  <el-table-column prop="assetsTypeName" label="资产分类" width="150"></el-table-column>
+        		  <el-table-column prop="sign" label="资产标识" width="70"></el-table-column>
+        		  <el-table-column prop="name" label="资产名称" width="200"></el-table-column>
+<!--         		  <el-table-column prop="type" label="规格型号" width="200"></el-table-column>
+        		  <el-table-column prop="ip" label="ip地址" width="200"></el-table-column> -->
+        		  <el-table-column prop="principal" label="负责人" width="120">
+        		  </el-table-column>
+        		  <el-table-column prop="pointSecurity" label="保密性" width="70">
+        		    <template slot-scope="scope">
+        		      <el-select size="mini" v-model="scope.row.pointSecurity" placeholder="请选择" @change="saveBtn(scope.row)">
+        		        <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+        		      </el-select>
+        		    </template>
+        		  </el-table-column>
+        		  <el-table-column prop="pointWhole" label="完整性" width="70">
+        		    <template slot-scope="scope">
+        		      <el-select size="mini" v-model="scope.row.pointWhole" placeholder="请选择" @change="saveBtn(scope.row)">
+        		        <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+        		      </el-select>
+        		    </template>
+        		  </el-table-column>
+        		  <el-table-column prop="pointUserful" label="可用性" width="70">
+        		    <template slot-scope="scope">
+        		      <el-select size="mini" v-model="scope.row.pointUserful" placeholder="请选择" @change="saveBtn(scope.row)">
+        		        <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+        		      </el-select>
+        		    </template>
+        		  </el-table-column>
+        		  <el-table-column prop="cost" label="资产价值" width="70">
+        		    <template slot-scope="scope">
+        		      {{getMax(scope.row.pointSecurity,scope.row.pointWhole,scope.row.pointUserful)}}
+        		    </template>
+        		  </el-table-column>
+        		</el-table>
+        	</div>
+        </el-tab-pane>
+        <el-tab-pane label="其他资产" name="tab2">
+        	<div v-show="tableAct=='2'">
+        		<el-table ref="table"
+        		  border style="width: 100%" :data="assetsData2.tableData" :span-method="objectSpanMethod2">
+        		  <el-table-column prop="assetsTypeName" label="资产分类" width="150"></el-table-column>
+        		  <el-table-column prop="sign" label="资产标识" width="70"></el-table-column>
+        		  <el-table-column prop="name" label="资产名称" width="200"></el-table-column>
+        		  <el-table-column prop="type" label="规格型号" width="200"></el-table-column>
+        		  <el-table-column prop="ip" label="ip地址" width="200"></el-table-column>
+        		  <el-table-column prop="principal" label="负责人" width="120">
+        		  </el-table-column>
+        		  <el-table-column prop="pointSecurity" label="保密性" width="70">
+        		    <template slot-scope="scope">
+        		      <el-select size="mini" v-model="scope.row.pointSecurity" placeholder="请选择" @change="saveBtn(scope.row)">
+        		        <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+        		      </el-select>
+        		    </template>
+        		  </el-table-column>
+        		  <el-table-column prop="pointWhole" label="完整性" width="70">
+        		    <template slot-scope="scope">
+        		      <el-select size="mini" v-model="scope.row.pointWhole" placeholder="请选择" @change="saveBtn(scope.row)">
+        		        <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+        		      </el-select>
+        		    </template>
+        		  </el-table-column>
+        		  <el-table-column prop="pointUserful" label="可用性" width="70">
+        		    <template slot-scope="scope">
+        		      <el-select size="mini" v-model="scope.row.pointUserful" placeholder="请选择" @change="saveBtn(scope.row)">
+        		        <el-option v-for="item in numList" :label="item" :value="item" :key="item"></el-option>
+        		      </el-select>
+        		    </template>
+        		  </el-table-column>
+        		  <el-table-column prop="cost" label="资产价值" width="70">
+        		    <template slot-scope="scope">
+        		      {{getMax(scope.row.pointSecurity,scope.row.pointWhole,scope.row.pointUserful)}}
+        		    </template>
+        		  </el-table-column>
+        		</el-table>
+        	</div>
+        </el-tab-pane>
+     </el-tabs>
+    
+    
   </d2-container>
 </template>
 
@@ -56,8 +96,16 @@
 export default {
 	data() {
 		return {
+			tabAct:'tab1',
+			tableAct:'1',
 			numList:[1,2,3,4,5],
-			assetsData:{
+			assetsData1:{
+				tableData:[],
+				mergeArr: [],
+				hoverOrderArr: [],
+				rowIndex: '-1',
+			},
+			assetsData2:{
 				tableData:[],
 				mergeArr: [],
 				hoverOrderArr: [],
@@ -78,6 +126,20 @@ export default {
 
 	},
 	methods: {
+		handleClick(){
+			// this.assetsData.tableData = []
+			// this.findAssetsList();
+			var _this = this;
+			setTimeout(function () {
+				if(_this.tabAct=='tab1'){
+					_this.tableAct = '1'
+				}else{
+					_this.tableAct = '2'
+				}
+			},300)
+			
+			
+		},
 		getMax(num1,num2,num3) {//获取最大值
 			if(num1&&num2&&num3){
 				var max = 0;
@@ -111,12 +173,14 @@ export default {
 	    },
 	    assetsDataHandle(data){//获取的资产数据变成table数据
 	    	var arr = [];
+	    	var arr1 = [];
+	    	var arr2 = [];
 	    	for(var key in data){
 	    		var assetsTypeName = this.assetsSign[key].assetsTypeName
 	    		var assetsSign = this.assetsSign[key].sign
 	    		// console.log(data[key])
 	    		for(var i=0;i<data[key].length;i++){
-
+	    			console.log(assetsTypeName)
 	    			var index = i+1;
 	    			if(index<10){index='0'+index}
 	    			var o = data[key][i];
@@ -128,11 +192,20 @@ export default {
 	    			if(!o.pointWhole){o.pointWhole=''};
 
 	    			arr.push(o)
+	    			if(o.assetsTypeName=='重要文档和数据资产'){
+	    				arr1.push(o)
+	    			}else{
+	    				arr2.push(o)
+	    			}
+	    			
 	    		}
 	    	}
-	    	// console.log(arr)
-	    	this.assetsData.tableData = arr;
-	    	this.getSameArr('assetsData')
+	    	console.log(arr)
+	    	this.assetsData1.tableData = arr1;
+	    	this.assetsData2.tableData = arr2;
+	    	
+	    	this.getSameArr('assetsData1')
+	    	this.getSameArr('assetsData2')
 	    },
 	    editBtn(row,index){//编辑按钮
 	      this.assetsData.tableData[index].isEdited = 1;
@@ -155,8 +228,6 @@ export default {
 	    // ===================表格合并及样式处理======================== //
 	    getSameArr(table) {// 获取相同编号的数组 资产名称合并
 
-	      var table='assetsData'
-
 	      let o = {}
 	      this[table].tableData.forEach((item, index) => {
 
@@ -175,9 +246,8 @@ export default {
 	      }
 	      
 	    },
-	    objectSpanMethod({row,column,rowIndex,columnIndex}) { // 合并单元格
-	      var table='assetsData'
-	      
+	    objectSpanMethod1({row,column,rowIndex,columnIndex}) { // 合并单元格
+	      var table = 'assetsData1';
 	      if (columnIndex === 0) {
 	        for (let i = 0; i < this[table].mergeArr.length; i++) {
 	          for (let r = 0; r < this[table].mergeArr[i].length; r++) {
@@ -199,33 +269,29 @@ export default {
 	        }
 	      }
 	    },
-	    // tableRowClassName({row,rowIndex}) {//设置hover样式
-	    //   var table='assetsData'
-	      	      
-	    //   let arr = this[table].hoverOrderArr
-	    //   for (let i = 0; i < arr.length; i++) {
-	    //     if (rowIndex == arr[i]) {
-	    //       return 'hovered-row'
-	    //     }
-	    //   }
-	    // },
-	    // cellMouseEnter(row, column, cell, event) {//移进鼠标加上hover样式
-	    //   var table='assetsData'
-	      	      
-	    //   this[table].rowIndex = row.rowIndex;
-	    //   this[table].hoverOrderArr = [];
-	    //   this[table].mergeArr.forEach(item => {
-	    //       if (item.indexOf(this[table].rowIndex) >= 0) {
-	    //         this[table].hoverOrderArr = item
-	    //       }
-	    //   })
-	    // },
-	    // cellMouseLeave(row, column, cell, event) {//移开鼠标去掉hover样式
-	    //   var table='assetsData'
-	    //   this[table].rowIndex = '-1'
-	    //   this[table].hoverOrderArr = [];
-	    // },
-	    // ===================表格合并及样式处理结束======================== //
+	    objectSpanMethod2({row,column,rowIndex,columnIndex}) { // 合并单元格
+	      var table = 'assetsData2';
+	      if (columnIndex === 0) {
+	        for (let i = 0; i < this[table].mergeArr.length; i++) {
+	          for (let r = 0; r < this[table].mergeArr[i].length; r++) {
+	            let item = this[table].mergeArr[i][r]
+	            if (rowIndex == item) {
+	              if (r == 0) {
+	                return {
+	                  rowspan: this[table].mergeArr[i].length,
+	                  colspan: 1
+	                }
+	              } else if (r != 0) {
+	                return {
+	                  rowspan: 0,
+	                  colspan: 0
+	                }
+	              }
+	            }
+	          }
+	        }
+	      }
+	    },
 	}
 	 
 	
@@ -243,5 +309,15 @@ export default {
   padding:0 5px;
   text-align: left;
 }
-
+::v-deep .el-tabs{
+	margin-top: -20px;
+}
+::v-deep .el-tabs__header{
+	position: -webkit-sticky;
+    position: sticky;
+    top: -20px;
+    z-index: 1;
+    padding: 5px 0px;
+    background: #fff;
+}
 </style>

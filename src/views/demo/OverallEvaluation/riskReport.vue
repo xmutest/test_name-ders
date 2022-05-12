@@ -14,7 +14,26 @@
     </el-table>
     <div id="chart"></div>
     <!-- <img :src="url"> -->
-    <div class="btnBox">
+    
+    <el-alert title="导出报告" type="success" :closable="false"></el-alert>
+    <el-form ref="ruleForm" :model="form" label-width="110px" :rules="rules" class="mainForm">
+      <el-form-item label="报告名称" prop="reportName">
+    	  <el-input size="medium" v-model="form.reportName"></el-input>
+      </el-form-item>
+      <el-form-item label="评估起止日期" prop="reportDate">
+        <el-date-picker
+            value-format="yyyy-MM-dd"
+            v-model="form.reportDate"
+            placeholder="报告日期"
+            type="date"
+            size="small">
+          </el-date-picker>
+          <el-button type="success" size="small" @click="report">导出报告</el-button>
+      </el-form-item>
+      
+    </el-form>
+<!--     <div class="btnBox">
+
       <el-date-picker
           value-format="yyyy-MM-dd"
           v-model="reportDate"
@@ -23,7 +42,31 @@
           size="small">
         </el-date-picker>
       <el-button type="success" size="small" @click="report">导出报告</el-button>
-    </div>
+    </div> -->
+    <el-table
+      :data="riskHistoryData"
+      style="width: 100%">
+      <el-table-column prop="reportName" label="报告名称"></el-table-column>
+      <el-table-column prop="status" label="报告生成状态">
+      	<template slot-scope="scope">
+      	  {{scope.row.status==1?'已生成':'生成中..'}}
+      	</template>
+      </el-table-column>
+      <el-table-column prop="createdTime" label="日期">
+      	<template slot-scope="scope">
+      	  {{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createdTime))}}
+      	</template>
+      </el-table-column>
+      <el-table-column align="center" fixed="right" label="操作" width="150">
+        <!-- <template slot="header" slot-scope="scope">
+          <el-button @click="addRoleBtn(scope.row)" type="success" size="mini">新增</el-button>
+        </template> -->
+        <template slot-scope="scope">
+          <el-button v-if="scope.row.status==1" @click="downloadBtn(scope.row,scope.$index)" type="default" size="mini">下载</el-button>
+          <el-button @click="delBtn(scope.row,scope.$index)" type="danger" size="mini">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </d2-container>
 </template>
 <script>
@@ -33,12 +76,26 @@ export default {
 		return{
 			riskCountData:[],
 			url:'',
-			reportDate:'',
+			riskHistoryData:[],
+			form:{
+				reportDate:'',
+				reportName:'',
+			},
+	    	rules:{
+		      reportDate:[
+	            { required: true, message: '请输入评估起止日期', trigger: 'blur' },
+		      ],
+	          reportName:[
+	            { required: true, message: '请输入报告名称', trigger: 'blur' },
+	          ],
+		    },
 		}
 	},
 	created() {
 		this.getDetail();
 		this.findAmendNumCount();
+		this.findWordList();
+		
 	},
 	methods: {
 		async findAmendNumCount(){//获取风险数量表数据
@@ -88,13 +145,18 @@ export default {
 	      console.log(res);
 	      if(res.code==20000){
 	        this.projectName = res.data.projectName;
+	        this.form.reportName = this.projectName+'_风险评估报告'
 	      }else{
 	        this.$message.error(res.messager);
 	      }
 
 	    },
 	    async report(){//导出报告
-	    	if(!this.reportDate){
+	    	if(!this.form.reportName){
+	    		this.$message.error('请先填写报告名称！');
+	    		return;
+	    	}
+	    	if(!this.form.reportDate){
 	    		this.$message.error('请先填写报告日期！');
 	    		return;
 	    	}
@@ -104,12 +166,12 @@ export default {
     	          spinner: 'el-icon-loading',
     	          background: 'rgba(0, 0, 0, 0.7)'
     	        });
-	    	// console.log(this.reportDate)
-	    	var fileName = this.projectName+'_风险评估报告.docx'
+
+	    	var fileName = this.form.reportName;
 	    	var data = {
-	    		reportDate:this.reportDate,
+	    		reportDate:this.form.reportDate,
 	    		riskImgBase64:this.url,
-	    		fileName:fileName
+	    		reportName:fileName
 	    	}
 	    	console.log(data)
 	    	// return;
@@ -129,17 +191,29 @@ export default {
 	    	    //IE浏览器、微软浏览器
 	    	    /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
 	    	        IE可不重命名，以防万一，所以都写上比较好 */
-	    	    window.navigator.msSaveBlob(blob, fileName);
+	    	    window.navigator.msSaveBlob(blob, fileName+'.docx');
 	    	  } else {
 	    	    //其他浏览器
 	    	    let link = document.createElement("a"); // 创建a标签
 	    	    link.style.display = "none";
 	    	    let objectUrl = URL.createObjectURL(blob);
-	    	    link.download = fileName;
+	    	    link.download = fileName+'.docx';
 	    	    link.href = objectUrl;
 	    	    link.click();
 	    	    URL.revokeObjectURL(objectUrl);
 	    	  }
+
+	    	  var _this = this;
+	    	  _this.findWordList();
+	    	  var interval= setInterval(function () {
+	    	  	if(_this.riskHistoryData[0].status!=1){
+	    	  		_this.findWordList();
+	    	  	}else{
+	    	  		clearInterval(interval);
+	    	  	}
+	    	  	
+	    	  },3000);
+	    	  
 	    	}
 	     
 	    },
@@ -192,6 +266,60 @@ export default {
 	    		// console.log(_this.url)
 	    	},300)
 	    },
+	    async findWordList(){//获取报告历史
+	    	var data = {
+	    		reportType:3
+	    	}
+	    	let res = await this.$api.rickReport_findWordList(data);
+	    	console.log(res);
+	    	if(res.code==20000){
+	    	  this.riskHistoryData = res.data;
+	    	}else{
+	    	  this.$message.error(res.messager);
+	    	}
+
+	    },
+	    downloadBtn(row,index){//下载报告
+	    	var url= 'https://evaluate.iscn.org.cn/reportWord/'+row.fileName
+	    	// var url = 'https://evaluate.iscn.org.cn/reportWord/dada9srgoj8h50rhxtum.docx'
+	    	console.log(url)
+
+	    	var a = document.createElement("a");
+	    	if (typeof a.download === "undefined") {
+	    	
+	    	  window.location = url;
+	    	} else {
+	    	  a.href = url;
+	    	  a.download = row.reportName;
+	    	  a.target="_blank"
+	    	  document.body.appendChild(a);
+	    	  a.click();
+	    	  a.remove();
+	    	}
+	    },
+	    delBtn(row,index){//删除报告历史
+
+	    	this.$confirm('确定要删除吗?', '信息', {
+	    	  confirmButtonText: '确定',
+	    	  cancelButtonText: '取消',
+	    	  type: 'warning'
+	    	})
+	    	  .then(() => {
+	    	   	this.delWord(row,index);
+	    	  })
+	    	  .catch(() => {})
+
+	    },
+	    async delWord(row,index){
+	    	let res = await this.$api.rickReport_wordDel({id:row.id});
+	    	console.log(res);
+	    	if(res.code==20000){
+	    		 this.$message.success('删除成功！')
+	    		 this.findWordList();
+	    	}else{
+	    	  this.$message.error(res.messager);
+	    	}
+	    },
 	    dateFormat(fmt, date){//时间格式化
 	      let ret;
 	          const opt = {
@@ -228,5 +356,12 @@ export default {
     }
     .btnBox{
     	float: right;
+    	margin:20px;
+    }
+    .mainForm{
+    	margin:20px;
+    }
+    .mainForm button{
+    	margin-left:20px;
     }
 </style>

@@ -246,8 +246,32 @@ export default ({
       responseType: 'blob',
     })
   },
-  
-
+    /**
+   * @description 风险报告历史
+   * @param {Object} data 携带的信息
+   */
+  async rickReport_findWordList(data = {}) {
+    // 接口请求
+    data.projectId = await this.get_info();
+    return request({
+      url: '/word/findList',
+      method: 'get',
+      params: data,
+    })
+  },
+    /**
+   * @description 风险报告历史 删除
+   * @param {Object} data 携带的信息
+   */
+  async rickReport_wordDel(data = {}) {
+    // 接口请求
+    // data.projectId = await this.get_info();
+    return request({
+      url: '/word/delete',
+      method: 'get',
+      params: data,
+    })
+  },
   // reportDate，报告日期，riskImgBase64 风险图片
 
 })
