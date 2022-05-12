@@ -287,13 +287,14 @@
                           {{ item2.judgmentCriteria }}
                         </div>
                       </td> -->
-                      <td style="width: 300px">
+                      <td table="结果记录" style="width: 300px">
                         <el-popover trigger="click" placement="top">
                           <div>
                             <el-input
                               type="textarea"
                               :autosize="{ minRows: 8, maxRows: 12 }"
                               placeholder="请输入内容"
+                              @input="changerList($event)"
                               v-model="item2.recordResults"
                               @blur="Totisadd(item2)"
                             >
@@ -339,6 +340,7 @@
                               :autosize="{ minRows: 4, maxRows: 8 }"
                               placeholder="请输入内容"
                               v-model="item2.remark"
+                              @input="changerList($event)"
                               @blur="Totisadd(item2)"
                             >
                             </el-input>
@@ -583,6 +585,9 @@ export default {
           // this.$message.error("无符合项");
         }
       }
+    },
+    changerList(e) {
+      this.$forceUpdate();
     },
     fuzclk(its) {
       this.fuialosible = true;

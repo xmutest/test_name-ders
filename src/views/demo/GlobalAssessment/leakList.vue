@@ -52,6 +52,9 @@
                         * 请上传HTML格式的漏洞扫描报告
                         （绿盟：index.html，天镜：files/Report_main.html，Nessus：支持英文/谷歌翻译的中文）
                       </p>
+                      <p class="tisks">
+                        本次漏洞扫描采用绿盟远程安全评估系统V6.0R04F01SP03进行漏洞扫描，扫描过程中未发现服务器、终端存在高、中、低危漏洞，具体参考主机安全漏洞扫描报告。
+                      </p>
                     </div>
                     <div class="scanningupload">
                       <DaoruLou
@@ -177,6 +180,9 @@
                           >从AppScan导出时选择
                           “发现的问题（按问题类型）[样本].docx”</span
                         >）
+                      </p>
+                      <p class="tisks">
+                        本次漏洞扫描采用绿盟远程安全评估系统V6.0R04F01SP03进行漏洞扫描，扫描过程中未发现应用系统存在高、中危漏洞，但尚存在15个低危安全漏洞，具体参考应用安全漏洞扫描报告。
                       </p>
                     </div>
                     <div class="scanningupload">

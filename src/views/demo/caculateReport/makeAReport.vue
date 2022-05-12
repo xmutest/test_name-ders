@@ -1395,11 +1395,11 @@ export default {
       } else {
         this.$confirm(
           "有不符合的高风险测评项没有进行修正，确定导出报告？",
-          "提示",
+          "警告",
           {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
-            type: "warning",
+            type: "error",
           }
         )
           .then(() => { 
