@@ -28,7 +28,7 @@
             type="date"
             size="small">
           </el-date-picker>
-          <el-button type="success" size="small" @click="report">导出报告</el-button>
+          <el-button type="success" size="small" @click="report">生成报告</el-button>
       </el-form-item>
       
     </el-form>
@@ -49,7 +49,9 @@
       <el-table-column prop="reportName" label="报告名称"></el-table-column>
       <el-table-column prop="status" label="报告生成状态">
       	<template slot-scope="scope">
-      	  {{scope.row.status==1?'已生成':'生成中..'}}
+      	  <div v-if="scope.row.status==0">生成中..</div>
+      	  <div v-if="scope.row.status==1">已生成</div>
+      	  <div v-if="scope.row.status==2">生成失败</div>
       	</template>
       </el-table-column>
       <el-table-column prop="createdTime" label="日期">
@@ -57,11 +59,12 @@
       	  {{dateFormat('YYYY-mm-dd HH:MM:SS',new Date(scope.row.createdTime))}}
       	</template>
       </el-table-column>
-      <el-table-column align="center" fixed="right" label="操作" width="150">
+      <el-table-column align="center" fixed="right" label="操作" width="180">
         <!-- <template slot="header" slot-scope="scope">
           <el-button @click="addRoleBtn(scope.row)" type="success" size="mini">新增</el-button>
         </template> -->
         <template slot-scope="scope">
+          <el-button v-if="scope.row.status==2" @click="downloadFailBtn(scope.row,scope.$index)" type="default" size="mini">失败原因</el-button>
           <el-button v-if="scope.row.status==1" @click="downloadBtn(scope.row,scope.$index)" type="default" size="mini">下载</el-button>
           <el-button @click="delBtn(scope.row,scope.$index)" type="danger" size="mini">删除</el-button>
         </template>
@@ -182,34 +185,37 @@ export default {
 	    	  this.$message.error(res.message);
 	    	} else {
 	    	  loading.close();
-	    	  let blob = new Blob([res], {
-	    	    type: "application/msword;charset=utf-8",
-	    	  });
+	    	  
+	    	  // let blob = new Blob([res], {
+	    	  //   type: "application/msword;charset=utf-8",
+	    	  // });
 
-	    	  //浏览器兼容，Google和火狐支持a标签的download，IE不支持
-	    	  if (window.navigator && window.navigator.msSaveBlob) {
-	    	    //IE浏览器、微软浏览器
-	    	    /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
-	    	        IE可不重命名，以防万一，所以都写上比较好 */
-	    	    window.navigator.msSaveBlob(blob, fileName+'.docx');
-	    	  } else {
-	    	    //其他浏览器
-	    	    let link = document.createElement("a"); // 创建a标签
-	    	    link.style.display = "none";
-	    	    let objectUrl = URL.createObjectURL(blob);
-	    	    link.download = fileName+'.docx';
-	    	    link.href = objectUrl;
-	    	    link.click();
-	    	    URL.revokeObjectURL(objectUrl);
-	    	  }
+	    	  // //浏览器兼容，Google和火狐支持a标签的download，IE不支持
+	    	  // if (window.navigator && window.navigator.msSaveBlob) {
+	    	  //   //IE浏览器、微软浏览器
+	    	  //   /* 经过测试，微软浏览器Microsoft Edge下载文件时必须要重命名文件才可以打开，
+	    	  //       IE可不重命名，以防万一，所以都写上比较好 */
+	    	  //   window.navigator.msSaveBlob(blob, fileName+'.docx');
+	    	  // } else {
+	    	  //   //其他浏览器
+	    	  //   let link = document.createElement("a"); // 创建a标签
+	    	  //   link.style.display = "none";
+	    	  //   let objectUrl = URL.createObjectURL(blob);
+	    	  //   link.download = fileName+'.docx';
+	    	  //   link.href = objectUrl;
+	    	  //   link.click();
+	    	  //   URL.revokeObjectURL(objectUrl);
+	    	  // }
 
 	    	  var _this = this;
 	    	  _this.findWordList();
 	    	  var interval= setInterval(function () {
-	    	  	if(_this.riskHistoryData[0].status!=1){
+	    	  	//生成中就刷新数据到生成完毕
+	    	  	if(_this.riskHistoryData[0].status!=1&&_this.riskHistoryData[0].status!=2){
 	    	  		_this.findWordList();
 	    	  	}else{
 	    	  		clearInterval(interval);
+	    	  		_this.$message.success('生成成功！');
 	    	  	}
 	    	  	
 	    	  },3000);
@@ -281,8 +287,10 @@ export default {
 	    },
 	    downloadBtn(row,index){//下载报告
 	    	var url= 'https://evaluate.iscn.org.cn/reportWord/'+row.fileName
+
 	    	// var url = 'https://evaluate.iscn.org.cn/reportWord/dada9srgoj8h50rhxtum.docx'
 	    	console.log(url)
+	    	console.log(row.reportName+'.docx')
 
 	    	var a = document.createElement("a");
 	    	if (typeof a.download === "undefined") {
@@ -310,7 +318,7 @@ export default {
 	    	  .catch(() => {})
 
 	    },
-	    async delWord(row,index){
+	    async delWord(row,index){//删除ajax
 	    	let res = await this.$api.rickReport_wordDel({id:row.id});
 	    	console.log(res);
 	    	if(res.code==20000){
@@ -319,6 +327,9 @@ export default {
 	    	}else{
 	    	  this.$message.error(res.messager);
 	    	}
+	    },
+	    downloadFailBtn(row,index){
+	    	this.$alert(row.failedReason);
 	    },
 	    dateFormat(fmt, date){//时间格式化
 	      let ret;
