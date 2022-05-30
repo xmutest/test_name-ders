@@ -99,6 +99,9 @@
           >
             <div v-if="activeNameTabs == Its.name + Its.id">
               <div class="fuary">
+                <el-button @click="updrdResult(Its)" size="small" type="primary"
+                  >预设的验收标准</el-button
+                >
                 <el-button @click="fuzclk(Its)" size="small" type="primary"
                   >复制到其他同类资产</el-button
                 >
@@ -601,6 +604,37 @@ export default {
         (item) => item.assetsNum == its.assetsNum && item.id != its.id
       );
     },
+    async updrdResult(its) {
+      let sourceAsset = {
+        assetsId: its.id,
+        assetsNum: its.assetsNum,
+        resultBookId: its.resultBookId,
+        projectId: this.xmu_info.projectId,
+      };
+      this.$confirm(
+        "确定要把预设的验收标准的结果记录和建议覆盖到此表格？",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "error",
+          customClass: "messageBox",
+        }
+      )
+        .then(async () => {
+          let res = await this.$api.updateRordy(sourceAsset);
+          if (res.code === 20000) {
+            this.$message.success("成功！！");
+            this.getDataList();
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消",
+          });
+        });
+    },
     async fuzLtop() {
       // if (!this.sourceAsset.assetsName)
       //   return this.$message.error("需要替换的关键字不能为空");
@@ -767,5 +801,10 @@ export default {
     height: 30px;
     line-height: 15px;
   }
+}
+</style>
+<style >
+.messageBox {
+  width: 460px;
 }
 </style>

@@ -107,7 +107,7 @@
                 <td>
                   <div>
                     <el-select
-                      @change="Totisadd(item3)"
+                      @change="Totisadd(item3), xuop_list(item3)"
                       v-model="item3.correctFactor"
                       placeholder="请选择"
                     >
@@ -186,6 +186,27 @@
         </template>
       </table>
     </div>
+    <el-dialog title="选择修正理由" :visible.sync="fuialosible" width="600px">
+      <div>
+        <div class="list_fuz">
+          <el-radio-group v-model="fuckList">
+            <el-col
+              :span="24"
+              v-for="(item, index) in fuzactiTabs"
+              :key="index"
+            >
+              <el-radio :label="item">{{ item }}</el-radio>
+            </el-col>
+          </el-radio-group>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="fuialosible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="fuzLtop"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </d2-container>
 </template>
 
@@ -213,6 +234,10 @@ export default {
         { id: 10, value: 1.4 },
         { id: 11, value: 1.5 },
       ],
+      fuialosible: false,
+      fuzactiTabs: [],
+      fuckList: "",
+      itemList: [],
     };
   },
   created() {
@@ -233,6 +258,23 @@ export default {
         });
         this.getDataList();
       }
+    },
+    async xuop_list(item) {
+      let res = await this.$api.findFixReasonwledge({
+        safetyControlId: item.safetyControlId,
+      });
+      if (res.data.length > 0) {
+        this.fuialosible = true;
+        this.fuzactiTabs = res.data;
+        this.itemList = item;
+      }
+    },
+    fuzLtop() {
+      if (!this.fuckList) return this.$message.error("请选择修正理由");
+      this.itemList.correctReason = this.fuckList;
+      this.fuialosible = false;
+      this.Totisadd(this.itemList);
+      
     },
     async afterAmendSeverityLis(item) {
       let amendAnalysis = item;
@@ -315,6 +357,14 @@ export default {
   background-color: darkseagreen;
   td {
     color: #fff !important;
+  }
+}
+.list_fuz {
+  max-height: 250px;
+  overflow: auto;
+  .el-col {
+    height: 30px;
+    line-height: 15px;
   }
 }
 </style>

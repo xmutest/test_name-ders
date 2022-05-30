@@ -103,6 +103,19 @@ export default ({
     })
   },
   /**
+   * @description 查询查看风险值修正
+   * @param {Object} data 携带的信息
+   */
+  async findFixReasonwledge(data = {}) {
+    data.projectId = await this.get_info();
+    // 接口请求
+    return request({
+      url: '/risk/findFixReason',
+      method: 'get',
+      params: data
+    })
+  },
+  /**
    * @description 查看安全问题汇总
    * @param {Object} data 携带的信息
    */
@@ -193,7 +206,7 @@ export default ({
     return request({
       url: '/risk/findSafetyControlRelationId',
       method: 'get',
-      params:data
+      params: data
     })
   },
   /**

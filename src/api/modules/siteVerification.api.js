@@ -107,6 +107,18 @@ export default ({
     })
   },
   /**
+   * @description 同类型资产结果记录复制
+   * @param {Object} data 携带的信息
+   */
+  async updateRordy(data = {}) {
+    // 接口请求
+    return request({
+      url: '/fieldSurvey/updateRecordResult',
+      method: 'get',
+      params: data
+    })
+  },
+  /**
    * @description 删除现场核查控制项
    * @param {Object} data 携带的信息
    */
