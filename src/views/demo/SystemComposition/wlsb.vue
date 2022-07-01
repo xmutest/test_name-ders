@@ -33,6 +33,38 @@
             ></el-checkbox>
           </template>
         </el-table-column>
+        <el-table-column label="物理区域" width="130">
+          <template slot-scope="scope">
+            <div
+              @click="is_compile(scope.row, scope.$index, 'physicalArea')"
+              class="itsz"
+            ></div>
+            <el-input
+              :ref="'physicalArea' + scope.$index"
+              @blur="schujiaodian(scope.row)"
+              placeholder="请输入内容"
+              v-show="scope.row.show"
+              v-model="scope.row.physicalArea"
+            ></el-input>
+            <span v-show="!scope.row.show">{{ scope.row.physicalArea }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="网络区域" width="130">
+          <template slot-scope="scope">
+            <div
+              @click="is_compile(scope.row, scope.$index, 'netArea')"
+              class="itsz"
+            ></div>
+            <el-input
+              :ref="'netArea' + scope.$index"
+              @blur="schujiaodian(scope.row)"
+              placeholder="请输入内容"
+              v-show="scope.row.show"
+              v-model="scope.row.netArea"
+            ></el-input>
+            <span v-show="!scope.row.show">{{ scope.row.netArea }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="系统及版本" width="100">
           <template slot-scope="scope">
             <div
@@ -223,122 +255,6 @@
       </div>
     </div> -->
     <!-- 新增表单 -->
-    <div class="add_from_xmu">
-      <el-dialog
-        style="min-width: 960px"
-        title="新建设备"
-        :visible.sync="dialogFormVisible"
-      >
-        <el-form :model="xmform" :rules="rules" ref="xmform">
-          <el-form-item
-            label="设备名称"
-            :label-width="formLabelWidth"
-            prop="equipmentName"
-          >
-            <el-input
-              v-model="xmform.equipmentName"
-              clearable
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="是否虚拟设备"
-            :label-width="formLabelWidth"
-            prop="isFictitiousEquipment"
-          >
-            <el-checkbox v-model="xmform.isFictitiousEquipment"></el-checkbox>
-          </el-form-item>
-          <el-form-item
-            label="系统及版本"
-            :label-width="formLabelWidth"
-            prop="systemAndEdition"
-          >
-            <el-input
-              v-model="xmform.systemAndEdition"
-              clearable
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="品牌及型号"
-            :label-width="formLabelWidth"
-            prop="brandAndModel"
-          >
-            <el-input
-              v-model="xmform.brandAndModel"
-              clearable
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="用途" :label-width="formLabelWidth">
-            <el-input v-model="xmform.purpose" autocomplete="off"></el-input>
-          </el-form-item>
-
-          <el-form-item
-            label="备注"
-            :label-width="formLabelWidth"
-            prop="remarks"
-          >
-            <el-input
-              v-model="xmform.remarks"
-              clearable
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item
-            label="数量"
-            :label-width="formLabelWidth"
-            prop="equipmentNum"
-          >
-            <el-input
-              v-model="xmform.equipmentNum"
-              clearable
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item
-            label="重要程度"
-            :label-width="formLabelWidth"
-            prop="importantDegree"
-          >
-            <el-select
-              v-model="xmform.importantDegree"
-              filterable
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in importantDegree_list"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item
-            label="测评对象"
-            :label-width="formLabelWidth"
-            prop="isEvaluationObj"
-          >
-            <el-checkbox v-model="xmform.isEvaluationObj"></el-checkbox>
-          </el-form-item>
-
-          <div class="dia-footer">
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('xmform')"
-                >立即创建</el-button
-              >
-              <el-button type="danger" @click="resetForm('xmform')"
-                >重置</el-button
-              >
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-            </el-form-item>
-          </div>
-        </el-form>
-      </el-dialog>
-    </div>
   </d2-container>
 </template>
 
@@ -364,6 +280,8 @@ export default {
           show: false,
           ip: "",
           resultBookId: "",
+          physicalArea: "",
+          netArea: "",
         },
       ],
       iongeist: [],
@@ -387,6 +305,8 @@ export default {
         isHot: "",
         isEvaluationObj: false,
         resultBookId: "",
+        physicalArea: "",
+        netArea: "",
       },
       formLabelWidth: "120px",
       rules: {},
@@ -496,6 +416,8 @@ export default {
               isEvaluationObj: false,
               show: false,
               resultBookId: "",
+              physicalArea: "",
+              netArea: "",
             },
           ];
         }
@@ -587,6 +509,8 @@ export default {
         isEvaluationObj: false,
         show: false,
         resultBookId: "",
+        physicalArea: "",
+        netArea: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

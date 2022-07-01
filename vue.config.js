@@ -49,8 +49,8 @@ module.exports = {
       warnings: true,
       errors: true
     },
-    //https://survey.iscn.org.cn/evaluate/
-    // http://survey.iscn.org.cn/evaluation/
+    //https://static.iscn.org.cn/evaluate/
+    // http://static.iscn.org.cn/evaluation/
     //http://192.168.7.61:8080/evaluation/
     // http://192.168.7.226:8080/evaluation/
     // http://172.16.4.251:8080/evaluation/
@@ -58,7 +58,7 @@ module.exports = {
     // https://survey.iscn.org.cn/evaluate/
     proxy: {
       '/api': {
-        target: 'https://survey.iscn.org.cn/evaluate/',
+        target: 'https://evaluate.iscn.org.cn/evaluate/',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

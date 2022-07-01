@@ -8,7 +8,7 @@
             >已有安全措施</el-button
           >
         </div>
-        <div>
+        <div v-if="schuanLitop">
           <upload-qu
             :toSonData="toSonData"
             @toFatherData="sendSonData"
@@ -493,6 +493,7 @@ export default {
       // 请求数据
       api_data: this.queryType,
       listTs: [],
+      schuanLitop: true,
     };
   },
   computed: {
@@ -502,6 +503,10 @@ export default {
   },
   created() {
     this.getDataList();
+    if (this.queryType.sceneCheckId >= 1 && this.queryType.sceneCheckId <= 5) {
+      this.schuanLitop =
+        this.xmu_info.row.createdTime <= new Date("2022-06-16").getTime();
+    }
   },
   methods: {
     async submitReporAdd(item) {

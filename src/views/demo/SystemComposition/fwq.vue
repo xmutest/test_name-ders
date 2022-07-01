@@ -22,7 +22,7 @@
             <span v-show="!scope.row.show">{{ scope.row.equipmentName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="物理/逻辑区域" width="130">
+        <!-- <el-table-column label="物理/逻辑区域" width="130">
           <template slot-scope="scope">
             <el-select
               size="small"
@@ -35,13 +35,45 @@
               <el-option label="逻辑区域" value="逻辑区域"></el-option>
             </el-select>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="是否虚拟设备" width="80">
           <template slot-scope="scope">
             <el-checkbox
               @change="schujiaodian(scope.row)"
               v-model="scope.row.isFictitiousEquipment"
             ></el-checkbox>
+          </template>
+        </el-table-column>
+        <el-table-column label="物理区域" width="130">
+          <template slot-scope="scope">
+            <div
+              @click="is_compile(scope.row, scope.$index, 'physicalArea')"
+              class="itsz"
+            ></div>
+            <el-input
+              :ref="'physicalArea' + scope.$index"
+              @blur="schujiaodian(scope.row)"
+              placeholder="请输入内容"
+              v-show="scope.row.show"
+              v-model="scope.row.physicalArea"
+            ></el-input>
+            <span v-show="!scope.row.show">{{ scope.row.physicalArea }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="网络区域" width="130">
+          <template slot-scope="scope">
+            <div
+              @click="is_compile(scope.row, scope.$index, 'netArea')"
+              class="itsz"
+            ></div>
+            <el-input
+              :ref="'netArea' + scope.$index"
+              @blur="schujiaodian(scope.row)"
+              placeholder="请输入内容"
+              v-show="scope.row.show"
+              v-model="scope.row.netArea"
+            ></el-input>
+            <span v-show="!scope.row.show">{{ scope.row.netArea }}</span>
           </template>
         </el-table-column>
         <el-table-column label="系统及版本" width="100">
@@ -290,6 +322,9 @@ export default {
           ip: "",
           isHot: "",
           resultBookId: "",
+
+          physicalArea: "",
+          netArea: "",
         },
       ],
       iongeist: [],
@@ -314,6 +349,8 @@ export default {
         ip: "",
         isHot: "",
         resultBookId: "",
+        physicalArea: "",
+        netArea: "",
       },
       formLabelWidth: "120px",
       rules: {},
@@ -422,6 +459,8 @@ export default {
               ip: "",
               isHot: "",
               resultBookId: "",
+              physicalArea: "",
+              netArea: "",
             },
           ];
         }
@@ -513,6 +552,8 @@ export default {
         ip: "",
         isHot: "",
         resultBookId: "",
+        physicalArea: "",
+        netArea: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

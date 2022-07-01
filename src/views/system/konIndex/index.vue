@@ -216,7 +216,7 @@
                       </p>
                     </template>
                   </el-table-column>
-                  <el-table-column label="方案优先级" width="80">
+                  <!-- <el-table-column label="方案优先级" width="80">
                     <template slot-scope="scope">
                       <p
                         :class="
@@ -260,7 +260,7 @@
                         </el-tooltip>
                       </p>
                     </template>
-                  </el-table-column>
+                  </el-table-column> -->
                   <el-table-column label="项目名称" min-width="250px">
                     <template slot-scope="scope">
                       <p
@@ -1809,9 +1809,7 @@ export default {
       if (!litrue) {
         window.open(url);
       } else {
-        let urlList = `https://view.officeapps.live.com/op/view.aspx?src=${
-          window.location.protocol + "//" + window.location.host + url
-        }`;
+        let urlList = `https://view.officeapps.live.com/op/view.aspx?src=https://static.iscn.org.cn${url}`;
         // window.open(urlList);
         window.open(url);
         // let res = await this.$api.SYS_reportWord_DownLoadDoc({ url });

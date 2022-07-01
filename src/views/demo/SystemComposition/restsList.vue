@@ -30,7 +30,38 @@
           ></el-checkbox>
         </template>
       </el-table-column>
-
+      <el-table-column label="物理区域" width="130">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'physicalArea')"
+            class="itsz"
+          ></div>
+          <el-input
+            :ref="'physicalArea' + scope.$index"
+            @blur="schujiaodian(scope.row)"
+            placeholder="请输入内容"
+            v-show="scope.row.show"
+            v-model="scope.row.physicalArea"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.physicalArea }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="网络区域" width="130">
+        <template slot-scope="scope">
+          <div
+            @click="is_compile(scope.row, scope.$index, 'netArea')"
+            class="itsz"
+          ></div>
+          <el-input
+            :ref="'netArea' + scope.$index"
+            @blur="schujiaodian(scope.row)"
+            placeholder="请输入内容"
+            v-show="scope.row.show"
+            v-model="scope.row.netArea"
+          ></el-input>
+          <span v-show="!scope.row.show">{{ scope.row.netArea }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作系统/控制软件">
         <template slot-scope="scope">
           <div
@@ -202,6 +233,8 @@ export default {
           sortNum: 1,
           show: false,
           resultBookId: "",
+          physicalArea: "",
+          netArea: "",
         },
       ],
       iongeist: [],
@@ -304,6 +337,8 @@ export default {
               sortNum: 1,
               show: false,
               resultBookId: "",
+              physicalArea: "",
+              netArea: "",
             },
           ];
         }
@@ -377,6 +412,8 @@ export default {
         sortNum,
         show: false,
         resultBookId: "",
+        physicalArea: "",
+        netArea: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

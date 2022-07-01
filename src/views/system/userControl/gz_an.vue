@@ -7,54 +7,28 @@
         <div class="search_ls">
           <div>
             <span class="search_ls_name">用户名：</span>
-            <el-input
-              placeholder="请输入内容"
-              v-model="apiList.userName"
-              size="small"
-              @input="searchBi"
-              clearable
-            ></el-input>
+            <el-input placeholder="请输入内容" v-model="apiList.userName" size="small" @input="searchBi" clearable>
+            </el-input>
           </div>
           <div>
             <div>
               <span class="search_ls_name">部门：</span>
-              <el-select
-                clearable
-                size="small"
-                @change="gettableData"
-                v-model="apiList.departmentId"
-                placeholder="请选择"
-              >
-                <el-option
-                  v-for="(item, index) in gzHuList['childrenList']"
-                  :key="index"
-                  :label="item.departmentName"
-                  :value="item.departmentId"
-                >
+              <el-select clearable size="small" @change="gettableData" v-model="apiList.departmentId" placeholder="请选择">
+                <el-option v-for="(item, index) in gzHuList['childrenList']" :key="index" :label="item.departmentName"
+                  :value="item.departmentId">
                 </el-option>
               </el-select>
             </div>
           </div>
           <div>
-            <el-button
-              icon="el-icon-search"
-              type="primary"
-              size="small"
-              @click="searchBi"
-              circle
-            ></el-button>
+            <el-button icon="el-icon-search" type="primary" size="small" @click="searchBi" circle></el-button>
           </div>
         </div>
         <el-card class="box-card">
           <div class="mude_text_item">
             <div class="descTItle">用户列表</div>
             <div style="text-align: right">
-              <el-button
-                size="medium"
-                type="primary"
-                @click="(dialogVisible = true), resetForm()"
-                >添加用户</el-button
-              >
+              <el-button size="medium" type="primary" @click="(dialogVisible = true), resetForm()">添加用户</el-button>
             </div>
             <el-table :data="tableData" style="width: 100%">
               <!-- <el-table-column label="报告编号" width="200">
@@ -91,17 +65,8 @@
               </el-table-column>
               <el-table-column label="操作" width="250">
                 <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    @click="reportGeneratingEdit(scope.row)"
-                    >编辑</el-button
-                  >
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="reportGeneratingDelete(scope.row)"
-                    >删除</el-button
-                  >
+                  <el-button size="mini" @click="reportGeneratingEdit(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="danger" @click="reportGeneratingDelete(scope.row)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -112,15 +77,9 @@
     <div class="page_name" style="padding: 0 20px 20px 20px">
       <div class="search_ls">
         <div class="block">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="apiList.pageNum"
-            :page-sizes="[5, 10, 15, 20]"
-            :page-size="apiList.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-          >
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            :current-page="apiList.pageNum" :page-sizes="[5, 10, 15, 20]" :page-size="apiList.pageSize"
+            layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
         </div>
       </div>
@@ -128,94 +87,48 @@
     <!-- 添加弹框 -->
     <el-dialog :visible.sync="dialogVisible" title="添加用户">
       <el-row :gutter="15">
-        <el-form
-          ref="xmform"
-          :model="xmform"
-          :rules="rules"
-          size="small"
-          label-width="100px"
-          label-position="right"
-        >
+        <el-form ref="xmform" :model="xmform" :rules="rules" size="small" label-width="100px" label-position="right">
           <el-col :span="24">
             <el-form-item label="手机号" prop="loginName">
-              <el-input
-                v-model="xmform.loginName"
-                placeholder="请输入手机号"
-                :maxlength="11"
-                clearable
-                prefix-icon="el-icon-phone"
-                :style="{ width: '100%' }"
-              ></el-input>
+              <el-input v-model="xmform.loginName" placeholder="请输入手机号" :maxlength="11" clearable
+                prefix-icon="el-icon-phone" :style="{ width: '100%' }"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="用户名" prop="userName">
-              <el-input
-                v-model="xmform.userName"
-                placeholder="请输入用户名"
-                clearable
-                prefix-icon="el-icon-user"
-                :style="{ width: '100%' }"
-              ></el-input>
+              <el-input v-model="xmform.userName" placeholder="请输入用户名" clearable prefix-icon="el-icon-user"
+                :style="{ width: '100%' }"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="密码" prop="password">
-              <el-input
-                v-model="xmform.password"
-                show-password
-                placeholder="请输入密码"
-                clearable
-                prefix-icon="el-icon-warning-outline"
-                :style="{ width: '100%' }"
-              ></el-input>
+              <el-input v-model="xmform.password" show-password placeholder="请输入密码" clearable
+                prefix-icon="el-icon-warning-outline" :style="{ width: '100%' }"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="确认密码" prop="pawss">
-              <el-input
-                v-model="xmform.pawss"
-                placeholder="请输入确认密码"
-                show-password
-                clearable
-                prefix-icon="el-icon-warning-outline"
-                :style="{ width: '100%' }"
-              ></el-input>
+              <el-input v-model="xmform.pawss" placeholder="请输入确认密码" show-password clearable
+                prefix-icon="el-icon-warning-outline" :style="{ width: '100%' }"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="职位" prop="userType">
-              <el-select
-                v-model="xmform.userType"
-                placeholder="请选择职位"
-                :style="{ width: '100%' }"
-                @change="gzanu(xmform.userType)"
-              >
-                <el-option
-                  v-for="(item, index) in userTypeOptions"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                  :disabled="item.disabled"
-                ></el-option>
+              <el-select v-model="xmform.userType" placeholder="请选择职位" :style="{ width: '100%' }"
+                @change="gzanu(xmform.userType)">
+                <el-option v-for="(item, index) in userTypeOptions" :key="index" :label="item.label" :value="item.value"
+                  :disabled="item.disabled"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="部门" prop="departmentId">
-              <el-cascader
-                v-model="xmform.departmentId"
-                placeholder="请选择部门"
-                clearable
-                :props="{
-                  value: 'departmentId',
-                  label: 'departmentName',
-                  children: 'childrenList',
-                  checkStrictly: true,
-                }"
-                :style="{ width: '100%' }"
-                :options="[gzHuList]"
-              ></el-cascader>
+              <el-cascader v-model="xmform.departmentId" placeholder="请选择部门" clearable :props="{
+                value: 'departmentId',
+                label: 'departmentName',
+                children: 'childrenList',
+                checkStrictly: true,
+              }" :style="{ width: '100%' }" :options="[gzHuList]"></el-cascader>
             </el-form-item>
           </el-col>
         </el-form>
@@ -229,79 +142,43 @@
     <!-- 编辑 -->
     <el-dialog :visible.sync="dialogVisibleupdata" title="修改用户">
       <el-row :gutter="15">
-        <el-form
-          ref="xmform"
-          :model="xmform"
-          :rules="rules"
-          size="small"
-          label-width="100px"
-          label-position="right"
-        >
+        <el-form ref="xmform" :model="xmform" :rules="rules" size="small" label-width="100px" label-position="right">
           <el-col :span="24">
             <el-form-item label="手机号" prop="loginName">
-              <el-input
-                v-model="xmform.loginName"
-                placeholder="请输入手机号"
-                :maxlength="11"
-                clearable
-                prefix-icon="el-icon-phone"
-                :style="{ width: '100%' }"
-              ></el-input>
+              <el-input v-model="xmform.loginName" placeholder="请输入手机号" :maxlength="11" clearable
+                prefix-icon="el-icon-phone" :style="{ width: '100%' }"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="用户名" prop="userName">
-              <el-input
-                v-model="xmform.userName"
-                placeholder="请输入用户名"
-                clearable
-                prefix-icon="el-icon-user"
-                :style="{ width: '100%' }"
-              ></el-input>
+              <el-input v-model="xmform.userName" placeholder="请输入用户名" clearable prefix-icon="el-icon-user"
+                :style="{ width: '100%' }"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
             <el-form-item label="职位" prop="userType">
-              <el-select
-                v-model="xmform.userType"
-                placeholder="请选择职位"
-                :style="{ width: '100%' }"
-              >
-                <el-option
-                  v-for="(item, index) in userTypeOptions"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                  :disabled="item.disabled"
-                ></el-option>
+              <el-select v-model="xmform.userType" placeholder="请选择职位" :style="{ width: '100%' }">
+                <el-option v-for="(item, index) in userTypeOptions" :key="index" :label="item.label" :value="item.value"
+                  :disabled="item.disabled"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="部门" prop="departmentId">
-              <el-cascader
-                v-model="xmform.departmentId"
-                placeholder="请选择部门"
-                clearable
-                :props="{
-                  value: 'departmentId',
-                  label: 'departmentName',
-                  children: 'childrenList',
-                  checkStrictly: true,
-                }"
-                :style="{ width: '100%' }"
-                :options="[gzHuList]"
-              ></el-cascader>
+              <el-cascader v-model="xmform.departmentId" placeholder="请选择部门" clearable :props="{
+                value: 'departmentId',
+                label: 'departmentName',
+                children: 'childrenList',
+                checkStrictly: true,
+              }" :style="{ width: '100%' }" :options="[gzHuList]"></el-cascader>
             </el-form-item>
           </el-col>
         </el-form>
       </el-row>
       <div slot="footer">
         <el-button @click="dialogVisibleupdata = false">取消</el-button>
-        <el-button type="primary" @click="updatahandelConfirm" v-throttle
-          >确定</el-button
-        >
+        <el-button type="primary" @click="updatahandelConfirm" v-throttle>确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -403,6 +280,10 @@ export default {
       ],
       departmentIdOptions: [
         {
+          label: "广州华南信息安全测评中心",
+          value: 2,
+        },
+        {
           label: "技术一部",
           value: 3,
         },
@@ -469,7 +350,7 @@ export default {
   created() {
     this.gettableData();
   },
-  mounted() {},
+  mounted() { },
   methods: {
     gzanu(val) {
       if (val === 2) {
@@ -582,15 +463,18 @@ export default {
       let ls = "";
       // console.log(this.gzHuList)
       let departmentIdOptions = this.gzHuList["childrenList"];
-      departmentIdOptions.forEach((item) => {
-        if (item.departmentId === depar) {
-          ls = item.departmentName;
-        }
-      });
-      return ls;
+      if (depar == 2) return '广州华南信息安全测评中心';
+      if (departmentIdOptions) {
+        departmentIdOptions.forEach((item) => {
+          if (item.departmentId === depar) {
+            ls = item.departmentName;
+          }
+        });
+        return ls;
+      }
+
     },
     async gettableData() {
-      console.log(this.apiList);
       let res = await this.$api.API_DepartmentFindListe(this.apiList);
       if (res.code === 20000) {
         this.tableData = res.data.list;
@@ -601,10 +485,10 @@ export default {
     handelConfirm() {
       this.$refs["xmform"].validate(async (valid) => {
         if (!valid) return;
-        if (this.xmform.userType == 2) {
-          this.xmform.departmentId = 2;
-        }
-        this.xmform.departmentId = this.xmform.departmentId.pop();
+        // if (this.xmform.userType == 2) {
+        //   this.xmform.departmentId = 2;
+        // }
+        this.xmform.departmentId = this.xmform.departmentId instanceof Array ? this.xmform.departmentId[this.xmform.departmentId.length - 1] : this.xmform.departmentId;
         let res = await this.$api.API_UserSave(this.xmform);
         if (res.code === 20000) {
           this.gettableData();
@@ -619,8 +503,7 @@ export default {
       // }
       if (typeof this.xmform.departmentId != "number") {
         this.xmform.departmentId = this.xmform.departmentId.pop();
-      } 
-      // console.log(typeof this.xmform.departmentId)
+      }
       let res = await this.$api.API_Userupdate(this.xmform);
       if (res.code === 20000) {
         this.$message({
@@ -750,63 +633,80 @@ export default {
 <style lang="scss" scoped>
 .mude_is {
   margin: 20px 0;
+
   .mude_is_left {
     margin: 20px 0;
   }
+
   .to_tim {
     margin-top: 5px;
+
     .el-tag {
       margin-right: 5px;
     }
   }
+
   .descTItle {
     @extend %unable-border-left;
   }
 }
+
 .el-card__header {
   border-bottom: 0px solid #ebeef5;
 }
+
 .demo-input-suffix {
   display: flex;
   align-items: center;
   flex-flow: wrap;
+
   div {
     margin: 5px;
+
     span {
       font-size: 12px;
       min-width: 80px;
     }
+
     .el-input {
       width: 220px;
     }
   }
 }
+
 .baseofUnits {
   width: 1200px;
+
   .el-dialog {
     width: 996px;
   }
+
   .descTItle {
     @extend %unable-border-left;
   }
 }
+
 .search_ls {
   display: flex;
   align-items: center;
+
   div {
     margin-right: 5px;
     display: flex;
     align-items: center;
+
     .search_ls_name {
       font-size: 14px !important;
       font-family: "Courier New", Courier, monospace;
     }
   }
+
   .el-input {
     max-width: 180px;
     margin-left: 5px;
   }
 }
+
 .search_ls {
   position: relative;
   margin: 15px;

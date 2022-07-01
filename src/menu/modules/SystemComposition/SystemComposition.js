@@ -28,23 +28,8 @@ export default {
       icon: '  iconfont icon-anquanshebei'
     },
     {
-      path: `${pre}ywyyrj`,
-      title: '业务应用软件/平台',
-      icon: '  iconfont icon-Drgspingtairuanjianxitong'
-    },
-    {
-      path: `${pre}xtglpt`,
-      title: '系统管理软件/平台',
-      icon: '  iconfont icon-layui-myicon-guanli'
-    },
-    {
-      path: `${pre}dataStytem`,
-      title: '数据库管理系统',
-      icon: '  iconfont icon-shujuku'
-    },
-    {
       path: `${pre}fwq`,
-      title: '服务器',
+      title: '服务器/存储设备',
       icon: '  iconfont icon-fuwuqi'
     },
     {
@@ -57,6 +42,22 @@ export default {
       title: '其他系统或设备',
       icon: '  iconfont icon-xianchangshebei'
     },
+    {
+      path: `${pre}xtglpt`,
+      title: '系统管理软件/平台',
+      icon: '  iconfont icon-layui-myicon-guanli'
+    },
+    {
+      path: `${pre}ywyyrj`,
+      title: '业务应用软件/平台',
+      icon: '  iconfont icon-Drgspingtairuanjianxitong'
+    },
+    {
+      path: `${pre}dataStytem`,
+      title: '数据库管理系统',
+      icon: '  iconfont icon-shujuku'
+    },
+
     {
       path: `${pre}keySort`,
       title: '数据资源',

@@ -90,10 +90,11 @@
           <div class="mude_text_item">
             <div class="descTItle">
               <div>方案评审记录列表</div>
+                   <!-- v-if="info.userTypeId == 10" -->
               <div class="boot_an">
                 <el-button
                   type="primary"
-                  v-if="info.userTypeId == 10"
+             
                   @click="addListks(2)"
                   size="mini"
                   >新建方案评审记录</el-button

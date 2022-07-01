@@ -33,6 +33,38 @@
             ></el-checkbox>
           </template>
         </el-table-column>
+        <el-table-column label="物理区域" width="130">
+          <template slot-scope="scope">
+            <div
+              @click="is_compile(scope.row, scope.$index, 'physicalArea')"
+              class="itsz"
+            ></div>
+            <el-input
+              :ref="'physicalArea' + scope.$index"
+              @blur="schujiaodian(scope.row)"
+              placeholder="请输入内容"
+              v-show="scope.row.show"
+              v-model="scope.row.physicalArea"
+            ></el-input>
+            <span v-show="!scope.row.show">{{ scope.row.physicalArea }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="网络区域" width="130">
+          <template slot-scope="scope">
+            <div
+              @click="is_compile(scope.row, scope.$index, 'netArea')"
+              class="itsz"
+            ></div>
+            <el-input
+              :ref="'netArea' + scope.$index"
+              @blur="schujiaodian(scope.row)"
+              placeholder="请输入内容"
+              v-show="scope.row.show"
+              v-model="scope.row.netArea"
+            ></el-input>
+            <span v-show="!scope.row.show">{{ scope.row.netArea }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="系统及版本" width="100">
           <template slot-scope="scope">
             <div
@@ -364,6 +396,9 @@ export default {
           show: false,
           ip: "",
           resultBookId: "",
+
+          physicalArea: "",
+          netArea: "",
         },
       ],
       iongeist: [],
@@ -387,6 +422,8 @@ export default {
         isHot: "",
         isEvaluationObj: false,
         resultBookId: "",
+        physicalArea: "",
+        netArea: "",
       },
       formLabelWidth: "120px",
       rules: {},
@@ -496,6 +533,8 @@ export default {
               isEvaluationObj: false,
               show: false,
               resultBookId: "",
+              physicalArea: "",
+              netArea: "",
             },
           ];
         }
@@ -587,6 +626,8 @@ export default {
         isEvaluationObj: false,
         show: false,
         resultBookId: "",
+        physicalArea: "",
+        netArea: "",
       };
       itss.splice(item + 1, 0, list);
       this.tabledatas = itss;

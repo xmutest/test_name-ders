@@ -186,11 +186,11 @@
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <!-- <el-button size="mini" @click="is_compile(scope.row)">编辑</el-button> -->
-            <el-button
+            <!-- <el-button
               size="mini"
               @click="is_preserve(scope.$index, true, scope.row.sortNum)"
               >新增</el-button
-            >
+            > -->
             <el-button
               size="mini"
               type="danger"
